@@ -1,37 +1,338 @@
-\documentclass{book}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{hyperref}
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm, mathtools, cancel, bm}
+\usepackage{newtxtext, newtxmath} 
+\usepackage[output-decimal-marker={,}]{siunitx}
+
+% Grafica e Colori
+\usepackage{graphicx, float, xcolor, tikz, pgfplots, enumitem, hyperref}
+\pgfplotsset{compat=1.16}
+\definecolor{RoyalBlue}{RGB}{0, 83, 155}
+\definecolor{ForestGreen}{RGB}{34, 139, 34}
+\definecolor{CodeBack}{RGB}{245, 245, 245}
+
+% Configurazione Link e PDF
+\hypersetup{colorlinks=black, linkcolor=RoyalBlue, urlcolor=RoyalBlue, pdftitle={Statistica}, pdfauthor={Brusini, Mirolo, Tedeschini}}
+
+% Configurazione LISTINGS 
+\usepackage{listings}
+\lstdefinestyle{notebook}{
+    backgroundcolor=\color{CodeBack},   
+    commentstyle=\color{ForestGreen}\itshape,
+    keywordstyle=\color{RoyalBlue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red!70!black},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false, breaklines=true, captionpos=b, keepspaces=true,                 
+    numbers=left, numbersep=5pt, showspaces=false, showstringspaces=false,
+    frame=l, framesep=5pt, rulecolor=\color{RoyalBlue}, % Linea colorata a sinistra
+    language=Python, morekeywords={as, np, plt}
+}
+\lstset{style=notebook}
+
+% Ambienti Matematici Colorati 
+\usepackage{mdframed}
+\newmdtheoremenv[
+    linecolor=RoyalBlue, linewidth=2pt, topline=false, rightline=false, bottomline=false,
+    backgroundcolor=RoyalBlue!5, frametitlefont=\bfseries\color{RoyalBlue},
+    skipabove=10pt, skipbelow=10pt
+]{definizione}{Definizione}[section]
+
+\theoremstyle{remark}
+\newtheorem*{nota}{\textbf{\color{red!70!black}Nota}}
+\newtheorem{osservazione}{\textbf{\color{ForestGreen}Osservazione}}
+
+% --- Comando Lezione ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small \nouppercase{\leftmark}}
+\fancyhead[R]{\small \thelezione}
+\fancyfoot[C]{\thepage}
+\newcommand{\thelezione}{}
+\newcommand{\lezione}[2]{
+\newpage
+\renewcommand{\thelezione}{#2} % Aggiorna data intestazione
+\section{#1}
+\addcontentsline{toc}{subsection}{Data: #2}
+\noindent\textbf{\color{RoyalBlue}Lezione del #2}\par\vspace{0.5em}\hrule\vspace{1em}
+}
 
 
-\usepackage{xcolor}
-\usepackage{tikz} % QUesto è per i Grafici 
-\usepackage{enumitem}
-\usepackage{bm}
-\usetikzlibrary{patterns}
-\usetikzlibrary{decorations.markings,arrows.meta,calc,positioning,decorations.pathreplacing}
-\usepackage{siunitx}
-\tikzset{
-  current arrow/.style={
-    decoration={markings, mark=at position 0.6 with {\arrow{Latex[length=3mm,width=2mm]}}},
-    postaction={decorate}
-  }
-}  
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
 
 
 
-\title{Statistica}
 
-\author{Alessio Brusini, Manuele Mirolo, Michele Tedeschini}
-\date{A.A. 2025/2026}
+
+
+
+\title{\textbf{\Huge Appunti di Statistica e Analisi Dati}}
+\author{\textsc{Alessio Brusini, Manuele Mirolo, Michele Tedeschini}}
+\date{2025/2026}
+
 
 
 \begin{document}
 
 \maketitle
+\tableofcontents
+\newpage
+
+
+
+\lezione{Introduzione e Statistica}{6 Ottobre 2025}
+
+\subsection{I Dati e la Rappresentazione Grafica}
+Innanzitutto riflettiamo su cosa sono i dati: nel caso degli esperimenti di fisica si tratterà di un insieme di misure di una certa grandezza fisica:
+\[ \{ x_1, x_2, \dots, x_N \} \]
+
+Il minimo che si può fare per analizzarli è produrre un \textbf{grafico} e provare a riassumere il loro comportamento con qualche grandezza.
+Per quanto riguarda la parte grafica, la rappresentazione dipende dai dati a disposizione:
+\begin{itemize}
+    \item \textbf{Istogramma}: Avendo molte misure di una sola grandezza, la rappresentazione tipica è l'istogramma. Per farlo si divide l'intervallo atteso delle misure in intervalli più piccoli detti \textit{bin}, e si conta quante misure cadono in ogni intervallino.
+    \item \textbf{Scatter Plot}: Avendo poche misure di due o più variabili correlate, la rappresentazione più utile è un plot a dispersione (punti $(x,y)$ sul piano cartesiano).
+\end{itemize}
+
+\subsubsection{Scatter Plot ed Errori}
+L'altra rappresentazione classica è lo scatter plot in cui plottiamo una grandezza rispetto all'altra e aggiungiamo per ogni punto gli errori di misura:
+\[ (x_i \pm \sigma_{x_i}, \quad y_i \pm \sigma_{y_i}) \]
+In questa rappresentazione è stato usato un numero per rappresentare una misura di $x$ ed è stato associato ad esso una stima dell'errore fatto nella singola misura.
+
+Gli errori da associare dipendono dalla situazione pratica:
+\begin{itemize}
+    \item In alcuni casi si può fare un'analisi statistica ripetendo le misure molte volte.
+    \item Nella maggior parte dei casi  questo non si può fare (strumento non abbastanza sensibile o fenomeno non ripetibile). In tal caso si associa l'errore di sensibilità dello strumento.
+\end{itemize}
+
+\subsection{Grandezze Statistiche: Media e Varianza}
+\subsubsection{Media Aritmetica}
+
+Consideriamo il caso ottimistico in cui si riesce a misurare tante volte la stessa grandezza nelle stesse condizioni. In questo caso, se si vuole usare un solo numero per descrivere le misure, il migliore è senz'altro la \textbf{media aritmetica}:
+\begin{equation}
+    \bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i
+\end{equation}
+
+
+\subsubsection{Dispersione e Varianza}
+La media però non è sufficiente a descrivere i dati perché serve aggiungere un altro numero che mostri la \textbf{dispersione} attorno alla media. Fare la media delle deviazioni $(x_i - \bar{x})$ è inutile perché fa zero:
+\[ \frac{1}{N} \sum (x_i - \bar{x}) = \frac{1}{N} \sum x_i - \frac{1}{N} \sum \bar{x} = \bar{x} - \bar{x} = 0 \]
+
+Si considera quindi il quadrato delle dispersioni, ottenendo la \textbf{varianza}:
+
+\begin{equation}
+    \text{Var}(x) = \frac{1}{N} \sum_{i=1}^{N} (x_i - \bar{x})^2 = \overline{x^2} - \bar{x}^2
+\end{equation}
+
+
+Si può dimostrare una formula alternativa molto utile per i calcoli:
+\begin{align*}
+    \text{Var}(x) &= \frac{1}{N} \sum (x_i - \bar{x})^2 = \frac{1}{N} \sum (x_i^2 - 2x_i\bar{x} + \bar{x}^2) \\
+    &= \frac{1}{N} \sum x_i^2 - \frac{2\bar{x}}{N} \sum x_i + \frac{1}{N} \sum \bar{x}^2 \\
+    &= \overline{x^2} - 2\bar{x} \cdot \bar{x} + \bar{x}^2 = \overline{x^2} - \bar{x}^2
+\end{align*}
+Cioè la varianza è la media dei quadrati meno il quadrato della media.
+
+\subsubsection{Deviazione Standard e correzione di Bessel}
+La varianza ha però la scomodità di avere un'unità di misura al quadrato rispetto a $x$. Si preferisce quindi la \textbf{deviazione standard}:
+\[ \sigma_N = \sqrt{\text{Var}(x)} \]
+
+\begin{osservazione}[Correzione di Bessel]
+La formula sopra è corretta se le misure rappresentano tutta la popolazione. Nella maggior parte dei casi $x_i$ è solo un \textbf{campione}. Per tener conto del bias dovuto all'uso della media campionaria $\bar{x}$ invece della media vera $\mu$, si usa $N-1$ al denominatore:
+\begin{equation}
+    \sigma = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N} (x_i - \bar{x})^2}
+\end{equation}
+\end{osservazione}
+Questa correzione diventa trascurabile per $N$ grande, ma è fondamentale per piccoli set di dati.
+
+
+\subsubsection*{Esempio (Python)}
+Di seguito mostriamo come calcolare media e deviazione standard (con e senza correzione) simulando delle misure gaussiane, simuliamo $N=100$ misure con due strumenti diversi ($\sigma_1=1$ e $\sigma_2=0.2$).
+
+
+\begin{lstlisting}[caption={Calcolo di Media e Deviazione Standard}]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Simulo N misure di una grandezza fisica (es. corrente)
+N = 100
+valore_simulato = 8.0 # Valore vero [mA]
+# Caso 1: sigma = 1, Caso 2: sigma = 0.2
+misure1 = np.random.normal(loc=valore_simulato, scale=1.0, size=N)
+misure2 = np.random.normal(loc=valore_simulato, scale=0.2, size=N)
+
+# 2. Calcolo Media
+media1 = np.mean(misure1)
+print(f"Media Caso 1: {media1:.4f} mA")
+
+# 3. Calcolo Deviazione Standard (ddof=1 applica la correzione di Bessel N-1)
+sigma1_corr = np.std(misure1, ddof=1)
+print(f"Sigma Corretto (Bessel): {sigma1_corr:.4f}")
+
+# 4. Istogramma
+plt.hist(misure1, alpha=0.7, bins=30, edgecolor='black', label='Caso 1')
+plt.hist(misure2, alpha=0.7, bins=30, edgecolor='black', label='Caso 2')
+plt.xlabel('Misura, I [mA]')
+plt.title('Istogramma delle misure ripetute')
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/Istogramma.png}
+    \caption{Istogramma comparativo delle due serie di misure simulate.}
+\end{figure}
+
+
+\subsection{Errore di Sensibilità e Distribuzione Uniforme}
+Quando non è possibile ripetere molte volte la misura, associamo alle misure l'errore dovuto alla sensibilità dello strumento. Questo errore si ottiene leggendo il minimo scarto della variabile consentito dallo strumento (risoluzione):
+\[ \Delta x = \frac{x_{max} - x_{min}}{2} \]
+Questo è l'errore massimo $x \pm \Delta x$. Statisticamente, assumere che il valore vero si trovi in $[x_{min}, x_{max}]$ equivale ad assumere una \textbf{densità di probabilità uniforme} $P(x)$ di larghezza $2\Delta$.
+La densità deve essere normalizzata a 1:
+\[ \int_{-\Delta}^{\Delta} C \, dx = 1 \implies C(2\Delta) = 1 \implies C = \frac{1}{2\Delta} \]
+
+Quindi:
+\[ P(x) = \begin{cases} \frac{1}{2\Delta} & x \in [-\Delta, \Delta] \\ 0 & \text{altrove} \end{cases} \]
+
+Per una distribuzione uniforme tra $[-\Delta, \Delta]$:
+\begin{itemize}
+    \item Media: $\mu = 0$
+    \item Varianza: $\sigma^2 = \int_{-\Delta}^{\Delta} x^2 \frac{1}{2\Delta} dx = \frac{\Delta^2}{3}$
+\end{itemize}
+Quindi, se si vuole convertire un errore massimo $\Delta$ in una deviazione standard $\sigma$:
+\begin{equation}
+    \sigma = \frac{\Delta}{\sqrt{3}}
+\end{equation}
+
+\subsection{Propagazione degli Errori}
+Data una funzione $f(x,y)$ di variabili indipendenti, la varianza si propaga come:
+\begin{equation}
+    \sigma_f^2 = \left( \frac{\partial f}{\partial x} \right)^2 \sigma_x^2 + \left( \frac{\partial f}{\partial y} \right)^2 \sigma_y^2
+\end{equation}
+\textbf{Esempio numerico:}
+Calcolo dello spazio percorso in un moto uniformemente accelerato \\
+Dati: $v = 200 \pm 10 \, m/s$, \quad $a = 12 \pm 2 \, m/s^2$, \quad $t = 6 \, s$ (errore trascurabile).
+\[ s =  vt + \frac{1}{2}at^2 = (200 \cdot 6) + \frac{1}{2} \cdot 12 \cdot 6^2 = 1200 + 216 = 1416 \, m \]
+
+Errore associato $\sigma_s$:
+\[ \sigma_s^2 = \left( \frac{\partial s}{\partial v} \right)^2 \sigma_v^2 + \left( \frac{\partial s}{\partial a} \right)^2 \sigma_a^2 = (t)^2 \sigma_v^2 + \left(\frac{1}{2}t^2\right)^2 \sigma_a^2 \]
+\[ \sigma_s = \sqrt{ 6^2 \cdot 10^2 + (18)^2 \cdot 2^2 } = \sqrt{3600 + 1296} = \sqrt{4896} \approx 70 \, m \]
+Risultato: $s = 1416 \pm 70 \, m$.
+
+\section{Metodo dei Minimi Quadrati}
+
+\subsection{Il Principio}
+L'obiettivo è dedurre informazioni fisiche dai dati (fit). Partiamo dalle ipotesi:
+\begin{enumerate}
+    \item Ho effettuato misure $(x_i, y_i)$ dove l'errore su $x$ è trascurabile.
+    \item Per ogni $x$ fisso, ho misurato $y$ con incertezza $\sigma_i$.
+    \item Esiste una legge $y = f(x; p)$ (dove $p$ sono i parametri).
+\end{enumerate}
+
+Il metodo consiste nel minimizzare la somma degli scarti quadratici pesati, detta \textbf{Chi Quadro} $\chi^2$:
+\begin{equation}
+    \chi^2 = \sum_{i=1}^{N} \left[ \frac{y_i - f(x_i; p)}{\sigma_i} \right]^2
+\end{equation}
+
+Minimizzare significa porre le derivate rispetto ai parametri uguali a zero: $\frac{\partial \chi^2}{\partial p} = 0$.
+
+
+\subsection{Fit Lineare ($y = mx + q$)}
+Nel caso di funzione lineare $f(x) = mx + q$ e $\sigma_i = \sigma$ costanti, risolvendo il sistema delle derivate parziali $\frac{\partial \chi^2}{\partial m} = 0$ e $\frac{\partial \chi^2}{\partial q} = 0$, si ottengono le stime analitiche:
+
+Definiamo le somme:
+\[ S_x = \sum x_i, \quad S_y = \sum y_i, \quad S_{xx} = \sum x_i^2, \quad S_{xy} = \sum x_i y_i \]
+\[ D = N S_{xx} - (S_x)^2 \]
+
+Le stime dei parametri sono:
+\begin{equation}
+    m = \frac{N S_{xy} - S_x S_y}{D}, \qquad q = \frac{S_{xx} S_y - S_x S_{xy}}{D}
+\end{equation}
+
+E gli errori associati (tramite propagazione):
+\begin{equation}
+    \sigma_m = \sqrt{\frac{N \sigma^2}{D}}, \qquad \sigma_q = \sqrt{\frac{\sigma^2 S_{xx}}{D}}
+\end{equation}
+
+\subsubsection*{Esempio (Fit Lineare)}
+\begin{lstlisting}[caption={Fit Lineare dei Minimi Quadrati}]
+# Dati simulati: Moto uniforme s = v*t + s0
+t = np.array([0, 1, 2, 3, 4, 5])       # Tempo [s]
+s = np.array([2, 17, 27, 37, 47, 63])  # Spazio [mm]
+sigma_s = 2                            # Incertezza [mm]
+N = len(t)
+
+# Calcolo Somme
+Sx = np.sum(t); Sy = np.sum(s)
+Sxx = np.sum(t**2); Sxy = np.sum(t * s)
+
+# Calcolo Parametri
+D = N * Sxx - Sx**2
+m = (N * Sxy - Sx * Sy) / D
+q = (Sxx * Sy - Sx * Sxy) / D
+
+print(f"Velocita' (m): {m:.2f} mm/s")
+print(f"Posizione init (q): {q:.2f} mm")
+
+# Plot
+plt.errorbar(t, s, yerr=sigma_s, fmt='o', label='Dati')
+plt.plot(t, m*t + q, label='Fit Lineare')
+plt.xlabel('Tempo [s]'); plt.ylabel('Spazio [mm]')
+plt.legend(); plt.show()
+\end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/Fit Lineare.png}
+    \caption{Fit Lineare}
+\end{figure}
+
+
+\subsection{Caso Non Lineare e Linearizzazione}
+se $f(x; p)$ non è lineare spesso si cerca un'espressione linearizzata cambiando variabili.
+\\
+\\
+\textbf{Esempio:} Caduta grave $h = \frac{1}{2}g t^2$ oppure la formula inversa per calcolare $g$ dai tempi:
+\[ t = \sqrt{\frac{2}{g}}\sqrt{d} + t_0 \]
+Questa equazione è del tipo $Y = mX + q$ se poniamo:
+\[ Y = t, \quad X = \sqrt{d}, \quad m = \sqrt{\frac{2}{g}}, \quad q = t_0 \]
+
+Una volta calcolato $\hat{m}$ con i minimi quadrati, inverto la relazione per trovare $g$:
+\[ \hat{m}^2 = \frac{2}{g} \implies g = \frac{2}{\hat{m}^2} \]
+Per l'errore, uso la propagazione:
+\[ \sigma_g = \left| \frac{\partial g}{\partial m} \right| \sigma_m = \left| - \frac{4}{m^3} \right| \sigma_m \]
+
+\subsubsection*{Esempio Computazionale (Linearizzazione)}
+\begin{lstlisting}[caption={Linearizzazione per calcolo di g}]
+# Dati: Tempo t vs Spazio s
+t = np.array([0.16, 0.40, 0.58, 0.72, 0.97]) 
+s = np.array([0.20, 1.0, 2.0, 3.0, 5.0])
+rad_s = np.sqrt(s) # Variabile linearizzata X
+
+# ... (Codice per calcolo m e q su t vs rad_s omesso per brevita'...)
+# Supponiamo m sia stato calcolato:
+m_calc = 0.45 
+sigma_m = 0.01
+
+# Calcolo fisico
+g = 2 / m_calc**2
+sigma_g = (4 / m_calc**3) * sigma_m
+
+print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
+\end{lstlisting}
+
+
+
+\lezione{SS}{23 Febbraio}
+
+
+
 
 
 
@@ -40,7 +341,3 @@
 
 
 \end{document}
-
-
-
-

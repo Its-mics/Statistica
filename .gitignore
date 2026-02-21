@@ -1,0 +1,23 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.lot
+*.lof
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.gz
+*.bbl
+*.blg
+Main.pdf
+
+# VSCode workspace settings (optional to commit)
+# If you want the same editor behavior for everyone, commit .vscode/settings.json
+# otherwise uncomment the next line to ignore it
+# .vscode/
+
+# Misc
+.DS_Store
+Thumbs.db

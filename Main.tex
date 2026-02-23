@@ -46,28 +46,23 @@
 \newtheorem*{nota}{\textbf{\color{red!70!black}Nota}}
 \newtheorem{osservazione}{\textbf{\color{ForestGreen}Osservazione}}
 
-% --- Comando Lezione ---
+% --- Configurazione Fancyhdr  ---
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small \nouppercase{\leftmark}}
 \fancyhead[R]{\small \thelezione}
 \fancyfoot[C]{\thepage}
+
 \newcommand{\thelezione}{}
+
+% --- Comando Lezione ---
 \newcommand{\lezione}[2]{
 \newpage
-\renewcommand{\thelezione}{#2} % Aggiorna data intestazione
-\section{#1}
-\addcontentsline{toc}{subsection}{Data: #2}
+\renewcommand{\thelezione}{#2} % Mantiene la data nell'intestazione della pagina
+\section{#1} % Inserisce il titolo (#1) nell'indice automaticamente
 \noindent\textbf{\color{RoyalBlue}Lezione del #2}\par\vspace{0.5em}\hrule\vspace{1em}
 }
-
-
-
-
-
-
-
 
 
 \title{\textbf{\Huge Appunti di Statistica e Analisi Dati}}
@@ -82,9 +77,7 @@
 \tableofcontents
 \newpage
 
-
-
-\lezione{Introduzione e Statistica}{6 Ottobre 2025}
+\lezione{Intoduzione e Statistica}{6 Ottobre 2025}
 
 \subsection{I Dati e la Rappresentazione Grafica}
 Innanzitutto riflettiamo su cosa sono i dati: nel caso degli esperimenti di fisica si tratterà di un insieme di misure di una certa grandezza fisica:

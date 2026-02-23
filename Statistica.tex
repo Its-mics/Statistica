@@ -9,6 +9,8 @@
 \usepackage[colorlinks=true, linkcolor=black]{hyperref}  %per rendere l'indice genrale "interattivo"
 \usepackage{amsmath}
 \usepackage{sectsty}
+% Avoid mathabx redefining common symbols (e.g. \div)
+\let\div\relax
 \usepackage{mathabx}
 \usepackage{pgfplots}
 \usepackage{booktabs}
@@ -45,6 +47,26 @@
 \author{ Mirolo Manuele / Alessio Brusini / Michele Tedeschini}
 \date{a.a. 2025/26}
 \newtheorem{theorem}{Teorema}
+
+
+% --- Configurazione Fancyhdr  ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small \nouppercase{\leftmark}}
+\fancyhead[R]{\small \thelezione}
+\fancyfoot[C]{\thepage}
+
+\newcommand{\thelezione}{}
+
+% --- Comando Lezione ---
+\newcommand{\lezione}[2]{
+\newpage
+\renewcommand{\thelezione}{#2} % Mantiene la data nell'intestazione della pagina
+\section{#1} % Inserisce il titolo (#1) nell'indice automaticamente
+\noindent\textbf{\color{RoyalBlue}Lezione del #2}\par\vspace{0.5em}\hrule\vspace{1em}
+}
+
 
 \begin{document}
 \maketitle
@@ -107,7 +129,7 @@ dove $n$ è il numero di volte che si verifica un evento, mentre N è le volte c
 
 \textbf{Osservazione:}
 \begin{itemize}
-    \item $\mu_0=1$
+    \item per $k=0 \to  \mu_0 =\int_\Omega f(x) dx  \mu_0=1$ (normalizzazione della funzione di probabilità)
     \item $\mu_1$ è il valore di aspettazione o media
 \end{itemize}
 
@@ -147,7 +169,7 @@ Questa funzione permette di calcolare i momenti della distribuzione derivando la
 \textbf{Dimostrazione:} \[ 
 f(x) = f(0)+f'(0)x+f''(0)x^2 \\
 e^{tx} = 1 + tx + \frac{t^2 x^2}{2!} + \ldots \\
-M_x(t) = int_\Omega \sum_k \frac{(tx)^k}{k!}f(x) dx= \sum_k \frac{t^k}{k!} \int_\Omega x^k f(x) dx = \sum_k \frac{t^k}{k!} E[x^k] = \mu_0 + \mu_1 t + \frac{\mu_2 t^2}{2} + \ldots \\
+M_x(t) = \int_\Omega \sum_k \frac{(tx)^k}{k!}f(x) dx= \sum_k \frac{t^k}{k!} \int_\Omega x^k f(x) dx = \sum_k \frac{t^k}{k!} E[x^k] = \mu_0 + \mu_1 t + \frac{\mu_2 t^2}{2} + \ldots \\
 \text{derivando}
 \frac{\partial M_x}{\partial t} = \mu_1 + 2 \mu_2 t + \ldots \\
 \text{e valutando in } t=0 \text{ ottengo } \mu_1

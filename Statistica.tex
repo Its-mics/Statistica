@@ -1,28 +1,65 @@
 \documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[italian]{babel}
+
+% --- Matematica e Fisica  ---
+\usepackage{amsmath}
 \usepackage{amsthm} 
 \usepackage{physics}
-\usepackage{ragged2e}
-\usepackage{quoting}
-\usepackage{circuitikz}
-\usepackage[utf8]{inputenc}
 \usepackage{amssymb}
-\usepackage[colorlinks=true, linkcolor=black]{hyperref}  %per rendere l'indice genrale "interattivo"
-\usepackage{amsmath}
-\usepackage{sectsty}
-% Avoid mathabx redefining common symbols (e.g. \div)
 \let\div\relax
 \usepackage{mathabx}
-\usepackage{pgfplots}
+
+\usepackage{mathtools, cancel, bm}
+\usepackage[output-decimal-marker={,}]{siunitx}
+
+% --- Formattazione Testo e Layout ---
+\usepackage{ragged2e}
+\usepackage{quoting}
+\usepackage{sectsty}
 \usepackage{booktabs}
 \usepackage{enumitem}
-\usepackage{graphicx, array}
+\usepackage{array}
 \usepackage{tabularx}
-\usepackage{tikz}
-\usepackage[italian]{babel}
+\usepackage[a4paper, left=1.5cm, right=1.5cm, top=2cm, bottom=2cm]{geometry} 
+
+% ---  Grafica, Colori e TikZ  ---
+\usepackage{graphicx}
+\usepackage{float} 
 \usepackage{xcolor}
-\usepackage[most]{tcolorbox}
+\usepackage{circuitikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16} 
+\usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{arrows.meta, angles, quotes, trees}
+\usepackage[most]{tcolorbox}
+
+\definecolor{RoyalBlue}{RGB}{0, 83, 155}
+\definecolor{ForestGreen}{RGB}{34, 139, 34}
+\definecolor{CodeBack}{RGB}{245, 245, 245}
+
+% --- Configurazione LISTINGS ---
+\usepackage{listings}
+\lstdefinestyle{notebook}{
+    backgroundcolor=\color{CodeBack},   
+    commentstyle=\color{ForestGreen}\itshape,
+    keywordstyle=\color{RoyalBlue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red!70!black},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false, breaklines=true, captionpos=b, keepspaces=true,                 
+    numbers=left, numbersep=5pt, showspaces=false, showstringspaces=false,
+    frame=l, framesep=5pt, rulecolor=\color{RoyalBlue},
+    language=Python, morekeywords={as, np, plt}
+}
+\lstset{style=notebook}
+
+
+\usepackage[colorlinks=true, linkcolor=black]{hyperref} 
+
 \newtcolorbox{nota}{
   blanker,
   before skip=1em,
@@ -32,6 +69,8 @@
   fontupper=\itshape,
   before upper={\noindent\textbf{Nota}:\quad}
 }
+
+
 \newtcolorbox{definizione}{
   blanker,
   before skip=1em,
@@ -41,15 +80,16 @@
   fontupper=\normalfont,
   before upper={\noindent\textbf{Definizione}:\quad}
 }
+
+
 \newtheorem{example}{Example}
-\usepackage[a4paper, left=1.5cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
-\title{Appunti di Statistica }
-\author{ Mirolo Manuele / Alessio Brusini / Michele Tedeschini}
-\date{a.a. 2025/26}
 \newtheorem{theorem}{Teorema}
 
 
-% --- Configurazione Fancyhdr  ---
+\theoremstyle{remark}
+\newtheorem{osservazione}{\textbf{\color{ForestGreen}Osservazione}}
+
+% --- Configurazione Intestazioni  ---
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
@@ -59,18 +99,37 @@
 
 \newcommand{\thelezione}{}
 
-% --- Comando Lezione ---
+% --- Comando Lezione 2025  ---
 \newcommand{\lezione}[2]{
 \newpage
-\renewcommand{\thelezione}{#2} % Mantiene la data nell'intestazione della pagina
-\section{#1} % Inserisce il titolo (#1) nell'indice automaticamente
+\renewcommand{\thelezione}{#2} 
+\section{#1} 
 \noindent\textbf{\color{RoyalBlue}Lezione del #2}\par\vspace{0.5em}\hrule\vspace{1em}
 }
 
 
+% --- Comando Ripasso Bressan (Rosso - Subsubsection inline) ---
+\newcommand{\ripasso}[1]{
+    % Crea una subsubsection colorata in rosso
+    \subsubsection{\texorpdfstring{\color{red}Parte di Bressan: #1}{Parte di Bressan: #1}}
+}
+
+\title{\textbf{\Huge Appunti di Statistica}}
+\author{\textsc{Mirolo Manuele / Alessio Brusini / Michele Tedeschini}}
+\date{a.a. 2025/26}
+
+% --------------------------------------------------
+
 \begin{document}
 \maketitle
 \justifying
+
+\newpage 
+\begin{center}
+\section*{Premessa}
+Le sotto sezioni in Rosso sono quelle che riguardano il ripasso di Bressan, tutte le altre (in nero) sono quelle che riguardano il programma dell'anno attuale.    
+\end{center}
+
 \tableofcontents
 \newpage
 
@@ -81,16 +140,14 @@ ignoranza.\\
 (H. Poincaré)}
 
 \setcounter{section}{-1}
-\section{Contatti}
+\section{Contatti e informazioni}
 \begin{itemize}
     \item Mail: agata.trovato@units.it
     \item Ufficio: Edificio F, primo piano, Aula 114
     \item Ricevimento: Giovedì dalle 14:00 alle 1:00
 \end{itemize}
 
-
-
-\section{Introduzione}
+\lezione{Introduzione / Ripasso di Bressan}{2024}
 
 La probabilità è la misura del grado della credenza che un certo evento avvenga.
 
@@ -119,97 +176,6 @@ P(E)=\lim_{N \rightarrow \infty} \frac{n}{N}
 
 dove $n$ è il numero di volte che si verifica un evento, mentre N è le volte che viene ripetuto l'esperimento.
 \end{description}
-
-\begin{definizione}
-\textbf{Momenti di ordine k}: 
-\[
-\mu_k=E[x^k]=\int_\Omega x^k f(x) dx
-\]
-\end{definizione}
-
-\textbf{Osservazione:}
-\begin{itemize}
-    \item per $k=0 \to  \mu_0 =\int_\Omega f(x) dx  \mu_0=1$ (normalizzazione della funzione di probabilità)
-    \item $\mu_1$ è il valore di aspettazione o media
-\end{itemize}
-
-\begin{definizione}
-\textbf{Momenti centrali di ordine k}:
-\[
-\bar{\mu}_k=E[(x-\mu)^k]=\int_\Omega (x-\mu)^k f(x) dx
-\]
-\end{definizione}
-
-\textbf{Osservazione:}
-\begin{itemize}
-    \item $\bar{\mu}_0=1$ 
-    \item $\bar{\mu}_1=0$
-    \item $\bar{\mu}_2=\sigma^2$
-    \item $\bar{\mu}_3=0$ è detto \textit{indice di asimmetria} o \textit{skewness}, per una distribuzione simmetrica (es. Gaussiana) vale 0;
-    
-    La distribuzione è asimmetrica a destra se $\bar{\mu}_3>0$ (es. Maxwell-Boltzmann) e asimmetrica a sinistra se $\bar{\mu}_3<0$.
-    \item $\bar{\mu}_4=\sigma^4$ è detto \textit{indice dicurtosi} o \textit{kurtosis}, valuta l'\textit{outlierness} della distribuzione.
-\end{itemize}
-
-Supponiamo di avere due variabili casuali $X$ e $Y$, supponiamo abbaino gli stessi momenti allora le distribuzioni ($f_X$ e $f_Y$) di probabilità sono identiche
-
-\begin{definizione}
-    \textbf{Funzione generatrice dei momenti}:
-    \[
-    M_x(t)=E[e^{tx}]=\int_\Omega e^{tx}f(x) dx \rightarrow \text{caso continuo}
-    \]
-    \[
-    M_x(t)=\sum_i p_i e^{tx_i} \rightarrow \text{caso discreto}
-    \]
-\end{definizione}
-Questa funzione permette di calcolare i momenti della distribuzione derivando la funzione rispetto a $t$ e ponendo $t=0$. Cioè:
-\[
-[\frac{\partial ^m M_x}{\partial t^m}=E[x^m] =\mu_m]
-\]
-\textbf{Dimostrazione:} \[ 
-f(x) = f(0)+f'(0)x+f''(0)x^2 \\
-e^{tx} = 1 + tx + \frac{t^2 x^2}{2!} + \ldots \\
-M_x(t) = \int_\Omega \sum_k \frac{(tx)^k}{k!}f(x) dx= \sum_k \frac{t^k}{k!} \int_\Omega x^k f(x) dx = \sum_k \frac{t^k}{k!} E[x^k] = \mu_0 + \mu_1 t + \frac{\mu_2 t^2}{2} + \ldots \\
-\text{derivando}
-\frac{\partial M_x}{\partial t} = \mu_1 + 2 \mu_2 t + \ldots \\
-\text{e valutando in } t=0 \text{ ottengo } \mu_1
-\]
-
-
-\begin{definizione}
-    \textbf{Funzione generatrice dei momenti centraali}:
-    \[
-    \bar{M}_x(t)=E[e^{t(x-\mu)}]=\int_\Omega e^{t(x-\mu)}f(x) dx \rightarrow \text{caso continuo}
-    \]
-    \[
-    \bar{M}_x(t)=\sum_i p_i e^{t(x-\mu_i)} \rightarrow \text{caso discreto}
-    \]
-\end{definizione}
-Nuovamente:
-\[
-[\frac{\partial ^m \bar{M}_x}{\partial t^m}=E[(x-\mu)^m] =\bar{\mu}_m]
-\]
-
-Inoltrè è facile passare dalla funzione generatrice dei momenti a quella generatrice dei momenti centrali, infatti:
-\[
-\bar{M}_x(t)=E[e^{t(x-\mu)}]=E[e^{tx}e^{-t\mu}]=e^{-t\mu}E[e^{tx}]=e^{-t\mu}M_x(t)
-\]
-
-\begin{definizione}
-    \textbf{Funzione caratteristica}:
-    \[
-    \phi (x) = E[e^{itx}]=\int_\Omega e^{itx}f(x) dx \rightarrow \text{Trasformata di Fourier!}
-    \]
-\end{definizione}
-
-Supponiamo di avere una variabile aleoria $Z=X+Y$, dove $X$ e $Y$ sono variabili aleatorie \textbf{indipendenti}, allora la distribuzione di probabilità di $Z$ è data da:
-    \[
-    P_Z=P_X \cdot P_Y
-    \]
-dunque la funzione generatrice dei momenti di $Z$ è data da:
-\[
-M_Z(t)=E[e^{tZ}]=E[e^{t(X+Y)}]=E[e^{tX}e^{tY}]=E[e^{tX}]E[e^{tY}]=M_X(t)M_Y(t)
-\]
 
 
 \subsection{Definizione assiomatica di probabilità}
@@ -291,6 +257,61 @@ Dove:
 Si dicono due eventi indipendenti: $P(A \cap B)=P(A) \cdot P(B)$ e quindi $P(A|B)=P(A)$ 
 
 Per esempio: nella misura del pendolo fermare il pendolo ad ogni misura rende le misure indipendenti fra di loro (una misura di un periodo sbagliato non influisce sulla misura successiva).
+
+\subsection{Cenni di calcolo combinatorio e fattoriale}
+Si chiama combinazione semplice quella in cui non importa l'ordine degli elementi e il numero di combinazioni $C_{n,r}$ è dato da:
+
+\[
+C_{n,r} = \binom{n}{r} = \frac{n!}{r!(n - r)!}
+\]
+
+Con la definizione di fattoriale:
+
+\[
+n! = \prod_{k=1}^{n} k = 1 \cdot 2 \cdot 3 \cdots n = \prod_{i=0}^{n-1} (n - i)
+\]
+
+Fattoriale di un numero negativo:
+\[
+n!=\prod_{i=0}^{n-1}(n-i)
+\]
+\[
+{(c)}^n n!=\prod_{i=0}^{n-1}c(n-i)
+\]
+\[
+{(-1)}^n n!=\prod_{i=0}^{n-1}-1(n-i)=(-n)!
+\]
+
+Fattoriale di un numero positivo:
+\[
+x! = \Pi(x)=\int_{0}^{\infty}t^{x}e^{-t}dt
+\]
+Che presenta la proprietà:
+\[
+\Pi(x+1)=(x+1)\Pi(x)
+\]
+
+Sempre Eulero introdusse la funzione Gamma $\Gamma$, con uno spostamneto di unità nelle variabili rispetto a $\Pi$:
+\[
+\Gamma(z)=\int_{0}^{\infty}t^{z-1}e^{-t}dt
+\]
+Difatti questa funzione è legata a $\Pi$ da $\Pi(x)=\Gamma(x+1)=x\!$ e vale che $z\Gamma(z)=\Gamma(z+1)$
+
+Da questa funzione sono definte le combinazioni semplici del tipo:
+\[
+\binom{z}{k}=\frac{\Gamma(z+1)}{k\! \Gamma(z-k+1)}
+\]
+
+Importanti relazioni tra le funzioni Gamma sono:
+\[
+\Gamma(z)\Gamma(1-z)=\frac{\pi}{\sin(\pi z)} \hspace{1.5cm} \Gamma(z)\Gamma(-z)=-\frac{\pi}{\sin(\pi z)}
+\]
+Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\sqrt{\pi}$, l'ultima importante relazione è invece:
+\[
+\Gamma(n+\frac{1}{2})=\frac{(2n-1)!!}{2^n}\sqrt{\pi}
+\]
+
+
 
 \subsection{Variabili casuali e funzione di ripartizione}
 Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
@@ -385,7 +406,55 @@ In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in
     \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
 \end{itemize}
 
-\subsection{Valore di aspettazione}
+
+
+\lezione{Introduzione e Statistica}{6 Ottobre 2025} 
+Le nostre misure saranno del tipo ${x_1, x_2, ..., x_N}$, il nostro obiettivo è quello di rappresentare questi dati per capire il fenomeno fisico
+che stiamo studiando.\\
+Per quanto riguarda la parte grafica, la rappresentazione dipende dai dati a disposizione:
+\begin{itemize}
+    \item \textbf{Istogramma}: Avendo molte misure di una sola grandezza, la rappresentazione tipica è l'istogramma. Per farlo si divide l'intervallo atteso delle misure in intervalli più piccoli detti \textit{bin}, e si conta quante misure cadono in ogni intervallino.
+    \item \textbf{Scatter Plot}: Avendo poche misure di due o più variabili correlate, la rappresentazione più utile è un plot a dispersione (punti $(x,y)$ sul piano cartesiano).
+\end{itemize}
+
+\subsubsection{Scatter Plot ed Errori}
+L'altra rappresentazione classica è lo scatter plot in cui plottiamo una grandezza rispetto all'altra e aggiungiamo per ogni punto gli errori di misura:
+\[ (x_i \pm \sigma_{x_i}, \quad y_i \pm \sigma_{y_i}) \]
+In questa rappresentazione è stato usato un numero per rappresentare una misura di $x$ ed è stato associato ad esso una stima dell'errore fatto nella singola misura.
+
+Gli errori da associare dipendono dalla situazione pratica:
+\begin{itemize}
+    \item In alcuni casi si può fare un'analisi statistica ripetendo le misure molte volte.
+    \item Nella maggior parte dei casi  questo non si può fare (strumento non abbastanza sensibile o fenomeno non ripetibile). In tal caso si associa l'errore di sensibilità dello strumento.
+\end{itemize}
+
+\subsubsection{Istogramma}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    enlargelimits=0.15,
+    legend style={at={(0.5,-0.15)},
+      anchor=north,legend columns=-1},
+    ylabel={Frequenza},
+    symbolic x coords={A,B,C,D,E},
+    xtick=data,
+    nodes near coords,
+    nodes near coords align={vertical},
+]
+\addplot coordinates {(A,40) (B,65) (C,52) (D,49) (E,73)};
+\addplot coordinates {(A,35) (B,55) (C,45) (D,60) (E,68)};
+\legend{Serie 1, Serie 2}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+
+\subsection{Grandezze Statistiche: Media e Varianza}
+
+
+\ripasso{Valore di Aspettazione}{}
 Le caratteristiche principali delle distribuzioni di probabilità sono
 riassunte tramite parametri o indici di posizione (che dicono attorno
 a quali valori è centrata la distribuzione) e di dispersione (che sono
@@ -406,15 +475,22 @@ Per la variabile casuale continua il \textbf{valore di aspettazione} è dato da
 \[
 \mu_x=E[x]=\int_{\Omega}^{}xf_{X}(x)dx
 \]
-$\mu$ sarà detto $valore medio$.
+$\mu$ sarà detto $valore$ $medio$.
 Ragionamneto analogo vale per le variabili casuali discrete.
 
 Ovviamente si ha $E[\mu_x]=\mu_x$, poichè $\mu_x$ è una costante e la sua dimensione è quella variabile casuale.
 Si tratta di un "indice di posizione" all'interno del dominio. 
 
+\subsubsection{Media Aritmetica}
+
+Consideriamo il caso ottimistico in cui si riesce a misurare tante volte la stessa grandezza nelle stesse condizioni. In questo caso, se si vuole usare un solo numero per descrivere le misure, il migliore è senz'altro la \textbf{media aritmetica}:
+\begin{equation}
+    \bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i
+\end{equation}
 
 
-\vspace{1cm}
+
+\ripasso{Varianza e Deviazione Standard}
 
 Altri indici di posizione sono:
 \begin{description}
@@ -424,45 +500,347 @@ Altri indici di posizione sono:
 \end{description}
 
 
-\subsection{Varianza}
-Tra i vari indici di dispersione la più usata è la varianza, che viene definita come:
+Considero la variabile media $x$ come $x = \frac{1}{N} \sum_{i=1}^{N} x_i$, gli scarti della media, per definizione devono annullarsi:
 \[
-\sigma^2=E\left[ g(x)-E(g(x))\right]^2
-\]
-svolgendo i calcoli:
-\[
-\sigma^2=\int{(x-\mu_x)}^2f_X(x)dx = \int(x^2-2x\mu_x+\mu_x^2)f_X(x)dx= \int x^2 f(x)dx -2\mu_x \int x f(x)dx + \mu_x^2 \int f(x)dx\]
-dove $\mu_x$ è una costante; inoltre l'integrale del secondo termine non è altro che la definizione di $\mu_x$, abbiamo quindi che:
-\[
-\sigma^2=\int x^2f(x)dx - \mu_x^2 = E[x^2]-E[x]^2
-\]
-quindi $E[{(x-\mu_x)}^2]=E[x^2]-E[x]^2$
-
-Questà è la prima importante propietà della varianza, la seconda invece riguarda la diseguaglianza di Cebysev
-\[
-P(\left| x- \mu_x\right| >\lambda \sigma_x) \leq  \frac{1}{\lambda^2}
+\frac{1}{N}\sum(\bar{x}-x_i)=0
 \]
 
-Mentre definiamo la $deviazione$ $standard$ come $\sigma=\sqrt{\sigma^2}$
+Per avere maggiori informazioni posso allora definire la varianza della mia variabile casuale x come:
+\[
+var(x)= \frac{1}{N} \sum (x- \bar{x})^2
+\]
+
+è utile svolgere il quadrato 
+\[
+= \frac{1}{N} (x_i^2 - 2 \bar{x} x_i + \bar{x}^2) = \frac{1}{N} \sum x_i^2 - 2 \bar{x} \frac{1}{N} \sum x_i + \frac{1}{N} \sum \bar{x}^2 = \bar{x^2} - 2\bar{x}^2 + \bar{x}^2 = \bar{x^2} - \bar{x}^2
+\]
+
+definisco la deviazione standard come $\sigma_x = \sqrt{var(x)}$, anche se, vista la limitatezza del campione si attua una correzione (di Bessel):
+\[
+\sigma_x = \sqrt{\frac{1}{N-1} \sum (x_i - \bar{x})^2}
+\]
+
+
+
+
+\subsubsection{Deviazione Standard e correzione di Bessel}
+La varianza ha però la scomodità di avere un'unità di misura al quadrato rispetto a $x$. Si preferisce quindi la \textbf{deviazione standard}:
+\[ \sigma_N = \sqrt{\text{Var}(x)} \]
+
+\begin{osservazione}[Correzione di Bessel]
+La formula sopra è corretta se le misure rappresentano tutta la popolazione. Nella maggior parte dei casi $x_i$ è solo un \textbf{campione}. Per tener conto del bias dovuto all'uso della media campionaria $\bar{x}$ invece della media vera $\mu$, si usa $N-1$ al denominatore:
+\begin{equation}
+    \sigma = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N} (x_i - \bar{x})^2}
+\end{equation}
+\end{osservazione}
+Questa correzione diventa trascurabile per $N$ grande, ma è fondamentale per piccoli set di dati.
+
+
+\subsubsection*{Esempio (Python)}
+Di seguito mostriamo come calcolare media e deviazione standard (con e senza correzione) simulando delle misure gaussiane, simuliamo $N=100$ misure con due strumenti diversi ($\sigma_1=1$ e $\sigma_2=0.2$).
+
+
+\begin{lstlisting}[caption={Calcolo di Media e Deviazione Standard}]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Simulo N misure di una grandezza fisica (es. corrente)
+N = 100
+valore_simulato = 8.0 # Valore vero [mA]
+# Caso 1: sigma = 1, Caso 2: sigma = 0.2
+misure1 = np.random.normal(loc=valore_simulato, scale=1.0, size=N)
+misure2 = np.random.normal(loc=valore_simulato, scale=0.2, size=N)
+
+# 2. Calcolo Media
+media1 = np.mean(misure1)
+print(f"Media Caso 1: {media1:.4f} mA")
+
+# 3. Calcolo Deviazione Standard (ddof=1 applica la correzione di Bessel N-1)
+sigma1_corr = np.std(misure1, ddof=1)
+print(f"Sigma Corretto (Bessel): {sigma1_corr:.4f}")
+
+# 4. Istogramma
+plt.hist(misure1, alpha=0.7, bins=30, edgecolor='black', label='Caso 1')
+plt.hist(misure2, alpha=0.7, bins=30, edgecolor='black', label='Caso 2')
+plt.xlabel('Misura, I [mA]')
+plt.title('Istogramma delle misure ripetute')
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/Istogramma.png}
+    \caption{Istogramma comparativo delle due serie di misure simulate.}
+\end{figure}
+
+\subsection{Propagazione degli Errori}
+Data una funzione $f(x,y)$ di variabili casuali indipendenti, la varianza si propaga come:
+\begin{equation}
+    \sigma_f^2 = \left( \frac{\partial f}{\partial x} \right)^2 \sigma_x^2 + \left( \frac{\partial f}{\partial y} \right)^2 \sigma_y^2
+\end{equation}
 
 \begin{example}
-    Varianza della media:
+\textbf{Esempio numerico:} Calcolo dello spazio percorso in un moto uniformemente accelerato \\
+Dati: $v = 200 \pm 10 \, m/s$, \quad $a = 12 \pm 2 \, m/s^2$, \quad $t = 6 \, s$ (errore trascurabile).
+\[ s =  vt + \frac{1}{2}at^2 = (200 \cdot 6) + \frac{1}{2} \cdot 12 \cdot 6^2 = 1200 + 216 = 1416 \, m \]
 
-    \[
-    y=y(x)=\frac{1}{n}\sum_{i=1}^n x_i 
-    \]
-\[
-    V(x)= \sum_{i=1}^{n} \left( \frac{\partial y}{\partial x_i} \right)^2 \sigma^2 = \frac{\sigma^2}{n}
-    \]
-
-
+Errore associato $\sigma_s$:
+\[ \sigma_s^2 = \left( \frac{\partial s}{\partial v} \right)^2 \sigma_v^2 + \left( \frac{\partial s}{\partial a} \right)^2 \sigma_a^2 = (t)^2 \sigma_v^2 + \left(\frac{1}{2}t^2\right)^2 \sigma_a^2 \]
+\[ \sigma_s = \sqrt{ 6^2 \cdot 10^2 + (18)^2 \cdot 2^2 } = \sqrt{3600 + 1296} = \sqrt{4896} \approx 70 \, m \]
+Risultato: $s = 1416 \pm 70 \, m$.
 
 \end{example}
 
 
+\ripasso{Errore di sensibilità e distribuzione uniforme}
+Definisco l'errore come la semiampiezza dell'intervallo $ \displaystyle \Delta x = \frac{X_{\max} - X_{\min}}{N}$ e il riusltato della misura sarà $x \pm \Delta x$.
+
+L'interpretazione statistica in questo caso è che il vero valore della mia misura appartiene a un insieme di misure $ \mathbf{X} \in {x}$ 
+e ad ogni $x$ associo una probabilità $P(x)$, ma non sempre è possibile, per questo uso la \textit{densità di probabilità} definita come:
+\[
+P(x_1 < \mathbf{X} < x_2) = \int_{X_1}^{x_2} P(x) \; dx
+\]
+ciò vale anche per il caso continuo, e quindi abbiamo la condizione di normalizzazione.
+Nel caso contnui definisco il valore di aspettazione $\mu$ e la varianza $\sigma^2$ come $\displaystyle \int_{X_{\min}}^{X_{\max}}(x - \mu)^2 P(x) dx$ 
+
+Se nel mio intervallo le misure sono \textit{equiprobabili} allora $P(x)$ è distribuzione uniforme:
+\[
+P(x)=
+\begin{cases}
+    c , \hspace{1cm} x \in [X_{\min}, X_{\max}] \\
+    0 , \hspace{1cm} \text{altrimenti}
+\end{cases}
+\]
+Se considero la condizione di normalizzazione, ottengo che:
+\begin{itemize}
+    \item $\displaystyle c = \frac{1}{X_{\max} - X_{\min}}$
+    \item da cui $\displaystyle \mu = \int_{-\Delta}^{+\Delta} x \frac{1}{2 \Delta } dx = 0$
+    \item e $\displaystyle \sigma = \sqrt{\int_{-\Delta}^{+\Delta} (x - 0)^2 \frac{1}{2 \Delta } dx} = \sqrt{\frac{\Delta^2}{3}}$
+\end{itemize}
+
+\subsection{Errore di Sensibilità e Distribuzione Uniforme}
+Quando non è possibile ripetere molte volte la misura, associamo alle misure l'errore dovuto alla sensibilità dello strumento. Questo errore si ottiene leggendo il minimo scarto della variabile consentito dallo strumento (risoluzione):
+\[ \Delta x = \frac{x_{max} - x_{min}}{2} \]
+Questo è l'errore massimo $x \pm \Delta x$. Statisticamente, assumere che il valore vero si trovi in $[x_{min}, x_{max}]$ equivale ad assumere una \textbf{densità di probabilità uniforme} $P(x)$ di larghezza $2\Delta$.
+La densità deve essere normalizzata a 1:
+\[ \int_{-\Delta}^{\Delta} C \, dx = 1 \implies C(2\Delta) = 1 \implies C = \frac{1}{2\Delta} \]
+
+Quindi:
+\[ P(x) = \begin{cases} \frac{1}{2\Delta} & x \in [-\Delta, \Delta] \\ 0 & \text{altrove} \end{cases} \]
+
+Per una distribuzione uniforme tra $[-\Delta, \Delta]$:
+\begin{itemize}
+    \item Media: $\mu = 0$
+    \item Varianza: $\sigma^2 = \int_{-\Delta}^{\Delta} x^2 \frac{1}{2\Delta} dx = \frac{\Delta^2}{3}$
+\end{itemize}
+Quindi, se si vuole convertire un errore massimo $\Delta$ in una deviazione standard $\sigma$:
+\begin{equation}
+    \sigma = \frac{\Delta}{\sqrt{3}}
+\end{equation}
+
+\section{Metodo dei Minimi Quadrati}
+
+\ripasso{Metodo dei Minimi Quadrati }
+
+Un altro metodo per stimare i prametri è quello dei \textbf{minimi quadrati}. Dato un set di misure $\vec{x}=(x_1,..., x_n)$ e di conseguenza valori $\vec{y}=(y_1,..., y_n)$, il valore vero 
+dei parametri $y_i$ non è noto, ma può essere stimato da $f(\lambda_i,x_i)$ Il principio dei minimi quadrati afferma che la miglior stia dei parametri $(\lambda_1, \lambda_2, \cdots, \lambda_n)$ è quella che minimizza la quantità:
+\[
+\chi^2=\sum_{i=1}^{n}w_i(y_i-f(x_i))^2
+\]
+dove $w_i$ è un peso, se esso è lo stesso per tutte le misure allora questo termine può essere tolto, se invece esso è un certo $\sigma_i$ allora esso diventa $\frac{1}{\sigma_i^2}$ ($X^2 = \chi^ 2$ ). Infine se le variabili sono correlate avremo che $w_i=\frac{1}{cov(i,j)}$
+Per misure con stessi $\sigma_i$ e $\sigma_i$ \textit{differenti} ottengo:
+\[  
+\lambda_i=\sum_{i=1}^n \frac{y_i^m}{n} \quad  \lambda_i=\frac{\sum_{i=1}^n \frac{x_i^m}{\sigma_i^2} }{\frac{1}{\sum_{j=1}^{n}\sigma_i^2}}
+\]
+
+\subsection{Il Principio}
+
+L'obiettivo è dedurre informazioni fisiche dai dati (fit). Partiamo dalle ipotesi:
+\begin{enumerate}
+    \item Ho effettuato misure $(x_i, y_i)$ dove l'errore su $x$ è trascurabile.
+    \item Per ogni $x$ fisso, ho misurato $y$ con incertezza $\sigma_i$.
+    \item Esiste una legge $y = f(x; p)$ (dove $p$ sono i parametri).
+\end{enumerate}
+
+Il metodo consiste nel minimizzare la somma degli scarti quadratici pesati, detta \textbf{Chi Quadro} $\chi^2$:
+\begin{equation}
+    \chi^2 = \sum_{i=1}^{N} \left[ \frac{y_i - f(x_i; p)}{\sigma_i} \right]^2
+\end{equation}
+
+Minimizzare significa porre le derivate rispetto ai parametri uguali a zero: $\frac{\partial \chi^2}{\partial p} = 0$.
+
+\ripasso{Fit di una retta}
+Vogliamo trovare la miglior retta che descrive un set di misure e consegueti risultati $(x_i,y_i \pm \sigma_i)$, 
+utilizziamo la parametrizzazzione: $f_i=mx+q$, i parametri sono m e q. Dovrò risolvere il sistama di equazioni
+composto da $\frac{\partial X^2}{\partial m}=0$ e $\frac{\partial X^2}{\partial q}=0$
+
+Se consideriamo gli errori trascurabili o tutti uguali, possiamo costruire la funzione dei minimi quadrarti:
+\[
+X^2=\sum_{i=1}^{N}{(y_i-f_i)}^2=\sum_{i=1}^{N}{(y_i-\theta_1-\theta_2 x_i)}^2
+\]
+Il minimo si trova ponendo le derivate sia rispetto a $\theta_1$ che $\theta_2$ uguale a 0.
+
+Introducendo i valori medi di $x$ e $y$:
+\begin{equation*} 
+    \begin{split}
+q = \hat{\theta}_1 = \frac{s_y \cdot s_{xx} - s_x \cdot s_{xy}}{N s_{xx} - s_x^2} = \frac{\overline{y} \cdot \overline{x^2} - \overline{x} \cdot \overline{xy}}{\overline{x^2} - \overline{x}^2}
+\\
+m = \hat{\theta}_2 = \frac{N s_{xy} - s_x \cdot s_y}{N s_{xx} - s_x^2} = \frac{\overline{xy} - \overline{x} \cdot \overline{y}}{\overline{x^2} - \overline{x}^2}
+   \end{split}
+\end{equation*}
+
+Gli errori si trovano a partire dalla legge di propagazione della varianza, 
+\begin{equation*}
+\sigma_{{m}}^2 = \sum_{i=1}^N \left( \frac{\partial m}{\partial y_i} \right)^2 \sigma^2
+\sigma_{q}^2 = \sum_{i=1}^N \left( \frac{\partial q}{\partial y_i} \right)^2 \sigma^2
+\end{equation*}
+
+da cui si ottiene (considerando $\sigma$ tutti uguali):
+\begin{equation*}
+\sigma_q=\sigma^2\frac{\bar{x^2}}{N(\bar{x^2}-\bar{x}^2)}
+\quad
+\sigma_m=\sigma^2\frac{1}{N(\bar{x^2}-\bar{x}^2)}
+\end{equation*}
+
+Mentre nel caso in cui abbiamo $\sigma$ differenti abbiamo che le operazioni forniscano il valore $y_i$ è:
+\[ f(y_1, y_2, \ldots, y_N) \sim \frac{1}{\prod_{i=1}^N \sigma_i} e^{-\sum_{i=1}^N \frac{(y_i - \theta_1 - \theta_2 x_i)^2}{2\sigma_i^2}} \]
+
+Allora introduciamo la funzione $\chi^2$ che ci permetterà di fare il \textit{test delle ipotesi}, ovvero capire se l'andamento dei nostri dati è
+lineare o meno. la distribuzione di $\chi^2$ coincide con la funzione di distribuzione cumulativa della variabile casuale $X^2$:
+\[ X^2 \equiv \chi^2 = \sum_{i=1}^N \frac{(y_i - \theta_1 - \theta_2 x_i)^2}{\sigma_i^2} \]
+
+Per aver la miglior stima procediamo con prima, andando a massimizzare la funzione $\chi^2$, da cui ottengo:
+
+\begin{equation*}
+q = \hat{\theta}_1 = \frac{s_{xx} \cdot s_y - s_{xy} \cdot s_x}{s \cdot s_{xx} - s_x^2}, \quad m = \hat{\theta}_2 = \frac{s \cdot s_{xy} - s_x \cdot s_y}{s \cdot s_{xx} - s_x^2}
+\quad
+m = \hat{\theta}_2 = \frac{s \cdot s_{xy} - s_x \cdot s_y}{s \cdot s_{xx} - s_x^2}
+\end{equation*}
+dove 
+\[
+s_x = \sum_{i=1}^N \frac{x_i}{\sigma_i^2}, \quad s_y = \sum_{i=1}^N \frac{y_i}{\sigma_i^2}, \quad s_{xx} = \sum_{i=1}^N \frac{x_i^2}{\sigma_i^2}, \quad s_{xy} = \sum_{i=1}^N \frac{x_i y_i}{\sigma_i^2}, \quad s = \sum_{i=1}^N \frac{1}{\sigma_i^2}
+\]
+Posso scrivere 
+\[
+m= \frac{1}{N} \sum \frac{x_i - \bar{x}}{x^2 - {\bar{x}}^2} y_i \quad q = \frac{1}{N} \sum \frac{y_i - \bar{y}}{x^2 - {\bar{x}}^2}
+\]
+Per le varianze (utilizando la legge di propagazione della varianza):
+\begin{equation*}
+{\sigma_q}^2 = \sigma_{\theta_1}^2 = \frac{s_{xx}}{S \cdot s_{xx} - sx^2}
+\quad
+{\sigma_m}^2 = \sigma_{{\theta_2}^2} = \frac{s}{s \cdot s_{xx} - s_x^2}
+\end{equation*}
+
+
+\subsection{Fit Lineare ($y = mx + q$)}
+Nel caso di funzione lineare $f(x) = mx + q$ e $\sigma_i = \sigma$ costanti, risolvendo il sistema delle derivate parziali $\frac{\partial \chi^2}{\partial m} = 0$ e $\frac{\partial \chi^2}{\partial q} = 0$, si ottengono le stime analitiche:
+
+Definiamo le somme:
+\[ S_x = \sum x_i, \quad S_y = \sum y_i, \quad S_{xx} = \sum x_i^2, \quad S_{xy} = \sum x_i y_i \]
+\[ D = N S_{xx} - (S_x)^2 \]
+
+Le stime dei parametri sono:
+\begin{equation}
+    m = \frac{N S_{xy} - S_x S_y}{D}, \qquad q = \frac{S_{xx} S_y - S_x S_{xy}}{D}
+\end{equation}
+
+E gli errori associati (tramite propagazione):
+\begin{equation}
+    \sigma_m = \sqrt{\frac{N \sigma^2}{D}}, \qquad \sigma_q = \sqrt{\frac{\sigma^2 S_{xx}}{D}}
+\end{equation}
+
+\subsubsection*{Esempio (Fit Lineare)}
+\begin{lstlisting}[caption={Fit Lineare dei Minimi Quadrati}]
+# Dati simulati: Moto uniforme s = v*t + s0
+t = np.array([0, 1, 2, 3, 4, 5])       # Tempo [s]
+s = np.array([2, 17, 27, 37, 47, 63])  # Spazio [mm]
+sigma_s = 2                            # Incertezza [mm]
+N = len(t)
+
+# Calcolo Somme
+Sx = np.sum(t); Sy = np.sum(s)
+Sxx = np.sum(t**2); Sxy = np.sum(t * s)
+
+# Calcolo Parametri
+D = N * Sxx - Sx**2
+m = (N * Sxy - Sx * Sy) / D
+q = (Sxx * Sy - Sx * Sxy) / D
+
+print(f"Velocita' (m): {m:.2f} mm/s")
+print(f"Posizione init (q): {q:.2f} mm")
+
+# Plot
+plt.errorbar(t, s, yerr=sigma_s, fmt='o', label='Dati')
+plt.plot(t, m*t + q, label='Fit Lineare')
+plt.xlabel('Tempo [s]'); plt.ylabel('Spazio [mm]')
+plt.legend(); plt.show()
+\end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/Fit Lineare.png}
+    \caption{Fit Lineare}
+\end{figure}
+
+
+
+\ripasso{Caso non lineare}
+Il metodo più semplice è quello di trovare una legge lineare che descrive il mio fenomeno
+\begin{example}
+    $s= \frac{1}{2} g t^2 $
+    trascuro l'incertezza su $s$ mentre considero l'errore su $t$, per calcolare $g$. 
+    invertendo ho $t^2= \frac{2s}{g}$ e prendendo il quadrato mi riconduco ad un equazione lineare: $ t= \sqrt{\frac{2}{g}} \sqrt{s} - t_0$.
+
+    $\sigma_g = \left(\frac{\partial g}{\partial m}\right)^2 \sigma_m^2$ con $m=\sqrt{\frac{2}{g}}$, questo ci fa notare l'importanza del significato assegnato alle variabili
+\end{example}
+In altri casi posso usare Taylor, oppure svilupp la derivata in maniera numerica
+
+\subsection{Caso Non Lineare e Linearizzazione}
+se $f(x; p)$ non è lineare spesso si cerca un'espressione linearizzata cambiando variabili.
+\\
+\\
+\textbf{Esempio:} Caduta grave $h = \frac{1}{2}g t^2$ oppure la formula inversa per calcolare $g$ dai tempi:
+\[ t = \sqrt{\frac{2}{g}}\sqrt{d} + t_0 \]
+Questa equazione è del tipo $Y = mX + q$ se poniamo:
+\[ Y = t, \quad X = \sqrt{d}, \quad m = \sqrt{\frac{2}{g}}, \quad q = t_0 \]
+
+Una volta calcolato $\hat{m}$ con i minimi quadrati, inverto la relazione per trovare $g$:
+\[ \hat{m}^2 = \frac{2}{g} \implies g = \frac{2}{\hat{m}^2} \]
+Per l'errore, uso la propagazione:
+\[ \sigma_g = \left| \frac{\partial g}{\partial m} \right| \sigma_m = \left| - \frac{4}{m^3} \right| \sigma_m \]
+
+\subsubsection*{Esempio Computazionale (Linearizzazione)}
+\begin{lstlisting}[caption={Linearizzazione per calcolo di g}]
+# Dati: Tempo t vs Spazio s
+t = np.array([0.16, 0.40, 0.58, 0.72, 0.97]) 
+s = np.array([0.20, 1.0, 2.0, 3.0, 5.0])
+rad_s = np.sqrt(s) # Variabile linearizzata X
+
+# ... (Codice per calcolo m e q su t vs rad_s omesso per brevita'...)
+# Supponiamo m sia stato calcolato:
+m_calc = 0.45 
+sigma_m = 0.01
+
+# Calcolo fisico
+g = 2 / m_calc**2
+sigma_g = (4 / m_calc**3) * sigma_m
+
+print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
+\end{lstlisting}
+
+
+
+
+\lezione{Momenti e Distribuzioni}{23 Febbraio 2025}
+
 
 
 \subsection{Momenti delle funzione di distribuzione}
+
+
 
 Valore di aspettazione e varianza di una variabile casuale sono due “momenti” della funzione
 densità di probabilità $f_X(x)$.
@@ -513,62 +891,165 @@ Per la varianza invece si ottiene che:
     \]
 
 \end{nota}
-\subsection{Cenni di calcolo combinatorio e fattoriale}
-Si chiama combinazione semplice quella in cui non importa l'ordine degli elementi e il numero di combinazioni $C_{n,r}$ è dato da:
 
+\vspace{1 cm}
+
+\begin{definizione}
+\textbf{Momenti di ordine k}: 
 \[
-C_{n,r} = \binom{n}{r} = \frac{n!}{r!(n - r)!}
+\mu_k=E[x^k]=\int_\Omega x^k f(x) dx
+\]
+\end{definizione}
+
+\textbf{Osservazione:}
+\begin{itemize}
+    \item per $k=0 \quad \to \quad  \mu_0 =\int_\Omega f(x) dx =1$ (normalizzazione della funzione di probabilità)
+    \item per $k=1 \quad \to \quad \mu_1$ è il valore di aspettazione o media (è una sorta di baricentro della distribuzione)
+\end{itemize}
+
+\begin{definizione}
+\textbf{Momenti centrali di ordine k}:
+\[
+\bar{\mu}_k=E[(x-\mu)^k]=\int_\Omega (x-\mu)^k f(x) dx
+\]
+\end{definizione}
+
+\textbf{Osservazione:}
+\begin{itemize}
+    \item per $k=0 \quad \to \quad \bar{\mu}_0= \int_\Omega f(x) dx = 1$ 
+    \item per $k=1 \quad \to \quad \bar{\mu}_1= \int_\Omega (x-\mu)f(x) dx = \int_\Omega x f(x) dx - \mu \underbrace{\int_\Omega f(x) dx}_{=1} = \mu - \mu = 0$
+    \item per $k=2 \quad \to \quad \bar{\mu}_2=\sigma^2$
+    \item per $k=3$ dove $\bar{\mu}_3=0$ è detto \textit{indice di asimmetria} o \textit{skewness}:
+    \pgfplotsset{
+        skewplot/.style={
+            width=8cm, height=4cm, 
+            axis lines=left,
+            xtick=\empty, ytick=\empty, 
+            xlabel={$x$},
+            ymin=0,
+            no markers,
+            axis line style={-},
+            hide y axis 
+        }
+    }
+    \begin{itemize}
+        \item per una distribuzione simmetrica (es. Gaussiana) $\bar{\mu}_3=0$;
+         
+        \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[skewplot, title={Simmetrica ($\bar{\mu}_3=0$)}]
+                % Gaussiana
+                \addplot[domain=-3:3, samples=60, smooth, thick, RoyalBlue, fill=RoyalBlue!10] {exp(-x^2/2)} \closedcycle;
+                % Linea della media
+                \draw[dashed, black] (axis cs:0,0) -- (axis cs:0,1) node[above, font=\tiny] {$\mu$};
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+        \item per una distribuzione asimmetrica a destra (es. Maxwell-Boltzmann) $\bar{\mu}_3>0$;
+         \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[skewplot, title={Asimmetrica a destra ($\bar{\mu}_3>0$)}]
+                % Funzione con coda a destra (simile a Gamma)
+                \addplot[domain=0:8, samples=80, smooth, thick, RoyalBlue, fill=RoyalBlue!10] {x^1.8 * exp(-x)} \closedcycle;
+                % Nota: Coda lunga verso i valori positivi (destra)
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+        \item per una distribuzione asimmetrica a sinistra $\bar{\mu}_3<0$
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[skewplot, title={Asimmetrica a sinistra ($\bar{\mu}_3<0$)}]
+                % Speculare alla precedente (coda a sinistra)
+                \addplot[domain=-8:0, samples=80, smooth, thick, RoyalBlue, fill=RoyalBlue!10] {(-x)^1.8 * exp(-(-x))} \closedcycle;
+                % Nota: Coda lunga verso i valori negativi (sinistra)
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+    \end{itemize}     
+
+    \item per $k=4 \quad \to \quad \bar{\mu}_4=\sigma^4$ è detto \textit{indice dicurtosi} o \textit{kurtosis}, valuta l'\textit{outlierness} della distribuzione, ovvero quando si pesano i valori dei valori estremi della distribuzione.
+\end{itemize}
+\vspace{1 cm}
+
+Risulta utile introdurre per diversi motivi, per esempio:\\
+Supponiamo di avere due variabili casuali $X$ e $Y$, supponiamo abbiano gli stessi momenti allora le distribuzioni ($f_X$ e $f_Y$) di probabilità sono identiche
+
+\begin{definizione}
+    \textbf{Funzione generatrice dei momenti}:
+    \[
+    M_x(t)=E[e^{tx}]=\int_\Omega e^{tx}f(x) dx \rightarrow \text{caso continuo}
+    \]
+    \[
+    M_x(t)=\sum_i p_i e^{tx_i} \rightarrow \text{caso discreto}
+    \]
+\end{definizione}
+Questa funzione permette di calcolare i momenti della distribuzione derivando la funzione rispetto a $t$ e ponendo $t=0$. Cioè:
+\[
+\left[ \frac{\partial ^m M_x}{\partial t^m} \right]_{t=0} =E[x^m] =\mu_m
+\]
+\textbf{Dimostrazione:}
+Posso sfruttare la serie di Maclaurin:
+
+\[ 
+e^{tx} = \sum_{k=0}^{\infty} \frac{(tx)^k}{k!} 
+\]
+\[
+M_x(t) = \int_\Omega e^{tx} f(x) dx = \int_\Omega \sum_{k=0}^{\infty} \frac{(tx)^k}{k!} f(x) dx = \sum_{k=0}^{\infty} \frac{t^k}{k!} \int_\Omega x^k f(x) dx = \sum_{k=0}^{\infty} \frac{t^k}{k!} \int_\Omega x^k f(x) dx = \sum_{k=0}^{\infty} \frac{t^k}{k!} \mu_k
+\]
+Esplicitando la somma: 
+\[
+M_x(t) = \mu_0 + \mu_1 t + \frac{\mu_2 t^2}{2!} + \ldots
 \]
 
-Con la definizione di fattoriale:
+Se si calcola la derivata prima rispetto a t:
+\[ \frac{\partial M_x}{\partial t} = \mu_1 + \frac{\mu_2 t}{1!} + \ldots \]
+Ponendo $t=0$ si ottiene:
+\[ \left[ \frac{\partial M_x}{\partial t} \right]_{t=0} = \mu_1 = E[x] \]
 
+\begin{definizione}
+    \textbf{Funzione generatrice dei momenti centrali}:
+    \[
+    \bar{M}_x(t)=E[e^{t(x-\mu)}]=\int_\Omega e^{t(x-\mu)}f(x) dx \rightarrow \text{caso continuo}
+    \]
+    \[
+    \bar{M}_x(t)=\sum_i p_i e^{t(x-\mu_i)} \rightarrow \text{caso discreto}
+    \]
+\end{definizione}
+Nuovamente:
 \[
-n! = \prod_{k=1}^{n} k = 1 \cdot 2 \cdot 3 \cdots n = \prod_{i=0}^{n-1} (n - i)
-\]
-
-Fattoriale di un numero negativo:
-\[
-n!=\prod_{i=0}^{n-1}(n-i)
-\]
-\[
-{(c)}^n n!=\prod_{i=0}^{n-1}c(n-i)
-\]
-\[
-{(-1)}^n n!=\prod_{i=0}^{n-1}-1(n-i)=(-n)!
-\]
-
-Fattoriale di un numero positivo:
-\[
-x! = \Pi(x)=\int_{0}^{\infty}t^{x}e^{-t}dt
-\]
-Che presenta la proprietà:
-\[
-\Pi(x+1)=(x+1)\Pi(x)
+\left[ \frac{\partial ^m \bar{M}_x}{\partial t^m}\right]_{t=0} =E[(x-\mu)^m] =\bar{\mu}_m 
 \]
 
-Sempre Eulero introdusse la funzione Gamma $\Gamma$, con uno spostamneto di unità nelle variabili rispetto a $\Pi$:
+Inoltrè è facile passare dalla funzione generatrice dei momenti a quella generatrice dei momenti centrali, infatti:
 \[
-\Gamma(z)=\int_{0}^{\infty}t^{z-1}e^{-t}dt
-\]
-Difatti questa funzione è legata a $\Pi$ da $\Pi(x)=\Gamma(x+1)=x\!$ e vale che $z\Gamma(z)=\Gamma(z+1)$
-
-Da questa funzione sono definte le combinazioni semplici del tipo:
-\[
-\binom{z}{k}=\frac{\Gamma(z+1)}{k\! \Gamma(z-k+1)}
+\bar{M}_x(t)=E[e^{t(x-\mu)}]=E[e^{tx}e^{-t\mu}]=e^{-t\mu}E[e^{tx}]=e^{-t\mu}M_x(t)
 \]
 
-Importanti relazioni tra le funzioni Gamma sono:
+Infine se supponiamo di avere due variabili casuali $X$ e $Y$ dove queste hanno stesso $M_x(t)=M_y(t)$ o $\bar{M}_x(t)=\bar{M}_y(t)$ allora le distribuzioni ($f_X$ e $f_Y$) di probabilità sono identiche
+
+\begin{definizione}
+    \textbf{Funzione caratteristica}:
+    \[
+    \phi (x) = E[e^{itx}]=\int_\Omega e^{itx}f(x) dx \rightarrow \text{Trasformata di Fourier!}
+    \]
+\end{definizione}
+
+Supponiamo di avere una variabile aleoria $Z=X+Y$, dove $X$ e $Y$ sono variabili aleatorie \textbf{indipendenti}, allora la distribuzione di probabilità di $Z$ è data da:
+    \[
+    P_Z=P_X \cdot P_Y
+    \]
+dunque la funzione generatrice dei momenti di $Z$ è data da:
 \[
-\Gamma(z)\Gamma(1-z)=\frac{\pi}{\sin(\pi z)} \hspace{1.5cm} \Gamma(z)\Gamma(-z)=-\frac{\pi}{\sin(\pi z)}
-\]
-Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\sqrt{\pi}$, l'ultima importante relazione è invece:
-\[
-\Gamma(n+\frac{1}{2})=\frac{(2n-1)!!}{2^n}\sqrt{\pi}
+M_Z(t)=E[e^{tZ}]=E[e^{t(X+Y)}]=E[e^{tX}e^{tY}]=E[e^{tX}]E[e^{tY}]=M_X(t)M_Y(t)
 \]
 
 
 \subsection{Distribuzione binomiale o di Bernoulli}
-
+\emph{Questa parte è stata integrata con gli appunti di Bressan}
+\vspace{0.4 cm}
 Nel caso che un fenomeno possa verificarsi soltato con due modalità mutualmente escluse (successo $p$ o insuccesso $q$), la probabilità che un determinato evento si verifichi è:
 \[
 \text{ripetendo $n$ volte l'esperimento, la probabilità di avere $k$ successi è data da $P(k;n,p)$}
@@ -652,6 +1133,12 @@ La varianza di $n_i$ è ${\sigma_{n_i}}^2=n p_i (1-p_i) \simeq n_i (1- n_i/n)$.
 
 Posso prendere come valore stimato di $p_i$ il valore $\hat{p_i}={n_i}^m/n$, dunque per 
 una probabilità $p \rightarrow 0$;essa corrisponde a $\sigma_{n_i}=\sqrt{{n_i}^m}$.
+
+
+
+
+\lezione{?}{25 Febbraio 2025}
+
 
 \subsection{Distribuzione di Poisson}
 È un caso limite della fisica nucleare, e serve per indicare la probabilità di osservare k eventi in un determianto intervallo t:
@@ -1263,91 +1750,6 @@ Ovvero una media pesata delle misure per le loro varianze dal termine, in cui la
 \]
 
 
-Un altro metodo per stimare i prametri è quello dei \textbf{minimi quadrati}. Dato un set di misure $\vec{x}=(x_1,..., x_n)$ e di conseguenza valori $\vec{y}=(y_1,..., y_n)$, il valore vero 
-dei parametri $y_i$ non è noto, ma può essere stimato da $f(\lambda_i,x_i)$ Il principio dei minimi quadrati afferma che la miglior stia dei parametri $(\lambda_1, \lambda_2, \cdots, \lambda_n)$ è quella che minimizza la quantità:
-\[
-\chi^2=\sum_{i=1}^{n}w_i(y_i-f(x_i))^2
-\]
-dove $w_i$ è un peso, se esso è lo stesso per tutte le misure allora questo termine può essere tolto, se invece esso è un certo $\sigma_i$ allora esso diventa $\frac{1}{\sigma_i^2}$ ($X^2 = \chi^ 2$ ). Infine se le variabili sono correlate avremo che $w_i=\frac{1}{cov(i,j)}$
-Per misure con stessi $\sigma_i$ e $\sigma_i$ \textit{differenti} ottengo:
-\[  
-\lambda_i=\sum_{i=1}^n \frac{y_i^m}{n} \quad  \lambda_i=\frac{\sum_{i=1}^n \frac{x_i^m}{\sigma_i^2} }{\frac{1}{\sum_{j=1}^{n}\sigma_i^2}}
-\]
-
-\subsection{Fit di una retta}
-Vogliamo trovare la miglior retta che descrive un set di misure e consegueti risultati $(x_i,y_i \pm \sigma_i)$, 
-utilizziamo la parametrizzazzione: $f_i=mx+q$, i parametri sono m e q. Dovrò risolvere il sistama di equazioni
-composto da $\frac{\partial X^2}{\partial m}=0$ e $\frac{\partial X^2}{\partial q}=0$
-
-Se consideriamo gli errori trascurabili o tutti uguali, possiamo costruire la funzione dei minimi quadrarti:
-\[
-X^2=\sum_{i=1}^{N}{(y_i-f_i)}^2=\sum_{i=1}^{N}{(y_i-\theta_1-\theta_2 x_i)}^2
-\]
-Il minimo si trova ponendo le derivate sia rispetto a $\theta_1$ che $\theta_2$ uguale a 0.
-
-Introducendo i valori medi di $x$ e $y$:
-\begin{equation*} 
-    \begin{split}
-q = \hat{\theta}_1 = \frac{s_y \cdot s_{xx} - s_x \cdot s_{xy}}{N s_{xx} - s_x^2} = \frac{\overline{y} \cdot \overline{x^2} - \overline{x} \cdot \overline{xy}}{\overline{x^2} - \overline{x}^2}
-\\
-m = \hat{\theta}_2 = \frac{N s_{xy} - s_x \cdot s_y}{N s_{xx} - s_x^2} = \frac{\overline{xy} - \overline{x} \cdot \overline{y}}{\overline{x^2} - \overline{x}^2}
-   \end{split}
-\end{equation*}
-
-Gli errori si trovano a partire dalla legge di propagazione della varianza, 
-\begin{equation*}
-\sigma_{{m}}^2 = \sum_{i=1}^N \left( \frac{\partial m}{\partial y_i} \right)^2 \sigma^2
-\sigma_{q}^2 = \sum_{i=1}^N \left( \frac{\partial q}{\partial y_i} \right)^2 \sigma^2
-\end{equation*}
-
-da cui si ottiene (considerando $\sigma$ tutti uguali):
-\begin{equation*}
-\sigma_q=\sigma^2\frac{\bar{x^2}}{N(\bar{x^2}-\bar{x}^2)}
-\quad
-\sigma_m=\sigma^2\frac{1}{N(\bar{x^2}-\bar{x}^2)}
-\end{equation*}
-
-Mentre nel caso in cui abbiamo $\sigma$ differenti abbiamo che le operazioni forniscano il valore $y_i$ è:
-\[ f(y_1, y_2, \ldots, y_N) \sim \frac{1}{\prod_{i=1}^N \sigma_i} e^{-\sum_{i=1}^N \frac{(y_i - \theta_1 - \theta_2 x_i)^2}{2\sigma_i^2}} \]
-
-Allora introduciamo la funzione $\chi^2$ che ci permetterà di fare il \textit{test delle ipotesi}, ovvero capire se l'andamento dei nostri dati è
-lineare o meno. la distribuzione di $\chi^2$ coincide con la funzione di distribuzione cumulativa della variabile casuale $X^2$:
-\[ X^2 \equiv \chi^2 = \sum_{i=1}^N \frac{(y_i - \theta_1 - \theta_2 x_i)^2}{\sigma_i^2} \]
-
-Per aver la miglior stima procediamo con prima, andando a massimizzare la funzione $\chi^2$, da cui ottengo:
-
-\begin{equation*}
-q = \hat{\theta}_1 = \frac{s_{xx} \cdot s_y - s_{xy} \cdot s_x}{s \cdot s_{xx} - s_x^2}, \quad m = \hat{\theta}_2 = \frac{s \cdot s_{xy} - s_x \cdot s_y}{s \cdot s_{xx} - s_x^2}
-\quad
-m = \hat{\theta}_2 = \frac{s \cdot s_{xy} - s_x \cdot s_y}{s \cdot s_{xx} - s_x^2}
-\end{equation*}
-dove 
-\[
-s_x = \sum_{i=1}^N \frac{x_i}{\sigma_i^2}, \quad s_y = \sum_{i=1}^N \frac{y_i}{\sigma_i^2}, \quad s_{xx} = \sum_{i=1}^N \frac{x_i^2}{\sigma_i^2}, \quad s_{xy} = \sum_{i=1}^N \frac{x_i y_i}{\sigma_i^2}, \quad s = \sum_{i=1}^N \frac{1}{\sigma_i^2}
-\]
-Posso scrivere 
-\[
-m= \frac{1}{N} \sum \frac{x_i - \bar{x}}{x^2 - {\bar{x}}^2} y_i \quad q = \frac{1}{N} \sum \frac{y_i - \bar{y}}{x^2 - {\bar{x}}^2}
-\]
-Per le varianze (utilizando la legge di propagazione della varianza):
-\begin{equation*}
-{\sigma_q}^2 = \sigma_{\theta_1}^2 = \frac{s_{xx}}{S \cdot s_{xx} - sx^2}
-\quad
-{\sigma_m}^2 = \sigma_{{\theta_2}^2} = \frac{s}{s \cdot s_{xx} - s_x^2}
-\end{equation*}
-
-\subsection{Caso non lineare}
-Il metodo più semplice è quello di trovare una legge lineare che descrive il mio fenomeno
-\begin{example}
-    $s= \frac{1}{2} g t^2 $
-    trascuro l'incertezza su $s$ mentre considero l'errore su $t$, per calcolare $g$. 
-    invertendo ho $t^2= \frac{2s}{g}$ e prendendo il quadrato mi riconduco ad un equazione lineare: $ t= \sqrt{\frac{2}{g}} \sqrt{s} - t_0$.
-
-    $\sigma_g = \left(\frac{\partial g}{\partial m}\right)^2 \sigma_m^2$ con $m=\sqrt{\frac{2}{g}}$, questo ci fa notare l'importanza del significato assegnato alle variabili
-\end{example}
-In altri casi posso usare Taylor, oppure svilupp la derivata in maniera numerica
-
-
 
 
 
@@ -1375,87 +1777,5 @@ La deviazione standard della binomiale è circa $\sqrt{n_k^m}$ se $n_{tot}>>>n_k
 
 
 \pagebreak
-
-\section{Lezione 06/10/2025}
-Le nostre misure saranno del tipo ${x_1, x_2, ..., x_N}$, il nostro obiettivo è quello di rappresentare questi dati per capire il fenomeno fisico
-che stiamo studiando.\\
-\subsection{Istogramma}
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    ybar,
-    enlargelimits=0.15,
-    legend style={at={(0.5,-0.15)},
-      anchor=north,legend columns=-1},
-    ylabel={Frequenza},
-    symbolic x coords={A,B,C,D,E},
-    xtick=data,
-    nodes near coords,
-    nodes near coords align={vertical},
-]
-\addplot coordinates {(A,40) (B,65) (C,52) (D,49) (E,73)};
-\addplot coordinates {(A,35) (B,55) (C,45) (D,60) (E,68)};
-\legend{Serie 1, Serie 2}
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
-Considero la variabile media $x$ come $x = \frac{1}{N} \sum_{i=1}^{N} x_i$, gli scarti della media, per definizione devono annullarsi:
-\[
-\frac{1}{N}\sum(\bar{x}-x_i)=0
-\]
-
-Per avere maggiori informazioni posso allora definire la varianza della mia variabile casuale x come:
-\[
-var(x)= \frac{1}{N} \sum (x- \bar{x})^2
-\]
-
-è utile svolgere il quadrato 
-\[
-= \frac{1}{N} (x_i^2 - 2 \bar{x} x_i + \bar{x}^2) = \frac{1}{N} \sum x_i^2 - 2 \bar{x} \frac{1}{N} \sum x_i + \frac{1}{N} \sum \bar{x}^2 = \bar{x^2} - 2\bar{x}^2 + \bar{x}^2 = \bar{x^2} - \bar{x}^2
-\]
-
-definisco la deviazione standard come $\sigma_x = \sqrt{var(x)}$, anche se, vista la limitatezza del campione si attua una correzione (di Bessel):
-\[
-\sigma_x = \sqrt{\frac{1}{N-1} \sum (x_i - \bar{x})^2}
-\]
-\subsection{In caso di limitazione dello strumento}
-Definisco l'errore come la semiampiezza dell'intervallo $ \displaystyle \Delta x = \frac{X_{\max} - X_{\min}}{N}$ e il riusltato della misura sarà $x \pm \Delta x$.
-
-L'interpretazione statistica in questo caso è che il vero valore della mia misura appartiene a un insieme di misure $ \mathbf{X} \in {x}$ 
-e ad ogni $x$ associo una probabilità $P(x)$, ma non sempre è possibile, per questo uso la \textit{densità di probabilità} definita come:
-\[
-P(x_1 < \mathbf{X} < x_2) = \int_{X_1}^{x_2} P(x) \; dx
-\]
-ciò vale anche per il caso continuo, e quindi abbiamo la condizione di normalizzazione.
-Nel caso contnui definisco il valore di aspettazione $\mu$ e la varianza $\sigma^2$ come $\displaystyle \int_{X_{\min}}^{X_{\max}}(x - \mu)^2 P(x) dx$ 
-
-Se nel mio intervallo le misure sono \textit{equiprobabili} allora $P(x)$ è distribuzione uniforme:
-\[
-P(x)=
-\begin{cases}
-    c , \hspace{1cm} x \in [X_{\min}, X_{\max}] \\
-    0 , \hspace{1cm} \text{altrimenti}
-\end{cases}
-\]
-Se considero la condizione di normalizzazione, ottengo che:
-\begin{itemize}
-    \item $\displaystyle c = \frac{1}{X_{\max} - X_{\min}}$
-    \item da cui $\displaystyle \mu = \int_{-\Delta}^{+\Delta} x \frac{1}{2 \Delta } dx = 0$
-    \item e $\displaystyle \sigma = \sqrt{\int_{-\Delta}^{+\Delta} (x - 0)^2 \frac{1}{2 \Delta } dx} = \sqrt{\frac{\Delta^2}{3}}$
-\end{itemize}
-
-\subsection{Propagazione degli errori}
-Supponiamo di avere una funzione $f(x,y)$ con $x$ e $y$ variabili casuali indipendenti, la varianza di $f$ è:
-\[
-var(f) = \left(\frac{\partial f}{\partial x}\right)^2 var(x)+ \left( \frac{\partial f}{\partial y} \right)^2 var(y) = \sigma_f^2
-\]
-\begin{example}
-$s = vt + \frac{1}{2} a t^2$
-\[
-\sigma_s^2 = \left(\frac{\partial s}{\partial v}\right)^2 var(v)+ \left( \frac{\partial s}{\partial t} \right)^2 var(t) + \left( \frac{\partial s}{\partial a} \right)^2 var(a) = t^2 \sigma_v^2 + \frac{1}{4} t^4 \sigma_a^2
-\]
-\end{example}
-
 
 \end{document}

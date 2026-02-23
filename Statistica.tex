@@ -30,10 +30,19 @@
   fontupper=\itshape,
   before upper={\noindent\textbf{Nota}:\quad}
 }
+\newtcolorbox{definizione}{
+  blanker,
+  before skip=1em,
+  after skip=1em,
+  left=1em,
+  borderline west={2pt}{0pt}{blue},
+  fontupper=\normalfont,
+  before upper={\noindent\textbf{Definizione}:\quad}
+}
 \newtheorem{example}{Example}
 \usepackage[a4paper, left=1.5cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
 \title{Appunti di Statistica }
-\author{ Mirolo Manuele / Alessio Brusini}
+\author{ Mirolo Manuele / Alessio Brusini / Michele Tedeschini}
 \date{a.a. 2025/26}
 \newtheorem{theorem}{Teorema}
 
@@ -43,13 +52,23 @@
 \tableofcontents
 \newpage
 
-\textit{Se noi non fossimo ignoranti non ci sarebbe probabilità , ci potrebbero essere solo certezze. Ma la
-nostra ignoranza non può essere assoluta, altrimenti non ci sarebbe più probabilità . Cosı’ i problemi di
+\textit{Se noi non fossimo ignoranti non ci sarebbe probabilità, ci potrebbero essere solo certezze. Ma la
+nostra ignoranza non può essere assoluta, altrimenti non ci sarebbe più probabilità. Così i problemi di
 probabilità possono essere classificati a seconda della maggiore o minore profondità della nostra
-ignoranza.
+ignoranza.\\
 (H. Poincaré)}
 
-Il prof consiglia per l'analisi dei Dati, root del Cern. \textit{https://root.cern.ch}
+\setcounter{section}{-1}
+\section{Contatti}
+\begin{itemize}
+    \item Mail: agata.trovato@units.it
+    \item Ufficio: Edificio F, primo piano, Aula 114
+    \item Ricevimento: Giovedì dalle 14:00 alle 1:00
+\end{itemize}
+
+
+
+\section{Introduzione}
 
 La probabilità è la misura del grado della credenza che un certo evento avvenga.
 
@@ -78,6 +97,98 @@ P(E)=\lim_{N \rightarrow \infty} \frac{n}{N}
 
 dove $n$ è il numero di volte che si verifica un evento, mentre N è le volte che viene ripetuto l'esperimento.
 \end{description}
+
+\begin{definizione}
+\textbf{Momenti di ordine k}: 
+\[
+\mu_k=E[x^k]=\int_\Omega x^k f(x) dx
+\]
+\end{definizione}
+
+\textbf{Osservazione:}
+\begin{itemize}
+    \item $\mu_0=1$
+    \item $\mu_1$ è il valore di aspettazione o media
+\end{itemize}
+
+\begin{definizione}
+\textbf{Momenti centrali di ordine k}:
+\[
+\bar{\mu}_k=E[(x-\mu)^k]=\int_\Omega (x-\mu)^k f(x) dx
+\]
+\end{definizione}
+
+\textbf{Osservazione:}
+\begin{itemize}
+    \item $\bar{\mu}_0=1$ 
+    \item $\bar{\mu}_1=0$
+    \item $\bar{\mu}_2=\sigma^2$
+    \item $\bar{\mu}_3=0$ è detto \textit{indice di asimmetria} o \textit{skewness}, per una distribuzione simmetrica (es. Gaussiana) vale 0;
+    
+    La distribuzione è asimmetrica a destra se $\bar{\mu}_3>0$ (es. Maxwell-Boltzmann) e asimmetrica a sinistra se $\bar{\mu}_3<0$.
+    \item $\bar{\mu}_4=\sigma^4$ è detto \textit{indice dicurtosi} o \textit{kurtosis}, valuta l'\textit{outlierness} della distribuzione.
+\end{itemize}
+
+Supponiamo di avere due variabili casuali $X$ e $Y$, supponiamo abbaino gli stessi momenti allora le distribuzioni ($f_X$ e $f_Y$) di probabilità sono identiche
+
+\begin{definizione}
+    \textbf{Funzione generatrice dei momenti}:
+    \[
+    M_x(t)=E[e^{tx}]=\int_\Omega e^{tx}f(x) dx \rightarrow \text{caso continuo}
+    \]
+    \[
+    M_x(t)=\sum_i p_i e^{tx_i} \rightarrow \text{caso discreto}
+    \]
+\end{definizione}
+Questa funzione permette di calcolare i momenti della distribuzione derivando la funzione rispetto a $t$ e ponendo $t=0$. Cioè:
+\[
+[\frac{\partial ^m M_x}{\partial t^m}=E[x^m] =\mu_m]
+\]
+\textbf{Dimostrazione:} \[ 
+f(x) = f(0)+f'(0)x+f''(0)x^2 \\
+e^{tx} = 1 + tx + \frac{t^2 x^2}{2!} + \ldots \\
+M_x(t) = int_\Omega \sum_k \frac{(tx)^k}{k!}f(x) dx= \sum_k \frac{t^k}{k!} \int_\Omega x^k f(x) dx = \sum_k \frac{t^k}{k!} E[x^k] = \mu_0 + \mu_1 t + \frac{\mu_2 t^2}{2} + \ldots \\
+\text{derivando}
+\frac{\partial M_x}{\partial t} = \mu_1 + 2 \mu_2 t + \ldots \\
+\text{e valutando in } t=0 \text{ ottengo } \mu_1
+\]
+
+
+\begin{definizione}
+    \textbf{Funzione generatrice dei momenti centraali}:
+    \[
+    \bar{M}_x(t)=E[e^{t(x-\mu)}]=\int_\Omega e^{t(x-\mu)}f(x) dx \rightarrow \text{caso continuo}
+    \]
+    \[
+    \bar{M}_x(t)=\sum_i p_i e^{t(x-\mu_i)} \rightarrow \text{caso discreto}
+    \]
+\end{definizione}
+Nuovamente:
+\[
+[\frac{\partial ^m \bar{M}_x}{\partial t^m}=E[(x-\mu)^m] =\bar{\mu}_m]
+\]
+
+Inoltrè è facile passare dalla funzione generatrice dei momenti a quella generatrice dei momenti centrali, infatti:
+\[
+\bar{M}_x(t)=E[e^{t(x-\mu)}]=E[e^{tx}e^{-t\mu}]=e^{-t\mu}E[e^{tx}]=e^{-t\mu}M_x(t)
+\]
+
+\begin{definizione}
+    \textbf{Funzione caratteristica}:
+    \[
+    \phi (x) = E[e^{itx}]=\int_\Omega e^{itx}f(x) dx \rightarrow \text{Trasformata di Fourier!}
+    \]
+\end{definizione}
+
+Supponiamo di avere una variabile aleoria $Z=X+Y$, dove $X$ e $Y$ sono variabili aleatorie \textbf{indipendenti}, allora la distribuzione di probabilità di $Z$ è data da:
+    \[
+    P_Z=P_X \cdot P_Y
+    \]
+dunque la funzione generatrice dei momenti di $Z$ è data da:
+\[
+M_Z(t)=E[e^{tZ}]=E[e^{t(X+Y)}]=E[e^{tX}e^{tY}]=E[e^{tX}]E[e^{tY}]=M_X(t)M_Y(t)
+\]
+
 
 \subsection{Definizione assiomatica di probabilità}
 Dato un evento A $\subseteq \Omega$ la misura di probabilità $P$ è una funzione $P:\Omega \rightarrow \mathbf{R}  $ le cui caratteristiche sono:
@@ -294,7 +405,7 @@ Altri indici di posizione sono:
 \subsection{Varianza}
 Tra i vari indici di dispersione la più usata è la varianza, che viene definita come:
 \[
-\sigma^2=E\lgroup g(x)-E(g(x))\rgroup^2
+\sigma^2=E\left[ g(x)-E(g(x))\right]^2
 \]
 svolgendo i calcoli:
 \[
@@ -434,11 +545,14 @@ Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\
 \]
 
 
-\subsection{Distribuzione binomiale}
+\subsection{Distribuzione binomiale o di Bernoulli}
 
 Nel caso che un fenomeno possa verificarsi soltato con due modalità mutualmente escluse (successo $p$ o insuccesso $q$), la probabilità che un determinato evento si verifichi è:
 \[
-P(k;n,p)=\binom{n}{k}p^k q^{n-k} 
+\text{ripetendo $n$ volte l'esperimento, la probabilità di avere $k$ successi è data da $P(k;n,p)$}
+\]
+\[
+P(k;n,p)=\binom{n}{k}p^k q^{n-k} = \frac{n!}{k!(n-k)!}p^k q^{n-k}=\frac{n!}{k!(n-k)!}p^k (1-p)^{n-k}
 \] 
 quindi la probabilità di avere:
 \begin{itemize}[itemsep=0.1em]
@@ -446,8 +560,16 @@ quindi la probabilità di avere:
  \item $0$ è $q^n$  
  \item $1$ è $pq^{n-1}$
  \item $n-1$ è $p^{n-1}q$
+ 
 \end{itemize}
+\begin{example}
+    Supponiamo di avere 3($n$) oggetti ABC. 2 ($k$) oggetti sono stati scelti, posso prenderli in 3 modi: AB,BC,AC.
 
+    Infatti:
+    \[
+    \frac{3!}{2!(3-2)!} = \frac{3!}{2! \cdot 1!} = \frac{6}{2 \cdot 1} = 3
+    \]
+\end{example}
 
 Le \textbf{proprietà} della distribuzione binomiale sono le seguenti:
 \begin{itemize}
@@ -463,8 +585,37 @@ np = \sum_{k=0}^{n} k \binom{n}{k} p^k q^{n-k}
 \]
 \end{itemize}
 
-Supponiamo di avere $n$ oggetti da poter essere messi in $r$ spazi, avrò $n$ possibilà per riempire il primo spazio, $n-1$ per il secondo e cosi via, quindi il numero di 
-modi possibili sarà $\displaystyle D_{n,r}=\prod_{k=0}^{r}n-k$, moltiplicando per $(n-r)!$ si ottiene $n!$
+La funzione generatrice dei momenti della distribuzione binomiale è data da:
+\[
+M_k(t)=E[e^{tk}]=\sum_{k=0}^{n} \underbrace{e^{tk} p^k}_{pe^{tk}} q^{n-k} \binom{n}{k}
+\]
+Infattiricordando che: $(a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^k b^{n-k}$, posso riscrivere la funzione generatrice dei momenti come:
+\[
+M_k(t)=(pe^t+q)^n
+\]
+
+\begin{itemize}
+    \item Valore di aspettazione:
+            \[
+            M'_k(t)= n(pe^t+q)^{n-1}pe^t \rightarrow M'_k(0)=(n)(p+1-p)^{n-1}p=np=\mu
+            \]
+    \item Varianza:
+            \[
+            M''_k(t)= n(n-1)(pe^t+q)^{n-2}(pe^t)^2 \rightarrow M''_k(0)=n(n-1)p^2=np(1-p)=\sigma^2\]
+            \[
+            M''_k(0)=np(p+1-p)^{n-1}+n(n-1)(p+1-p)^{n-2}p=np+np^2(n-1)=E[x^2]
+            \]
+            dunque:
+            \[
+            var(x)=E[x^2]-E[x]^2=np+np^2(n-1)-n^2p^2=npq
+            \]
+    \item $\bar{\mu_3}=npq(1-2p)$ allora se: 
+    \begin{itemize}
+        \item $\bar{\mu_3}>0$ allora la distribuzione e' \textbf{asimmetrica} (skewed a destra)
+        \item $\bar{\mu_3}=0$ allora la distribuzione e' \textbf{simmetrica}
+        \item $\bar{\mu_3}<0$ allora la distribuzione e' \textbf{asimmetrica} (skewed a sinistra)
+    \end{itemize}
+\end{itemize}
 
 \vspace{1cm}
 

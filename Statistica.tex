@@ -1196,14 +1196,111 @@ Se stimiamo la probabilità $p_i$ tramite i dati misurati come $\hat{p_i} = n_i^
 Di conseguenza, l'errore standard (deviazione standard) sul conteggio di un bin è approssimabile con la radice quadrata del conteggio stesso:
 \[ \sigma_{n_i} \approx \sqrt{n_i^{mis}} \]
 
-\lezione{?}{25 Febbraio 2025}
+\lezione{Codice python e Distribuizione di Poisson}{26 Febbraio 2025}
+
+\subsection{Esempi python}
+aggiungi l'Esercizio che ha messo su python (lancio della moneta)
 
 
 
+\subsection{Distribuzione di Poisson}
+La distribuzione di Poisson è un caso limite della distribuzione binomiale, che si ottiene quando il numero di prove $n$ tende all'infinito e la probabilità di successo $p$ tende a zero, mantenendo costante il prodotto $np = \mu$ (dove $\mu$ rappresenta il valore atteso).
+si usa nei casi in cui si voglia indicare la probabilità di osservare $k$ eventi in un intervallo di tempo $t$ se si fanno un numero fissato di tentativi.
+La poissoniana si applica in cui ho un particolare risultato ma non ha senso di parlare del "non risultato".
+Per esempio il numero di fulmini che cadono in un certo intervallo di tempo, o il numero di particelle che attraversano una certa area in un certo intervallo di tempo e non esiste un "non evento" (non posso avere un fulmine che cade e non cade contemporaneamente).
+Il processo non ha memeoria, un evento che si è verificato non influenza la probabilità che si verifichi un altro evento in futuro.
 
+\[ \lim_{n \to \infty; p \to 0}  Bin / \lambda = np = cost \]
 
+ lambda eventi in un certo $\Delta t$ in media (frequenza), posso dividere $\Delta t$ in intervallini  di tempo $\Delta t'$ in modo che in ogni suddivisione accada al massimo un solo evento  
+avrò $P= \frac{\lambda}{n}$ ovvero la probabilità di avere un evento (dove n è iul numero di intervalli e  $\lambda$ è il numero medio di ).  
 
+Quindi la probabilità di avere k eventi in un intervallo di tempo t è data dalla binomiale:
+\[ P(k; n,\frac{\lambda}{n}) = \frac{\lambda^k}{n^k} (1- \frac{\lambda}{n})^{n-k} \frac{n!}{k!(n-k)!} \] 
 
+passiamo per il limite $n \to \infty$ e otteniamo la formula della distribuzione di Poisson:
+\[
+\frac{n!}{(n-k)!} = \frac{n (n-1) \cdots (n-k+1) (n-k)!}{(n-k)!} \to_{n \to \infty} n^k
+\]
+
+un esempio con k=5:
+\[ 
+\frac{n!}{(n-5)!} = \frac{n(n-1)(n-2)(n-3)(n-4)}{1} \to_{n \to \infty} n^5
+\]
+
+poi:
+
+\[
+(1-\frac{\lambda}{n})^k \to_{n \to \infty} (1- \frac{\lambda}{k})^n \to_{n \to \infty} e^{-\lambda}
+\]
+
+Quindi si trova che:
+\[ P(k; n,\frac{\lambda}{n}) \to_{n \to \infty} \frac{\lambda^k}{k!} e^{-\lambda} \]
+
+Quale è la probabili di osservare K eventi sapendo che la media è $\lambda$ e $0 \leq k \leq \infty$.
+Il decadimento radiattivo è un esempio classico di processo che segue una distribuzione di Poisson, in quanto il numero di decadimenti in un intervallo di tempo è discreto.
+
+Ora calcoliamo il valore di aspettazione e variazioni standard con le funzioni generatrici dei momenti:
+\[
+M_k(t) = E[e^{tk}] = \sum_{k=0}^{\infty} e^{tk} \frac{\lambda^k}{k!} e^{-\lambda} = e^{-\lambda} \sum_{k=0}^{\infty} \frac{(\lambda e^t)^k}{k!} = e^{-\lambda} e^{\lambda e^t} = e^{\lambda(e^t - 1)} \]
+
+dove abbiamo usato lo sviluppo di Taylor dell'esponenziale per riconoscere la serie come $e^{\lambda e^t}$ $\left( e^x = \sum_{k=0}^{\infty} \frac{x^k}{k!} \right)$.
+\\
+\\
+Calcoliamo la derivata prima per ottenere il valore di aspettazione:
+\[ M'_k(t) = \lambda e^t e^{\lambda(e^t - 1)} \quad \Rightarrow \quad M'_k(0) = \lambda e^0 e^{\lambda(e^0 - 1)} = \lambda \]
+Calcoliamo la derivata seconda per ottenere $E[k^2]$:
+\[ M''_k(t) = \lambda e^t e^{\lambda(e^t - 1)} + \lambda^2 e^{2t} e^{\lambda(e^t - 1)} \]
+\[ M''_k(0) = \lambda + \lambda^2 = \lambda(1 + \lambda) \]
+Quindi:
+\[ E[k^2] = M''_k(0) = \lambda(1 + \lambda) \]
+E la varianza è:
+\[ {\sigma^2} = E[k^2] - (E[k])^2 = \lambda(1 + \lambda) - \lambda^2 = \lambda \]
+
+La funzione generatrice dei momenti permette alternativamente di verificare che la Poissoniana coincide con il limite della binomiale:
+
+\[ Bin \to M_k(t) = (pe^t + q)^n  = (pe^t + 1-p)^n = (1+ \frac{\lambda}{n}(e^t -1))^n 
+\]
+Passiamo al limite:
+\[ 
+\lim_{n \to \infty} M_k(t) = \lim_{n \to \infty} (1+ \frac{\lambda}{n}(e^t -1))^n = e^{\lambda(e^t - 1)}
+\]
+che è proprio la funzione generatrice dei momenti della distribuzione di Poisson, confermando così la connessione tra le due distribuzioni.
+
+\textbf{Osservazioni}
+\begin{itemize}
+    \item 
+La poissoniana ha code più lunghe perché è più probabile osservare valori lontani dalla media rispetto alla binomiale, soprattutto quando la media è piccola. Questo è dovuto al fatto che la poissoniana è un limite della binomiale in cui il numero di prove tende all'infinito e la probabilità di successo tende a zero, mantenendo costante il prodotto $np$. In questo regime, la distribuzione si concentra su valori piccoli di $k$, ma non esclude completamente la possibilità di osservare valori più grandi, dando luogo a code più lunghe rispetto alla binomiale.
+un'altra cosa è che la varianza della binomiale è $npq$ mentre quella della poissoniana è $np$ (ovvero $npq$ con $q=1$), quindi la poissoniana ha una varianza più grande rispetto alla binomiale, contribuendo ulteriormente alla presenza di code più lunghe.
+
+\[ 
+npq = np(1-p) = np -np^2 < np = \lambda 
+\]
+si vede che la varianza della binomiale è sempre minore di quella della poissoniana, confermando così che la poissoniana ha code più lunghe rispetto alla binomiale.
+
+\item 
+si prendano 2 fenomeni descritti da distribuzioni Poisson con rispettivamente $\lambda_a; \lambda_b$, sappiamo che $K=K_a+K_b$ (ovvero che i processi non si possono distinguere) e che $K_a$ e $K_b$ sono indipendenti, quindi la funzione generatrice dei momenti di K è il prodotto delle funzioni generatrici dei momenti di $K_a$ e $K_b$:
+infatti valutando la probabilità $P(K_a + K_b, \lambda_a,\lambda_b)$  si trova che p ancora Poissoniana.
+
+prendendo i momenti generatori di una poissoniana:
+\[
+M_{a+b} (t) = M_a(t) \cdot M_b(t) = e^{\lambda_a(e^t - 1)} \cdot e^{\lambda_b(e^t - 1)} = e^{(\lambda_a + \lambda_b)(e^t - 1)} = e^{\lambda(e^t - 1)}
+\]
+
+\end{itemize}
+
+Aggiungere esempi python (notte san Lorenzo, poissoniane ecc).
+
+\subsection{rappresentazione grafica}
+se ho un set di dati $N \to {x_1,x_2,...,x_N}$ posso rappresentare la distribuzione di probabilità con un istogramma, che è una rappresentazione grafica che mostra la frequenza o la probabilità di occorrenza di diversi intervalli di valori (bin) all'interno del set di dati.
+se le variabili sono descritti da una certa $P(x)$ la probabilità $p_i$ che cada in un certo bin $i$ è data da:
+\[
+p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(x_i)\Delta x
+\]
+
+se indico con $n_i$ il numero di eventi che cadono nel bin $i$, allora $n_i \simeq$ Binomiale$(N, p_i)$ dove $N$ è il numero totale di eventi e $p_i$ è la probabilità che un evento cada nel bin $i$.
+quindui vuol dire che il valore di aspettazione:
+\[ E[n_i] = N p_i \simeq N \cdot P(x_i) \Delta x \]
 
 \newpage
 \section{Parte di Bressan da integrare dopo}

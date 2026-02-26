@@ -31,6 +31,8 @@
 \usepackage{xcolor}
 \usepackage{circuitikz}
 \usepackage{pgfplots}
+% Needed for subfigure environments used later
+\usepackage{subcaption}
 \pgfplotsset{compat=1.16} 
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
@@ -99,7 +101,7 @@
 
 \newcommand{\thelezione}{}
 
-% --- Comando Lezione 2025  ---
+% --- Comando Lezione 2026  ---
 \newcommand{\lezione}[2]{
 \newpage
 \renewcommand{\thelezione}{#2} 
@@ -408,7 +410,7 @@ In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in
 
 
 
-\lezione{Introduzione e Statistica}{6 Ottobre 2025} 
+\lezione{Introduzione e Statistica}{6 Ottobre 2026} 
 Le nostre misure saranno del tipo ${x_1, x_2, ..., x_N}$, il nostro obiettivo è quello di rappresentare questi dati per capire il fenomeno fisico
 che stiamo studiando.\\
 Per quanto riguarda la parte grafica, la rappresentazione dipende dai dati a disposizione:
@@ -850,7 +852,7 @@ print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
 
 
 
-\lezione{Momenti e Distribuzioni}{23 Febbraio 2025}
+\lezione{Momenti e Distribuzioni}{23 Febbraio 2026}
 
 
 
@@ -1196,160 +1198,502 @@ Se stimiamo la probabilità $p_i$ tramite i dati misurati come $\hat{p_i} = n_i^
 Di conseguenza, l'errore standard (deviazione standard) sul conteggio di un bin è approssimabile con la radice quadrata del conteggio stesso:
 \[ \sigma_{n_i} \approx \sqrt{n_i^{mis}} \]
 
-\lezione{Codice python e Distribuizione di Poisson}{26 Febbraio 2025}
+\lezione{Codice python e Distribuizione di Poisson}{26 Febbraio 2026}
 
-\subsection{Esempi python}
-aggiungi l'Esercizio che ha messo su python (lancio della moneta)
+\subsection{Esempi Python: La Distribuzione Binomiale}
 
+In questo esercizio simuliamo il lancio di una moneta per applicare la distribuzione binomiale.
+\textbf{Problema:} Lanciamo una moneta $n=10$ volte. Qual è la probabilità di ottenere esattamente $k=6$ teste?
 
-
-\subsection{Distribuzione di Poisson}
-La distribuzione di Poisson è un caso limite della distribuzione binomiale, che si ottiene quando il numero di prove $n$ tende all'infinito e la probabilità di successo $p$ tende a zero, mantenendo costante il prodotto $np = \mu$ (dove $\mu$ rappresenta il valore atteso).
-si usa nei casi in cui si voglia indicare la probabilità di osservare $k$ eventi in un intervallo di tempo $t$ se si fanno un numero fissato di tentativi.
-La poissoniana si applica in cui ho un particolare risultato ma non ha senso di parlare del "non risultato".
-Per esempio il numero di fulmini che cadono in un certo intervallo di tempo, o il numero di particelle che attraversano una certa area in un certo intervallo di tempo e non esiste un "non evento" (non posso avere un fulmine che cade e non cade contemporaneamente).
-Il processo non ha memeoria, un evento che si è verificato non influenza la probabilità che si verifichi un altro evento in futuro.
-
-\[ \lim_{n \to \infty; p \to 0}  Bin / \lambda = np = cost \]
-
- lambda eventi in un certo $\Delta t$ in media (frequenza), posso dividere $\Delta t$ in intervallini  di tempo $\Delta t'$ in modo che in ogni suddivisione accada al massimo un solo evento  
-avrò $P= \frac{\lambda}{n}$ ovvero la probabilità di avere un evento (dove n è iul numero di intervalli e  $\lambda$ è il numero medio di ).  
-
-Quindi la probabilità di avere k eventi in un intervallo di tempo t è data dalla binomiale:
-\[ P(k; n,\frac{\lambda}{n}) = \frac{\lambda^k}{n^k} (1- \frac{\lambda}{n})^{n-k} \frac{n!}{k!(n-k)!} \] 
-
-passiamo per il limite $n \to \infty$ e otteniamo la formula della distribuzione di Poisson:
-\[
-\frac{n!}{(n-k)!} = \frac{n (n-1) \cdots (n-k+1) (n-k)!}{(n-k)!} \to_{n \to \infty} n^k
-\]
-
-un esempio con k=5:
-\[ 
-\frac{n!}{(n-5)!} = \frac{n(n-1)(n-2)(n-3)(n-4)}{1} \to_{n \to \infty} n^5
-\]
-
-poi:
-
-\[
-(1-\frac{\lambda}{n})^k \to_{n \to \infty} (1- \frac{\lambda}{k})^n \to_{n \to \infty} e^{-\lambda}
-\]
-
-Quindi si trova che:
-\[ P(k; n,\frac{\lambda}{n}) \to_{n \to \infty} \frac{\lambda^k}{k!} e^{-\lambda} \]
-
-Quale è la probabili di osservare K eventi sapendo che la media è $\lambda$ e $0 \leq k \leq \infty$.
-Il decadimento radiattivo è un esempio classico di processo che segue una distribuzione di Poisson, in quanto il numero di decadimenti in un intervallo di tempo è discreto.
-
-Ora calcoliamo il valore di aspettazione e variazioni standard con le funzioni generatrici dei momenti:
-\[
-M_k(t) = E[e^{tk}] = \sum_{k=0}^{\infty} e^{tk} \frac{\lambda^k}{k!} e^{-\lambda} = e^{-\lambda} \sum_{k=0}^{\infty} \frac{(\lambda e^t)^k}{k!} = e^{-\lambda} e^{\lambda e^t} = e^{\lambda(e^t - 1)} \]
-
-dove abbiamo usato lo sviluppo di Taylor dell'esponenziale per riconoscere la serie come $e^{\lambda e^t}$ $\left( e^x = \sum_{k=0}^{\infty} \frac{x^k}{k!} \right)$.
-\\
-\\
-Calcoliamo la derivata prima per ottenere il valore di aspettazione:
-\[ M'_k(t) = \lambda e^t e^{\lambda(e^t - 1)} \quad \Rightarrow \quad M'_k(0) = \lambda e^0 e^{\lambda(e^0 - 1)} = \lambda \]
-Calcoliamo la derivata seconda per ottenere $E[k^2]$:
-\[ M''_k(t) = \lambda e^t e^{\lambda(e^t - 1)} + \lambda^2 e^{2t} e^{\lambda(e^t - 1)} \]
-\[ M''_k(0) = \lambda + \lambda^2 = \lambda(1 + \lambda) \]
-Quindi:
-\[ E[k^2] = M''_k(0) = \lambda(1 + \lambda) \]
-E la varianza è:
-\[ {\sigma^2} = E[k^2] - (E[k])^2 = \lambda(1 + \lambda) - \lambda^2 = \lambda \]
-
-La funzione generatrice dei momenti permette alternativamente di verificare che la Poissoniana coincide con il limite della binomiale:
-
-\[ Bin \to M_k(t) = (pe^t + q)^n  = (pe^t + 1-p)^n = (1+ \frac{\lambda}{n}(e^t -1))^n 
-\]
-Passiamo al limite:
-\[ 
-\lim_{n \to \infty} M_k(t) = \lim_{n \to \infty} (1+ \frac{\lambda}{n}(e^t -1))^n = e^{\lambda(e^t - 1)}
-\]
-che è proprio la funzione generatrice dei momenti della distribuzione di Poisson, confermando così la connessione tra le due distribuzioni.
-
-\textbf{Osservazioni}
+Poiché una moneta può dare testa o croce, la probabilità di successo (testa) è $p=0.5$. Utilizzeremo la distribuzione binomiale con i parametri:
 \begin{itemize}
-    \item 
-La poissoniana ha code più lunghe perché è più probabile osservare valori lontani dalla media rispetto alla binomiale, soprattutto quando la media è piccola. Questo è dovuto al fatto che la poissoniana è un limite della binomiale in cui il numero di prove tende all'infinito e la probabilità di successo tende a zero, mantenendo costante il prodotto $np$. In questo regime, la distribuzione si concentra su valori piccoli di $k$, ma non esclude completamente la possibilità di osservare valori più grandi, dando luogo a code più lunghe rispetto alla binomiale.
-un'altra cosa è che la varianza della binomiale è $npq$ mentre quella della poissoniana è $np$ (ovvero $npq$ con $q=1$), quindi la poissoniana ha una varianza più grande rispetto alla binomiale, contribuendo ulteriormente alla presenza di code più lunghe.
-
-\[ 
-npq = np(1-p) = np -np^2 < np = \lambda 
-\]
-si vede che la varianza della binomiale è sempre minore di quella della poissoniana, confermando così che la poissoniana ha code più lunghe rispetto alla binomiale.
-
-\item 
-si prendano 2 fenomeni descritti da distribuzioni Poisson con rispettivamente $\lambda_a; \lambda_b$, sappiamo che $K=K_a+K_b$ (ovvero che i processi non si possono distinguere) e che $K_a$ e $K_b$ sono indipendenti, quindi la funzione generatrice dei momenti di K è il prodotto delle funzioni generatrici dei momenti di $K_a$ e $K_b$:
-infatti valutando la probabilità $P(K_a + K_b, \lambda_a,\lambda_b)$  si trova che p ancora Poissoniana.
-
-prendendo i momenti generatori di una poissoniana:
-\[
-M_{a+b} (t) = M_a(t) \cdot M_b(t) = e^{\lambda_a(e^t - 1)} \cdot e^{\lambda_b(e^t - 1)} = e^{(\lambda_a + \lambda_b)(e^t - 1)} = e^{\lambda(e^t - 1)}
-\]
-
+    \item $n = 10$ (numero di lanci)
+    \item $k = 6$ (numero di successi richiesti)
+    \item $p = 0.5$ (probabilità singolo evento)
 \end{itemize}
 
-Aggiungere esempi python (notte san Lorenzo, poissoniane ecc).
+\subsubsection*{1. Calcolo Analitico e con Librerie}
+Possiamo calcolare la probabilità sia implementando la formula matematica, sia utilizzando la libreria \texttt{scipy}.
 
-\subsection{rappresentazione grafica}
-se ho un set di dati $N \to {x_1,x_2,...,x_N}$ posso rappresentare la distribuzione di probabilità con un istogramma, che è una rappresentazione grafica che mostra la frequenza o la probabilità di occorrenza di diversi intervalli di valori (bin) all'interno del set di dati.
-se le variabili sono descritti da una certa $P(x)$ la probabilità $p_i$ che cada in un certo bin $i$ è data da:
-\[
-p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(x_i)\Delta x
-\]
+\begin{lstlisting}[language=Python, frame=single, caption=Calcolo probabilità Binomiale]
+import math
+from scipy.stats import binom
 
-se indico con $n_i$ il numero di eventi che cadono nel bin $i$, allora $n_i \simeq$ Binomiale$(N, p_i)$ dove $N$ è il numero totale di eventi e $p_i$ è la probabilità che un evento cada nel bin $i$.
-quindui vuol dire che il valore di aspettazione:
-\[ E[n_i] = N p_i \simeq N \cdot P(x_i) \Delta x \]
+# Parametri del problema
+k = 6
+n = 10
+p = 0.5
 
-\newpage
-\section{Parte di Bressan da integrare dopo}
-\subsection{Distribuzione di Poisson}
-È un caso limite della fisica nucleare, e serve per indicare la probabilità di osservare k eventi in un determianto intervallo t:
+# METODO 1: Formula matematica
+# P = coeff_binomiale * (p^k) * ((1 - p)^(n - k))
+coeff_binomiale = math.comb(n, k)
+P = coeff_binomiale * (p**k) * ((1 - p)**(n - k))
+
+print(f"Probabilita' (formula): {P}")
+
+# METODO 2: Libreria Scipy
+# Esiste una funzione dedicata per ottenere lo stesso risultato
+P_scipy = binom.pmf(k, n, p)
+
+print(f"Probabilita' (scipy): {P_scipy}")
+\end{lstlisting}
+
+Il risultato ottenuto è circa $0.205$. Questo significa che, se ripetiamo molte volte l'esperimento dei 10 lanci, nel $\approx 20\%$ dei casi otterremo esattamente 6 teste.
+
+\subsubsection*{2. Simulazione Monte Carlo}
+Possiamo verificare il risultato teorico simulando l'esperimento più volte.
+Prima simuliamo un singolo set di 10 lanci, poi ripetiamo l'esperimento 100 volte per contare la frequenza del risultato "6 teste".
+
+\begin{lstlisting}[language=Python, frame=single, caption=Simulazione dei lanci]
+import random
+
+# --- Parte A: Singola simulazione di 10 lanci ---
+testa = 0
+croce = 0
+for i in range(10):
+    lancio = random.randint(0, 1) # 0 = Testa, 1 = Croce
+    if lancio == 0:
+        testa += 1
+    else:
+        croce += 1
+print(f"Esito singolo: {testa} Teste e {croce} Croci")
+
+# --- Parte B: Ripetiamo l'esperimento 100 volte ---
+testa_l = [] # Lista per salvare i risultati di ogni esperimento
+
+for i in range(100): # 100 esperimenti totali
+    testa = 0 # Azzero il contatore per il nuovo esperimento
+    for j in range(10): # Ogni esperimento consiste in 10 lanci
+        lancio = random.randint(0, 1)
+        if lancio == 0:
+            testa += 1
+    # Fine dei 10 lanci, salvo il risultato
+    testa_l.append(testa)
+
+# Contiamo quante volte e' uscito esattamente 6
+risultato = testa_l.count(6)
+print(f"Su 100 esperimenti, ho ottenuto 6 teste {risultato} volte")
+\end{lstlisting}
+
+
+
+
+
+\ripasso{Distribuzione di Poisson}
+La distribuzione di Poisson è un caso limite fondamentale, spesso utilizzato in fisica nucleare, e serve per indicare la probabilità di osservare $k$ eventi in un determinato intervallo di tempo $t$, basandosi su tre ipotesi principali:
 \begin{itemize}
-    \item la presenza/assenza dell'evento non dipende da quelli prima di t
-    \item la probabilità di un evento è proporzionale a t
-    \item la probabilità di avere due eventi contemporaneamente è nulla
+    \item \textbf{Indipendenza:} la presenza o assenza di un evento non dipende da ciò che è accaduto prima del tempo $t$ (processo senza memoria).
+    \item \textbf{Proporzionalità:} la probabilità che accada un evento in un intervallo infinitesimo $dt$ è proporzionale all'ampiezza dell'intervallo stesso.
+    \item \textbf{Non simultaneità:} la probabilità di avere due eventi contemporaneamente in un intervallo infinitesimo è nulla.
 \end{itemize}
-Si tratta del caso in cui i successi $p$ della binomiale siano piccoli e il numero di eventi $n \rightarrow \infty$. 
-\[
-    P_k(t)=\frac{(\mu t)^k}{k!}e^{\mu t}
-\]
-La probabilità di avere 0 eventi in (o,t +dt):
-\[
-P_0(t+dt)=P_0(t)(1-\mu dt) \rightarrow P_0(t)=e^{-\mu t}
-\]
-dove ho impostato che $P_0(0)=1$ e sottrago $\mu dt$ che è la probabilità di avere un evento in $dt$ ($e^{-\mu dt}\simeq 1-\mu dt$ tolgo il termine quadratico risultante)
 
-La probabilità di avere un evento è invece:
+Si tratta del caso limite della distribuzione binomiale in cui la probabilità di successo $p$ è molto piccola e il numero di prove $n \rightarrow \infty$. La formula generale è:
 \[
-P_1(t+dt)=P_1(1-\mu dt) + P_0(\mu dt) \rightarrow \frac{dP_1}{dt}=- \mu (p_1(t)-p_0(t))
+    P_k(t)=\frac{(\mu t)^k}{k!}e^{-\mu t}
+\]
+dove $\mu$ rappresenta il tasso medio di eventi per unità di tempo.
+
+\subsubsection*{Derivazione della formula}
+
+\textbf{1. Probabilità di 0 eventi:} \\
+Consideriamo la probabilità di non avere eventi nell'intervallo $(0, t+dt)$. Questo richiede che non ci siano eventi fino a $t$ e che non se ne verifichino nell'intervallo successivo $dt$:
+\[
+P_0(t+dt)=P_0(t)(1-\mu dt)
+\]
+Qui abbiamo imposto che la probabilità di avere un evento in $dt$ sia $\mu dt$ (e quindi di non averne è $1-\mu dt$, trascurando termini di ordine superiore). Riorganizzando i termini e passando al limite per $dt \to 0$:
+\[
+\frac{P_0(t+dt) - P_0(t)}{dt} = -\mu P_0(t) \quad \Rightarrow \quad \frac{dP_0}{dt} = -\mu P_0(t)
+\]
+Imponendo la condizione iniziale $P_0(0)=1$, la soluzione è:
+\[
+P_0(t)=e^{-\mu t}
 \]
 
-Continuando in maniera ricorsiva trovo che la probabilità di avere "m" eventi in un determinato intervallo è:
+\textbf{2. Probabilità di $k$ eventi:} \\
+La probabilità di avere 1 evento al tempo $t+dt$ è data dalla somma di due possibilità: avere 1 evento a $t$ e nessuno in $dt$, oppure avere 0 eventi a $t$ e uno in $dt$:
 \[
-\frac{dP_m}{dt}=- \mu (p_m(t)-p_{m-1}(t))
+P_1(t+dt)=P_1(t)(1-\mu dt) + P_0(t)(\mu dt)
 \]
-che ha come soluzione:
+Che porta all'equazione differenziale:
 \[
-P_k(t)=\frac{(\mu t)^k}{k!}e^{\mu t}=\frac{(m)^k}{k!}e^{m}
+\frac{dP_1}{dt}=- \mu (P_1(t)-P_0(t))
 \]
-dove $m=\mu t=E[k]$ mi rappresenta il valore di aspettazione di un certo k
+Procedendo in maniera ricorsiva, si trova che la probabilità di avere $m$ eventi varia secondo:
+\[
+\frac{dP_m}{dt}=- \mu (P_m(t)-P_{m-1}(t))
+\]
+La soluzione generale di questo sistema è:
+\[
+P_k(t)=\frac{(\mu t)^k}{k!}e^{-\mu t}=\frac{m^k}{k!}e^{-m}
+\]
+dove abbiamo posto $m=\mu t=E[k]$, che rappresenta il valore di aspettazione (il numero medio) di eventi nell'intervallo $t$.
 
-La distribuzione di Poisson naturalmente è normalizzata (ricordando lo sviluppo di Taylor dell'esponenziale), infatti:
+\subsubsection*{Proprietà della distribuzione}
+La distribuzione di Poisson è correttamente normalizzata. Infatti, ricordando lo sviluppo di Taylor dell'esponenziale:
 \[
-\sum_{K=0}^{\infty}P_k=e^{-m} \sum_{k=0}^{\infty}\frac{m^k}{k!}=1
+\sum_{k=0}^{\infty}P_k = e^{-m} \sum_{k=0}^{\infty}\frac{m^k}{k!} = e^{-m} \cdot e^m = 1
 \]
-e il valore di aspettazione non è altro che:
+Il valore di aspettazione è:
 \[
 E[k]=\sum_{k=0}^{\infty}k P_k = m 
 \]
-e la varianza è:
+E la varianza coincide con la media:
 \[
 {\sigma^2}=E[k^2]-{E[k]}^2=m
 \]
+Si nota dunque che la distribuzione di Poisson non è altro che il limite per $n \rightarrow \infty$ della distribuzione di Bernoulli (Binomiale).
 
-Si può notare che la distribuzione di Poisson non è altro che il limite per $n \rightarrow \infty$ della distribuzione di Bernulli.
+\subsection{Confronto: Poisson vs Binomiale}
+La distribuzione \textbf{Binomiale} descrive casi in cui un risultato particolare si ottiene in un numero preciso e finito di tentativi ($n$).
+
+La distribuzione di \textbf{Poisson}, invece, si usa per descrivere casi in cui si contano eventi rari in un continuo (tempo o spazio), dove non si ha un'idea precisa del numero di tentativi totali, né ha senso parlare di casi "sfavorevoli" nel senso classico.
+
+\textbf{Esempi:}
+\begin{itemize}
+    \item Il numero di fulmini durante un temporale: sarà un numero intero, ma non ha senso parlare di "non-fulmini" (non esiste un non-evento osservabile come nel caso "Testa o Croce").
+\end{itemize}
+In questi processi si vuole stimare la probabilità $k$ di eventi, noto il numero medio $\lambda$ (o $\mu$) di eventi che generalmente si presentano. Il processo non ha memoria: un evento verificatosi non influenza la probabilità dei successivi.
+
+\subsubsection*{Dimostrazione del limite}
+Matematicamente, la Poisson si ottiene dalla Binomiale attraverso i limiti:
+\[
+n \to \infty \quad \text{e} \quad p \to 0
+\]
+in modo tale che il loro prodotto $\lambda = np$ rimanga costante ($\lambda = \text{cost}$).
+
+Supponiamo di attenderci $\lambda$ eventi in un certo intervallo di tempo $\Delta t$. Dividiamo questo intervallo in $n$ sotto-intervalli $\Delta t'$ molto piccoli ($n \to \infty$), talmente piccoli che la probabilità che due eventi cadano nello stesso sia trascurabile (al massimo un evento per intervallo).
+La probabilità che un evento si verifichi in un singolo $\Delta t'$ è:
+\[
+p = \frac{\lambda}{n}
+\]
+La probabilità di trovare $k$ eventi negli $n$ intervallini è data dalla distribuzione Binomiale con $p = \lambda/n$:
+\[
+P\left(k; n, \frac{\lambda}{n}\right) = \binom{n}{k} p^k (1-p)^{n-k} = \frac{n!}{k!(n-k)!} \left(\frac{\lambda}{n}\right)^k \left(1 - \frac{\lambda}{n}\right)^{n-k}
+\]
+Riorganizziamo i termini per calcolare il limite:
+\[
+P\left(k; n, \frac{\lambda}{n}\right) = \frac{\lambda^k}{k!} \cdot \underbrace{\frac{n!}{(n-k)! \, n^k}}_{(A)} \cdot \underbrace{\left(1 - \frac{\lambda}{n}\right)^{n-k}}_{(B)}
+\]
+
+\textbf{1. Il termine fattoriale (A):}
+\[
+\frac{n!}{(n-k)!} = n \cdot (n-1) \cdot (n-2) \cdots (n-k+1)
+\]
+Ci sono esattamente $k$ termini al numeratore. Per $n \to \infty$, possiamo trascurare le sottrazioni rispetto a $n$ (es. $n-1 \approx n$). Quindi:
+\[
+\lim_{n \to \infty} \frac{n!}{(n-k)!} \approx \underbrace{n \cdot n \cdots n}_{k \text{ volte}} = n^k
+\]
+(Esempio con $k=5$: $\frac{n(n-1)(n-2)(n-3)(n-4)}{1} \to n^5$).
+Di conseguenza, il rapporto tende a 1:
+\[
+\lim_{n \to \infty} \frac{n!}{(n-k)! \, n^k} = \frac{n^k}{n^k} = 1
+\]
+
+\textbf{2. Il termine esponenziale (B):}
+Scriviamo il termine $\left(1 - \frac{\lambda}{n}\right)^{n-k}$ come prodotto di due fattori:
+\[
+\left(1 - \frac{\lambda}{n}\right)^{n} \cdot \left(1 - \frac{\lambda}{n}\right)^{-k}
+\]
+Per $n \to \infty$, il secondo fattore tende a $(1-0)^{-k} = 1$.
+Il primo fattore è un limite notevole dell'analisi matematica:
+\[
+\lim_{n \to \infty} \left(1 + \frac{x}{n}\right)^n = e^x \implies \lim_{n \to \infty} \left(1 - \frac{\lambda}{n}\right)^n = e^{-\lambda}
+\]
+
+Sostituendo i limiti calcolati ($n \to \infty, p \to 0, np=\lambda$) nell'espressione della binomiale, otteniamo la forma chiusa della distribuzione.
+La probabilità di ottenere $k$ eventi, dato un numero medio di eventi attesi $\lambda$, è:
+\begin{equation}
+\boxed{P(k; \lambda) = \frac{e^{-\lambda} \lambda^k}{k!} \quad \text{con } 0 \le k < \infty}
+\end{equation}
+\textbf{Condizioni di validità:} Il modello è valido per eventi rari in un continuo, dove il numero di prove tende all'infinito.
+Un esempio classico è il \textbf{decadimento radioattivo}, in quanto il numero di decadimenti nucleari in un intervallo di tempo è discreto e casuale, ma con un tasso medio ben definito.
+
+\subsection{Calcolo dei Momenti tramite la Funzione Generatrice dei Momenti}
+Per calcolare valore atteso e varianza in modo elegante, utilizziamo la \textbf{Funzione Generatrice dei Momenti}, definita come il valore atteso di $e^{tk}$:
+\[
+M_k(t) = E[e^{tk}] = \sum_{k=0}^{+\infty} e^{tk} P(k; \lambda) = \sum_{k=0}^{+\infty} e^{tk} \frac{e^{-\lambda} \lambda^k}{k!}
+\]
+Portiamo fuori dalla sommatoria i termini costanti rispetto a $k$ (il termine $e^{-\lambda}$) e accorpiamo le potenze di $k$:
+\[
+M_k(t) = e^{-\lambda} \sum_{k=0}^{+\infty} \frac{(e^t \lambda)^k}{k!}
+\]
+Riconosciamo nella sommatoria lo sviluppo in serie di Taylor dell'esponenziale $e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}$, dove in questo caso l'argomento è $x = \lambda e^t$.
+\[
+M_k(t) = e^{-\lambda} \cdot e^{(\lambda e^t)} = e^{\lambda e^t - \lambda}
+\]
+Possiamo quindi scrivere la forma finale della Funzione Generatrice dei Momenti per la Poissoniana:
+\begin{equation}
+\boxed{M_k(t) = e^{\lambda(e^t - 1)}}
+\end{equation}
+
+\subsubsection{Calcolo di Media e Varianza}
+Dalle proprietà della Funzione Generatrice dei Momenti sappiamo che la derivata prima valutata in $t=0$ fornisce la media, mentre la derivata seconda fornisce il momento secondo.
+
+\paragraph{1. Media (Valore Atteso):}
+Deriviamo $M_k(t)$ rispetto a $t$:
+\[
+\frac{\partial M_k}{\partial t} = \frac{\partial}{\partial t} \left( e^{\lambda(e^t - 1)} \right) = e^{\lambda(e^t - 1)} \cdot \frac{\partial}{\partial t}(\lambda e^t - \lambda) = e^{\lambda(e^t - 1)} \cdot \lambda e^t
+\]
+Valutiamo in $t=0$:
+\[
+E[k] = \left[ \frac{\partial M_k}{\partial t} \right]_{t=0} = e^{\lambda(1-1)} \cdot \lambda \cdot 1 = 1 \cdot \lambda = \lambda
+\]
+\textbf{Risultato:} $\mu = \lambda$. Questo conferma che il parametro $\lambda$ rappresenta il numero medio di eventi.
+
+\paragraph{2. Varianza:}
+Per la varianza usiamo la relazione $\text{Var}(k) = E[k^2] - (E[k])^2$.
+Calcoliamo la derivata seconda (derivata del prodotto $f(t) \cdot g(t)$ dove $f$ è l'esponenziale composto e $g$ è $\lambda e^t$):
+\[
+\frac{\partial^2 M_k}{\partial t^2} = \frac{\partial}{\partial t} \left( \underbrace{e^{\lambda(e^t - 1)}}_{f(t)} \cdot \underbrace{\lambda e^t}_{g(t)} \right)
+\]
+\[
+= \underbrace{e^{\lambda(e^t - 1)} \lambda e^t}_{f'(t)} \cdot \lambda e^t + \underbrace{e^{\lambda(e^t - 1)}}_{f(t)} \cdot \underbrace{\lambda e^t}_{g'(t)}
+\]
+Raccogliendo i termini:
+\[
+\frac{\partial^2 M_k}{\partial t^2} = e^{\lambda(e^t - 1)} (\lambda^2 e^{2t} + \lambda e^t)
+\]
+Valutando in $t=0$:
+\[
+E[k^2] = 1 \cdot (\lambda^2 + \lambda) = \lambda^2 + \lambda
+\]
+Ora calcoliamo la varianza sottraendo il quadrato della media:
+\[
+\text{Var}(k) = (\lambda^2 + \lambda) - (\lambda)^2 = \lambda
+\]
+
+\textbf{Conclusione:} Per la distribuzione di Poisson, media e varianza coincidono.
+\begin{equation}
+\boxed{\mu = \lambda, \quad \sigma^2 = \lambda}
+\end{equation}
+
+\subsection{Relazione con la Binomiale e Somma di Variabili}
+
+\subsubsection{Limite della Funzione Generatrice dei Momenti Binomiale}
+Si può dimostrare formalmente che la Funzione Generatrice della Binomiale tende a quella della Poissoniana.
+La Funzione Generatrice dei Momenti della Binomiale è $M_{bin}(t) = (pe^t + 1 - p)^n = [1 + p(e^t - 1)]^n$.
+Sostituendo $p = \lambda/n$:
+\[
+M_{bin}(t) = \left[ 1 + \frac{\lambda(e^t - 1)}{n} \right]^n
+\]
+Utilizzando il limite notevole $\lim_{n \to \infty} (1 + \frac{a}{n})^n = e^a$ con $a = \lambda(e^t - 1)$, otteniamo:
+\[
+\lim_{n \to \infty} M_{bin}(t) = e^{\lambda(e^t - 1)}
+\]
+Che è esattamente la Funzione Generatrice dei Momenti della Poissoniana derivata in precedenza.
+
+\subsubsection{Confronto delle forme (Code della distribuzione)}
+\begin{itemize}
+    \item \textbf{Varianza:} La varianza della Poissoniana è $\lambda = np$. La varianza della Binomiale è $np(1-p)$.
+    Poiché $(1-p) < 1$, la varianza binomiale è sempre minore di quella Poissoniana equivalente.
+    \item \textbf{Code:} La distribuzione binomiale è limitata superiormente ($k \le n$). La Poissoniana non ha limite superiore ($0 \le k < \infty$). Questo, unito alla varianza maggiore, implica che la Poissoniana ha \textbf{code più lunghe}: è relativamente più probabile osservare valori lontani dalla media rispetto a una binomiale, specialmente quando la media è piccola.
+\end{itemize}
+
+\subsubsection{Somma di Poissoniane Indipendenti}
+Se abbiamo due processi Poissoniani indipendenti $A$ e $B$ con medie $\lambda_a$ e $\lambda_b$, la variabile somma $k = k_a + k_b$ segue ancora una distribuzione di Poisson con media $\lambda_{tot} = \lambda_a + \lambda_b$.
+
+\textbf{Dimostrazione:} La Funzione Generatrice dei Momenti della somma di variabili indipendenti è il prodotto delle Funzione Generatrice dei Momenti.
+\[
+M_{tot}(t) = M_a(t) \cdot M_b(t) = e^{\lambda_a(e^t - 1)} \cdot e^{\lambda_b(e^t - 1)} = e^{(\lambda_a + \lambda_b)(e^t - 1)}
+\]
+Questa forma corrisponde a una Poissoniana con parametro $\lambda_a + \lambda_b$.
+\textit{Esempio fisico:} Un contatore Geiger che rileva radiazioni da due sorgenti diverse non distinguibili; il conteggio totale sarà ancora Poissoniano.
+
+\subsection{Esempi Python: Grafici e Confronti}
+
+Di seguito riportiamo il codice per visualizzare le distribuzioni e verificare numericamente le proprietà discusse.
+
+\subsubsection{1. Visualizzazione della Distribuzione Binomiale}
+Questo script mostra come varia la forma della distribuzione binomiale al variare di $n$ (numero di prove) e $p$ (probabilità).
+
+\begin{lstlisting}[language=Python, frame=single, caption={Plot della Binomiale al variare di n e p}]
+import math
+from matplotlib import pyplot as plt
+import numpy as np
+
+def binomiale_manual(k, n, p):
+    return math.comb(n, k) * (p**k) * ((1 - p)**(n - k))
+
+# Creiamo una matrice di grafici 2x2 per vedere diversi n
+fig, axes = plt.subplots(2, 2, figsize=(8, 6))
+axes = axes.flatten()
+
+n_list = [5, 15, 30, 50]
+p = 0.5
+
+for ax, n in zip(axes, n_list):
+    k_values = range(n + 1)
+    P_binom = [binomiale_manual(k, n, p) for k in k_values]
+    ax.bar(k_values, P_binom)
+
+    # Linee per media e deviazione standard
+    mu = n * p
+    sigma = np.sqrt(n * p * (1 - p))
+    
+    ax.axvline(mu, linestyle="--", color="orange", label=f"$\mu$={mu:.1f}")
+    y_lvl = max(P_binom)/2
+    ax.plot([mu-sigma, mu+sigma], [y_lvl, y_lvl], color="red", label=f"$\sigma$={sigma:.1f}")
+
+    ax.set_title(f"n={n}, p={p}")
+    ax.legend()
+    ax.grid(True)
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        
+        \includegraphics[width=\textwidth]{Immagini/Binomiale n=10 p=0.5.png} 
+        \caption{Grafico della Binomiale (n=10, p=0.5)}
+        \label{fig:img1}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Immagini/binomiale con diversi p e n.png}
+        \caption{Grafico della Poissoniana}
+        \label{fig:img2}
+    \end{subfigure}
+    
+    \vspace{1cm} 
+    
+    \begin{subfigure}[b]{0.8\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Immagini/binomiale con ancora diversi p e n.png}
+        \caption{Confronto e limite per $n \to \infty$}
+        \label{fig:img3}
+    \end{subfigure}
+    
+    \caption{Distribuzioni Binomiale}
+    \label{fig:confronto_totale}
+\end{figure}
+
+
+\subsubsection{2. Esercizio Poisson: La notte di San Lorenzo}
+\textbf{Problema:} Se ci si aspetta di osservare 15.7 stelle cadenti all'ora, qual è la probabilità di osservarne meno di 5 in 30 minuti?
+
+\begin{lstlisting}[language=Python, frame=single, caption={Calcolo Poisson e confronto con Binomiale}]
+from scipy.stats import binom, poisson
+import math
+import matplotlib.pyplot as plt
+
+# --- PARTE 1: Calcolo Probabilita' ---
+frequenza_h = 15.7
+frequenza_30min = 15.7 / 2  # Il nostro lambda per 30 min
+
+somma_prob = 0
+print("Probabilita' di osservare k stelle in 30 min:")
+for k in range(5): # k da 0 a 4
+    prob = poisson.pmf(k, frequenza_30min)
+    print(f"k={k}: {prob*100:.2f}%")
+    somma_prob += prob
+
+print(f"Probabilita' totale (< 5 stelle): {somma_prob*100:.2f}%")
+
+
+# --- PARTE 2: Confronto Grafico Binomiale vs Poisson ---
+# Mostriamo che per n grande e p piccolo le due coincidono
+
+def confronto_binom_poiss(p, n_list):
+    fig, axes = plt.subplots(2, 2, figsize=(8, 6))
+    axes = axes.flatten()
+
+    for ax, n in zip(axes, n_list):
+        l = n * p # Lambda fissato da n*p
+        n = int(n)
+        
+        # Definiamo il range di k interessante (attorno alla media)
+        sigma = math.sqrt(l)
+        k_max = int(l + 4*sigma)
+        k_values = range(k_max)
+
+        # Calcolo con librerie (piu' stabile per n grandi)
+        P_binom = binom.pmf(k_values, n, p)
+        P_poiss = poisson.pmf(k_values, l)
+
+        ax.plot(k_values, P_poiss, "o", label="Poisson")
+        ax.plot(k_values, P_binom, "x", label="Binomiale", alpha=0.7)
+        ax.set_title(f"n={n}, p={p}, $\lambda$={l:.1f}")
+        ax.legend()
+        ax.grid(True)
+    
+    plt.tight_layout()
+    plt.show()
+
+# Eseguiamo il confronto al limite
+# Caso limite: p molto piccolo, n molto grande
+confronto_binom_poiss(p=0.01, n_list=[100, 1000, 5000, 10000])
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        
+        \includegraphics[width=\textwidth]{Immagini/poisson y=10.png} 
+        \caption{Grafico della Binomiale (n=10, p=0.5)}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Immagini/poisson diversi y.png}
+        \caption{Grafico della Poissoniana}
+    \end{subfigure}
+    
+    \vspace{1cm} 
+    
+    \begin{subfigure}[b]{0.8\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Immagini/poisson y n e p.png}
+        \caption{Confronto e limite per $n \to \infty$}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Immagini/confronto binom poisson e aprox a infinito.png}
+        \caption{Grafico di confronto finale}
+    \end{subfigure}
+    
+    \caption{Distribuzioni nel limite e confronto binomiale/poissoniana}
+\end{figure}
+
+
+\subsection{Rappresentazione grafica dei dati (Istogrammi)}
+Quando analizziamo un set di dati sperimentali $N \to \{x_1, x_2, ..., x_N\}$, possiamo stimare la distribuzione di probabilità sottostante tramite un istogramma. L'istogramma divide il range dei dati in intervalli (bin).
+
+Se la variabile $x$ è descritta da una densità di probabilità $P(x)$, la probabilità $p_i$ che un evento cada nel bin $i$-esimo (di larghezza $\Delta x$) è:
+\[
+p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(x_i)\Delta x
+\]
+Se indichiamo con $n_i$ il numero di eventi conteggiati nel bin $i$, questa è una variabile aleatoria che segue una distribuzione Binomiale (o Poissoniana se $N$ è grande e $p_i$ piccolo):
+\[
+n_i \sim \text{Binomiale}(N, p_i)
+\]
+Di conseguenza, il valore atteso per l'altezza dell'istogramma nel bin $i$ è:
+\[ 
+E[n_i] = N p_i \simeq N \cdot P(x_i) \Delta x 
+\]
+Questo ci permette di confrontare i dati sperimentali con la curva teorica $P(x)$.
+
+
+\lezione{???}{02 Febbraio 2026}
+
+
+
+
+
+
+
+
+
+
+\newpage
+\section{Parte di Bressan da integrare dopo}
 
 
 \subsection{Distribuzione di Maxwell-Boltzmann}

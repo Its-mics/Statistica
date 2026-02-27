@@ -860,12 +860,11 @@ print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
 
 
 
-Il valore di aspettazione e la varianza di una variabile casuale sono due particolari “momenti” della funzione densità di probabilità $f_X(x)$.
+Il valore di aspettazione e la varianza di una variabile casuale sono due particolari “momenti” della funzione densità di probabilità $f_X(x) \equiv f(x)$.
 
 Possiamo distinguere tra momenti calcolati rispetto all’origine e momenti calcolati rispetto al valore di aspettazione (la media). In entrambi i casi, si tratta di valori di aspettazione (dunque quantità numeriche) delle potenze di $x$ o di $x-\mu_x$. 
-Nello specifico definiamo: Il 
 Nello specifico, definiamo:
-    
+   
 \begin{definizione} \textbf{Momento algebrico di ordine k} (o k-esimo momento algebrico): calcolato rispetto all'origine.
 \[
 \mu_k=E[x^k]=\int_\Omega x^k f(x) dx
@@ -1083,7 +1082,7 @@ Essendo $X$ e $Y$ indipendenti, il valore atteso del prodotto è il prodotto dei
 \[
 M_Z(t) = E[e^{tX}]E[e^{tY}] = M_X(t)M_Y(t)
 \]
-
+Questo è dovuto al fatto che $\Omega_X \cap \Omega_Y=0$, dunque vale che $f_{X+Y}(x)=f_X(x) f_Y(x)$
 
 \subsection{Distribuzione binomiale o di Bernoulli}
 \emph{Questa parte è stata integrata con gli appunti di Bressan}
@@ -1653,19 +1652,20 @@ confronto_binom_poiss(p=0.01, n_list=[100, 1000, 5000, 10000])
 
 
 \subsection{Rappresentazione grafica dei dati (Istogrammi)}
-Quando analizziamo un set di dati sperimentali $N \to \{x_1, x_2, ..., x_N\}$, possiamo stimare la distribuzione di probabilità sottostante tramite un istogramma. L'istogramma divide il range dei dati in intervalli (bin).
+Quando analizziamo un set di dati sperimentali $N \to \{x_1, x_2, \dots, x_N\}$, possiamo stimare la distribuzione di probabilità sottostante tramite un istogramma. L'istogramma divide il range dei dati in intervalli (bin).
 
 Se la variabile $x$ è descritta da una densità di probabilità $P(x)$, la probabilità $p_i$ che un evento cada nel bin $i$-esimo (di larghezza $\Delta x$) è:
 \[
-p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(x_i)\Delta x
+p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(\bar{x}_i)\Delta x
 \]
+dove $\bar{x}_i$ è il valore medio del bin \textit{i}.
 Se indichiamo con $n_i$ il numero di eventi conteggiati nel bin $i$, questa è una variabile aleatoria che segue una distribuzione Binomiale (o Poissoniana se $N$ è grande e $p_i$ piccolo):
 \[
 n_i \sim \text{Binomiale}(N, p_i)
 \]
 Di conseguenza, il valore atteso per l'altezza dell'istogramma nel bin $i$ è:
 \[ 
-E[n_i] = N p_i \simeq N \cdot P(x_i) \Delta x 
+E[n_i] = N p_i \simeq N \cdot P(\bar{x}_i) \Delta x 
 \]
 Questo ci permette di confrontare i dati sperimentali con la curva teorica $P(x)$.
 

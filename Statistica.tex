@@ -860,81 +860,12 @@ print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
 
 
 
-Il valore di aspettazione e la varianza di una variabile casuale sono due particolari “momenti” della funzione densità di probabilità $f_X(x)$.
+Il valore di aspettazione e la varianza di una variabile casuale sono due particolari “momenti” della funzione densità di probabilità $f_X(x) \equiv f(x)$.
 
 Possiamo distinguere tra momenti calcolati rispetto all’origine e momenti calcolati rispetto al valore di aspettazione (la media). In entrambi i casi, si tratta di valori di aspettazione (dunque quantità numeriche) delle potenze di $x$ o di $x-\mu_x$. 
-Nello specifico definiamo: Il 
 Nello specifico, definiamo:
-\begin{itemize}
-    \item \textbf{Momento algebrico di ordine k} (o k-esimo momento algebrico): calcolato rispetto all'origine.
-    \item \textbf{Momento centrale di ordine k}: calcolato rispetto alla media.
-\end{itemize}
-
-Le formule sono rispettivamente:
-\[
-\mu_k^* = E[x^k] \qquad \mu_k =E[{(x - \mu_x)}^k]
-\]
-
-Di conseguenza $\mu$ non è altro che il momento di ordine 1 rispetto all'origine, mentre $\sigma^2$ è il momento di ordine 2 rispetto alla media.
-
-I momenti sono fondamentali perché caratterizzano interamente le funzioni di distribuzione: sotto ipotesi non particolarmente restrittive, si può affermare che due funzioni aventi gli stessi momenti coincidono.
-
-
-\subsection{Distribuzione uniforme discreta}
-Consideriamo una variabile $X$ che può assumere $n$ valori discreti. Se tutti i valori sono equiprobabili, imponendo la condizione di normalizzazione si ottiene che la probabilità per ogni valore è $p=1/n$.
-Di conseguenza, il valore medio è:
-\[
-\mu_x=\frac{1}{n}\sum_{i=1}^{n}x_i
-\]
-che corrisponde alla media aritmetica dei possibili valori (analogo al lancio di un dado).
-La varianza è data da:
-\[
-{\sigma_x}^2=\frac{1}{n} \sum_{i=1}^{n}(x_i-\mu_x)^2
-\]
-
-
-\subsection{Distribuzione uniforme continua}
-Una variabile casuale continua definita nell'intervallo $(a,b)$ possiede una distribuzione uniforme se la sua densità di probabilità è costante, ovvero $f_X(x) = \text{cost}$.
-Affinché sia soddisfatta la condizione di normalizzazione (l'area sotto la curva deve essere 1), la funzione deve essere:
-\[
-f_X(x)=\frac{1}{b-a}
-\]
-
-Il valore medio si calcola come:
-\[
-\mu_x=\int_{a}^{b}x f(x) dx = \frac{a+b}{2}
-\]
-
-
-Per la varianza, sfruttando la proprietà $E[x^2]-{E[x]}^2$, si ottiene:
-\[
-{\sigma_x}^2 = \frac{{(b-a)^2}}{12}
-\]
-
-
-\begin{nota}
-    \textbf{Collegamento con la trattazione degli errori.} \\
-    Quando si passa dalla teoria degli errori massimi a quella statistica, il risultato di una misura viene espresso come $x \pm \Delta x$. Questo intervallo corrisponde a una distribuzione uniforme di larghezza $b-a = 2\Delta x$.
-
-    Sostituendo nella formula della varianza ricavata sopra ($\sigma_x^2=\frac{(b-a)^2}{12}$), otteniamo la deviazione standard:
-    \[
-    \sigma_x=\frac{b-a}{2\sqrt{3}} \quad \Rightarrow \quad \Delta x = \sigma_x \sqrt{3}
-    \]
-    È interessante calcolare la probabilità che il valore $x$ cada all'interno dell'intervallo di una deviazione standard dalla media ($\mu_x \pm \sigma_x$). Tale probabilità risulta essere:
-    \[
-    P(\mu_x-\sigma_x < x \leq \mu_x + \sigma_x) = \frac{1}{\sqrt{3}} \approx 0.577
-    \]
-    
-    \textit{Dimostrazione:}
-    \[
-    \int_{\mu_x-\sigma_x}^{\mu_x+\sigma_x} f(x)dx = \frac{1}{b-a}\int_{\mu_x-\sigma_x}^{\mu_x+\sigma_x} dx = \frac{1}{b-a} (2 \sigma_x) = \frac{2\sigma_x}{2\sigma_x\sqrt{3}} = \frac{1}{\sqrt{3}}
-    \]
-\end{nota}
-
-\vspace{1 cm}
-
-\begin{definizione}
-\textbf{Momenti di ordine k}: 
+   
+\begin{definizione} \textbf{Momento algebrico di ordine k} (o k-esimo momento algebrico): calcolato rispetto all'origine.
 \[
 \mu_k=E[x^k]=\int_\Omega x^k f(x) dx
 \]
@@ -945,7 +876,6 @@ Per la varianza, sfruttando la proprietà $E[x^2]-{E[x]}^2$, si ottiene:
     \item Per $k=0 \quad \to \quad  \mu_0 =\int_\Omega f(x) dx =1$ (Normalizzazione della funzione di probabilità).
     \item Per $k=1 \quad \to \quad \mu_1$ rappresenta il valore di aspettazione o media (il baricentro della distribuzione).
 \end{itemize}
-
 \begin{definizione}
 \textbf{Momenti centrali di ordine k}:
 \[
@@ -955,9 +885,9 @@ Per la varianza, sfruttando la proprietà $E[x^2]-{E[x]}^2$, si ottiene:
 
 \textbf{Osservazione:}
 \begin{itemize}
-    \item Per $k=0 \quad \to \quad \bar{\mu}_0= \int_\Omega f(x) dx = 1$.
+    \item Per $\displaystyle k=0 \quad \to \quad \bar{\mu}_0= \int_\Omega f(x) dx = 1$.
     \item Per $k=1 \quad \to \quad \bar{\mu}_1= 0$. \\
-    \textit{Dimostrazione:} $\int_\Omega (x-\mu)f(x) dx = \int_\Omega x f(x) dx - \mu \int_\Omega f(x) dx = \mu - \mu \cdot 1 = 0$.
+    \textit{Dimostrazione:} $\displaystyle \int_\Omega (x-\mu)f(x) dx = \int_\Omega x f(x) dx - \mu \int_\Omega f(x) dx = \mu - \mu \cdot 1 = 0$.
     \item Per $k=2 \quad \to \quad \bar{\mu}_2=\sigma^2$ (Varianza).
     \item Per $k=3 \quad \to \quad \bar{\mu}_3$ è legato all'\textit{indice di asimmetria} (o \textit{skewness}). Esso indica quanto la distribuzione sia simmetrica rispetto alla media:
     \pgfplotsset{
@@ -1013,6 +943,64 @@ Per la varianza, sfruttando la proprietà $E[x^2]-{E[x]}^2$, si ottiene:
         \item Per $k=4 \quad \to \quad \bar{\mu}_4$ è legato all'\textit{indice di curtosi} (o \textit{kurtosis}). Questo parametro valuta il peso delle "code" della distribuzione, ovvero l'influenza dei valori estremi (\textit{outliers}).
 
 \end{itemize}
+
+
+\subsection{Distribuzione uniforme discreta}
+Consideriamo una variabile $X$ che può assumere $n$ valori discreti. Se tutti i valori sono equiprobabili, imponendo la condizione di normalizzazione si ottiene che la probabilità per ogni valore è $p=1/n$.
+Di conseguenza, il valore medio è:
+\[
+\mu_x=\frac{1}{n}\sum_{i=1}^{n}x_i
+\]
+che corrisponde alla media aritmetica dei possibili valori (analogo al lancio di un dado).
+La varianza è data da:
+\[
+{\sigma_x}^2=\frac{1}{n} \sum_{i=1}^{n}(x_i-\mu_x)^2
+\]
+
+
+\subsection{Distribuzione uniforme continua}
+Una variabile casuale continua definita nell'intervallo $(a,b)$ possiede una distribuzione uniforme se la sua densità di probabilità è costante, ovvero $f_X(x) = \text{cost}$.
+Affinché sia soddisfatta la condizione di normalizzazione (l'area sotto la curva deve essere 1), la funzione deve essere:
+\[
+f_X(x)=\frac{1}{b-a}
+\]
+
+Il valore medio si calcola come:
+\[
+\mu_x=\int_{a}^{b}x f(x) dx = \frac{a+b}{2}
+\]
+
+
+Per la varianza, sfruttando la proprietà $E[x^2]-{E[x]}^2$, si ottiene:
+\[
+{\sigma_x}^2 = \frac{{(b-a)^2}}{12}
+\]
+
+
+\begin{nota}
+    \textbf{Collegamento con la trattazione degli errori.} \\
+    Quando si passa dalla teoria degli errori massimi a quella statistica, il risultato di una misura viene espresso come $x \pm \Delta x$. Questo intervallo corrisponde a una distribuzione uniforme di larghezza $b-a = 2\Delta x$.
+
+    Sostituendo nella formula della varianza ricavata sopra ($\sigma_x^2=\frac{(b-a)^2}{12}$), otteniamo la deviazione standard:
+    \[
+    \sigma_x=\frac{b-a}{2\sqrt{3}} \quad \Rightarrow \quad \Delta x = \sigma_x \sqrt{3}
+    \]
+    È interessante calcolare la probabilità che il valore $x$ cada all'interno dell'intervallo di una deviazione standard dalla media ($\mu_x \pm \sigma_x$). Tale probabilità risulta essere:
+    \[
+    P(\mu_x-\sigma_x < x \leq \mu_x + \sigma_x) = \frac{1}{\sqrt{3}} \approx 0.577
+    \]
+    
+    \textit{Dimostrazione:}
+    \[
+    \int_{\mu_x-\sigma_x}^{\mu_x+\sigma_x} f(x)dx = \frac{1}{b-a}\int_{\mu_x-\sigma_x}^{\mu_x+\sigma_x} dx = \frac{1}{b-a} (2 \sigma_x) = \frac{2\sigma_x}{2\sigma_x\sqrt{3}} = \frac{1}{\sqrt{3}}
+    \]
+\end{nota}
+
+\vspace{1 cm}
+
+
+
+
 \vspace{1 cm}
 L'introduzione dei momenti risulta utile per diversi motivi. Un risultato fondamentale è il seguente: se due variabili casuali $X$ e $Y$ possiedono gli stessi momenti, allora le loro funzioni di distribuzione di probabilità ($f_X$ e $f_Y$) sono identiche.
 
@@ -1094,7 +1082,7 @@ Essendo $X$ e $Y$ indipendenti, il valore atteso del prodotto è il prodotto dei
 \[
 M_Z(t) = E[e^{tX}]E[e^{tY}] = M_X(t)M_Y(t)
 \]
-
+Questo è dovuto al fatto che $\Omega_X \cap \Omega_Y=0$, dunque vale che $f_{X+Y}(x)=f_X(x) f_Y(x)$
 
 \subsection{Distribuzione binomiale o di Bernoulli}
 \emph{Questa parte è stata integrata con gli appunti di Bressan}
@@ -1664,19 +1652,20 @@ confronto_binom_poiss(p=0.01, n_list=[100, 1000, 5000, 10000])
 
 
 \subsection{Rappresentazione grafica dei dati (Istogrammi)}
-Quando analizziamo un set di dati sperimentali $N \to \{x_1, x_2, ..., x_N\}$, possiamo stimare la distribuzione di probabilità sottostante tramite un istogramma. L'istogramma divide il range dei dati in intervalli (bin).
+Quando analizziamo un set di dati sperimentali $N \to \{x_1, x_2, \dots, x_N\}$, possiamo stimare la distribuzione di probabilità sottostante tramite un istogramma. L'istogramma divide il range dei dati in intervalli (bin).
 
 Se la variabile $x$ è descritta da una densità di probabilità $P(x)$, la probabilità $p_i$ che un evento cada nel bin $i$-esimo (di larghezza $\Delta x$) è:
 \[
-p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(x_i)\Delta x
+p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(\bar{x}_i)\Delta x
 \]
+dove $\bar{x}_i$ è il valore medio del bin \textit{i}.
 Se indichiamo con $n_i$ il numero di eventi conteggiati nel bin $i$, questa è una variabile aleatoria che segue una distribuzione Binomiale (o Poissoniana se $N$ è grande e $p_i$ piccolo):
 \[
 n_i \sim \text{Binomiale}(N, p_i)
 \]
 Di conseguenza, il valore atteso per l'altezza dell'istogramma nel bin $i$ è:
 \[ 
-E[n_i] = N p_i \simeq N \cdot P(x_i) \Delta x 
+E[n_i] = N p_i \simeq N \cdot P(\bar{x}_i) \Delta x 
 \]
 Questo ci permette di confrontare i dati sperimentali con la curva teorica $P(x)$.
 

@@ -1652,34 +1652,37 @@ confronto_binom_poiss(p=0.01, n_list=[100, 1000, 5000, 10000])
 
 
 \subsection{Rappresentazione grafica dei dati (Istogrammi)}
-Quando analizziamo un set di dati sperimentali $N \to \{x_1, x_2, \dots, x_N\}$, possiamo stimare la distribuzione di probabilità sottostante tramite un istogramma. L'istogramma divide il range dei dati in intervalli (bin).
 
-Se la variabile $x$ è descritta da una densità di probabilità $P(x)$, la probabilità $p_i$ che un evento cada nel bin $i$-esimo (di larghezza $\Delta x$) è:
-\[
-p_i = \int_{x_i}^{x_i+\Delta x} P(x) dx \simeq P(\bar{x}_i)\Delta x
-\]
-dove $\bar{x}_i$ è il valore medio del bin \textit{i}.
-Se indichiamo con $n_i$ il numero di eventi conteggiati nel bin $i$, questa è una variabile aleatoria che segue una distribuzione Binomiale (o Poissoniana se $N$ è grande e $p_i$ piccolo):
-\[
-n_i \sim \text{Binomiale}(N, p_i)
-\]
-Di conseguenza, il valore atteso per l'altezza dell'istogramma nel bin $i$ è:
-\[ 
-E[n_i] = N p_i \simeq N \cdot P(\bar{x}_i) \Delta x 
-\]
-mentre la varianza è data da:
-\[
-var[n_i]=N p_i (1-p_i)
-\]
+Si considera un esperimento che misura una grandezza fisica continua $X$. Il modello teorico del fenomeno fornisce una densità di probabilità $P(x)$.
 
-Questo ci permette di confrontare i dati sperimentali con la curva teorica $P(x)$. Devo tenere conto che per confrontare le due devo sempre riscalare la mia funzione 
-di probabilità $P(x)$, con il fattore $\Delta(x)N$.\\
-Ricordiamo che la varianza degli eventi che cado in un determinato intervallo è dato da $\sqrt{n_i}$.
+\begin{equation}
+\int_{-\infty}^{+\infty} P(x) dx = 1
+\end{equation}
+Si effettuano $N$ misure indipendenti di $X$, ottenendo un campione di dati $\{x_1, x_2, \dots, x_N \}$. I dati vengono rappresentati tramite un istogramma, suddividendo l'asse delle $x$ in intervalli, detti \textit{bin}.
+Per un bin $i$, definito nell'intervallo $[x_i, x_{i+1}]$, il numero di eventi $M_i$ che cadono nel bin $i$ è una variabile aleatoria discreta. La probabilità teorica che una singola misura cada nel bin $i$ è:
 
+\begin{equation}
+P_i = \int_{x_i}^{x_{i+1}} P(x) dx \approx P(x_i + \frac{\Delta x}{2}) \Delta x
+\end{equation}
+assumendo il bin sufficientemente stretto che $P(x)$ è costante. Il valore della distribuzione di probabilità nel punto centrale del bin.
+La variabile $M_i$ segue una statistica binomiale, perché per ogni conteggio si possono verificare due eventualità: il conteggio cade nel bin $i$ oppure no. Il valore di aspettazione di $M_i$ è $\langle M_i \rangle = NP_i$ e la varianza $V_i = NP_i(1-P_i)$.
+Al limite per $P_i$ e $N$ la distribuzione di eventi Poissoniana, per cui il valore di aspettazione è semplicemente $M_i$ e la deviazione standard $\sigma = \sqrt{M_i}$.
+Quando si rappresenta un istogramma, quindi, si aggiungono delle barre di errore che rappresentano la deviazione standard.
+\\
+È importante sottolineare che l'istogramma non è una distribuzione di probabilità, ma una stima basata su un numero finito di eventi. Il fatto che il modo in cui i conteggi si distribuiscono nell'istogramma segue una distribuzione binomiale, che si approssima alla Poissoniana, non c'entra niente con la distribuzione $P(x)$ del processo fisico.
+Se $P_i$ fosse nota, per controllare in maniera visiva se la $P(x)$ del processo è rappresentata dal nostro istogramma si può graficare la $P_i$ sopra l'istogramma, ma bisogna opportunamente scalarla perché quello che vediamo nell'istogramma è appunto $M_i = P_i N \approx P(x_i + \frac{\Delta x}{2}) \Delta x N$.
+In Python, se usate l'opzione \texttt{density=True}, l'istogramma verrà riscalato in modo tale da essere direttamente confrontabile con la $P(x)$, cioè viene diviso per $N \Delta x$.
+
+\section{Note Importanti}
+
+\begin{enumerate}
+    \item L'approssimazione binomiale e Poissoniana vale solo se $N$ non è fissato, ma si può assumere che sia una variabile aleatoria (tipo acquisisco conteggi per un periodo di tempo, ecco il numero di eventi, i conteggi $N$ può essere ogni esperimento). Se invece $N$ è fissato (acquisisco sempre fino ad un certo numero di categorie) allora la distribuzione di probabilità che c'è dietro è multinomiale.
+    \item  Qualunque confronto fra l'istogramma e $P(x)$ è solo visivo. Esistono metodi che vedremo più avanti di confronto più quantitativi.
+\end{enumerate}
 
 
 \lezione{Funzione di distribuzione di Gauss}{02 Febbraio 2026}
-\subsection{Parte di Bressan da integrare dopo}
+\ripasso{distribuzione normale}
 Data $x$ variabile casuale:
 \[
 f(x)=N(\mu,\sigma^2)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
@@ -1775,7 +1778,7 @@ Graficamente si ha che:
 
 \end{itemize}    
 
-\subsubsection{Esempio di distirbuzione di Gauss}
+\subsubsection{\color{red} Esempio di distirbuzione di Gauss}
 Data una distribuzione binomiale abbiamo che la variabile casuale ha il seguentee valore:
 
 Nelle ipotesi che:
@@ -1786,7 +1789,7 @@ Nelle ipotesi che:
 Il contributo di $\varepsilon$ sarà sia positivo che negativo diviso a 50/50 (legge dei grandi numeri), infatti $u_k= \varepsilon k - (n-k) \varepsilon$, dove k mi da un contributo positivo, mentre (n-k) negativo
 Di conseguenza il suo valore di aspettazione $E[u_k]=0$, per il limite di $n \rightarrow \infty$ ho una distribuzione gaussiana centrata in 0.
 
-\subsubsection{Dimostrazione Euriatica}
+\subsubsection{\color{red} Dimostrazione Euriatica}
 Vogliamo dimostrare che la distribuzione degli errori accidentali è gaussiana.
 Abbiamo visto che nel caso di k deviazioni elementari positive su i totali il valore dell' errore e la probabilità sono:
 \[
@@ -1824,46 +1827,225 @@ Breve riassunto:
     \item esempi di funzioni di distribuzioni
 \end{itemize}
 
-\subsection{Definizione}
-La distribuzione normale (dal fatto che le variabili naturali seguivano secondo Gauss questa distribuzione) è rappresentata dalla formula:
+\subsection{Definizione di distribuzione normale}
+
+La funzione di distribuzione di Gauss o distribuzione normale (Infatti, Gauss la usò per descrivere gli errori di misura, osservando che molti fenomeni naturali tendevano ad aggregarsi attorno a un valore medio) è descritta dalla funzione:
+
+
 \[
-f(x; \mu , \sigma ) = N(\mu,\sigma^2)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+P(x; \mu , \sigma ) = N(\mu,\sigma^2)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
 \]
-dove il simbolo $N$, indica il fatto che è una distribuzione normale. 
-Se voglio normalizzara posso fare il cambio di varibile $z=\frac{x-\mu}{\sigma}$, notando che vale l'identità:
+dove il simbolo $N$, indica il fatto che è una distribuzione normale.
+Ha la forma di una campana centrata in $x = \mu$ e simmetrica. La larghezza della curva è controllata dal parametro $\sigma$ che corrisponde alla deviazione standard della distribuzione (mentre $\mu$ è il valore di aspettazione): se $\sigma$ è grande la distribuzione è molto allargata, viceversa è stretta se $\sigma$ è piccolo.
+Cambiare $\mu$ della distribuzione equivale a spostare la distribuzione lungo l'asse $x$ senza cambiarne la forma. Viceversa cambiare $\sigma$ fa cambiare la larghezza della distribuzione senza cambiarne il valore centrale.
+
+
+
+Nel caso in cui $\mu = 0$ e $\sigma^2 = 1$, si parla di distribuzione normale standard indicata con $N(0,1)$:
+
+\begin{equation}
+N(0,1) = \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}}
+\end{equation}
+
+Si noti che con il cambiamento di variabile $z = \frac{x-\mu}{\sigma}$, la gaussiana si riduce alla forma normale standard in funzione di $z$.
+\begin{equation}
+P_z(z) = \frac{1}{\sqrt{2 \pi}} e^{-\frac{z^2}{2}}
+\end{equation}
+
+
+Da questo punto di vista, una volta pratica per trarre utile per le esibizioni: se $x$ la variabile di probabilità $N(\mu, \sigma^2)$ e $z$ ha una densità di probabilità $N(0,1)$, allora come posso passare da $z$ a $x$ con la formula:
+\begin{equation}
+z = \frac{x-\mu}{\sigma}
+\end{equation}
+allora posso usare la formula inversa per ottenere $x$ da $z$ ovvero:
+\begin{equation}
+z\sigma = x - \mu \implies x = \mu + z\sigma
+\end{equation}
+
+\begin{nota}
+    
+Note sul Cambio di Variabile
+
+La densità di probabilità è la normalizzazione deve essere mantenuta:
 \[
-f_z[z]dz=f_x[x]dx= f_x[x(z)]\frac{dx}{dz}dz= \frac{1}{\sqrt{2 \pi}}e^{\frac{-z^2}{2}}dz= N(0,1)
+\int_{-\infty}^{+\infty} P_z(z) dz = \int_{-\infty}^{+\infty} P_x(x) dx = 1
 \]
-La funzione genratrice di momenti medi è data da:
+La trasformazione:
 \[
-\bar{M}_x[t]=\frac{1}{\sqrt{2 \pi \sigma^2}}\int_{-\infty}^{\infty}\exp(t(x-\mu)- \frac{{(x-\mu)^2}}{2 \sigma^2})dx =  \frac{1}{\sqrt{2 \pi \sigma^2}}\int_{-\infty}^{\infty}\exp(-\frac{{(x-\mu- \sigma^2 t)}^2}{2 \sigma^2})\exp(\frac{\sigma^2 t^2}{2})dx \]
-\[ \boxed{\bar{M}_x[t]=\exp(\frac{\sigma^2 t^2}{2})}
+P_z(z) dz = P_x(x) dx \implies P_z(z) = P_x [x(z)] \left| \frac{dx}{dz} \right|
 \]
-valendo inoltre la formula nota $M_x[t]= e^{\mu t} \bar{M}_x[t]$, ottengo:
+Dove $x(z) = \mu + z\sigma \implies \frac{dx}{dz} = \sigma$, sostituendo si ha:
+
 \[
-\boxed{M_x[t]= \exp(\mu t + \frac{\sigma^2 t^2}{2})}
+P_z(z) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} \sigma = \frac{1}{\sqrt{2 \pi}} e^{-\frac{z^2}{2}}
 \]
-Nelle formule sopra ho utilizzato il fatto che:
-\[
-t(x- \mu) - \frac{{(x-\mu)}^2}{2 \sigma^2}= -\frac{{(x-\mu-\sigma^2t)}^2}{2\sigma^2} + \frac{\sigma^2 t^2}{2}
-\]
+
+\end{nota}
+
+
+
+
+\section{Calcolo Valore di Aspettazione e Varianza}
+
+Come per le altre distribuzioni, possiamo usare la funzione generatrice di momenti per calcolare il valore di aspettazione e la varianza della distribuzione.
+
+Notando che, a differenza delle distribuzioni di probabilità che abbiamo visto precedentemente, in questo caso la variabile $x$ è una variabile continua e non discreta.
+
+\begin{equation}
+\bar{M}_x(t) = E[e^{t(x-\mu)}] = \int_{-\infty}^{+\infty} e^{t(x-\mu)} P(x) dx
+\end{equation}
+
+Sostituendo $P(x)$ si ha:
+
+\begin{equation}
+M_x(t) = \frac{1}{\sqrt{2\pi \sigma^2}} \int_{-\infty}^{+\infty} e^{t(x-\mu)} e^{-\frac{(x-\mu)^2}{2\sigma^2}} dx = \frac{1}{\sqrt{2\pi \sigma^2}} \int_{-\infty}^{+\infty} e^{ \left[ t(x-\mu) - \frac{(x-\mu)^2}{2\sigma^2} \right]} dx
+\end{equation}
+
+Questo si risolve facilmente riscrivendo l'esponente come:
+
+\begin{equation}
+t(x-\mu) - \frac{(x-\mu)^2}{2\sigma^2} = - \frac{\left[ (x-\mu) - \sigma^2 t \right]^2}{2\sigma^2} + \frac{\sigma^2 t^2}{2}
+\end{equation}
+
+
+
+Infatti, se si svolge il quadrato si ottiene:
+\begin{equation}
+-\frac{\left[ (x-\mu) - \sigma^2 t \right]^2}{2\sigma^2} = -\frac{(x-\mu)^2 - 2 \sigma^2 t (x-\mu) + \sigma^4 t^2}{2\sigma^2} = -\frac{(x-\mu)^2}{2\sigma^2} + t(x-\mu) - \frac{\sigma^2 t^2}{2}
+\end{equation}
+Quindi, togliendo il termine aggiuntivo $-\frac{\sigma^2 t^2}{2}$ si ottiene il valore originale:
+
+\begin{equation}
+M_x(t) = \frac{1}{\sqrt{2\pi \sigma^2}} \int_{-\infty}^{+\infty}  \exp\left[ -\frac{\left[ (x-\mu) - \sigma^2 t \right]^2}{2\sigma^2} + \frac{\sigma^2 t^2}{2} \right] dx
+= e^{\frac{\sigma^2 t^2}{2}} \frac{1}{\sqrt{2\pi \sigma^2}} \int_{-\infty}^{+\infty} e^{-\frac{\left[ (x-\mu) - \sigma^2 t \right]^2}{2\sigma^2}} dx
+\end{equation}
+La funzione integranda è una gaussiana con media $\mu' = \mu + \sigma^2 t$ e varianza $\sigma^2$ e per le proprietà di normalizzazione della distribuzione di probabilità, l'integrale vale 1, quindi si ha:
+\begin{equation} \boxed{
+M_x(t) = e^{\frac{\sigma^2 t^2}{2}}}
+\end{equation}
+Da questa si può ricavare alla funzione generatrice $M_x(t)$ usando la relazione:
+\begin{equation}
+M_x(t) = e^{-\mu t} M_x(t) \implies M_x(t) = e^{\mu t} M_x(t)
+\end{equation}
+
 Quando ho la gaussiana centrata in zero $\mu=0$ e varianza unitaria $var(x)=1$, allora ottengo il risultato che:
 \[
 \bar{M}_x[t]=M_x[t]
 \]
+
+per la gaussiana si ha quindi:
+\begin{equation} \boxed{
+M_x(t) = \exp(\mu t + \frac{\sigma^2 t^2}{2})}
+\end{equation}
+
+
+A questo punto il valore di aspettazione si può ottenere derivando $M_x(t)$:
+
+\begin{equation}
+\frac{d M_x}{dt} = \frac{d}{dt} \left[ \exp\left( \mu t + \frac{\sigma^2 t^2}{2} \right) \right] = \left( \mu + \sigma^2 t \right) e^{\mu t + \frac{\sigma^2 t^2}{2}}
+\end{equation}
+Per $t = 0$ si ha:
+\begin{equation}
+\frac{d M_x}{dt} \bigg\rvert_{t=0} = \mu = E[x] 
+\end{equation}
+
+Per calcolare la varianza conviene usare la funzione generatrice di momenti centrali:
+\begin{equation}
+\frac{d M_x}{dt} \bigg\rvert_{t=0} = \sigma^2 e^{\frac{\sigma^2 t^2}{2}} \implies \frac{d^2 M_x}{dt^2} \bigg\rvert_{t=0} = \sigma^2
+\end{equation}
+Per calcolare la derivata seconda::
+\begin{equation}
+\frac{d^2 M_x}{dt^2} = \left[ \sigma^2 + \sigma^4 t^2 \right] e^{\mu t + \frac{\sigma^2 t^2}{2}}
+\end{equation}
+Per $t=0$, l'esponenziale diventa $e^0 = 1$, quindi:
+\begin{equation}
+\frac{d^2 M_x}{dt^2} \bigg\rvert_{t=0} = \sigma^2 
+\end{equation}
+
+Continuando con le derivate si può vedere che tutti i momenti centrali di ordine dispari sono nulli, e quindi in particolare $\mu_3 = 0$, il che implica che la distribuzione è simmetrica.
+
+In particolare, nel caso di $\mu = 0$ e $\sigma^2 = 1$, cioè per $N(0,1)$, si ha che:
+
+\begin{equation}
+M_x(t) = \overline{M_x(t)} = e^{\frac{t^2}{2}}
+\end{equation}
+
+
+
+
+
 \subsection{Variabili alleatori}
-Avendo una variabile del tipo: 
-\[
-S= \sum_{i=1}^{n}\alpha_i x_i
-\]
-dove $x_i \sim N(\mu_i,{\sigma_i}^2)$ e $\alpha_i$ sono i coefficienti. Usando ora le proprietà delle funzioni generatrici di momento e chiamando $y_i= \alpha_i x_i$ ho che:
-\[
-M_S[t]= \prod_{i=1}^{n} M_{y_i}[t]= \prod_{i=1}^{n} M_{x_i}[\alpha_i t]= \prod_{i=1}^{n} \exp(\mu_i \alpha_i t + \frac{{\sigma_i}^2{\alpha_i}^2 t^2}{2})=\exp((\sum_{i=1}^{n}\alpha_i \mu_i)t   + \frac{1}{2}(\sum_{i=1}^{n}{\sigma_i}^2{\alpha_i}^2)t^2)
-\]
-\[
-M_S[t]= \exp(\tilde{\mu}t + \frac{1}{2}{\tilde{\sigma}}^2 t^2)
-\]
+
+Si può dimostrare anche un importante teorema: combinazioni lineari di variabili casuali normali e statisticamente indipendenti tra loro sono ancora distribuiti secondo una legge normale.
+Per dimostrarlo si può usare la funzione generatrice di momenti. Supponiamo che $X_1, X_2, \dots, X_M$ siano variabili aleatorie indipendenti ognuna descritta da una gaussiana $N_i(\mu_i, \sigma_i^2)$. Una combinazione lineare si può scrivere come:
+
+
+\begin{equation}
+S = \sum_{i=1}^{k} a_i x_i
+\end{equation}
+
+\textit{una variabile aleatoria}
+dove $x_i \sim N(\mu_i,{\sigma_i}^2)$ e $\alpha_i$ sono i coefficienti. Usando ora le proprietà delle funzioni generatrici di momento e chiamando $y_i= \alpha_i x_i$ 
+e vogliamo dimostrare che anche $S$ ha una densità di probabilità gaussiana. La funzione generatrice di momenti di ogni $x_i$ è data da:
+
+\begin{equation}
+M_{x_i}(t) = \exp \left( \mu_i t + \frac{1}{2} \sigma_i^2 t^2 \right) = E[e^{t x_i}]
+\end{equation}
+
+Abbiamo visto che in generale
+
+\begin{equation}
+M_{x+y}(t) = M_x(t) M_y(t)
+\end{equation}
+il che ovviamente si può estendere più in generale e una sommatoria, cioè se $z = \sum_{i} x_i$, allora:
+\begin{equation}
+M_z(t) = \prod_{i} M_{x_i}(t)  
+\end{equation}
+Noi abbiamo in più le moltiplicazioni $x_i$ coefficienti, quindi vediamo che succede al caso più semplice $y = ax$. In questo caso:
+\begin{equation}
+M_y(t) = E[e^{t y}] = E[e^{tax}] = \prod_{i} M_x(at) 
+\end{equation}
+Se ora torniamo al caso da risolvere di $S = \sum_{i} a_i x_i$, e facciamo il calcolo di $S$ dai dati $y_i = a_i x_i$ e quindi:
+\begin{equation}
+S = \sum_{i} y_i, \quad  
+\end{equation}
+quindi
+\begin{equation}
+M_s(t) = \prod_{i} M_{y_i}(t)  
+\end{equation}
+Ora sostituisco la forma funzionale di $M_y(t)$ e ho:
+\begin{equation}
+M_s(t) = \prod_{i} \left[ \exp \left( \mu_i a_i t + \frac{1}{2} \sigma_i^2 a_i^2 t^2 \right) \right]
+\end{equation}
+Per le proprietà degli esponenziali che $\prod_i e^{x_i} = e^{\sum_i x_i}$:
+\begin{equation}
+M_s(t) = \exp \left[ \sum_{i} \mu_i a_i t + \frac{1}{2} \left( \sum_{i} \sigma_i^2 a_i^2 \right) t^2 \right]
+\end{equation}
 dunque trovo che le variabili  dipendente linearimente da altre varaibili in maniera lineari, che hanno distribuzione normale, allora anche essa avrà distribuzione normale.
+Quindi la funzione generatrice di momenti ha la forma funzionale di quella gaussiana con:
+
+\begin{equation}
+\mu_s = \sum_{i} \mu_i a_i
+\end{equation}
+
+\begin{equation}
+\sigma_s^2 = \sum_{i} \sigma_i^2 a_i^2
+\end{equation}
+Una cosa importante è che la gaussiana è l'unica distribuzione con varianza finita che gode di queste proprietà. Per esempio, per la Poissoniana, si ha che se $y = \sum_i x_i$ allora se le $x_i$ sono descritte da una Poissoniana allora anche $y$ è descritta da una Poissoniana, ma se moltiplico per una costante, non ottengo ancora una Poissoniana, cioè se $y=ax$, questo perché per la Poissoniana:
+\begin{equation}
+M_x(t) = \exp [\lambda (e^t - 1)] \quad \text{quindi, se è}
+\end{equation}
+\begin{equation}
+M_y(t) = M_x(at) = \exp [\lambda (e^{at} - 1)]
+\end{equation}
+e l'unico caso in cui $M_y(t)$ si comporta come $M_x(t)$ se $a=1$.
+
+(In sostanza, il trucco funziona per la gaussiana perché l'esponente di $M_x(t)$ è un polinomio di 2° grado e quindi nel passaggio $t e^{ax} = e^{a x}$, all'esponente il grado del polinomio non cambia).
+
+
+
+
+
 
 
 \pagebreak
@@ -2057,152 +2239,6 @@ Essa mi garantisce:
 \end{itemize}
 
 
-\end{itemize}
-
-
-\section{Funzione di distribuzione di Gauss}
-Data $x$ variabile casuale:
-\[
-f(x)=N(\mu,\sigma^2)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
-\]
-    
-    
-\begin{center}
-    
-    \begin{tikzpicture}[scale=1.5]
-    
-    
-    \filldraw[yellow!70!orange, thick] (0,0) ellipse (1.5 and 1);
-    
-    \filldraw[yellow!70!orange, thick] (1.8,0.7) circle (0.7);
-    
-
-    \filldraw[white] (2,0.9) circle (0.15);
-    \filldraw[black] (2,0.9) circle (0.05);
-    
-
-    \filldraw[orange!80!red] (2.3,0.7) -- (2.8,0.7) -- (2.3,0.4) -- cycle;
-    
- 
-    \draw[thick, yellow!60!brown] 
-        (-0.5,0.3) to[out=30, in=210] (0.5,0.8)
-        (-0.6,0) to[out=20, in=200] (0.6,0.5);
-    
-   
-    \draw[red!80!black, thick] 
-        (-0.3,-1) -- (-0.3,-1.3) -- (-0.5,-1.4)
-        (0.3,-1) -- (0.3,-1.3) -- (0.5,-1.4);
-    
-    
-    \draw[thick, yellow!60!brown] (-1.4,0.2) to[out=120, in=240] (-1.6,0.5);
-    
- 
-    \draw[white, fill=white] (2.5,1.5) -- (3,1.8) -- (2.8,1.3) -- cycle;
-    \node at (3.3,1.8) {\footnotesize \textbf{Quarck!}};
-    
-    \end{tikzpicture}
-\end{center}
-\pagebreak
-Essa rispetta le proprietà delle funzioni di distribuzione:
-\begin{itemize}
-    \item è normalizzata 
-    \[
-        \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} e^{-\frac{(x-\mu)^2}{2\sigma^2}} \, dx = 1
-        \]
-    \item il valore di aspettazione é $\mu$
-    \[
-        E[x] = \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} x \, e^{-\frac{(x-\mu)^2}{2\sigma^2}} \, dx = \mu_x
-        \]
-    \item la varianza vale $\sigma^2$
-    \[
-        Var(x) = \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} (x - \mu)^2 \, e^{-\frac{(x-\mu)^2}{2\sigma^2}} \, dx = \sigma_x^2
-        \]
-    
-\end{itemize}
-Per centrarla in $0$ scrivo $y=x-\mu$ e $dy=dx$, ottengo
-\[
-f(y; 0, \sigma^2)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(y)^2}{2\sigma^2}}
-\]
-per centrarla in $0$ e con $\sigma^2=1$ pongo $y=\frac{x-\mu}{\sigma}$ e $dy=\frac{dx}{\sigma}$ si ha:
-\[
-f(y; 0, 1)=\frac{1}{\sqrt{2\pi}}e^{-\frac{(y)^2}{2}}
-\]
-questa è detta $distribuzione$ $normale$ $standard$.
-
-E intereesante notare che in questo caso la funzione di ripartizione ha l'interssante propietà:
-\[
-F(-x)=1-F(x)
-\]
-Se vogliamo trovare la propbailità che $x$ stia in un certo intervallo $[a,b]$ avremo:
-\[
-P\pqty{a\leq x\leq b}=P(b \leq x) - P(a \leq x)=F(b)-F(a)
-\]
-Per la variabile standardizzata $y$:
-\[
-P\pqty{\frac{x- \mu}{\sigma} \leq \frac{b- \mu}{\sigma}} - P \pqty{\frac{x- \mu}{\sigma} \leq \frac{a- \mu}{\sigma}}=F\pqty{\frac{b- \mu}{\sigma}}-F\pqty{\frac{a- \mu}{\sigma}}
-\]
-Scegliendo come estremi $a= \mu - n\sigma$ e $b= \mu + n\sigma$:
-\[
-P(\mu - n\sigma \leq x \leq \mu + n\sigma)=F(n)-F(-n)=2F(n)-1
-\]
-Si può concludere che risulta normale trovare valori fuori dall'intervallo $\pm \sigma$ poichè, per esempio, per $n=3$ la probabilità è di $0.980$.
-Graficamente si ha che:
-\begin{itemize}
-    \item Nel grafico a campanana il valore che massimizza $f$ è $\mu$, il valore a mezza altezza: 
-    \[
-    f(x)=\frac{1}{2} \frac{1}{\sqrt{2\pi}\sigma}
-    \]
-    la cui larghezza vale: $2\sqrt{2 \ln(2)}\sigma$
-
-\end{itemize}    
-
-\subsection{Esempio di distirbuzione di Gauss}
-Data una distribuzione binomiale abbiamo che la variabile casuale ha il seguentee valore:
-
-Nelle ipotesi che:
-\begin{itemize}
-    \item l'errore delle misure è $u=a-x$ ($x$=valore misurato, $a$= valore vero)
-    \item l'errore è dovuto da $n$ errori, introducendo un errore finale $\varepsilon$
-\end{itemize}
-Il contributo di $\varepsilon$ sarà sia positivo che negativo diviso a 50/50 (legge dei grandi numeri), infatti $u_k= \varepsilon k - (n-k) \varepsilon$, dove k mi da un contributo positivo, mentre (n-k) negativo
-Di conseguenza il suo valore di aspettazione $E[u_k]=0$, per il limite di $n \rightarrow \infty$ ho una distribuzione gaussiana centrata in 0.
-
-\subsection{Dimostrazione Euriatica}
-Vogliamo dimostrare che la distribuzione degli errori accidentali è gaussiana.
-Abbiamo visto che nel caso di k deviazioni elementari positive su i totali il valore dell' errore e la probabilità sono:
-\[
-u_k=(2k-n) \varepsilon \hspace{1cm} P(k)=\frac{n!}{k!(n-k)!} (\frac{1}{2})^n
-\]
-se consideriamo che k+1 valori producono deviazione positive posso fare una media tra le due trovando che:
-\[
-u^M=(2k-n+1)\varepsilon \hspace{1cm} \Delta u = 2 \varepsilon
-\]
-
-Per $\Delta U \rightarrow 0$, posso assumere che il valore sia dato dal valore medio di $P(k) \; P(k+1)$; 
-la \textbf{densità di probabilità} dell'errore per l'intervallo considerato:
-\[
-y(u)=\frac{P}{\Delta U} \hspace{1cm } P= \frac{1}{2}(P(k) + P(k+1))
-\]
-mentre:
-\[
-\Delta y = \frac{\Delta P}{\Delta U} \hspace{1cm } P= (P(k) - P(k+1))
-\]
-Da cui posto alcuni conti posso trovare che:
-\[
-\frac{\Delta y}{y}=\frac{\Delta P}{P}= -\frac{u \Delta u}{\sigma^2}
-\]
-con $\sigma^2=(n+1)\varepsilon^2$, che diventa una quantià finita al limite, ho che:
-\[
-    y(u)=\frac{1}{\sqrt{2\pi} \sigma}e^{-\frac{(u)^2}{2 \sigma^2}}
-\]
-
-Breve riassunto:
-\begin{itemize}[itemsep=0.3em]
-    \item defi. variabile casuale discreta o continua
-    \item def. funzione di ripartizione $F_x(x)$
-    \item def. di funzione di distribuzione e di densità di variabili casuali
-    \item Valori di aspettazione come indici(posizione/dispersione)
-    \item esempi di funzioni di distribuzioni
 \end{itemize}
 
 

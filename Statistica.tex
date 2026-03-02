@@ -1675,7 +1675,6 @@ Per questo motivo, quando si rappresenta un istogramma, si aggiungono spesso del
 È fondamentale sottolineare che l'istogramma non è una distribuzione di probabilità continua, ma una stima basata su un numero finito di eventi. Il fatto che la fluttuazione dei conteggi nei bin segua una statistica binomiale (o approssimativamente Poissoniana) riguarda il processo di misura e campionamento, ed è concettualmente distinto dalla forma funzionale $P(x)$ del processo fisico sottostante.
 
 Se $P_i$ fosse nota a priori, per un confronto visivo con l'istogramma si potrebbe graficare la curva teorica sopra i dati. Tuttavia, è necessario scalare opportunamente la funzione, poiché l'istogramma riporta il numero di conteggi $M_i \approx P(x_{\text{centro}}) \Delta x N$.
-In Python (ad esempio con \texttt{matplotlib}), utilizzando l'opzione \texttt{density=True}, l'istogramma viene normalizzato automaticamente (dividendolo per $N \Delta x$) rendendolo direttamente confrontabile con la densità di probabilità $P(x)$.
 
 \begin{nota}
     

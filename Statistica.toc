@@ -1,0 +1,70 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {section}{\numberline {0}Contatti e informazioni}{4}{section.0}%
+\contentsline {section}{\numberline {1}Introduzione / Ripasso di Bressan}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Definizioni di probabilità}{5}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Definizione assiomatica di probabilità}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Proprietà della misura di probabilità}{5}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Probabilità condizionata}{6}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Probabilità delle cause}{6}{subsubsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.4}Teorema di Bayes }{6}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Indipendenza}{6}{subsection.1.5}%
+\contentsline {subsection}{\numberline {1.6}Cenni di calcolo combinatorio e fattoriale}{6}{subsection.1.6}%
+\contentsline {subsection}{\numberline {1.7}Variabili casuali e funzione di ripartizione}{7}{subsection.1.7}%
+\contentsline {subsubsection}{\numberline {1.7.1}Funzione di ripartizione}{7}{subsubsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.8}Densità di probabiità}{8}{subsection.1.8}%
+\contentsline {subsubsection}{\numberline {1.8.1}Proprietà della funzione densità di probabilità}{8}{subsubsection.1.8.1}%
+\contentsline {section}{\numberline {2}Introduzione e Statistica}{9}{section.2}%
+\contentsline {subsubsection}{\numberline {2.0.1}Scatter Plot ed Errori}{9}{subsubsection.2.0.1}%
+\contentsline {subsubsection}{\numberline {2.0.2}Istogramma}{9}{subsubsection.2.0.2}%
+\contentsline {subsection}{\numberline {2.1}Grandezze Statistiche: Media e Varianza}{9}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}\color {red}Parte di Bressan: Valore di Aspettazione}{9}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Media Aritmetica}{10}{subsubsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.3}\color {red}Parte di Bressan: Varianza e Deviazione Standard}{10}{subsubsection.2.1.3}%
+\contentsline {subsubsection}{\numberline {2.1.4}Deviazione Standard e correzione di Bessel}{11}{subsubsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.2}Propagazione degli Errori}{12}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}\color {red}Parte di Bressan: Errore di sensibilità e distribuzione uniforme}{12}{subsubsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.3}Errore di Sensibilità e Distribuzione Uniforme}{13}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Metodo dei Minimi Quadrati}{13}{section.3}%
+\contentsline {subsubsection}{\numberline {3.0.1}\color {red}Parte di Bressan: Metodo dei Minimi Quadrati}{13}{subsubsection.3.0.1}%
+\contentsline {subsection}{\numberline {3.1}Il Principio}{14}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}\color {red}Parte di Bressan: Fit di una retta (Regressione Lineare)}{14}{subsubsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.2}Fit Lineare ($y = mx + q$)}{15}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}\color {red}Parte di Bressan: Caso non lineare}{16}{subsubsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.3}Caso Non Lineare e Linearizzazione}{17}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Momenti e Distribuzioni}{18}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Momenti della funzione di distribuzione}{18}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Distribuzione uniforme discreta}{19}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Distribuzione uniforme continua}{19}{subsection.4.3}%
+\contentsline {paragraph}{Dimostrazione:}{20}{section*.9}%
+\contentsline {subsection}{\numberline {4.4}Distribuzione binomiale o di Bernoulli}{21}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Proprietà della distribuzione binomiale}{21}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}Funzione generatrice dei momenti della Binomiale}{22}{subsubsection.4.4.2}%
+\contentsline {paragraph}{Limiti della Binomiale:}{22}{section*.10}%
+\contentsline {paragraph}{Applicazione agli istogrammi:}{22}{section*.11}%
+\contentsline {section}{\numberline {5}Codice python e Distribuizione di Poisson}{23}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Esempi Python: La Distribuzione Binomiale}{23}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}\color {red}Parte di Bressan: Distribuzione di Poisson}{24}{subsubsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.2}Confronto: Poisson vs Binomiale}{25}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Calcolo dei Momenti tramite la Funzione Generatrice dei Momenti}{26}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Calcolo di Media e Varianza}{26}{subsubsection.5.3.1}%
+\contentsline {paragraph}{1. Media (Valore Atteso):}{27}{section*.17}%
+\contentsline {paragraph}{2. Varianza:}{27}{section*.18}%
+\contentsline {subsection}{\numberline {5.4}Relazione con la Binomiale e Somma di Variabili}{27}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Limite della Funzione Generatrice dei Momenti Binomiale}{27}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Confronto delle forme (Code della distribuzione)}{27}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}Somma di Poissoniane Indipendenti}{28}{subsubsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.5}Esempi Python: Grafici e Confronti}{28}{subsection.5.5}%
+\contentsline {subsubsection}{\numberline {5.5.1}1. Visualizzazione della Distribuzione Binomiale}{28}{subsubsection.5.5.1}%
+\contentsline {subsubsection}{\numberline {5.5.2}2. Esercizio Poisson: La notte di San Lorenzo}{30}{subsubsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.6}Rappresentazione grafica dei dati (Istogrammi)}{32}{subsection.5.6}%
+\contentsline {section}{\numberline {6}???}{33}{section.6}%
+\contentsline {section}{\numberline {7}Parte di Bressan da integrare dopo}{34}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Distribuzione di Maxwell-Boltzmann}{34}{subsection.7.1}%
+\contentsline {section}{\numberline {8}Funzione di distribuzione di Gauss}{36}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Esempio di distirbuzione di Gauss}{37}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Dimostrazione Euriatica}{38}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Funzione di distribuzione per variabili casuali}{38}{section.9}%
+\contentsline {section}{\numberline {10}Funzione di distribuzione congiunta}{41}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Stima dei parametri}{41}{subsection.10.1}%
+\contentsline {section}{\numberline {11}Confronto istogramma/gaussiana}{42}{section.11}%

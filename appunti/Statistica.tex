@@ -78,15 +78,15 @@
   before skip=1em,
   after skip=1em,
   left=1em,
-  borderline west={2pt}{0pt}{blue},
+  borderline west={2pt}{0pt}{black},
   fontupper=\normalfont,
   before upper={\noindent\textbf{Definizione}:\quad}
 }
 
 
-\newtheorem{example}{Example}
+\newtheorem*{example}{Esempio}
 \newtheorem{theorem}{Teorema}
-
+\newtheorem*{theorem*}{Teorema}
 
 \theoremstyle{remark}
 \newtheorem{osservazione}{\textbf{\color{ForestGreen}Osservazione}}
@@ -1084,6 +1084,23 @@ M_Z(t) = E[e^{tX}]E[e^{tY}] = M_X(t)M_Y(t)
 \]
 Questo è dovuto al fatto che $\Omega_X \cap \Omega_Y=0$, dunque vale che $f_{X+Y}(x)=f_X(x) f_Y(x)$
 
+\subsection{Approfondimento sulla funzione caratteristica}
+Quella che noi abbiamo visto come i momenti algebrici e centrali, in realtà sono solo due casi particolari di una famiglia più ampia di momenti, 
+che possono essere generati da funzioni più generali. La funzione caratteristica è un esempio di funzione generatrice dei momenti che utilizza l'esponenziale complesso $e^{itx}$ invece di $e^{tx}$.\\
+La funzione caratteristica è la trasformata della mia p.d.f (probability density function); essa è ben definita valendo $f_X(x) \in L^2[\mathbb{R}]$
+\[
+\phi(t) = \int_{-\infty}^{\infty} e^{itx} f_X(x) dx = E[e^{itx}]
+\]
+In questo caso vale la stessa dimostrazione attraverso l'espansione dell'esponenziale per mostrare come da questa si possono ricavare i momenti, dove i momenti sono definiti come:
+\[
+E[x^m]= \mu_m = \left[ \frac{\partial ^m \phi(t)}{\partial {(it)}^m}\right]_{t=0}
+\]
+La funzione caratteristica è particolarmente utile perché, essendo la trasformata di Fourier della p.d.f., permette di ricavare la distribuzione di probabilità a partire dalla funzione caratteristica stessa tramite la trasformata inversa di Fourier:
+\[
+f_X(x) = \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{-itx} \phi(t) dt
+\]
+Dunque due distribuzioni di probabilità che hanno gli stessi momenti (dunque la stessa funzione caratteristica), sono la stessa distribuzione di probabilità. 
+Questo è dovuto al fatto che la $\mathcal{F}$-trasformata in $L^2[\mathbb{R}]$ rappresenta una biezione tra due spazi.
 \subsection{Distribuzione binomiale o di Bernoulli}
 \emph{Questa parte è stata integrata con gli appunti di Bressan}
 \vspace{0.4 cm}
@@ -1637,7 +1654,7 @@ confronto_binom_poiss(p=0.01, n_list=[100, 1000, 5000, 10000])
     
     \begin{subfigure}[b]{0.8\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Immagini/poisson y n e p.png}
+        \includegraphics[width=\textwidth]{Immagini/poisson y=10.png}
         \caption{}
     \end{subfigure}
     \hfill 
@@ -1677,12 +1694,27 @@ Per questo motivo, quando si rappresenta un istogramma, si aggiungono spesso del
 Se $P_i$ fosse nota a priori, per un confronto visivo con l'istogramma si potrebbe graficare la curva teorica sopra i dati. Tuttavia, è necessario scalare opportunamente la funzione, poiché l'istogramma riporta il numero di conteggi $M_i \approx P(x_{\text{centro}}) \Delta x N$.
 
 \begin{nota}
-    
 \begin{enumerate}
     \item L'approssimazione binomiale e Poissoniana per i conteggi nei bin è valida propriamente se $N$ non è fissato a priori, ma è esso stesso una variabile aleatoria (ad esempio, se si acquisiscono conteggi per un intervallo di tempo fissato, il numero totale $N$ di eventi varierà da esperimento a esperimento). Se invece $N$ è fissato rigorosamente (si decide di acquisire esattamente un certo numero di eventi totali), la distribuzione congiunta dei conteggi nei vari bin segue una distribuzione \textbf{multinomiale}.
     \item Qualunque confronto tra l'istogramma e la curva teorica $P(x)$ basato sulla sovrapposizione grafica è puramente qualitativo. Esistono metodi statistici quantitativi (test di bontà del fit) per valutare la compatibilità, che verranno trattati in seguito.
 \end{enumerate}
 \end{nota}
+
+\begin{example}
+    Se abbiamo una generazione causale di numeri che segue una distribuzione uniforme: $U(0,1)$, allora avrò:
+    \[
+    P_i=\int_{x_i}^{x_{i+1}} 1 \, dx = \Delta x
+    \]
+    poichè la distribuzione è fatta così
+    \[
+    U(0,1)= 
+    \begin{cases}
+    \text{cost.} &  \text{se x $\in$ (0,1)} \\
+    0 & \text{altrimenti}
+    \end{cases}
+    \]
+    poichè deve essere normalizzata deve essere $cost.=1$
+\end{example}
 
 \newpage
 
@@ -2478,5 +2510,205 @@ La deviazione standard della binomiale è circa $\sqrt{n_k^m}$ se $n_{tot}>>>n_k
 
 
 \pagebreak
+\lezione{Teorema del limite centrale}{05 Marzo 2026}
+
+Si tratta del teoerma fondamentale della statistica, che ci permette di utilizzare la distribuzione gaussiana ogni qualvolta svolgiamo una misurazione.
+\begin{theorem*}
+    Supponiamo di avere $n$ variabili aleatorie \textbf{indipendenti} $\{x_1,...,x_n\}$, supponiamo che ciascuna abbia densità di probabilità $P_i(x)$,
+    supponiamo \textbf{esistano finite} $E[x_i]=\mu_i$ e $\text{var}(x_i)=\sigma_i^2$.
+
+    Definiamo la nuova variabile aletoria $S$:
+    \[
+    S= \sum_{i=1}^{n} x_i
+    \]
+    con aspettazione e varianza (dimostrabili):
+    \[
+    E[S]=\sum_{i=1}^{n} x_i \hspace{2cm} \text{var}(S)=\sum_{i=1}^{n} \sigma_i^2
+    \]
+    allora per $n \to \infty$ $S \thicksim \mathcal{N} (\sum_{i=1}^{n} x_i,\sum_{i=1}^{n} \sigma_i^2)$
+\end{theorem*}
+Nella pratica basta $n=10$. 
+
+Posso riscriverlo, svolgendo il cambio di variabili $z=\frac{x-\mu}{\sigma}$, con la variabile aletoria:
+\[
+\frac{S-\sum_{i=1}^{n} \mu_i}{\sqrt{\sum_{i=1}^{n} \sigma_i}} \thicksim \mathcal{N}(0,1)
+\]
+
+Restringendo le ipotesi:
+\begin{itemize}
+    \item $P_i(x_i) = P(x)$
+    \item $\mu_i=\mu$
+    \item $\sigma_i=\sigma$
+\end{itemize}
+allora: 
+\begin{itemize}
+    \item $E[S]=n \mu$
+    \item $\text{var}(x)=n\sigma^2$
+\end{itemize}
+e la variabile standardizzata diviene:
+\[
+\frac{S-n\mu}{\sigma \sqrt{n}} = \frac{\frac{\sum_{i=1}^{n} x_i}{n}-\mu}{\frac{\sqrt{n}}{n} \sigma} = \frac{\bar{x}-\mu}{\frac{\sqrt{n}}{n} \sigma} \thicksim \mathcal{N}(0,1)
+\]
+dove ho introdotto la \textit{media campionaria}:
+\[
+\bar{x}=\frac{\sum_{i=1}^{n}x_i}{n}
+\]
+per tornare alla variabile non standardizzata compio il seguente cambiamento di variabili:
+\[
+z= \frac{\bar{x}-\mu}{\frac{\sigma}{\sqrt{n}}}
+\bar{x}=\mu + z \frac{\sigma}{\sqrt{n}} \overset{n\to\infty}{\thicksim} \mathcal{N}(\mu,\frac{\sigma}{\sqrt{n}})
+\]
+
+\textit{Dimostrazione:}
+Dimostriamo il caso più semplice:
+\[
+\lim_{n \to \infty} \frac{S-n\mu}{\sigma \sqrt{n}} \thicksim \mathcal{N}(0,1)
+\]
+Definiamo le variabili $y_i$:
+\[
+y_i=\frac{x_i - \mu}{\sigma}
+\]
+che ha valore di aspettazione
+\[
+E[y_i]=E[\frac{x_i - \mu}{\sigma}]=\frac{1}{\sigma}E[x-\mu]=\frac{1}{\sigma}(E[x]-\mu)=0
+\]
+e varianza:
+\[
+\text{var}(y_i)=\text{var}(\frac{x_i - \mu}{\sigma})=\frac{1}{\sigma^2}\text{var}(x_i-\mu)=\frac{1}{\sigma^2}\text{var}(x_i)=1
+\]
+infatti per ogni variabile definita come $v=x-c$ (c costante), ottengo:
+\[
+E[v]=E[x]-c \]
+\[
+\text{var}(v)=E[(x-c)^2]-E[x-c]^2=E[x^2]-2cE[x]+c^2-(E[x]-c)^2=E[x^2]-E[x]^2=\text{var}(x)
+\]
+Definiamo allora un' altra variabile $Z$:
+\[
+Z=\frac{\sum_{i=1}^{n} y_i}{\sqrt{n}}
+\]
+con funzione generatrice di momenti:
+\[
+M_Z (t)=\prod_{i=1}^{n}M_{y_i}(\frac{t}{\sqrt{n}})= \prod M_y(\frac{t}{\sqrt{n}})= \left[M_y(\frac{t}{\sqrt{n}})\right]^n
+\]
+dove abbiamo utilizzato il fatto che le variabili abbiano tutte stesse distribuzioni, allora calcoliamo:
+\[ 
+M_y(\frac{t}{\sqrt{n}})=E[e^{\frac{t}{\sqrt{n}}y}] \approxeq 1+ \frac{t}{\sqrt{n}}\underbrace{E[y]}_{=0}+\frac{t^2}{2n}E[y^2]+ \cdots = 1+\frac{t^2}{2n}+ \cdots 
+\]
+notando che:
+\[
+\text{var}(y)=E[y^2]-\left(E[y]\right)^2=E[y^2]=1
+\]
+dunque si ottiene:
+\[
+M_y(\frac{t}{\sqrt{n}})=1+\frac{t^2}{2n}+ \dots
+\]
+e tornando alla variabile $Z$:
+\[
+M_Z(t)=\left(1+\frac{t^2}{2n}\right)  \overset{n\to\infty}{\rightarrow} 1+\frac{t^2}{2}+ \cdots = e^{\frac{t^2}{2}} 
+\]
+che è la funzione generatrice di momenti della distribuzione normale standard, dunque $Z \thicksim \mathcal{N}(0,1)$ e con un cambio di variabile ottengo il risultato voluto.
+
+Infine:
+\[
+Z=\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left(\frac{x_i-\mu}{\sigma}\right) = \frac{\sum_{i=1}^{n}x_i-\mu}{\sqrt{n}\sigma} \thicksim \mathcal{N}(0,1)
+\]
+q.e.d. \\
+
+Allora facendo una misura, ottenendo $n$ risultati e volendo riportarare il risultato dovrò scrivere:
+\[
+\bar{x} \pm \frac{s}{\sqrt{n}}
+\]
+dove $s$ è la varianza calcolata nel modo usuale (con correzione):
+\[
+s=\sqrt{\frac{1\sum_{i=1}^{n} (x_i-\bar{x})^2}{n-1}}
+\]
+
+
+\pagebreak
+
+
+
+Supponiamo di avere una serie di variabili con distribuzione uniforme\footnote{
+    $P(u)= \mathcal{U}(0,1)$}:
+\[
+P(u) =
+\begin{cases}
+    1 & u \in [0,1] \\
+    0 & u \notin [0,1]
+\end{cases}
+\]
+Calcolando aspettazione e varianza 
+\[
+E[u]=\int_{0}^{1} P(u)u du=\int_{0}^{1} u du=\frac{1}{2}
+\]\[
+\text{var}(u)=E[u^2]-(E[u])^2=\frac{1}{12}
+\]
+La variabile standardizzata sarà:
+\[
+\frac{\sum_i u_i-nE[u]}{\sqrt{n\text{var}(u)}}=\frac{\sum_i u_i-\frac{n}{2}}{\sqrt{\frac{n}{12}}} \thicksim \mathcal{N}(0,1)
+\]
+molto utilizzata nel caso $n=12$, poichè in tal caso:
+\[
+\sum_i u_i-6 \thicksim \mathcal{N}(0,1)
+\]
+dunque per simulare un generatore casuale di numeri con distribuzione normale posso utilizzare questa approssimazione: prendo 12 numeri generati uniformemente, li sommo, dopodichè gli sottraggo 6.
+\subsection{Trasformazione di Box-Muller}
+Un modo più corretto per fare quanto svolto prima è applicare l'\textbf{approssimazione di Box-Muller}.
+
+Ma prima, un piccolo compendio: supponiamo di avere una variabile $y=f(x)$ allora la distribuzione sarà $P_y(y)=P_x[x(y)]\left| \frac{dx}{dy}\right|$
+
+Nel caso di più variabili:
+$P_y(y_1, ..., y_n)=P_x(x_1,..., x_n) \left|J\right| 
+$
+dove $\mod J$ è il determinante della matrice Jacobiana.
+
+Supponendo di avere le variabili $X_1,X_2 \approx u(0,1)$, posso definire le variabili:
+\begin{itemize}
+    \item $Y_1=\sqrt{-2 \ln X_1} \cos(2\pi X_1)$
+    \item $Y_2=\sqrt{-2 \ln X_2} \cos(2\pi X_2)$
+\end{itemize}
+e si dimostra che esse hanno distribuzione gaussiana:
+
+\textit{Dimostrazione:}
+Prima troviamo la forma funzionale di $X_i(Y_i)$:
+\[
+\frac{Y_2}{Y_1}=\tan(2\pi X_2) \rightarrow X_2 = \frac{1}{2\pi}\arctan(\frac{Y_2}{Y_1})
+\]
+e 
+\[
+Y_1^2+Y_2^2=-2\ln(X_1) \rightarrow X_1=\exp(-\frac{1}{2}(Y_1^2+Y_2^2))
+\]
+allora avrò la matrice Jacobiana:
+\[
+\left(
+\begin{matrix}
+    \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\
+    \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2}
+\end{matrix}
+\right)
+\]
+con determinante: 
+\[
+\left|J\right|  = \frac{\partial X_1}{\partial Y_1} \frac{\partial X_2}{\partial Y_2} - \frac{\partial X_1}{\partial Y_2}\frac{\partial X_2}{\partial Y_1}
+\]
+dove:
+\[
+\frac{\partial X_1}{\partial Y_1} = -Y_1 \exp(-\frac{1}{2}(Y_1^2+Y_2^2)) \hspace{2cm} \frac{\partial X_1}{\partial Y_2}= -Y_2 \exp(-\frac{1}{2}(Y_1^2+Y_2^2))
+\]
+\[
+\frac{\partial X_2}{\partial Y_1} = \frac{1}{2\pi}\frac{1}{1 + \frac{Y_2^2}{Y_1^2}}\left(-\frac{Y_2}{Y_1^2}\right) \hspace{2cm} \frac{\partial X_2}{\partial Y_2} = \frac{1}{2\pi}\frac{1}{1 + \frac{Y_2^2}{Y_1^2}}\left(\frac{1}{Y_1}\right)
+\]
+e trovo:
+\[
+\left|J\right| =\frac{1}{2\pi} \exp (-\frac{1}{2}(Y_1^2+Y_2^2)) \frac{1}{Y_1^2+Y_2^2}(Y_1^2+Y_2^2) = \frac{1}{2\pi} \exp (-\frac{1}{2}(Y_1^2+Y_2^2)) 
+\]
+allora:
+\[
+to be continued
+\]
+
+
+
+
 
 \end{document}

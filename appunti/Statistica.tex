@@ -2059,8 +2059,229 @@ Questa espressione corrisponde a una Poissoniana solo se $a=1$.
 Il motivo per cui il "trucco" funziona per la gaussiana risiede nel fatto che l'esponente della sua $M_x(t)$ è un polinomio di secondo grado in $t$: la sostituzione $t \to at$ mantiene il polinomio di secondo grado, preservando così la forma della distribuzione.
 
 
+\lezione{Teorema del Limite Centrale}{05 Marzo 2026}
 
-\lezione{???}{5 Marzo 2026}
+Il Teorema del Limite Centrale è un risultato fondamentale della statistica. Esso giustifica l'utilizzo della distribuzione gaussiana (o normale) per descrivere i risultati di misurazioni fisiche, specialmente quando queste sono affette da molteplici cause di errore indipendenti.
+
+\begin{theorem*}
+    Consideriamo un insieme di $n$ variabili aleatorie \textbf{indipendenti} $\{x_1, \dots, x_n\}$.
+    Assumiamo che ciascuna variabile $x_i$ abbia una densità di probabilità $P_i(x)$ e che il suo valore atteso (media) $E[x_i]=\mu_i$ e la sua varianza $\text{var}(x_i)=\sigma_i^2$ \textbf{esistano e siano finiti}.
+
+    Definiamo la variabile aleatoria $S$ come la somma delle $n$ variabili:
+    \[
+    S = \sum_{i=1}^{n} x_i
+    \]
+    
+    Il valore atteso e la varianza di $S$ sono dati da (proprietà dimostrabili per variabili indipendenti):
+    \[
+    E[S] = \sum_{i=1}^{n} \mu_i \hspace{2cm} \text{var}(S) = \sum_{i=1}^{n} \sigma_i^2
+    \]
+    
+    Il teorema afferma che, per $n \to \infty$, la distribuzione di $S$ tende a una distribuzione normale:
+    \[
+    S \overset{n \to \infty}{\sim} \mathcal{N} \left(\sum_{i=1}^{n} \mu_i, \sum_{i=1}^{n} \sigma_i^2 \right)
+    \]
+\end{theorem*}
+
+Nella pratica, l'approssimazione è spesso già accettabile per $n \ge 10$.
+
+È possibile riformulare il teorema utilizzando la variabile standardizzata. Applicando la trasformazione $z = \frac{\text{valore} - \text{media}}{\text{dev.std}}$, otteniamo:
+\[
+Z_n = \frac{S - \sum_{i=1}^{n} \mu_i}{\sqrt{\sum_{i=1}^{n} \sigma_i^2}} \overset{n \to \infty}{\sim} \mathcal{N}(0,1)
+\]
+
+\subsection{Caso Particolare: Variabili I.I.D.}
+Un caso molto comune è quello in cui le variabili $x_i$ sono \textbf{indipendenti e identicamente distribuite} (I.I.D.). In questo scenario, le ipotesi si semplificano:
+\begin{itemize}
+    \item Tutte le variabili hanno la stessa distribuzione: $P_i(x) = P(x)$;
+    \item Stessa media: $\mu_i = \mu$;
+    \item Stessa deviazione standard: $\sigma_i = \sigma$.
+\end{itemize}
+
+Di conseguenza, i parametri della somma $S$ diventano:
+\begin{itemize}
+    \item $E[S] = \sum_{i=1}^n \mu = n\mu$
+    \item $\text{var}(S) = \sum_{i=1}^n \sigma^2 = n\sigma^2$
+\end{itemize}
+
+La variabile standardizzata assume quindi la forma:
+\begin{equation}
+Z_n = \frac{S - n\mu}{\sqrt{n\sigma^2}} = \frac{S - n\mu}{\sigma\sqrt{n}}
+\end{equation}
+
+Dividendo numeratore e denominatore per $n$, possiamo esprimere il risultato in termini della \textbf{media campionaria} $\bar{x} = \frac{S}{n} = \frac{\sum x_i}{n}$:
+\begin{equation}
+Z_n = \frac{\frac{S - n\mu}{n}}{\frac{\sigma\sqrt{n}}{n}} = \frac{\frac{S}{n} - \mu}{\frac{\sigma}{\sqrt{n}}} = \frac{\bar{x} - \mu}{\frac{\sigma}{\sqrt{n}}}
+\end{equation}
+
+Questo implica che, per $n \to \infty$:
+\begin{equation}
+\frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \sim \mathcal{N}(0, 1)
+\end{equation}
+Ovvero, la media campionaria $\bar{x}$ tende a distribuirsi secondo una normale con media $\mu$ e varianza ridotta:
+\[
+\bar{x} \overset{n\to\infty}{\sim} \mathcal{N}\left(\mu, \frac{\sigma^2}{n}\right)
+\]
+
+Per tornare alla variabile non standardizzata, invertiamo la relazione:
+\[
+z = \frac{\bar{x}-\mu}{\sigma/\sqrt{n}} \implies \bar{x} = \mu + z \frac{\sigma}{\sqrt{n}}
+\]
+
+\subsection{Dimostrazione (tramite Funzione Generatrice dei Momenti)}
+Dimostriamo il teorema nel caso I.I.D., ovvero proviamo che:
+\[
+\lim_{n \to \infty} \frac{S - n\mu}{\sigma \sqrt{n}} \sim \mathcal{N}(0,1)
+\]
+
+Per semplificare i calcoli, partiamo dalle variabili standardizzate delle singole $x_i$. Definiamo:
+\[
+y_i = \frac{x_i - \mu}{\sigma}
+\]
+Analizziamo le proprietà di $y_i$:
+\begin{itemize}
+    \item Valore atteso:
+    \[ E[y_i] = E\left[\frac{x_i - \mu}{\sigma}\right] = \frac{1}{\sigma}(E[x_i] - \mu) = \frac{1}{\sigma}(\mu - \mu) = 0 \]
+    \item Varianza:
+    \[ \text{var}(y_i) = \text{var}\left(\frac{x_i - \mu}{\sigma}\right) = \frac{1}{\sigma^2}\text{var}(x_i) = \frac{\sigma^2}{\sigma^2} = 1 \]
+\end{itemize}
+(Nota: abbiamo usato le proprietà $E[x-c] = E[x]-c$ e $\text{var}(ax+c) = a^2\text{var}(x)$).
+
+Definiamo ora la variabile somma standardizzata $Z$:
+\[
+Z = \frac{\sum_{i=1}^{n} y_i}{\sqrt{n}}
+\]
+Si noti che questa espressione è equivalente a $\frac{S - n\mu}{\sigma\sqrt{n}}$.
+
+Calcoliamo la \textbf{Funzione Generatrice dei Momenti} (MGF) di $Z$, indicata con $M_Z(t)$.
+Poiché le $y_i$ sono indipendenti, la MGF della somma è il prodotto delle MGF. Inoltre, ricordando che $M_{aX}(t) = M_X(at)$, otteniamo:
+\begin{equation}
+M_Z(t) = \prod_{i=1}^n M_{y_i}\left(\frac{t}{\sqrt{n}}\right)
+\end{equation}
+Essendo le $y_i$ identicamente distribuite, tutte le $M_{y_i}$ sono uguali a una generica $M_y$:
+\begin{equation}
+M_Z(t) = \left[ M_y\left(\frac{t}{\sqrt{n}}\right) \right]^n
+\end{equation}
+
+Sviluppiamo $M_y(k) = E[e^{ky}]$ in serie di Taylor attorno a $k=0$, ponendo $k = t/\sqrt{n}$:
+\begin{equation}
+e^{ky} = 1 + ky + \frac{k^2 y^2}{2} + \dots \implies e^{ty/\sqrt{n}} = 1 + \frac{ty}{\sqrt{n}} + \frac{t^2 y^2}{2n} + o\left(\frac{1}{n}\right)
+\end{equation}
+Passando ai valori attesi e ricordando che $E[y]=0$ e $E[y^2] = \text{var}(y) + E[y]^2 = 1$:
+\begin{equation}
+E\left[ e^{ty/\sqrt{n}} \right] = 1 + \frac{t}{\sqrt{n}}\underbrace{E[y]}_{0} + \frac{t^2}{2n}\underbrace{E[y^2]}_{1} + \dots \simeq 1 + \frac{t^2}{2n}
+\end{equation}
+Sostituendo questo risultato nella formula di $M_Z(t)$:
+\begin{equation}
+M_Z(t) \simeq \left( 1 + \frac{t^2}{2n} \right)^n
+\end{equation}
+Calcoliamo il limite per $n \to \infty$ sfruttando il limite notevole $(1 + \frac{a}{n})^n \to e^a$:
+\begin{equation}
+\lim_{n \to \infty} M_Z(t) = e^{t^2/2}
+\end{equation}
+La funzione $e^{t^2/2}$ è esattamente la funzione generatrice dei momenti della normale standard $\mathcal{N}(0,1)$. Per il teorema di unicità delle funzioni generatrici, concludiamo che $Z$ converge in distribuzione alla normale standard.
+
+\subsection{Implicazioni del Teorema nell'Analisi Dati}
+
+Il teorema ha implicazioni cruciali: ci assicura che l'effetto cumulativo di molte piccole perturbazioni indipendenti produce una distribuzione gaussiana, indipendentemente dalla forma della distribuzione di partenza.
+
+Nelle misure fisiche, se ripetiamo una misura $n$ volte, la media aritmetica $\bar{x}$ tende a distribuirsi come $\mathcal{N}(\mu, \sigma^2/n)$. Questo significa che l'incertezza associata alla \textit{media} (deviazione standard della media) è:
+\begin{equation}
+\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}
+\end{equation}
+dove $\sigma$ è la deviazione standard della singola misura.
+
+In un esperimento reale, non conosciamo il vero $\sigma$, ma lo stimiamo con la deviazione standard campionaria $s$:
+\[
+s = \sqrt{\frac{\sum_{i=1}^{n} (x_i-\bar{x})^2}{n-1}}
+\]
+Il risultato finale di $n$ misure ripetute viene quindi riportato come:
+\begin{equation}
+\text{Risultato} = \bar{x} \pm \frac{s}{\sqrt{n}}
+\end{equation}
+
+Questo intervallo ha un preciso significato probabilistico (intervalli di confidenza):
+\begin{itemize}
+    \item $\bar{x} \pm 1\sigma_{\bar{x}}$ copre il 68.3\% di probabilità;
+    \item $\bar{x} \pm 2\sigma_{\bar{x}}$ copre il 95.5\% di probabilità;
+    \item $\bar{x} \pm 3\sigma_{\bar{x}}$ copre il 99.7\% di probabilità.
+\end{itemize}
+
+\subsection{Generazione di Numeri Casuali Normali}
+
+Una delle applicazioni informatiche del teorema è la generazione di numeri pseudo-casuali con distribuzione normale a partire da un generatore uniforme (disponibile in tutti i linguaggi di programmazione).
+
+Consideriamo $n$ variabili $\{u_1, \dots, u_n\}$ con distribuzione uniforme in $[0, 1]$.
+Per la distribuzione uniforme:
+\begin{itemize}
+    \item Densità: $P(u) = 1$ per $u \in [0,1]$, $0$ altrimenti.
+    \item Media: $E[u] = \int_0^1 u \, du = \frac{1}{2}$.
+    \item Secondo momento: $E[u^2] = \int_0^1 u^2 \, du = \frac{1}{3}$.
+    \item Varianza: $\text{var}(u) = E[u^2] - E[u]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$.
+\end{itemize}
+
+Applicando il Teorema del Limite Centrale alla somma, la variabile standardizzata è:
+\begin{equation}
+Z = \frac{\sum u_i - n E[u]}{\sqrt{n \text{var}(u)}} = \frac{\sum u_i - n/2}{\sqrt{n/12}} \sim \mathcal{N}(0,1)
+\end{equation}
+
+Per semplificare il calcolo, si sceglie spesso $n=12$. In questo caso il denominatore diventa $\sqrt{12/12} = 1$ e la formula si riduce a:
+\begin{equation}
+Z \approx \sum_{i=1}^{12} u_i - 6
+\end{equation}
+Quindi: si sommano 12 numeri uniformi e si sottrae 6.
+\textit{Nota:} Questo metodo è veloce ma approssimato; le "code" della distribuzione (oltre $6\sigma$) sono troncate, poiché la somma di variabili limitate è comunque limitata.
+
+\subsection{La Trasformazione di Box-Muller}
+Un metodo matematicamente esatto per generare numeri normali da numeri uniformi è la \textbf{trasformazione di Box-Muller}.
+
+Questo metodo si basa sul cambiamento di variabili per le densità di probabilità. Se abbiamo variabili casuali $x$ legate a variabili $y$ da una trasformazione invertibile, la densità di probabilità congiunta si trasforma secondo:
+\begin{equation}
+P_y(y_1, \dots, y_n) = P_x(x_1, \dots, x_n) \cdot |J|
+\end{equation}
+dove $|J|$ è il valore assoluto del determinante Jacobiano della trasformazione inversa (da $y$ a $x$).
+
+Siano $x_1, x_2$ due variabili indipendenti uniformi in $[0, 1]$. Definiamo due nuove variabili $y_1, y_2$:
+\begin{align}
+y_1 &= \sqrt{-2 \ln x_1} \cos(2\pi x_2) \\
+y_2 &= \sqrt{-2 \ln x_1} \sin(2\pi x_2)
+\end{align}
+
+Per dimostrare che $y_1$ e $y_2$ sono gaussiane standard indipendenti, invertiamo il sistema per esprimere $x$ in funzione di $y$:
+\begin{itemize}
+    \item Dal rapporto $y_2/y_1 = \tan(2\pi x_2)$ otteniamo $x_2 = \frac{1}{2\pi} \arctan(y_2/y_1)$.
+    \item Dalla somma dei quadrati $y_1^2 + y_2^2 = -2 \ln x_1$ otteniamo $x_1 = \exp\left[-\frac{1}{2}(y_1^2 + y_2^2)\right]$.
+\end{itemize}
+
+La densità congiunta delle variabili uniformi è $P_x(x_1, x_2) = 1$ (nel quadrato unitario).
+Calcoliamo lo Jacobiano $J = \det \frac{\partial(x_1, x_2)}{\partial(y_1, y_2)}$:
+\[
+J = \det \begin{pmatrix}
+\frac{\partial x_1}{\partial y_1} & \frac{\partial x_1}{\partial y_2} \\
+\frac{\partial x_2}{\partial y_1} & \frac{\partial x_2}{\partial y_2}
+\end{pmatrix}
+\]
+
+Calcolo delle derivate parziali:
+\begin{itemize}
+    \item $\frac{\partial x_1}{\partial y_1} = -y_1 e^{-\frac{1}{2}(y_1^2+y_2^2)}$
+    \item $\frac{\partial x_1}{\partial y_2} = -y_2 e^{-\frac{1}{2}(y_1^2+y_2^2)}$
+    \item $\frac{\partial x_2}{\partial y_1} = \frac{1}{2\pi} \frac{1}{1+(y_2/y_1)^2} \left(-\frac{y_2}{y_1^2}\right) = -\frac{1}{2\pi} \frac{y_2}{y_1^2+y_2^2}$
+    \item $\frac{\partial x_2}{\partial y_2} = \frac{1}{2\pi} \frac{1}{1+(y_2/y_1)^2} \left(\frac{1}{y_1}\right) = \frac{1}{2\pi} \frac{y_1}{y_1^2+y_2^2}$
+\end{itemize}
+
+Calcolando il determinante:
+\begin{align*}
+J &= \left(-y_1 e^{-\dots}\right)\left(\frac{y_1}{2\pi(y_1^2+y_2^2)}\right) - \left(-y_2 e^{-\dots}\right)\left(-\frac{y_2}{2\pi(y_1^2+y_2^2)}\right) \\
+&= -\frac{1}{2\pi} e^{-\frac{1}{2}(y_1^2+y_2^2)} \left( \frac{y_1^2 + y_2^2}{y_1^2 + y_2^2} \right) \\
+&= -\frac{1}{2\pi} e^{-\frac{1}{2}(y_1^2+y_2^2)}
+\end{align*}
+
+Prendendo il valore assoluto per la densità di probabilità:
+\begin{equation}
+P_y(y_1, y_2) = 1 \cdot |J| = \frac{1}{2\pi} e^{-\frac{y_1^2 + y_2^2}{2}} = \left(\frac{1}{\sqrt{2\pi}}e^{-y_1^2/2}\right) \cdot \left(\frac{1}{\sqrt{2\pi}}e^{-y_2^2/2}\right)
+\end{equation}
+Il risultato è il prodotto di due densità normali standard. Quindi $y_1$ e $y_2$ sono variabili $\mathcal{N}(0,1)$ indipendenti.
 
 
 
@@ -2510,205 +2731,5 @@ La deviazione standard della binomiale è circa $\sqrt{n_k^m}$ se $n_{tot}>>>n_k
 
 
 \pagebreak
-\lezione{Teorema del limite centrale}{05 Marzo 2026}
-
-Si tratta del teoerma fondamentale della statistica, che ci permette di utilizzare la distribuzione gaussiana ogni qualvolta svolgiamo una misurazione.
-\begin{theorem*}
-    Supponiamo di avere $n$ variabili aleatorie \textbf{indipendenti} $\{x_1,...,x_n\}$, supponiamo che ciascuna abbia densità di probabilità $P_i(x)$,
-    supponiamo \textbf{esistano finite} $E[x_i]=\mu_i$ e $\text{var}(x_i)=\sigma_i^2$.
-
-    Definiamo la nuova variabile aletoria $S$:
-    \[
-    S= \sum_{i=1}^{n} x_i
-    \]
-    con aspettazione e varianza (dimostrabili):
-    \[
-    E[S]=\sum_{i=1}^{n} x_i \hspace{2cm} \text{var}(S)=\sum_{i=1}^{n} \sigma_i^2
-    \]
-    allora per $n \to \infty$ $S \thicksim \mathcal{N} (\sum_{i=1}^{n} x_i,\sum_{i=1}^{n} \sigma_i^2)$
-\end{theorem*}
-Nella pratica basta $n=10$. 
-
-Posso riscriverlo, svolgendo il cambio di variabili $z=\frac{x-\mu}{\sigma}$, con la variabile aletoria:
-\[
-\frac{S-\sum_{i=1}^{n} \mu_i}{\sqrt{\sum_{i=1}^{n} \sigma_i}} \thicksim \mathcal{N}(0,1)
-\]
-
-Restringendo le ipotesi:
-\begin{itemize}
-    \item $P_i(x_i) = P(x)$
-    \item $\mu_i=\mu$
-    \item $\sigma_i=\sigma$
-\end{itemize}
-allora: 
-\begin{itemize}
-    \item $E[S]=n \mu$
-    \item $\text{var}(x)=n\sigma^2$
-\end{itemize}
-e la variabile standardizzata diviene:
-\[
-\frac{S-n\mu}{\sigma \sqrt{n}} = \frac{\frac{\sum_{i=1}^{n} x_i}{n}-\mu}{\frac{\sqrt{n}}{n} \sigma} = \frac{\bar{x}-\mu}{\frac{\sqrt{n}}{n} \sigma} \thicksim \mathcal{N}(0,1)
-\]
-dove ho introdotto la \textit{media campionaria}:
-\[
-\bar{x}=\frac{\sum_{i=1}^{n}x_i}{n}
-\]
-per tornare alla variabile non standardizzata compio il seguente cambiamento di variabili:
-\[
-z= \frac{\bar{x}-\mu}{\frac{\sigma}{\sqrt{n}}}
-\bar{x}=\mu + z \frac{\sigma}{\sqrt{n}} \overset{n\to\infty}{\thicksim} \mathcal{N}(\mu,\frac{\sigma}{\sqrt{n}})
-\]
-
-\textit{Dimostrazione:}
-Dimostriamo il caso più semplice:
-\[
-\lim_{n \to \infty} \frac{S-n\mu}{\sigma \sqrt{n}} \thicksim \mathcal{N}(0,1)
-\]
-Definiamo le variabili $y_i$:
-\[
-y_i=\frac{x_i - \mu}{\sigma}
-\]
-che ha valore di aspettazione
-\[
-E[y_i]=E[\frac{x_i - \mu}{\sigma}]=\frac{1}{\sigma}E[x-\mu]=\frac{1}{\sigma}(E[x]-\mu)=0
-\]
-e varianza:
-\[
-\text{var}(y_i)=\text{var}(\frac{x_i - \mu}{\sigma})=\frac{1}{\sigma^2}\text{var}(x_i-\mu)=\frac{1}{\sigma^2}\text{var}(x_i)=1
-\]
-infatti per ogni variabile definita come $v=x-c$ (c costante), ottengo:
-\[
-E[v]=E[x]-c \]
-\[
-\text{var}(v)=E[(x-c)^2]-E[x-c]^2=E[x^2]-2cE[x]+c^2-(E[x]-c)^2=E[x^2]-E[x]^2=\text{var}(x)
-\]
-Definiamo allora un' altra variabile $Z$:
-\[
-Z=\frac{\sum_{i=1}^{n} y_i}{\sqrt{n}}
-\]
-con funzione generatrice di momenti:
-\[
-M_Z (t)=\prod_{i=1}^{n}M_{y_i}(\frac{t}{\sqrt{n}})= \prod M_y(\frac{t}{\sqrt{n}})= \left[M_y(\frac{t}{\sqrt{n}})\right]^n
-\]
-dove abbiamo utilizzato il fatto che le variabili abbiano tutte stesse distribuzioni, allora calcoliamo:
-\[ 
-M_y(\frac{t}{\sqrt{n}})=E[e^{\frac{t}{\sqrt{n}}y}] \approxeq 1+ \frac{t}{\sqrt{n}}\underbrace{E[y]}_{=0}+\frac{t^2}{2n}E[y^2]+ \cdots = 1+\frac{t^2}{2n}+ \cdots 
-\]
-notando che:
-\[
-\text{var}(y)=E[y^2]-\left(E[y]\right)^2=E[y^2]=1
-\]
-dunque si ottiene:
-\[
-M_y(\frac{t}{\sqrt{n}})=1+\frac{t^2}{2n}+ \dots
-\]
-e tornando alla variabile $Z$:
-\[
-M_Z(t)=\left(1+\frac{t^2}{2n}\right)  \overset{n\to\infty}{\rightarrow} 1+\frac{t^2}{2}+ \cdots = e^{\frac{t^2}{2}} 
-\]
-che è la funzione generatrice di momenti della distribuzione normale standard, dunque $Z \thicksim \mathcal{N}(0,1)$ e con un cambio di variabile ottengo il risultato voluto.
-
-Infine:
-\[
-Z=\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left(\frac{x_i-\mu}{\sigma}\right) = \frac{\sum_{i=1}^{n}x_i-\mu}{\sqrt{n}\sigma} \thicksim \mathcal{N}(0,1)
-\]
-q.e.d. \\
-
-Allora facendo una misura, ottenendo $n$ risultati e volendo riportarare il risultato dovrò scrivere:
-\[
-\bar{x} \pm \frac{s}{\sqrt{n}}
-\]
-dove $s$ è la varianza calcolata nel modo usuale (con correzione):
-\[
-s=\sqrt{\frac{1\sum_{i=1}^{n} (x_i-\bar{x})^2}{n-1}}
-\]
-
-
-\pagebreak
-
-
-
-Supponiamo di avere una serie di variabili con distribuzione uniforme\footnote{
-    $P(u)= \mathcal{U}(0,1)$}:
-\[
-P(u) =
-\begin{cases}
-    1 & u \in [0,1] \\
-    0 & u \notin [0,1]
-\end{cases}
-\]
-Calcolando aspettazione e varianza 
-\[
-E[u]=\int_{0}^{1} P(u)u du=\int_{0}^{1} u du=\frac{1}{2}
-\]\[
-\text{var}(u)=E[u^2]-(E[u])^2=\frac{1}{12}
-\]
-La variabile standardizzata sarà:
-\[
-\frac{\sum_i u_i-nE[u]}{\sqrt{n\text{var}(u)}}=\frac{\sum_i u_i-\frac{n}{2}}{\sqrt{\frac{n}{12}}} \thicksim \mathcal{N}(0,1)
-\]
-molto utilizzata nel caso $n=12$, poichè in tal caso:
-\[
-\sum_i u_i-6 \thicksim \mathcal{N}(0,1)
-\]
-dunque per simulare un generatore casuale di numeri con distribuzione normale posso utilizzare questa approssimazione: prendo 12 numeri generati uniformemente, li sommo, dopodichè gli sottraggo 6.
-\subsection{Trasformazione di Box-Muller}
-Un modo più corretto per fare quanto svolto prima è applicare l'\textbf{approssimazione di Box-Muller}.
-
-Ma prima, un piccolo compendio: supponiamo di avere una variabile $y=f(x)$ allora la distribuzione sarà $P_y(y)=P_x[x(y)]\left| \frac{dx}{dy}\right|$
-
-Nel caso di più variabili:
-$P_y(y_1, ..., y_n)=P_x(x_1,..., x_n) \left|J\right| 
-$
-dove $\mod J$ è il determinante della matrice Jacobiana.
-
-Supponendo di avere le variabili $X_1,X_2 \approx u(0,1)$, posso definire le variabili:
-\begin{itemize}
-    \item $Y_1=\sqrt{-2 \ln X_1} \cos(2\pi X_1)$
-    \item $Y_2=\sqrt{-2 \ln X_2} \cos(2\pi X_2)$
-\end{itemize}
-e si dimostra che esse hanno distribuzione gaussiana:
-
-\textit{Dimostrazione:}
-Prima troviamo la forma funzionale di $X_i(Y_i)$:
-\[
-\frac{Y_2}{Y_1}=\tan(2\pi X_2) \rightarrow X_2 = \frac{1}{2\pi}\arctan(\frac{Y_2}{Y_1})
-\]
-e 
-\[
-Y_1^2+Y_2^2=-2\ln(X_1) \rightarrow X_1=\exp(-\frac{1}{2}(Y_1^2+Y_2^2))
-\]
-allora avrò la matrice Jacobiana:
-\[
-\left(
-\begin{matrix}
-    \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\
-    \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2}
-\end{matrix}
-\right)
-\]
-con determinante: 
-\[
-\left|J\right|  = \frac{\partial X_1}{\partial Y_1} \frac{\partial X_2}{\partial Y_2} - \frac{\partial X_1}{\partial Y_2}\frac{\partial X_2}{\partial Y_1}
-\]
-dove:
-\[
-\frac{\partial X_1}{\partial Y_1} = -Y_1 \exp(-\frac{1}{2}(Y_1^2+Y_2^2)) \hspace{2cm} \frac{\partial X_1}{\partial Y_2}= -Y_2 \exp(-\frac{1}{2}(Y_1^2+Y_2^2))
-\]
-\[
-\frac{\partial X_2}{\partial Y_1} = \frac{1}{2\pi}\frac{1}{1 + \frac{Y_2^2}{Y_1^2}}\left(-\frac{Y_2}{Y_1^2}\right) \hspace{2cm} \frac{\partial X_2}{\partial Y_2} = \frac{1}{2\pi}\frac{1}{1 + \frac{Y_2^2}{Y_1^2}}\left(\frac{1}{Y_1}\right)
-\]
-e trovo:
-\[
-\left|J\right| =\frac{1}{2\pi} \exp (-\frac{1}{2}(Y_1^2+Y_2^2)) \frac{1}{Y_1^2+Y_2^2}(Y_1^2+Y_2^2) = \frac{1}{2\pi} \exp (-\frac{1}{2}(Y_1^2+Y_2^2)) 
-\]
-allora:
-\[
-to be continued
-\]
-
-
-
-
 
 \end{document}

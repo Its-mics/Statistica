@@ -1084,6 +1084,23 @@ M_Z(t) = E[e^{tX}]E[e^{tY}] = M_X(t)M_Y(t)
 \]
 Questo è dovuto al fatto che $\Omega_X \cap \Omega_Y=0$, dunque vale che $f_{X+Y}(x)=f_X(x) f_Y(x)$
 
+\subsection{Approfondimento sulla funzione caratteristica}
+Quella che noi abbiamo visto come i momenti algebrici e centrali, in realtà sono solo due casi particolari di una famiglia più ampia di momenti, 
+che possono essere generati da funzioni più generali. La funzione caratteristica è un esempio di funzione generatrice dei momenti che utilizza l'esponenziale complesso $e^{itx}$ invece di $e^{tx}$.\\
+La funzione caratteristica è la trasformata della mia p.d.f (probability density function); essa è ben definita valendo $f_X(x) \in L^2[\mathbb{R}]$
+\[
+\phi(t) = \int_{-\infty}^{\infty} e^{itx} f_X(x) dx = E[e^{itx}]
+\]
+In questo caso vale la stessa dimostrazione attraverso l'espansione dell'esponenziale per mostrare come da questa si possono ricavare i momenti, dove i momenti sono definiti come:
+\[
+E[x^m]= \mu_m = \left[ \frac{\partial ^m \phi(t)}{\partial {(it)}^m}\right]_{t=0}
+\]
+La funzione caratteristica è particolarmente utile perché, essendo la trasformata di Fourier della p.d.f., permette di ricavare la distribuzione di probabilità a partire dalla funzione caratteristica stessa tramite la trasformata inversa di Fourier:
+\[
+f_X(x) = \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{-itx} \phi(t) dt
+\]
+Dunque due distribuzioni di probabilità che hanno gli stessi momenti (dunque la stessa funzione caratteristica), sono la stessa distribuzione di probabilità. 
+Questo è dovuto al fatto che la $\mathcal{F}$-trasformata in $L^2[\mathbb{R}]$ rappresenta una biezione tra due spazi.
 \subsection{Distribuzione binomiale o di Bernoulli}
 \emph{Questa parte è stata integrata con gli appunti di Bressan}
 \vspace{0.4 cm}

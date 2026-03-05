@@ -2531,7 +2531,7 @@ Nella pratica basta $n=10$.
 
 Posso anche scrivere, svolgendo il cambio di variabili $z=\frac{x-\mu}{\sigma}$, ho la variabile aletoria:
 \[
-\frac{S-\sum_{i=1}^{n} \mu_i}{\sqrt{\sum_{i=1}_{n} \sigma_i}} \approx \mathcal{N}(0,1)
+\frac{S-\sum_{i=1}^{n} \mu_i}{\sqrt{\sum_{i=1}^{n} \sigma_i}} \approx \mathcal{N}(0,1)
 \]
 
 Restringendo le ipotesi:
@@ -2547,11 +2547,11 @@ allora:
 \end{itemize}
 e la variabile standardizzata diviene:
 \[
-\frac{S-n\mu}{\sigma \sqrt{n}} = \frac{S-\frac{\sum_{i=1}^{n} \x_i}{n}}{\frac{\sqrt{n}}{n} \sigma} \approx \mathcal{N}(0,1)
+\frac{S-n\mu}{\sigma \sqrt{n}} = \frac{S-\frac{\sum_{i=1}^{n} x_i}{n}}{\frac{\sqrt{n}}{n} \sigma} \approx \mathcal{N}(0,1)
 \]
 dove ho introdotto la media campionaria:
 \[
-\bar{x}=\frac{\sum{i=1}{n}x_i}{n}
+\bar{x}=\frac{\sum_{i=1}^{n}x_i}{n}
 \]
 per tornare alla variabile non standardizzata compio il seguente cambiamento di variabili:
 \[
@@ -2627,14 +2627,14 @@ Supponiamo di avere una serie di variabili con distribuzione uniforme:
 \[
 P(u)=
 \begin{cases}
-    1 & u \in [0,1]
-    0 & u \not [0,1]
+    1 & u \in [0,1] \\
+    0 & u \notin [0,1]
 \end{cases}
 \]
 Calcolando aspettazione e varianza 
 \[
 E[u]=\int_{0}^{1} P(u)u du==\int_{0}^{1} u du=\frac{1}{2}
-
+\]\[
 \text{var}(x)=E[u]-(E[u])^2=\frac{1}{12}
 \]
 La variabile standardizzata sarà:
@@ -2656,7 +2656,7 @@ $P_y(y_1, ..., y_n)=P_x(x_1,..., x_n)\mod J
 $
 dove $\mod J$ è il determinante della matrice Jacobiana.
 
-Supponendo di avere le variabili $X_1,X_2 \apprx u(0,1)$, posso definire le variabili:
+Supponendo di avere le variabili $X_1,X_2 \approx u(0,1)$, posso definire le variabili:
 \begin{itemize}
     \item $Y_1=\sqrt{-2 2n X_1} \cos(2\pi X_1)$
     \item $Y_2=\sqrt{-2 2n X_2} \cos(2\pi X_2)$
@@ -2672,10 +2672,12 @@ e
 Y_1^2+Y_2^2=-2\ln(X_1) \rightarrow X_1=\exp(-\frac{1}{2}(Y_1^2+Y_2^2))
 \]
 allora avrò la matrice Jacobiana:
+\[
 \begin{matrix}
     \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\
     \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2}
 \end{matrix}
+\]
 con determinante: 
 \[
 \frac{\partial X_1}{\partial Y_1} \frac{\partial X_2}{\partial Y_2} - \frac{\partial X_1}{\partial Y_2}\frac{\partial X_2}{\partial Y_1}

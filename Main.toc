@@ -1,0 +1,16 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {section}{\numberline {1}Intoduzione e Statistica}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}I Dati e la Rappresentazione Grafica}{2}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Scatter Plot ed Errori}{2}{subsubsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.2}Grandezze Statistiche: Media e Varianza}{2}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Media Aritmetica}{2}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Dispersione e Varianza}{2}{subsubsection.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}Deviazione Standard e correzione di Bessel}{3}{subsubsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.3}Errore di Sensibilità e Distribuzione Uniforme}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Propagazione degli Errori}{5}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Metodo dei Minimi Quadrati}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Il Principio}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Fit Lineare ($y = mx + q$)}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Caso Non Lineare e Linearizzazione}{7}{subsection.2.3}%
+\contentsline {section}{\numberline {3}SS}{8}{section.3}%

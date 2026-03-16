@@ -57,9 +57,43 @@
     frame=l, framesep=5pt, rulecolor=\color{RoyalBlue},
     language=Python, morekeywords={as, np, plt}
 }
-\lstset{style=notebook}
-
-
+% Configurazione base per il codice Python con supporto per le lettere accentate
+% Configurazione base per il codice Python con supporto per accenti e simboli speciali
+\lstset{
+    language=Python,
+    extendedchars=true,
+    literate=
+        {à}{{\`a}}1
+        {è}{{\`e}}1
+        {é}{{\'e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {À}{{\`A}}1
+        {È}{{\`E}}1
+        {É}{{\'E}}1
+        {Ì}{{\`I}}1
+        {Ò}{{\`O}}1
+        {Ù}{{\`U}}1
+        {±}{{$\pm$}}1, % <--- AGGIUNTO IL SIMBOLO PIU' O MENO QUI
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{gray!10},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+}
 \usepackage[colorlinks=true, linkcolor=black]{hyperref} 
 
 \newtcolorbox{nota}{
@@ -2295,6 +2329,79 @@ P_y(y_1, y_2) = 1 \cdot |J| = \frac{1}{2\pi} e^{-\frac{y_1^2 + y_2^2}{2}} = \lef
 Il risultato è il prodotto di due densità normali standard. Quindi $y_1$ e $y_2$ sono variabili $\mathcal{N}(0,1)$ indipendenti.
 
 
+\begin{lstlisting}[caption={Generazione numeri casuali: Teorema del Limite Centrale e Box-Muller}]
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
+def gaussian_pdf(x, mu=0, sigma=1):
+    return (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp(-((x - mu) ** 2) / (2 * sigma ** 2))
+
+# definisco una funzione che dato un array, costruisce l'istogramma e sovrappone una normale standard
+def plot_histo_gauss(x, titolo):
+    # Parametri richiesti
+    # x: array di cui fare l'istogramma
+    # titolo: stringa contenente il titolo dell'istogramma
+
+    h, bins, _ = plt.hist(x, range=(-4,4), bins=80, alpha=0.6, label="istogramma")
+    delta_x = bins[1] - bins[0]
+    centri = (bins[:-1] + bins[1:]) / 2
+    # aggiungo una barra di errore seguendo l'approssimazione di Poisson
+    plt.errorbar(centri, h, np.sqrt(h), delta_x/2, c='tab:grey', lw=1, fmt='none',label="errore statistico")
+    plt.plot(centri, gaussian_pdf(centri)*delta_x*len(x),label='normale standard')
+    plt.xlabel("x")
+    plt.ylabel("Conteggi")
+    plt.title(titolo)
+    plt.legend()
+    plt.show()
+
+n = 12
+m = 10000
+
+# lista dove salvare i numeri generati
+lista_gauss =[]
+for i in range (m):
+    # genero n numeri random tra 0 e 1
+    u = np.random.uniform(0, 1, n)
+
+    # li sommo e sottraggo 6
+    x = np.sum(u) - 6
+
+    # aggiungo il numero ottenuto alla lista
+    lista_gauss.append(x)
+
+# ora faccio un istogramma degli elementi della lista e sovrappongo una normale standard
+plot_histo_gauss(lista_gauss, "Generazione da teorema del limite centrale")
+
+# -- Caso della formula di Box-Muller --
+
+# genero m numeri random e ottengo da essi due array x1 e x2 contenenti rispettivamente la prima e la seconda meta' dell'array
+x = np.random.uniform(0,1,m)
+x1 = x[0:int(m/2)]
+x2 = x[int(m/2):m]
+
+print(f"elementi di x {len(x)}, elementi di x1 {len(x1)}, elementi di x2 {len(x2)}")
+print(x1[-1],x2[0])
+
+# uso la trasformazione di Box-Muller per ottenere valori distribuiti secondo una normale standard
+y1 = np.sqrt(-2*np.log(x1))*np.cos(2*np.pi*x2)
+y2 = np.sqrt(-2*np.log(x1))*np.sin(2*np.pi*x2)
+y = np.concatenate((y1,y2))
+print(f"elementi di y {len(y)}, elementi di y1 {len(y1)}, elementi di y2 {len(y2)}")
+
+plot_histo_gauss(y, "Generazione da Box-Muller")
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.48\textwidth]{Immagini/tlc.png}
+    \hfill
+    \includegraphics[width=0.48\textwidth]{Immagini/box_muller.png}
+    \caption{A sinistra: generazione di una normale standard tramite il Teorema del Limite Centrale. A destra: generazione tramite il metodo di Box-Muller. Entrambi si sovrappongono perfettamente alla curva teorica.}
+\end{figure}
+
+
+
 \lezione{Distribuzione di Cauchy e Legge dei grandi numeri}{16 Marzo 2026}
 \subsection{Distribuzione di Cauchy come rapporto di due normali standard}
 
@@ -2367,70 +2474,6 @@ Intuitivamente il problema è che la distribuzione di Cauchy ha code così alte 
 Analogamente la varianza e tutti i momenti di ordine superiore sono divergenti.
 
 
-\begin{lstlisting}[caption={Generazione numeri casuali: Teorema del Limite Centrale e Box-Muller}]
-import numpy as np
-import matplotlib.pyplot as plt
-import scipy.stats as stats
-
-def gaussian_pdf(x, mu=0, sigma=1):
-    return (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp(-((x - mu) ** 2) / (2 * sigma ** 2))
-
-# definisco una funzione che dato un array, costruisce l'istogramma e sovrappone una normale standard
-def plot_histo_gauss(x, titolo):
-    # Parametri richiesti
-    # x: array di cui fare l'istogramma
-    # titolo: stringa contenente il titolo dell'istogramma
-
-    h, bins, _ = plt.hist(x, range=(-4,4), bins=80, alpha=0.6, label="istogramma")
-    delta_x = bins[1] - bins[0]
-    centri = (bins[:-1] + bins[1:]) / 2
-    # aggiungo una barra di errore seguendo l'approssimazione di Poisson
-    plt.errorbar(centri, h, np.sqrt(h), delta_x/2, c='tab:grey', lw=1, fmt='none',label="errore statistico")
-    plt.plot(centri, gaussian_pdf(centri)*delta_x*len(x),label='normale standard')
-    plt.xlabel("x")
-    plt.ylabel("Conteggi")
-    plt.title(titolo)
-    plt.legend()
-    plt.show()
-
-n = 12
-m = 10000
-
-# lista dove salvare i numeri generati
-lista_gauss =[]
-for i in range (m):
-    # genero n numeri random tra 0 e 1
-    u = np.random.uniform(0, 1, n)
-
-    # li sommo e sottraggo 6
-    x = np.sum(u) - 6
-
-    # aggiungo il numero ottenuto alla lista
-    lista_gauss.append(x)
-
-# ora faccio un istogramma degli elementi della lista e sovrappongo una normale standard
-plot_histo_gauss(lista_gauss, "Generazione da teorema del limite centrale")
-
-# -- Caso della formula di Box-Muller --
-
-# genero m numeri random e ottengo da essi due array x1 e x2 contenenti rispettivamente la prima e la seconda meta' dell'array
-x = np.random.uniform(0,1,m)
-x1 = x[0:int(m/2)]
-x2 = x[int(m/2):m]
-
-print(f"elementi di x {len(x)}, elementi di x1 {len(x1)}, elementi di x2 {len(x2)}")
-print(x1[-1],x2[0])
-
-# uso la trasformazione di Box-Muller per ottenere valori distribuiti secondo una normale standard
-y1 = np.sqrt(-2*np.log(x1))*np.cos(2*np.pi*x2)
-y2 = np.sqrt(-2*np.log(x1))*np.sin(2*np.pi*x2)
-y = np.concatenate((y1,y2))
-print(f"elementi di y {len(y)}, elementi di y1 {len(y1)}, elementi di y2 {len(y2)}")
-
-plot_histo_gauss(y, "Generazione da Box-Muller")
-\end{lstlisting}
-
-
 
 
 \subsection{Legge dei grandi numeri}
@@ -2489,10 +2532,92 @@ cioè la probabilità che $|X - \mu| \ge 2\sigma$ non può superare il 25\% o al
 
 
 
+\begin{lstlisting}[caption={Calcolo probabilità e plot della Gaussiana (1, 2 e 3 deviazioni standard)}]
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+# Parametri della gaussiana
+mu = 0
+sigma = 1
+
+# Funzione densità di probabilità (PDF) della gaussiana con normale come default
+def gaussian_pdf(x, mu=0, sigma=1):
+    return (1 / (sigma * math.sqrt(2 * math.pi))) * np.exp(-((x - mu) ** 2) / (2 * sigma ** 2))
+
+# Calcolo l'integrale con il metodo numerico dei rettangoli 
+def integra(a, b, n=200000):
+    # a partire dall'intervallo [a,b] costruisco n rettangolini tutti larghi uguali con base:
+    base = (b - a) / n
+    somma = 0.0
+    # ora sommo le altezze di tutti i rettangolini
+    for k in range(n):
+        x_mid = a + (k + 0.5) * base
+        somma += gaussian_pdf(x_mid)
+    # uso la formula base*altezza per calcolare la somma delle aree di tutti i rettangolini
+    return base * somma
+
+print("Integrazione numerica della gaussiana standard\n")
+
+for sigma in [1, 2, 3]:
+    area = integra(-sigma, sigma)
+    print(f"La probabilità che x assuma valori compresi entro {sigma} deviazioni standard è {area:.6f}")
+    print(f"Viceversa la probabilità che x>{sigma}sigma è {1-area:.6f}\n")
+
+# Metodo alternativo: estraggo numeri casuali con densità di probabilità gaussiana,
+# creo un istogramma con questi numeri e poi sommo i contenuti dei bin
+
+# estrazione dei numeri casuali
+N = 300000
+campioni = np.random.normal(0, 1, N)
+
+# creo l'istogramma senza la parte grafica al momento
+bins = np.linspace(-4, 4, 81)  # larghezza bin = 0.1
+conteggi, bordi = np.histogram(campioni, bins=bins)
+
+bin_width = bordi[1] - bordi[0]
+centri = (bordi[:-1] + bordi[1:]) / 2
+
+# Creo una mappa dei colori per intervalli sigma che userò successivamente per il grafico
+for sigma, colore in zip([1,2,3], ['green','orange','purple']):
+    colors =[]
+    area = 0
+    for c, h in zip(centri, conteggi):
+        if abs(c) <= sigma:
+            colors.append(colore)
+            area += h
+        else:
+            colors.append('white')
+
+    print(f"Area tra -{sigma} sigma e {sigma} sigma = {area/N:.6f}")
+
+    # Disegno istogramma usando delle barre colorate con la mappa di prima
+    plt.figure(figsize=(8,5))
+    plt.bar(centri, conteggi, width=bin_width, color=colors, alpha=0.5, label = f"Integrale = {area/N:.4f}")
+
+    # Gaussiana teorica moltiplicata per deltax e per N
+    x = np.linspace(-4,4,1000)
+    plt.plot(x, gaussian_pdf(x)*bin_width*np.sum(conteggi), 'r', linewidth=2, label="Gaussiana teorica")
+
+    # Linea sigma
+    plt.axvline(sigma, linestyle='--', color=colore, label=f"$\pm$ {sigma} sigma")
+    plt.axvline(-sigma, linestyle='--', color=colore)
+
+    plt.title("Istogramma con colori per intervalli ±n$\sigma$")
+    plt.xlabel("$x$")
+    plt.ylabel("Densità di probabilità")
+    plt.legend()
+    plt.grid(True)
+    plt.margins(x=0)
+    plt.show()
+\end{lstlisting}
 
 
-
-
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Immagini/gauss_2sigma.png}
+    \caption{Visualizzazione dell'area sottesa alla gaussiana standard nell'intervallo $\pm 2\sigma$. Come previsto dalla teoria, l'area copre circa il 95.4\% dei casi, un limite ben più stringente del 75\% garantito dalla disuguaglianza di Chebyshev.}
+\end{figure}
 
 
 

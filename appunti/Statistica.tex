@@ -57,9 +57,43 @@
     frame=l, framesep=5pt, rulecolor=\color{RoyalBlue},
     language=Python, morekeywords={as, np, plt}
 }
-\lstset{style=notebook}
-
-
+% Configurazione base per il codice Python con supporto per le lettere accentate
+% Configurazione base per il codice Python con supporto per accenti e simboli speciali
+\lstset{
+    language=Python,
+    extendedchars=true,
+    literate=
+        {à}{{\`a}}1
+        {è}{{\`e}}1
+        {é}{{\'e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {À}{{\`A}}1
+        {È}{{\`E}}1
+        {É}{{\'E}}1
+        {Ì}{{\`I}}1
+        {Ò}{{\`O}}1
+        {Ù}{{\`U}}1
+        {±}{{$\pm$}}1, % <--- AGGIUNTO IL SIMBOLO PIU' O MENO QUI
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{gray!10},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+}
 \usepackage[colorlinks=true, linkcolor=black]{hyperref} 
 
 \newtcolorbox{nota}{
@@ -2295,123 +2329,355 @@ P_y(y_1, y_2) = 1 \cdot |J| = \frac{1}{2\pi} e^{-\frac{y_1^2 + y_2^2}{2}} = \lef
 Il risultato è il prodotto di due densità normali standard. Quindi $y_1$ e $y_2$ sono variabili $\mathcal{N}(0,1)$ indipendenti.
 
 
+\begin{lstlisting}[caption={Generazione numeri casuali: Teorema del Limite Centrale e Box-Muller}]
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
+def gaussian_pdf(x, mu=0, sigma=1):
+    return (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp(-((x - mu) ** 2) / (2 * sigma ** 2))
+
+# definisco una funzione che dato un array, costruisce l'istogramma e sovrappone una normale standard
+def plot_histo_gauss(x, titolo):
+    # Parametri richiesti
+    # x: array di cui fare l'istogramma
+    # titolo: stringa contenente il titolo dell'istogramma
+
+    h, bins, _ = plt.hist(x, range=(-4,4), bins=80, alpha=0.6, label="istogramma")
+    delta_x = bins[1] - bins[0]
+    centri = (bins[:-1] + bins[1:]) / 2
+    # aggiungo una barra di errore seguendo l'approssimazione di Poisson
+    plt.errorbar(centri, h, np.sqrt(h), delta_x/2, c='tab:grey', lw=1, fmt='none',label="errore statistico")
+    plt.plot(centri, gaussian_pdf(centri)*delta_x*len(x),label='normale standard')
+    plt.xlabel("x")
+    plt.ylabel("Conteggi")
+    plt.title(titolo)
+    plt.legend()
+    plt.show()
+
+n = 12
+m = 10000
+
+# lista dove salvare i numeri generati
+lista_gauss =[]
+for i in range (m):
+    # genero n numeri random tra 0 e 1
+    u = np.random.uniform(0, 1, n)
+
+    # li sommo e sottraggo 6
+    x = np.sum(u) - 6
+
+    # aggiungo il numero ottenuto alla lista
+    lista_gauss.append(x)
+
+# ora faccio un istogramma degli elementi della lista e sovrappongo una normale standard
+plot_histo_gauss(lista_gauss, "Generazione da teorema del limite centrale")
+
+# -- Caso della formula di Box-Muller --
+
+# genero m numeri random e ottengo da essi due array x1 e x2 contenenti rispettivamente la prima e la seconda meta' dell'array
+x = np.random.uniform(0,1,m)
+x1 = x[0:int(m/2)]
+x2 = x[int(m/2):m]
+
+print(f"elementi di x {len(x)}, elementi di x1 {len(x1)}, elementi di x2 {len(x2)}")
+print(x1[-1],x2[0])
+
+# uso la trasformazione di Box-Muller per ottenere valori distribuiti secondo una normale standard
+y1 = np.sqrt(-2*np.log(x1))*np.cos(2*np.pi*x2)
+y2 = np.sqrt(-2*np.log(x1))*np.sin(2*np.pi*x2)
+y = np.concatenate((y1,y2))
+print(f"elementi di y {len(y)}, elementi di y1 {len(y1)}, elementi di y2 {len(y2)}")
+
+plot_histo_gauss(y, "Generazione da Box-Muller")
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.48\textwidth]{Immagini/tlc.png}
+    \hfill
+    \includegraphics[width=0.48\textwidth]{Immagini/box_muller.png}
+    \caption{A sinistra: generazione di una normale standard tramite il Teorema del Limite Centrale. A destra: generazione tramite il metodo di Box-Muller. Entrambi si sovrappongono perfettamente alla curva teorica.}
+\end{figure}
+
+
+
 \lezione{Distribuzione di Cauchy e Legge dei grandi numeri}{16 Marzo 2026}
+\subsection{Distribuzione di Cauchy come rapporto di due normali standard}
 
-codice python che ha mostrato (gaussiana)
-
-codice box-muller
-
-
-
-
-
-uso la marginalizzazione per trovare la distribuzione di una variabile a partire da una distribuzione:
-\[ 
-P_y (y_1) = \int_{-\infty}^{+\infty} P_y(y_1, y_2) \, dy_2 = \int_{0}^{+\infty} \frac{y_2}{2\pi} e^{-\frac{y_2^2 (y_1^2 + 1)}{2}} \, dy_2 
+Supponiamo che $x_1, x_2$ sono due variabili aleatorie indipendenti normali standard. La loro densità di probabilità congiunta è
+\[
+P_{x}(x_1, x_2) = \frac{1}{2\pi} \exp\left[ -(x_1^2 + x_2^2)/2 \right]
 \]
-dove ho messo $0$ poiché $y_2$ è sempre positivo (essendo  $y_2 = \sqrt{-2 \ln x_1} \sin(2\pi x_2) \ge 0 \iff 2\pi x_2 \in [0, \pi] \implies x_2 \in [0, 0.5]$ e $\sin(2\pi x_2)$ è positivo per $x_2 \in [0, 0.5]$).
-Si risolve con un cambio di variabili $ a = \frac{y_1^2 + 1}{2} y_2^2$:
+Quello che ci interessa è studiare la variabile
+\[
+y_1 = \frac{x_1}{x_2}
+\]
+Per comodità ci conviene introdurre la variabile $y_2 = x_2$, in modo che la trasformazione diventi:
+\[
+\begin{cases}
+y_1 = x_1 / x_2 \\
+y_2 = x_2
+\end{cases}
+\quad \text{e viceversa} \quad
+\begin{cases}
+x_1 = y_1 y_2 \\
+x_2 = y_2
+\end{cases}
+\]
+Così facendo lo jacobiano della trasformazione è semplicemente
+\[
+\frac{\partial x_1}{\partial y_1} \frac{\partial x_2}{\partial y_2} - \frac{\partial x_1}{\partial y_2} \frac{\partial x_2}{\partial y_1} = y_2 - y_1 \cdot 0 = y_2
+\]
+Si ha quindi che
+\[
+P_y(y_1, y_2) = \frac{1}{2\pi} \exp\left[ -(x_1^2 + x_2^2)/2 \right] |y_2|
+\]
+Ora scrivo l'esponente in termini di $y_1$ e $y_2$ e ho
+\[
+- (x_1^2 + x_2^2)/2 = - \frac{(y_1 y_2)^2 + y_2^2}{2} = - \frac{y_2^2 (y_1^2 + 1)}{2}
+\]
+quindi sostituendo ho
+\[
+P_y(y_1, y_2) = \frac{|y_2|}{2\pi} \exp\left[ - \frac{y_2^2 (y_1^2 + 1)}{2} \right]
+\]
+Ora a me serve calcolare $P_y(y_1)$ e per farlo marginalizzo rispetto a $y_2$ cioè integro $P_y(y_1, y_2)$ rispetto a $y_2$
+\[
+P_y(y_1) = \int_{-\infty}^{+\infty} \frac{|y_2|}{2\pi} \exp\left[ - \frac{y_2^2 (y_1^2 + 1)}{2} \right] dy_2
+\]
+Essendo la funzione integranda pari in $y_2$ avremo
+\[
+P_y(y_1) = 2 \int_{0}^{+\infty} \frac{y_2}{2\pi} \exp\left[ - \frac{y_2^2 (y_1^2 + 1)}{2} \right] dy_2
+\]
+L'integrale che resta è del tipo $\int_{0}^{\infty} x e^{-ax^2} dx$ con $a = \frac{y_1^2 + 1}{2}$. Questo integrale si può risolvere facendo il cambiamento di variabile $u = ax^2 \implies du = 2ax \, dx \implies x \, dx = \frac{1}{2a} du$
+\[
+\int_{0}^{\infty} x e^{-ax^2} dx = \int_{0}^{\infty} \frac{1}{2a} du \, e^{-u} = \frac{1}{2a} \int_{0}^{\infty} e^{-u} du = \frac{1}{2a} \left[ -e^{-u} \right]_0^\infty = \frac{1}{2a}
+\]
+Sostituendo si ha quindi che
+\[
+P_y(y_1) = \frac{1}{\pi} \frac{1}{1 + y_1^2}
+\]
+
+La distribuzione di probabilità trovata è la funzione di Cauchy standard, il che dimostra che il rapporto fra due variabili normali segue la distribuzione di Cauchy. \\
+Questa distribuzione, anche conosciuta come distribuzione di Breit-Wigner è molto usata in fisica delle particelle in cui la forma di solito è quella che si ottiene con un cambiamento di variabili del tipo $y_1 = \frac{x - x_0}{\Gamma} \implies x = \Gamma y_1 + x_0$
+\[
+P_X(x) = \frac{1}{\pi} \frac{1}{1 + \left( \frac{x - x_0}{\Gamma} \right)^2} \cdot \left| \frac{dy_1}{dx} \right| = \frac{1}{\pi} \frac{\Gamma^2}{\Gamma^2 + (x - x_0)^2} \cdot \frac{1}{\Gamma} = \frac{1}{\pi} \frac{\Gamma}{\Gamma^2 + (x - x_0)^2}
+\]
+Di solito questa funzione viene usata perché è una buona approssimazione per descrivere la massa invariante delle risonanze in fisica delle particelle o le intensità delle righe spettrali di emissione o assorbimento negli atomi. Nella formula $x_0$ rappresenta la locazione delle risonanze e $\Gamma$ ha a che fare con la sua larghezza.
+
+La caratteristica di questa distribuzione è che, anche se è simmetrica rispetto a $x_0$ (oppure 0 nella formulazione di Cauchy) si vede che gli integrali
+\[
+\int_{-\infty}^{0} x P(x) dx \quad \text{e} \quad \int_{0}^{+\infty} x P(x) dx
+\]
+sono individualmente divergenti, il primo fa $-\infty$ e il secondo $+\infty$ e quindi tecnicamente il valore di aspettazione non è definito. \\
+Intuitivamente il problema è che la distribuzione di Cauchy ha code così alte che la media non riesce a stabilizzarsi a un valore preciso. Quando si calcola la media di $n$ eventi, al crescere di $n$, si vede che all'inizio sembra che la media si stabilizzi a zero poi si iniziano a presentare dei salti che spostano la media. Questo perché visto che i valori nelle code della distribuzione non sono tanto rari, ne viene aggiunto uno alla somma con l'effetto di spostare la media. \\
+Analogamente la varianza e tutti i momenti di ordine superiore sono divergenti.
+
+
+
+
+\subsection{Legge dei grandi numeri}
+
+La legge dei grandi numeri è un altro dei teoremi fondamentali della statistica che serve a capire perché ha senso usare la media aritmetica. In sostanza dice che se ripetiamo un esperimento molte volte, la media dei risultati ottenuti tende al valore di aspettazione della densità di probabilità alla base del fenomeno. \\
+In realtà esistono varie formulazioni, quella descritta è la legge debole dei grandi numeri. \\
+Per formularla in maniera più formale indichiamo con il simbolo $\text{Prob}(A)$ la probabilità che si verifichi un certo evento $A$. Più precisamente se $X$ è una variabile aleatoria con densità di probabilità $P(x)$ allora 
+\[
+\text{Prob}(X > a) = \int_{a}^{+\infty} P(x) dx
+\]
+Nel caso discreto cioè se $X$ non è reale e ad ogni $x_i$ posso associare una certa $p_i$ allora si avrà che 
+\[
+\text{Prob}(X > a) = \sum_{x_i > a}^{+\infty} p_i
+\]
+che si può scrivere anche $\text{Prob}(X > a) = \sum_{x_i > a} p_i$.
+
+Matematicamente il modo in cui si formula la legge è: date $n$ variabili aleatorie $\{X_1, X_2, \dots, X_n\}$ indipendenti e con la stessa densità di probabilità, quindi con lo stesso valore di aspettazione $E[X_i] = E[X] = \mu$ e varianza $\text{Var}(X_i) = \text{Var}(X) = \sigma^2$ che devono esistere finite, allora $\forall \varepsilon > 0$
+\[
+\lim_{n \to \infty} \text{Prob}(|\bar{x} - \mu| \ge \varepsilon) = 0
+\]
+cioè la probabilità che la media aritmetica di $n$ variabili differisca dal valore di aspettazione va a zero per $n$ che tende a infinito.
+
+\subsubsection*{Dimostrazione}
+La dimostrazione richiede vari passaggi e dimostrazioni intermedie. Per semplicità consideriamo il caso di variabili discrete (si può passare al caso continuo sostituendo le sommatorie con gli integrali) e parto da una probabilità simile a quella della tesi ma non esattamente uguale cioè
+\[
+\text{Prob}(|X - \mu| \ge \varepsilon) = \sum_{|x_i - \mu| \ge \varepsilon} p_i
+\]
+quindi in questo caso la sommatoria è estesa solo ai valori di $X_i$ che soddisfano $|x_i - \mu| \ge \varepsilon$ dove $\mu = E[X]$. \\
+Per arrivare a dire qualcosa su questa probabilità usiamo la definizione di varianza nel caso discreto
+\[
+\sigma^2 = E[(X - \mu)^2] = \sum_i p_i (x_i - \mu)^2
+\]
+dove in questo caso la sommatoria è estesa a tutti i valori di $i$ per cui $x_i$ esiste (tipicamente $-\infty, +\infty$). Se consideriamo solo i valori di $x_i : |x_i - \mu| \ge \varepsilon$ allora avremo un sottoinsieme di tutti i valori possibili di $x_i$, quindi
+\[
+\sigma^2 \ge \sum_{|x_i - \mu| \ge \varepsilon} p_i (x_i - \mu)^2 \ge \sum_{|x_i - \mu| \ge \varepsilon} p_i \varepsilon^2
+\]
+dove l'ultimo passaggio viene dal fatto che dato che la sommatoria vale per $|x_i - \mu| \ge \varepsilon$ varrà in particolar quando vale $|x_i - \mu| = \varepsilon$ quindi se lo sostituisco dentro la sommatoria avrò in generale qualcosa di più piccolo. \\
+Nella sommatoria che rimane $\varepsilon^2$ non dipende da $i$ e quindi si può portare fuori:
+\[
+\sigma^2 \ge \varepsilon^2 \sum_{|x_i - \mu| \ge \varepsilon} p_i
+\]
+Qui posso sostituire la definizione iniziale
+\[
+\sigma^2 \ge \varepsilon^2 \text{Prob}(|X - \mu| \ge \varepsilon)
+\]
+E quindi invertendo ho
+\[
+\text{Prob}(|X - \mu| \ge \varepsilon) \le \frac{\sigma^2}{\varepsilon^2}
+\]
+Questa disuguaglianza è nota come \textbf{disuguaglianza di Chebyshev} che si può trovare in letteratura anche nella forma che si ottiene da questa ponendo $\varepsilon = K\sigma$ cioè
+\[
+\text{Prob}(|X - \mu| \ge K\sigma) \le \frac{1}{K^2}
+\]
+Useremo questa disuguaglianza per dimostrare la legge dei grandi numeri, ma prima vale la pena notare le sue implicazioni in generale. Senza aver fatto nessuna assunzione sulla densità di probabilità, questa disuguaglianza dà dei limiti superiori a quanto una qualunque variabile aleatoria $X$ si possa allontanare da $\mu$. Per esempio per $K=2$ si ha che $\text{Prob}(|X - \mu| \ge 2\sigma) \le \frac{1}{4} = 0.25$ \\
+cioè la probabilità che $|X - \mu| \ge 2\sigma$ non può superare il 25\% o al contrario almeno nel 75\% dei casi si ha $|X - \mu| < 2\sigma$. Ovviamente questo è un limite inferiore e vale per qualsiasi distribuzione. Abbiamo visto che nel caso della gaussiana vale in particolare $P(|X - \mu| < 2\sigma) \sim 95\%$.
+
+
+
+\begin{lstlisting}[caption={Calcolo probabilità e plot della Gaussiana (1, 2 e 3 deviazioni standard)}]
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+# Parametri della gaussiana
+mu = 0
+sigma = 1
+
+# Funzione densità di probabilità (PDF) della gaussiana con normale come default
+def gaussian_pdf(x, mu=0, sigma=1):
+    return (1 / (sigma * math.sqrt(2 * math.pi))) * np.exp(-((x - mu) ** 2) / (2 * sigma ** 2))
+
+# Calcolo l'integrale con il metodo numerico dei rettangoli 
+def integra(a, b, n=200000):
+    # a partire dall'intervallo [a,b] costruisco n rettangolini tutti larghi uguali con base:
+    base = (b - a) / n
+    somma = 0.0
+    # ora sommo le altezze di tutti i rettangolini
+    for k in range(n):
+        x_mid = a + (k + 0.5) * base
+        somma += gaussian_pdf(x_mid)
+    # uso la formula base*altezza per calcolare la somma delle aree di tutti i rettangolini
+    return base * somma
+
+print("Integrazione numerica della gaussiana standard\n")
+
+for sigma in [1, 2, 3]:
+    area = integra(-sigma, sigma)
+    print(f"La probabilità che x assuma valori compresi entro {sigma} deviazioni standard è {area:.6f}")
+    print(f"Viceversa la probabilità che x>{sigma}sigma è {1-area:.6f}\n")
+
+# Metodo alternativo: estraggo numeri casuali con densità di probabilità gaussiana,
+# creo un istogramma con questi numeri e poi sommo i contenuti dei bin
+
+# estrazione dei numeri casuali
+N = 300000
+campioni = np.random.normal(0, 1, N)
+
+# creo l'istogramma senza la parte grafica al momento
+bins = np.linspace(-4, 4, 81)  # larghezza bin = 0.1
+conteggi, bordi = np.histogram(campioni, bins=bins)
+
+bin_width = bordi[1] - bordi[0]
+centri = (bordi[:-1] + bordi[1:]) / 2
+
+# Creo una mappa dei colori per intervalli sigma che userò successivamente per il grafico
+for sigma, colore in zip([1,2,3], ['green','orange','purple']):
+    colors =[]
+    area = 0
+    for c, h in zip(centri, conteggi):
+        if abs(c) <= sigma:
+            colors.append(colore)
+            area += h
+        else:
+            colors.append('white')
+
+    print(f"Area tra -{sigma} sigma e {sigma} sigma = {area/N:.6f}")
+
+    # Disegno istogramma usando delle barre colorate con la mappa di prima
+    plt.figure(figsize=(8,5))
+    plt.bar(centri, conteggi, width=bin_width, color=colors, alpha=0.5, label = f"Integrale = {area/N:.4f}")
+
+    # Gaussiana teorica moltiplicata per deltax e per N
+    x = np.linspace(-4,4,1000)
+    plt.plot(x, gaussian_pdf(x)*bin_width*np.sum(conteggi), 'r', linewidth=2, label="Gaussiana teorica")
+
+    # Linea sigma
+    plt.axvline(sigma, linestyle='--', color=colore, label=f"$\pm$ {sigma} sigma")
+    plt.axvline(-sigma, linestyle='--', color=colore)
+
+    plt.title("Istogramma con colori per intervalli ±n$\sigma$")
+    plt.xlabel("$x$")
+    plt.ylabel("Densità di probabilità")
+    plt.legend()
+    plt.grid(True)
+    plt.margins(x=0)
+    plt.show()
+\end{lstlisting}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Immagini/gauss_2sigma.png}
+    \caption{Visualizzazione dell'area sottesa alla gaussiana standard nell'intervallo $\pm 2\sigma$. Come previsto dalla teoria, l'area copre circa il 95.4\% dei casi, un limite ben più stringente del 75\% garantito dalla disuguaglianza di Chebyshev.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+Torniamo ora al caso della media $\bar{x}$ e applicando la disuguaglianza di prima avremo
+\[
+\text{Prob}(|\bar{x} - E[\bar{x}]| \ge \varepsilon) \le \frac{\text{Var}(\bar{x})}{\varepsilon^2}
+\]
+dove $E[\bar{x}] = E\left[ \frac{\sum_i x_i}{n} \right] = \frac{1}{n} \sum_i E[x_i] = \frac{1}{n} n\mu = \mu$ \\
+mentre $\text{Var}(\bar{x}) = \text{Var}\left( \frac{1}{n} \sum_i x_i \right) = \frac{1}{n^2} \sum_i \text{Var}(x_i) = \frac{1}{n^2} n\sigma^2 = \frac{\sigma^2}{n}$ \\
+Sostituendo si ha quindi
+\[
+\text{Prob}(|\bar{x} - \mu| \ge \varepsilon) \le \frac{\sigma^2}{n \varepsilon^2}
+\]
+Al limite per $n \to \infty$, $\frac{1}{n} \to 0$ per cui questo dimostra che
+\[
+\lim_{n \to \infty} \text{Prob}(|\bar{x} - \mu| \ge \varepsilon) = 0
+\]
+
+\vspace{0.5cm}
+\noindent $\star \quad \text{Prob}(|X - \mu| \ge K\sigma) = 1 - \text{Prob}(|X - \mu| < K\sigma) \le \frac{1}{K^2}$ \\
+$\implies \text{Prob}(|X - \mu| < K\sigma) \ge 1 - \frac{1}{K^2}$
+
+\subsection{Distribuzione Esponenziale}
 
 \[
-\int_{0}^{+\infty} \frac{y_2}{2\pi} e^{-\frac{y_2^2 (y_1^2 + 1)}{2}} \, dy_2 = \int_{0}^{+\infty} \frac{1}{2\pi} e^{-x} \, da = \frac{1}{2a}
+P_{\text{exp}}(x; \tau) = \frac{1}{\tau} e^{-x/\tau} \quad \quad 0 \le x \le +\infty
 \]
-
-si trova così la distribuzione di $y_1$:
+Il valore di aspettazione e la varianza si calcolano facilmente dalla funzione generatrice dei momenti
 \[
-P_y(y_1) = \frac{1}{\pi} \frac{1}{1+y_1^2}
+M_X(t) = E[e^{tx}] = \int_{0}^{\infty} e^{tx} \frac{1}{\tau} e^{-x/\tau} dx = \frac{1}{\tau} \int_{0}^{\infty} e^{(t - 1/\tau)x} dx
 \]
-
-chiamata anche la distribuzione di Cauchy.
-Per ottenere la Breit-Wigner:
 \[
-y_1 = \frac{x-x_0}{\Gamma} \to P_x(x) = \frac{1}{\pi} \frac{1}{1+ (\frac{x-x_0}{\Gamma})^2} = \frac{1}{\pi} \frac{\Gamma}{(x-x_0)^2 + \Gamma^2} 
+= \frac{1}{\tau} \frac{1}{t - 1/\tau} \left[ e^{(t - 1/\tau)x} \right]_0^\infty = \frac{1}{t\tau - 1} [0 - 1] = \frac{1}{1 - t\tau}
 \]
-che è una distribuzione di cauchy con media $x_0$ e "deviazione standard" $\Gamma$ (in realtà la varianza è infinita, ma $\Gamma$ rappresenta una sorta di "ampiezza" della distribuzione).
-
-ma il valore di aspettazione di x non è definito per cauchy:
+Per calcolare il valore di aspettazione la derivo:
 \[
-E[x] = \int_{-\infty}^{+\infty} x P_x(x) \, dx
+M'_X(t) = \frac{-1}{(1 - t\tau)^2} (-\tau) = \frac{\tau}{(1 - t\tau)^2}
 \]
-Il problema è che il termine $x$ cresce più velocemente del denominatore, quindi l'integrale diverge. Questo è un esempio di distribuzione con varianza infinita, che non soddisfa le condizioni del Teorema del Limite Centrale.
-la distribuzione di cauchy ha delle code molto più "pesanti" rispetto alla gaussiana, il che significa che è più probabile osservare valori estremi (outliers) rispetto a una distribuzione normale. 
-La distribuzione di cauchy non soddisfa neanche la legge dei grandi numeri che vedremo dopo.
-
-\section{Legge dei grandi numeri}
-la legge dei grandi numeri ci dice che se facciamo una media di un numero molto grande di misure, questa media tende a convergere al valore atteso della distribuzione da cui sono state estratte le misure.
 \[
-\bar{x} \underbrace{\to}_{n \to \infty} \mu
+M'_X(0) = \tau = E[X]
 \]
-
-vediamo la versione debole 
-\subsection{Legge dei grandi numeri Debole}
-Uso la notazione Prob(A) per indicare la probabilità che l'evento A si verifichi.
-quindi:
-
-vediamo per variabili continue e discrete:
+Calcolo la derivata seconda ($D(x^{-2}) = -2x^{-3}$)
 \[
-Prob(x>a) = \int_{a}^{+\infty} P(x) \, dx \hspace{2cm} Prob(x>a) = \sum_{x>a} P(x)
+M''_X(t) = - \frac{2\tau}{(1 - t\tau)^3} (-\tau) = \frac{2\tau^2}{(1 - t\tau)^3}
 \]
-dove $P(x)$ è la densità di probabilità di $x$.
-$x_1, ..., x_n$
-Ipotesi: se ho n variabili indipendenti con stessa densità di probabilità ( $E(x_i)=E(x)=\mu$ ed $var(x_i)= var(x)= \sigma^2$ ed esistono finite)
-allora per ogni $\varepsilon> 0$ vale:
-
-Tesi:
 \[
-\lim_{n\to \infty} Prob(|\bar{x}-\mu|>\varepsilon) = 0
+M''_X(0) = 2\tau^2 = E[X^2]
 \]
-
-ora:
+Ora calcolo la varianza come
 \[
-Prob(|\bar{x}-\mu|>\varepsilon) = \sum_{|\bar{x}-\mu|>\varepsilon} P_i 
+\text{Var}(X) = E[X^2] - (E[X])^2 = 2\tau^2 - \tau^2 = \tau^2
 \]
-
-la varianza quindi:
-
-\[
-\sigma^2 = E[(x-\mu)^2] = \sum (x-\mu)^2 P_i(x_i-\mu)^2 >= \sum_{|\bar{x}-\mu|>\varepsilon} (x-\mu)^2 P_i >= \varepsilon^2 \sum_{|\bar{x}-\mu|>\varepsilon} P_i = \varepsilon^2 Prob(|\bar{x}-\mu|>\varepsilon)
-\]
-
-
-quindi 
-
-\[
-Prob(|\bar{x}-\mu|>\varepsilon) <= \frac{\sigma^2}{\varepsilon^2}
-\]
-Questa disuguaglianza è nota come \textbf{disuguaglianza di Chebyshev}.
-Questa pone dei limiti superiori a quanto delle variabili aleatorie possono discostarsi dalla media. 
-
-\[
-\varepsilon = k \sigma \to Prob(|\bar{x}-\mu|>k\sigma) <= \frac{1}{k^2}
-\]
-
-per esempio se $k=2$ allora $Prob(|\bar{x}-\mu|>2\sigma) <= \frac{1}{4}$. ovvero del $25\%$ dei casi la media campionaria si discosterà di più di $2\sigma$ dalla media vera.
-la parte centrale sarà quindi del $75\%$.
-per una gaussiana il $95\%$ dei casi si discosterà di meno di $2\sigma$ dalla media vera, mentre per una cauchy il $75\%$ dei casi si discosterà di meno di $2\sigma$ dalla media vera.
-
-quindi 
-\[
-  E[x] = E[\frac{1}{n}\sum_i x_i] = \frac{1}{n} \sum_i E[x_i] = \frac{1}{n} \sum_i \mu = \mu
-\]
-per la varianza:
-
-\[
-var(x)= var(\frac{1}{n}\sum_i x_i) = \frac{1}{n^2} \sum_i var(x_i) = \frac{1}{n^2} \sum_i \sigma^2 = \frac{\sigma^2}{n}
-\]
-
-osserviamo quindi che va a 0 per $n \to \infty$.
-\[
-Prob(|\bar{x}-\mu|>\varepsilon) \to 0 \quad \text{per } n \to \infty
-\]
-
-
-\subsection{Distrubuzione Esponenziale }
-Vediamo velocemente la distribuzione esponenziale
-
-
-
-
-
 
 
 

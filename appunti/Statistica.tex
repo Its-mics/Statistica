@@ -2295,9 +2295,130 @@ P_y(y_1, y_2) = 1 \cdot |J| = \frac{1}{2\pi} e^{-\frac{y_1^2 + y_2^2}{2}} = \lef
 Il risultato è il prodotto di due densità normali standard. Quindi $y_1$ e $y_2$ sono variabili $\mathcal{N}(0,1)$ indipendenti.
 
 
-\lezione{ nuova cosa}{16 Marzo 2026}
+\lezione{Distribuzione di Cauchy e Legge dei grandi numeri}{16 Marzo 2026}
 
 codice python che ha mostrato (gaussiana)
+
+codice box-muller
+
+
+
+
+
+uso la marginalizzazione per trovare la distribuzione di una variabile a partire da una distribuzione:
+\[ 
+P_y (y_1) = \int_{-\infty}^{+\infty} P_y(y_1, y_2) \, dy_2 = \int_{0}^{+\infty} \frac{y_2}{2\pi} e^{-\frac{y_2^2 (y_1^2 + 1)}{2}} \, dy_2 
+\]
+dove ho messo $0$ poiché $y_2$ è sempre positivo (essendo  $y_2 = \sqrt{-2 \ln x_1} \sin(2\pi x_2) \ge 0 \iff 2\pi x_2 \in [0, \pi] \implies x_2 \in [0, 0.5]$ e $\sin(2\pi x_2)$ è positivo per $x_2 \in [0, 0.5]$).
+Si risolve con un cambio di variabili $ a = \frac{y_1^2 + 1}{2} y_2^2$:
+
+\[
+\int_{0}^{+\infty} \frac{y_2}{2\pi} e^{-\frac{y_2^2 (y_1^2 + 1)}{2}} \, dy_2 = \int_{0}^{+\infty} \frac{1}{2\pi} e^{-x} \, da = \frac{1}{2a}
+\]
+
+si trova così la distribuzione di $y_1$:
+\[
+P_y(y_1) = \frac{1}{\pi} \frac{1}{1+y_1^2}
+\]
+
+chiamata anche la distribuzione di Cauchy.
+Per ottenere la Breit-Wigner:
+\[
+y_1 = \frac{x-x_0}{\Gamma} \to P_x(x) = \frac{1}{\pi} \frac{1}{1+ (\frac{x-x_0}{\Gamma})^2} = \frac{1}{\pi} \frac{\Gamma}{(x-x_0)^2 + \Gamma^2} 
+\]
+che è una distribuzione di cauchy con media $x_0$ e "deviazione standard" $\Gamma$ (in realtà la varianza è infinita, ma $\Gamma$ rappresenta una sorta di "ampiezza" della distribuzione).
+
+ma il valore di aspettazione di x non è definito per cauchy:
+\[
+E[x] = \int_{-\infty}^{+\infty} x P_x(x) \, dx
+\]
+Il problema è che il termine $x$ cresce più velocemente del denominatore, quindi l'integrale diverge. Questo è un esempio di distribuzione con varianza infinita, che non soddisfa le condizioni del Teorema del Limite Centrale.
+la distribuzione di cauchy ha delle code molto più "pesanti" rispetto alla gaussiana, il che significa che è più probabile osservare valori estremi (outliers) rispetto a una distribuzione normale. 
+La distribuzione di cauchy non soddisfa neanche la legge dei grandi numeri che vedremo dopo.
+
+\section{Legge dei grandi numeri}
+la legge dei grandi numeri ci dice che se facciamo una media di un numero molto grande di misure, questa media tende a convergere al valore atteso della distribuzione da cui sono state estratte le misure.
+\[
+\bar{x} \underbrace{\to}_{n \to \infty} \mu
+\]
+
+vediamo la versione debole 
+\subsection{Legge dei grandi numeri Debole}
+Uso la notazione Prob(A) per indicare la probabilità che l'evento A si verifichi.
+quindi:
+
+vediamo per variabili continue e discrete:
+\[
+Prob(x>a) = \int_{a}^{+\infty} P(x) \, dx \hspace{2cm} Prob(x>a) = \sum_{x>a} P(x)
+\]
+dove $P(x)$ è la densità di probabilità di $x$.
+$x_1, ..., x_n$
+Ipotesi: se ho n variabili indipendenti con stessa densità di probabilità ( $E(x_i)=E(x)=\mu$ ed $var(x_i)= var(x)= \sigma^2$ ed esistono finite)
+allora per ogni $\varepsilon> 0$ vale:
+
+Tesi:
+\[
+\lim_{n\to \infty} Prob(|\bar{x}-\mu|>\varepsilon) = 0
+\]
+
+ora:
+\[
+Prob(|\bar{x}-\mu|>\varepsilon) = \sum_{|\bar{x}-\mu|>\varepsilon} P_i 
+\]
+
+la varianza quindi:
+
+\[
+\sigma^2 = E[(x-\mu)^2] = \sum (x-\mu)^2 P_i(x_i-\mu)^2 >= \sum_{|\bar{x}-\mu|>\varepsilon} (x-\mu)^2 P_i >= \varepsilon^2 \sum_{|\bar{x}-\mu|>\varepsilon} P_i = \varepsilon^2 Prob(|\bar{x}-\mu|>\varepsilon)
+\]
+
+
+quindi 
+
+\[
+Prob(|\bar{x}-\mu|>\varepsilon) <= \frac{\sigma^2}{\varepsilon^2}
+\]
+Questa disuguaglianza è nota come \textbf{disuguaglianza di Chebyshev}.
+Questa pone dei limiti superiori a quanto delle variabili aleatorie possono discostarsi dalla media. 
+
+\[
+\varepsilon = k \sigma \to Prob(|\bar{x}-\mu|>k\sigma) <= \frac{1}{k^2}
+\]
+
+per esempio se $k=2$ allora $Prob(|\bar{x}-\mu|>2\sigma) <= \frac{1}{4}$. ovvero del $25\%$ dei casi la media campionaria si discosterà di più di $2\sigma$ dalla media vera.
+la parte centrale sarà quindi del $75\%$.
+per una gaussiana il $95\%$ dei casi si discosterà di meno di $2\sigma$ dalla media vera, mentre per una cauchy il $75\%$ dei casi si discosterà di meno di $2\sigma$ dalla media vera.
+
+quindi 
+\[
+  E[x] = E[\frac{1}{n}\sum_i x_i] = \frac{1}{n} \sum_i E[x_i] = \frac{1}{n} \sum_i \mu = \mu
+\]
+per la varianza:
+
+\[
+var(x)= var(\frac{1}{n}\sum_i x_i) = \frac{1}{n^2} \sum_i var(x_i) = \frac{1}{n^2} \sum_i \sigma^2 = \frac{\sigma^2}{n}
+\]
+
+osserviamo quindi che va a 0 per $n \to \infty$.
+\[
+Prob(|\bar{x}-\mu|>\varepsilon) \to 0 \quad \text{per } n \to \infty
+\]
+
+
+\subsection{Distrubuzione Esponenziale }
+Vediamo velocemente la distribuzione esponenziale
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -2682,39 +2682,46 @@ Ora calcolo la varianza come
 
 
 \lezione{Distribuzione Esponenziale}{19 Marzo 2026}
-vediamo ora come si ricava la   distribuzione esponenziale da quella di poisson. \\ 
-eventi aleatori -> numero medio v
-\[
-P(x, \lambda) = \frac{v^x e^{-v}}{x!} 
-\]
-tempo t
-$\lambda \to$ numero medio di eventi in un intervallo di tempo t
-$v  = \lambda t$
 
-\[
-P(k, \lambda t) = \frac{(\lambda t)^k e^{-\lambda t}}{k!} \quad \text{con } k = 0, 1, 2, \dots
-\]
-T = tempo attesa tra eventi successivi
+La distribuzione esponenziale descrive il tempo che intercorre tra due eventi consecutivi in un processo di Poisson.
 
+Ricaviamola dalla \textbf{Distribuzione di Poisson}.
+Se un fenomeno segue la \textbf{distribuzione di Poisson}, la probabilità di osservare $k$ eventi, dato un numero medio di eventi attesi $\nu$, è:
+\begin{equation}
+    P(k; \nu) = \frac{e^{-\nu} \nu^k}{k!}
+\end{equation}
 
-\[
-Prob (T> t) = Prob (0, \lambda t) = e^{-\lambda t}    
-\]
+Se definiamo $\lambda$ come il numero di eventi attesi per \textbf{unità di tempo}, allora il numero medio di eventi attesi in un intervallo $t$ è $\lambda t$. La probabilità di osservare $k$ eventi nell'intervallo $t$ diventa:
+\begin{equation}
+    P(k; \lambda t) = \frac{e^{-\lambda t} (\lambda t)^k}{k!}
+\end{equation}
 
+Definiamo una nuova variabile casuale $T$ come l'intervallo di tempo che intercorre tra due eventi successivi.
+Affinché il tempo di attesa $T$ sia maggiore di un certo valore $t$ ($T > t$), non deve verificarsi alcun evento nell'intervallo $[0, t]$.
 
-\[
-Prob (T< t) = 1- Prob (T> t) = 1-e^{-\lambda t}
-\]
+Pertanto, la probabilità che $T > t$ coincide con la probabilità di osservare zero eventi nel periodo $t$:
+\begin{equation}
+    \text{Prob}(T > t) = P(0; \lambda t) = \frac{e^{-\lambda t} (\lambda t)^0}{0!} = e^{-\lambda t}
+\end{equation}
 
-Funzione di ripartizione x' variabile aleatoria
-\[
-Prob(x' <= x) = F_{x'}(x) = \int_{-\infty}^{x} P_{x'}(z) dz
-\]
+\subsection{Funzione di Ripartizione e Densità di Probabilità}
+La \textbf{funzione di ripartizione} (o distribuzione cumulativa $F_X(x)$) indica la probabilità che una variabile $x'$ assuma un valore minore o uguale a $x$:
+\begin{equation}
+    F_X(x) = \text{Prob}(x' \le x) = \int_{-\infty}^{x} P_X(z) \, dz
+\end{equation}
+Dalle proprietà della probabilità, segue la normalizzazione: $\int_{-\infty}^{+\infty} P_X(x) \, dx = 1$.
 
-\[
-x \to \infty \quad \int_{-\infty}^{\infty} P_{x'}(x) dx = 1 
-\]
- 
+Per la variabile tempo $T$, la funzione di ripartizione è:
+\begin{equation}
+    F_T(t) = \text{Prob}(T \le t) = 1 - \text{Prob}(T > t) = 1 - e^{-\lambda t}
+\end{equation}
+
+La \textbf{densità di probabilità} $P_T(t)$ si ottiene derivando la funzione di ripartizione:
+\begin{equation}
+    P_T(t) = \frac{d}{dt} F_T(t) = \frac{d}{dt} (1 - e^{-\lambda t}) = \lambda e^{-\lambda t}
+\end{equation}
+Questa è la densità di probabilità esponenziale. Indica che i tempi di attesa brevi sono più probabili, mentre quelli lunghi sono meno probabili.
+
 
 % --- 1. Grafico della Funzione di Ripartizione F(x) ---
 \begin{tikzpicture}
@@ -2785,48 +2792,47 @@ P_t (t) = \frac{d}{dt} (1-e^{-\lambda t}) = \lambda e^{-\lambda t}
 \end{axis}
 \end{tikzpicture}
 
+\subsection{Proprietà di Assenza di Memoria}
+Una caratteristica fondamentale è l'\textbf{assenza di memoria}: il tempo che resta da aspettare affinché un evento si verifichi è indipendente da quanto abbiamo già aspettato.
+Usando la probabilità condizionata $\text{Prob}(A|M) = \frac{\text{Prob}(A \cap M)}{\text{Prob}(M)}$:
+\begin{itemize}
+    \item $s$: tempo già aspettato.
+    \item $t$: tempo addizionale da aspettare.
+    \item $A \rightarrow T > s + t$
+    \item $M \rightarrow T > s$
+\end{itemize}
+\begin{equation}
+    \text{Prob}(T > s+t \mid T > s) = \frac{\text{Prob}(T > s+t)}{\text{Prob}(T > s)} = \frac{e^{-\lambda(s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = P(T > t)
+\end{equation}
 
-\[
-\int_{t_1}^{t_2} \lambda e^{-\lambda t} dt 
-\]
-che graficamente è l'area sottesa alla curva tra $t_1$ e $t_2$ 
-
-dove $\lambda$ è il numero medio per unità di tempo e $\tau = \frac{1}{\lambda}$ 
-è il tempo medio di attesa quindi:
- 
-\[ 
-\lambda e^{-\lambda t} \to \frac{1}{\tau} e^{\frac{-t}{\tau}}
-\]
-
-Assenza di memeoria
-eventi A,M prob A condizionata e M
-
-
-\[
-Prob(A|M) = \frac{Prob(A \cap M)}{Prob(M)}
-\]
-
-ho fià asepttato $\to s, prob t$
+\paragraph{Parametrizzazione con $\tau$}
+Spesso si scrive la distribuzione utilizzando $\tau = 1/\lambda$, dove $\tau$ rappresenta il \textbf{tempo medio} tra due eventi (mentre $\lambda$ è la frequenza):
+\begin{equation}
+    P_{exp}(x; \tau) = \frac{1}{\tau} e^{-x/\tau} \quad \text{per } 0 \le x \le +\infty
+\end{equation}
 
 
-\[
-A \to T > s+t
-M \to T > s
-A \cap M \to T > s+t
-\]
 
-\[
-Prob(T > s+t | T > s) = \frac{Prob(T > s+t)}{Prob(T > s)} = \frac{e^{-\lambda (s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = Prob(T > t)
-\]
+\section{Distribuzione di Erlang}
+La distribuzione di Erlang è una generalizzazione della distribuzione esponenziale. Mentre l'esponenziale regola il tempo tra due eventi successivi ($k=1$), la distribuzione di Erlang regola il tempo di attesa per il \textbf{k-esimo evento}.
 
 
-\subsection{Distribuzione di Erlang}
-tempo di attesa del k-esimo evento  ($T_k$)
+
+Sia $T_k$ il tempo di attesa fino al $k$-esimo evento.
+\begin{itemize}
+    \item $P_1(t; \lambda) = \lambda e^{-\lambda t}$ (Esponenziale)
+    \item Per $P_2$, supponiamo che il primo evento avvenga a $x$ ($0 < x < t$) e il secondo nel tempo restante $t-x$:
+\end{itemize}
+\begin{equation}
+    P_2(t; \lambda) = \int_0^t P_1(x; \lambda) P_1(t-x; \lambda) \, dx = \int_0^t \lambda e^{-\lambda x} \lambda e^{-\lambda(t-x)} \, dx = \lambda^2 t e^{-\lambda t}
+\end{equation}
+
+Procedendo per induzione per $P_3$:
+\begin{equation}
+    P_3(t; \lambda) = \int_0^t P_2(x; \lambda) P_1(t-x; \lambda) \, dx = \int_0^t \lambda^2 x e^{-\lambda x} \lambda e^{-\lambda(t-x)} \, dx = \frac{t^2}{2} \lambda^3 e^{-\lambda t}
+\end{equation}
 
 
-$T_1 \sim P_1(t,\lambda) = \lambda e^{-\lambda t}$
-voglio capire come è distribuito $T_2$.
-Prendo un intervallo t in cui suppongo ci siano 2 eventi indico con x il tempo di attesa del primo quindi quello del secondo sarà $t-x$
 
 
 \begin{tikzpicture}[node distance=2cm, font=\small]
@@ -2856,65 +2862,55 @@ Prendo un intervallo t in cui suppongo ci siano 2 eventi indico con x il tempo d
 
 \end{tikzpicture}
 
-$T_2 \sim P_2 (t, \lambda) = \int_0^t P_1 (x,\lambda) P_1 ((t-x), \lambda) dx  = \int_0^t \lambda e^{-\lambda x} \cdot \lambda e^{-\lambda (t-x)} dx = \lambda^2 e^{-\lambda t} \int_0^t e^{\lambda x} e^{-\lambda t} dx = \lambda^2 e^{-\lambda t} \int_0^t e^{-\lambda (t-2x)} dx$
-$= \lambda^2 t e^{-\lambda t}$
 
-\[
-P_3 (t, \lambda) = \int_0^t P_2 (x, \lambda) P_1 ((t-x), \lambda) dx = \int_0^t \lambda^2 x e^{-\lambda x} \cdot \lambda e^{-\lambda (t-x)} dx = \lambda^3 e^{-\lambda t} \int_0^t x e^{\lambda x} e^{-\lambda t} dx = \lambda^3 e^{-\lambda t} \int_0^t x e^{-\lambda (t-2x)} dx
-\]
-\[
-\lambda^3 \frac{t^2}{2} e^{-\lambda t}
-\]
+Continuando ricorsivamente, si ottiene la densità di probabilità di Erlang:
+\begin{equation}
+    P_k(t; \lambda) = \frac{t^{k-1}}{(k-1)!} \lambda^k e^{-\lambda t}
+\end{equation}
 
-
-Erlang
-\[
-P_k (t, \lambda) = \lambda^k \frac{t^{k-1}}{(k-1)!} e^{-\lambda t}
-\]
-
-
-il valore di aspettazione è $E[T_k] = \frac{k}{\lambda}$ e la varianza è $\text{Var}(T_k) = \frac{k}{\lambda^2}$
-
-
-\subsection{Monte-Carlo}
-grafico
-
-
-
-
-
-$x \sim f(x)$
-metodo di accept-reject: 
+\textbf{Momenti della distribuzione:}
 \begin{itemize}
-    \item prendo un intervallo $[a,b]$ in cui $f(x)$ è definita e prendo un punto $y$ che sia più grande del massimo di $f(x)$ in quell'intervallo
-    \item estraggo un numero casuale $x_0$ uniformemente distribuito in $[a,b]$ e un numero casuale $y_0$ uniformemente distribuito in $[0,y]$
-    \item se $y_0 < f(x_0)$ allora accetto $x_0$ altrimenti lo rifiuto
+    \item Valore di aspettazione: $E[t] = \frac{k}{\lambda}$
+    \item Varianza: $Var(t) = \frac{k}{\lambda^2}$
 \end{itemize}
 
-Metodo della funzione di ripartizione:\
-\[
-F(x) = Prob (x'<= x) = \int_{-\infty}^{x} P(z) dz
-\]
 
-visto che $0<= F(x) <= 1$
-$u\sim U(0,1) \to u=F(x) \to x=F^{-1}(u)$
+\section{Metodi Monte Carlo}
+I metodi Monte Carlo sono algoritmi computazionali che sfruttano la generazione di numeri casuali per risolvere problemi matematici complessi.
 
-\[
-Prob(F^{-1}<= x) = Prob(u' <= F(x)) = F(x)
-\]
-\[
-Prob(u'<= y) = \int_{0}^{y} dx = y
-\]
+\paragraph{Esempio}
+Per calcolare l'area di una superficie irregolare:\\
+1. Si lancia un numero $N$ di chicchi di riso a caso su un foglio di area nota. \\
+2. Si conta quanti chicchi cadono dentro l'area cercata ($N_{in}$).\\
+3. Il rapporto $N_{in}/N$ fornisce una stima dell'area, che diventa più accurata al crescere di $N$.
 
-\[
-F(x) = 1 -exp(- \frac{x}{\tau})
-\]
-\[
-x = F^{-1}(u) = - \tau ln(1-u)
-\]
+\subsection{Metodo Accept-Reject}
+È un metodo generale per generare variabili continue secondo una distribuzione $f(x)$ non standard.
+Dati un intervallo $[x_{min}, x_{max}]$ e un valore massimo della funzione $f_{max}$:
+\begin{enumerate}
+    \item Si genera $x_i$ con distribuzione uniforme tra $x_{min}$ e $x_{max}$: $x_i = x_{min} + r_1 (x_{max} - x_{min})$.
+    \item Si genera $y_i$ con distribuzione uniforme tra 0 e $f_{max}$.
+    \item Se $y_i < f(x_i)$, si \textbf{accetta} il valore $x_i$; altrimenti lo si rifiuta.
+\end{enumerate}
+L'efficienza $\eta$ è il rapporto tra l'area sotto $f(x)$ e l'area del rettangolo:
+\begin{equation}
+    \eta = \frac{1}{(x_{max} - x_{min}) f_{max}} \int_{x_{min}}^{x_{max}} f(x) \, dx
+\end{equation}
 
-codici
+\subsection{Metodo della Funzione di Ripartizione (Inversione)}
+Un metodo più efficiente dell'Accept-Reject si basa sull'inversione della CDF.
+Dato che $F(x) = \int_{-\infty}^x P(z) \, dz$ ha valori compresi tra 0 e 1, se generiamo un numero casuale $u \sim \mathcal{U}(0,1)$, allora:
+\begin{equation}
+    x = F^{-1}(u)
+\end{equation}
+Il valore $x$ così ottenuto sarà distribuito secondo la $P(x)$ originale.
 
+\textbf{Esempio per la distribuzione esponenziale:}
+\begin{itemize}
+    \item $P(x) = \frac{1}{\tau} \exp(-\frac{x}{\tau})$
+    \item $F(x) = 1 - \exp(-\frac{x}{\tau}) = u$
+    \item Invertendo: $x = -\tau \ln(1 - u)$
+\end{itemize}
 
 
 

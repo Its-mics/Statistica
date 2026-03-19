@@ -2820,11 +2820,114 @@ Prob(T > s+t | T > s) = \frac{Prob(T > s+t)}{Prob(T > s)} = \frac{e^{-\lambda (s
 \]
 
 
+\subsection{Distribuzione di Erlang}
+tempo di attesa del k-esimo evento  ($T_k$)
+
+
+$T_1 \sim P_1(t,\lambda) = \lambda e^{-\lambda t}$
+voglio capire come è distribuito $T_2$.
+Prendo un intervallo t in cui suppongo ci siano 2 eventi indico con x il tempo di attesa del primo quindi quello del secondo sarà $t-x$
+
+
+\begin{tikzpicture}[node distance=2cm, font=\small]
+
+    % Asse temporale
+    \draw[thick, ->] (0,0) -- (8,0) node[right] {tempo};
+
+    % Punti significativi (pallini neri)
+    \filldraw (0,0) circle (2pt) node[below=5pt] {$0$};
+    \filldraw (4,0) circle (2pt) node[below=5pt] {$x$};
+    \filldraw (7,0) circle (2pt) node[below=5pt] {$t$};
+
+    % Graffe superiori (Versione standard "brace")
+    \draw [decorate, decoration={brace, amplitude=8pt, raise=5pt}, thick]
+      (0,0) -- (4,0) node [midway, above=15pt] {$T_1 \sim \text{Exp}(\lambda)$};
+      
+    \draw [decorate, decoration={brace, amplitude=8pt, raise=5pt}, thick]
+      (4,0) -- (7,0) node [midway, above=15pt] {$T_2 - T_1 \sim \text{Exp}(\lambda)$};
+
+    % Frecce per gli intervalli sotto (x e t-x)
+    \draw[<->, >=stealth, blue!70!black] (0,-0.8) -- (3.9,-0.8) node[midway, fill=white] {$x$};
+    \draw[<->, >=stealth, red!70!black] (4.1,-0.8) -- (7,-0.8) node[midway, fill=white] {$t-x$};
+
+    % Graffa totale sotto
+    \draw [decorate, decoration={brace, mirror, amplitude=10pt, raise=35pt}]
+      (0,0) -- (7,0) node [midway, below=50pt] {Tempo totale $T_2 = t$};
+
+\end{tikzpicture}
+
+$T_2 \sim P_2 (t, \lambda) = \int_0^t P_1 (x,\lambda) P_1 ((t-x), \lambda) dx  = \int_0^t \lambda e^{-\lambda x} \cdot \lambda e^{-\lambda (t-x)} dx = \lambda^2 e^{-\lambda t} \int_0^t e^{\lambda x} e^{-\lambda t} dx = \lambda^2 e^{-\lambda t} \int_0^t e^{-\lambda (t-2x)} dx$
+$= \lambda^2 t e^{-\lambda t}$
+
+\[
+P_3 (t, \lambda) = \int_0^t P_2 (x, \lambda) P_1 ((t-x), \lambda) dx = \int_0^t \lambda^2 x e^{-\lambda x} \cdot \lambda e^{-\lambda (t-x)} dx = \lambda^3 e^{-\lambda t} \int_0^t x e^{\lambda x} e^{-\lambda t} dx = \lambda^3 e^{-\lambda t} \int_0^t x e^{-\lambda (t-2x)} dx
+\]
+\[
+\lambda^3 \frac{t^2}{2} e^{-\lambda t}
+\]
+
+
+Erlang
+\[
+P_k (t, \lambda) = \lambda^k \frac{t^{k-1}}{(k-1)!} e^{-\lambda t}
+\]
+
+
+il valore di aspettazione è $E[T_k] = \frac{k}{\lambda}$ e la varianza è $\text{Var}(T_k) = \frac{k}{\lambda^2}$
+
+
+\subsection{Monte-Carlo}
+grafico
 
 
 
 
-\pagebreak
+
+$x \sim f(x)$
+metodo di accept-reject: 
+\begin{itemize}
+    \item prendo un intervallo $[a,b]$ in cui $f(x)$ è definita e prendo un punto $y$ che sia più grande del massimo di $f(x)$ in quell'intervallo
+    \item estraggo un numero casuale $x_0$ uniformemente distribuito in $[a,b]$ e un numero casuale $y_0$ uniformemente distribuito in $[0,y]$
+    \item se $y_0 < f(x_0)$ allora accetto $x_0$ altrimenti lo rifiuto
+\end{itemize}
+
+Metodo della funzione di ripartizione:\
+\[
+F(x) = Prob (x'<= x) = \int_{-\infty}^{x} P(z) dz
+\]
+
+visto che $0<= F(x) <= 1$
+$u\sim U(0,1) \to u=F(x) \to x=F^{-1}(u)$
+
+\[
+Prob(F^{-1}<= x) = Prob(u' <= F(x)) = F(x)
+\]
+\[
+Prob(u'<= y) = \int_{0}^{y} dx = y
+\]
+
+\[
+F(x) = 1 -exp(- \frac{x}{\tau})
+\]
+\[
+x = F^{-1}(u) = - \tau ln(1-u)
+\]
+
+codici
+
+
+
+
+
+
+
+
+
+
+
+
+
+\pagebreak  
 
 
 

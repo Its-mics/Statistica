@@ -2681,12 +2681,143 @@ Ora calcolo la varianza come
 
 
 
+\lezione{Distribuzione Esponenziale}{19 Marzo 2026}
+vediamo ora come si ricava la   distribuzione esponenziale da quella di poisson. \\ 
+eventi aleatori -> numero medio v
+\[
+P(x, \lambda) = \frac{v^x e^{-v}}{x!} 
+\]
+tempo t
+$\lambda \to$ numero medio di eventi in un intervallo di tempo t
+$v  = \lambda t$
+
+\[
+P(k, \lambda t) = \frac{(\lambda t)^k e^{-\lambda t}}{k!} \quad \text{con } k = 0, 1, 2, \dots
+\]
+T = tempo attesa tra eventi successivi
 
 
+\[
+Prob (T> t) = Prob (0, \lambda t) = e^{-\lambda t}    
+\]
 
 
+\[
+Prob (T< t) = 1- Prob (T> t) = 1-e^{-\lambda t}
+\]
+
+Funzione di ripartizione x' variabile aleatoria
+\[
+Prob(x' <= x) = F_{x'}(x) = \int_{-\infty}^{x} P_{x'}(z) dz
+\]
+
+\[
+x \to \infty \quad \int_{-\infty}^{\infty} P_{x'}(x) dx = 1 
+\]
+ 
+
+% --- 1. Grafico della Funzione di Ripartizione F(x) ---
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = left,
+    xlabel = {$x$},
+    ylabel = {$F(x)$},
+    ymin=0, ymax=1.2,
+    xmin=0, xmax=5,
+    domain=0:5,
+    samples=100,
+    grid=major,
+    title={Funzione di Ripartizione $F(x) = 1 - e^{-\lambda x}$}
+]
+    \addplot [very thick, blue] {1 - exp(-1*x)};
+    \draw [dashed] (axis cs:0,1) -- (axis cs:5,1) node[right] {$1$};
+    \node at (axis cs:2,0.5) [anchor=south] {$\lambda = 1$};
+\end{axis}
+\end{tikzpicture}
+
+% --- 2. Grafico della Densità di Probabilità P(t) ---
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = left,
+    xlabel = {$t$},
+    ylabel = {$P(t)$},
+    ymin=0, ymax=1.2,
+    xmin=0, xmax=5,
+    domain=0:5,
+    samples=100,
+    title={Densità di Probabilità $P(t) = \lambda e^{-\lambda t}$}
+]
+    \addplot [very thick, red] {1 * exp(-1*x)};
+    \node at (axis cs:0,1) [anchor=east] {$\lambda$};
+    \node at (axis cs:2,0.4) [anchor=south] {Decadimento esponenziale};
+\end{axis}
+
+\end{tikzpicture}
+
+\[
+P_t (t) = \frac{d}{dt} (1-e^{-\lambda t}) = \lambda e^{-\lambda t}  
+\]
+
+ il risultato vuol dire che itempi di attesa piccoli sono più grandi di quelli grandi
+% --- 3. Grafico dell'area sottesa (Integrale tra t1 e t2) ---
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = left,
+    xlabel = {$t$},
+    ylabel = {$P(t)$},
+    ymin=0, ymax=1.2,
+    xmin=0, xmax=5,
+    domain=0:5,
+    samples=100,
+    title={Probabilità come area tra $t_1$ e $t_2$}
+]
+    % Curva principale
+    \addplot [very thick, black] {1 * exp(-1*x)};
+    
+    % Area ombreggiata
+    \addplot [fill=orange, fill opacity=0.3, draw=none, domain=0.8:2.5, samples=50] {1*exp(-1*x)} \closedcycle;
+    
+    % Etichette t1 e t2
+    \draw [dashed] (axis cs:0.8, 0) -- (axis cs:0.8, 0.449) node[pos=0, below] {$t_1$};
+    \draw [dashed] (axis cs:2.5, 0) -- (axis cs:2.5, 0.082) node[pos=0, below] {$t_2$};
+    
+    \node at (axis cs:1.6, 0.15) {Area $= \int_{t_1}^{t_2} \lambda e^{-\lambda t} dt$};
+\end{axis}
+\end{tikzpicture}
 
 
+\[
+\int_{t_1}^{t_2} \lambda e^{-\lambda t} dt 
+\]
+che graficamente è l'area sottesa alla curva tra $t_1$ e $t_2$ 
+
+dove $\lambda$ è il numero medio per unità di tempo e $\tau = \frac{1}{\lambda}$ 
+è il tempo medio di attesa quindi:
+ 
+\[ 
+\lambda e^{-\lambda t} \to \frac{1}{\tau} e^{\frac{-t}{\tau}}
+\]
+
+Assenza di memeoria
+eventi A,M prob A condizionata e M
+
+
+\[
+Prob(A|M) = \frac{Prob(A \cap M)}{Prob(M)}
+\]
+
+ho fià asepttato $\to s, prob t$
+
+
+\[
+A \to T > s+t
+M \to T > s
+A \cap M \to T > s+t
+\]
+
+\[
+Prob(T > s+t | T > s) = \frac{Prob(T > s+t)}{Prob(T > s)} = \frac{e^{-\lambda (s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = Prob(T > t)
+\]
 
 
 

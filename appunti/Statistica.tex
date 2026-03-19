@@ -33,8 +33,24 @@
 \usepackage{pgfplots}
 % Needed for subfigure environments used later
 \usepackage{subcaption}
-\pgfplotsset{compat=1.16} 
-\usepackage{tikz}
+\pgfplotsset{
+    standard/.style={
+        axis lines=middle,
+        xlabel={$t$},
+        ylabel={$y$},
+        grid=both,
+        grid style={line width=.1pt, draw=gray!10},
+        major grid style={line width=.2pt, draw=gray!20},
+        samples=100,
+        domain=0:5,
+        enlargelimits=true,
+        title style={font=\bfseries, yshift=5pt},
+        label style={font=\small},
+        tick label style={font=\tiny}
+    }
+}
+
+\tikzset{standard/.style={/pgfplots/standard}}\usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{arrows.meta, angles, quotes, trees}
 \usepackage[most]{tcolorbox}
@@ -947,6 +963,8 @@ Nello specifico, definiamo:
             hide y axis 
         }
     }
+
+
     \begin{itemize}
         \item per una distribuzione simmetrica (es. Gaussiana) $\bar{\mu}_3=0$;
          
@@ -2723,74 +2741,25 @@ La \textbf{densità di probabilità} $P_T(t)$ si ottiene derivando la funzione d
 Questa è la densità di probabilità esponenziale. Indica che i tempi di attesa brevi sono più probabili, mentre quelli lunghi sono meno probabili.
 
 
-% --- 1. Grafico della Funzione di Ripartizione F(x) ---
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines = left,
-    xlabel = {$x$},
-    ylabel = {$F(x)$},
-    ymin=0, ymax=1.2,
-    xmin=0, xmax=5,
-    domain=0:5,
-    samples=100,
-    grid=major,
-    title={Funzione di Ripartizione $F(x) = 1 - e^{-\lambda x}$}
-]
-    \addplot [very thick, blue] {1 - exp(-1*x)};
-    \draw [dashed] (axis cs:0,1) -- (axis cs:5,1) node[right] {$1$};
-    \node at (axis cs:2,0.5) [anchor=south] {$\lambda = 1$};
-\end{axis}
-\end{tikzpicture}
+\begin{figure}[ht!]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            standard,
+            ylabel={$P(t), F(t)$},
+            title={Confronto tra PDF e CDF Esponenziale ($\lambda=1$)},
+            legend pos=north east
+        ]
+            \addplot [very thick, red, domain=0:4] {exp(-x)};
+            \addlegendentry{PDF: $\lambda e^{-\lambda t}$}
+            \addplot [very thick, blue, domain=0:4] {1 - exp(-x)};
+            \addlegendentry{CDF: $1 - e^{-\lambda t}$}
+            \draw [dashed, gray] (axis cs:0,1) -- (axis cs:4,1);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{La PDF decresce partendo da $\lambda$, mentre la CDF satura asintoticamente a 1.}
+\end{figure}
 
-% --- 2. Grafico della Densità di Probabilità P(t) ---
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines = left,
-    xlabel = {$t$},
-    ylabel = {$P(t)$},
-    ymin=0, ymax=1.2,
-    xmin=0, xmax=5,
-    domain=0:5,
-    samples=100,
-    title={Densità di Probabilità $P(t) = \lambda e^{-\lambda t}$}
-]
-    \addplot [very thick, red] {1 * exp(-1*x)};
-    \node at (axis cs:0,1) [anchor=east] {$\lambda$};
-    \node at (axis cs:2,0.4) [anchor=south] {Decadimento esponenziale};
-\end{axis}
-
-\end{tikzpicture}
-
-\[
-P_t (t) = \frac{d}{dt} (1-e^{-\lambda t}) = \lambda e^{-\lambda t}  
-\]
-
- il risultato vuol dire che itempi di attesa piccoli sono più grandi di quelli grandi
-% --- 3. Grafico dell'area sottesa (Integrale tra t1 e t2) ---
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines = left,
-    xlabel = {$t$},
-    ylabel = {$P(t)$},
-    ymin=0, ymax=1.2,
-    xmin=0, xmax=5,
-    domain=0:5,
-    samples=100,
-    title={Probabilità come area tra $t_1$ e $t_2$}
-]
-    % Curva principale
-    \addplot [very thick, black] {1 * exp(-1*x)};
-    
-    % Area ombreggiata
-    \addplot [fill=orange, fill opacity=0.3, draw=none, domain=0.8:2.5, samples=50] {1*exp(-1*x)} \closedcycle;
-    
-    % Etichette t1 e t2
-    \draw [dashed] (axis cs:0.8, 0) -- (axis cs:0.8, 0.449) node[pos=0, below] {$t_1$};
-    \draw [dashed] (axis cs:2.5, 0) -- (axis cs:2.5, 0.082) node[pos=0, below] {$t_2$};
-    
-    \node at (axis cs:1.6, 0.15) {Area $= \int_{t_1}^{t_2} \lambda e^{-\lambda t} dt$};
-\end{axis}
-\end{tikzpicture}
 
 \subsection{Proprietà di Assenza di Memoria}
 Una caratteristica fondamentale è l'\textbf{assenza di memoria}: il tempo che resta da aspettare affinché un evento si verifichi è indipendente da quanto abbiamo già aspettato.
@@ -2835,32 +2804,20 @@ Procedendo per induzione per $P_3$:
 
 
 
-\begin{tikzpicture}[node distance=2cm, font=\small]
-
-    % Asse temporale
-    \draw[thick, ->] (0,0) -- (8,0) node[right] {tempo};
-
-    % Punti significativi (pallini neri)
-    \filldraw (0,0) circle (2pt) node[below=5pt] {$0$};
-    \filldraw (4,0) circle (2pt) node[below=5pt] {$x$};
-    \filldraw (7,0) circle (2pt) node[below=5pt] {$t$};
-
-    % Graffe superiori (Versione standard "brace")
-    \draw [decorate, decoration={brace, amplitude=8pt, raise=5pt}, thick]
-      (0,0) -- (4,0) node [midway, above=15pt] {$T_1 \sim \text{Exp}(\lambda)$};
-      
-    \draw [decorate, decoration={brace, amplitude=8pt, raise=5pt}, thick]
-      (4,0) -- (7,0) node [midway, above=15pt] {$T_2 - T_1 \sim \text{Exp}(\lambda)$};
-
-    % Frecce per gli intervalli sotto (x e t-x)
-    \draw[<->, >=stealth, blue!70!black] (0,-0.8) -- (3.9,-0.8) node[midway, fill=white] {$x$};
-    \draw[<->, >=stealth, red!70!black] (4.1,-0.8) -- (7,-0.8) node[midway, fill=white] {$t-x$};
-
-    % Graffa totale sotto
-    \draw [decorate, decoration={brace, mirror, amplitude=10pt, raise=35pt}]
-      (0,0) -- (7,0) node [midway, below=50pt] {Tempo totale $T_2 = t$};
-
-\end{tikzpicture}
+\begin{figure}[ht!]
+    \centering
+    \begin{tikzpicture}[scale=1.2]
+        \draw[thick, ->] (0,0) -- (6,0) node[right]{$t$};
+        \filldraw (0,0) circle (2pt) node[below]{$0$};
+        \filldraw (2.5,0) circle (2pt) node[below]{$x$ (1° evento)};
+        \filldraw (5,0) circle (2pt) node[below]{$t$ (2° evento)};
+        
+        \draw [decorate, decoration={brace, amplitude=6pt, raise=5pt}] (0,0) -- (2.5,0) node [midway, above=12pt] {$x$};
+        \draw [decorate, decoration={brace, amplitude=6pt, raise=5pt}] (2.5,0) -- (5,0) node [midway, above=12pt] {$t-x$};
+        \draw [decorate, decoration={brace, mirror, amplitude=10pt, raise=25pt}] (0,0) -- (5,0) node [midway, below=35pt] {$T_2 = t$};
+    \end{tikzpicture}
+    \caption{Schema temporale per il calcolo della distribuzione di Erlang $P_2$.}
+\end{figure}
 
 
 Continuando ricorsivamente, si ottiene la densità di probabilità di Erlang:
@@ -2897,6 +2854,66 @@ L'efficienza $\eta$ è il rapporto tra l'area sotto $f(x)$ e l'area del rettango
     \eta = \frac{1}{(x_{max} - x_{min}) f_{max}} \int_{x_{min}}^{x_{max}} f(x) \, dx
 \end{equation}
 
+\paragraph{Esempio: Algoritmo Hit-or-Miss in Python}
+Il seguente script implementa il metodo Accept-Reject per campionare una distribuzione di probabilità legata allo scattering angolare (distribuzione di Cowen): $f(x) = \frac{3}{8}(1+x^2)$.
+
+\begin{lstlisting}[language=Python, caption={Implementazione del metodo Accept-Reject}]
+import numpy as np
+import matplotlib.pyplot as plt
+
+def mia_funz(x):
+    return 3/8*(1+x**2)
+
+# Parametri del dominio e numero di punti
+xmin, xmax = -1, 1
+fmax = 3/4
+N = 5000
+
+accepted_x, accepted_y = [], []
+rejected_x, rejected_y = [], []
+
+# Ciclo Accept-Reject
+while len(accepted_x) < N:
+    x = np.random.uniform(xmin, xmax)
+    y = np.random.uniform(0, fmax)
+
+    if y <= mia_funz(x):
+        accepted_x.append(x)
+        accepted_y.append(y)
+    else:
+        rejected_x.append(x)
+        rejected_y.append(y)
+
+# Visualizzazione dei risultati
+plt.figure(figsize=(8,6))
+x_plot = np.linspace(xmin, xmax, 400)
+plt.plot(x_plot, mia_funz(x_plot), label='f(x) teorica', lw=3)
+plt.scatter(accepted_x, accepted_y, color='tab:green', s=4, label='Accettati')
+plt.scatter(rejected_x, rejected_y, color='tab:red', s=4, label='Rifiutati')
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Immagini/plot della funzione.png}
+    \caption{Andamento della funzione teorica $f(x) = \frac{3}{8}(1+x^2)$ nell'intervallo $[-1, 1]$.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{immagini/funzione con accept reject.png}
+    \caption{Visualizzazione del metodo Hit-or-Miss: i punti in verde sono accettati perché cadono sotto la curva, quelli in rosso sono rifiutati.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{immagini/confronto distribuzione tra f(x) teorica e campioni.png}
+    \caption{Validazione del metodo: l'istogramma dei punti accettati segue fedelmente la curva teorica attesa (punti arancioni).}
+\end{figure}
+
+
+
 \subsection{Metodo della Funzione di Ripartizione (Inversione)}
 Un metodo più efficiente dell'Accept-Reject si basa sull'inversione della CDF.
 Dato che $F(x) = \int_{-\infty}^x P(z) \, dz$ ha valori compresi tra 0 e 1, se generiamo un numero casuale $u \sim \mathcal{U}(0,1)$, allora:
@@ -2909,12 +2926,63 @@ Il valore $x$ così ottenuto sarà distribuito secondo la $P(x)$ originale.
 \begin{itemize}
     \item $P(x) = \frac{1}{\tau} \exp(-\frac{x}{\tau})$
     \item $F(x) = 1 - \exp(-\frac{x}{\tau}) = u$
-    \item Invertendo: $x = -\tau \ln(1 - u)$
+    \item Invertendo: $x =   -\tau \ln(1 - u)$
 \end{itemize}
 
 
+\paragraph{Esempio: Integrazione Numerica e CDF}
+Questo script mostra come calcolare numericamente la funzione di ripartizione (CDF) partendo dalla densità di probabilità (PDF) e come visualizzare il legame tra le due.
+
+\begin{lstlisting}[language=Python, caption={Integrazione numerica della Gaussiana e PDF/CDF Esponenziale}]
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+# Funzione densita di probabilita (PDF) Gaussiana
+def gaussian_pdf(x, mu=0, sigma=1):
+    return (1 / (sigma * math.sqrt(2 * math.pi))) * np.exp(-((x - mu) ** 2) / (2 * sigma ** 2))
+
+# Integrazione numerica con il metodo dei rettangoli
+def integra(a, b, n=200000):
+    base = (b - a) / n
+    somma = 0.0
+    for k in range(n):
+        x_mid = a + (k + 0.5) * base
+        somma += gaussian_pdf(x_mid)
+    return base * somma
+
+# Esempio probabilita entro sigma
+for s in [1, 2, 3]:
+    area = integra(-s, s)
+    print(f"Probabilita entro {s} sigma: {area:.6f}")
+
+# Plot PDF e CDF per una distribuzione esponenziale
+tau = 5
+x_axis = np.arange(0, 30, 0.1)
+func_exp = np.exp(-x_axis/tau)/tau
+cum_exp = 1 - np.exp(-x_axis/tau)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+axes[0].plot(x_axis, func_exp, label='PDF Esponenziale')
+axes[1].plot(x_axis, cum_exp, label='CDF Esponenziale', color='orange')
+plt.show()
+\end{lstlisting}
 
 
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Immagini/Funzione d ripartizione cumulativa e densità di probabilità esponenziale decrescente.png}
+    \caption{Densità di probabilità (sinistra) e Funzione di ripartizione (destra) per la distribuzione esponenziale generata dal codice Python.}
+    \label{fig:esponenziale_plot}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Immagini/Funzione di ripartizione cumulativa e Densità di probabilità normale standard.png}
+    \caption{Analisi della distribuzione normale: PDF (sinistra) e CDF (destra). Le linee tratteggiate indicano i valori corrispondenti a $\pm 1 \sigma$.}
+    \label{fig:gauss_plot}
+\end{figure}
 
 
 

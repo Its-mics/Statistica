@@ -96,10 +96,10 @@
     keywordstyle=\color{blue}\bfseries,
     stringstyle=\color{red},
     commentstyle=\color{green!60!black},
-    numbers=left,
-    numberstyle=\tiny,
-    stepnumber=1,
-    numbersep=5pt,
+    %numbers=left,
+    %numberstyle=\tiny,
+    %stepnumber=1,
+    %numbersep=5pt,
     backgroundcolor=\color{gray!10},
     showspaces=false,
     showstringspaces=false,
@@ -109,7 +109,10 @@
     captionpos=b,
     breaklines=true,
     breakatwhitespace=false,
+    columns=fullflexible, % <-- FONDAMENTALE PER LA COPIA
+    keepspaces=true,
 }
+\usepackage{listings}
 \usepackage[colorlinks=true, linkcolor=black]{hyperref} 
 
 \newtcolorbox{nota}{

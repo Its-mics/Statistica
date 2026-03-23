@@ -2066,6 +2066,28 @@ In particolare, per la normale standard $N(0,1)$, si ha:
 M_x(t) = \bar{M}_x(t) = e^{\frac{t^2}{2}}
 \end{equation}
 
+\subsection{\color{red} Parte Bressan: Confronto istogramma/gaussiana}
+Date 100 misure che cadono in $k$ intervalli di valore centrale $x^k$ e larghezza $\Delta x$, ci chiediamo quale sia la funzione di distribuzione che mi definisca la probabilità che un certo dato cada in un
+certo intervallo (successo), questa è la \textbf{funzione di distribuzione binomiale}:
+
+Sapendo che la probabilità per un intervallo $k$ è: $P_k= \binom{n}{l}p^l(1-p)^{n-l}$, dove $p$ è la probabilità di successo e $l$ il numero di successi, so che $E[l]=np$ e  $\sigma^2= np(1-p)$.
+
+Considerando ora una distribuzione di tipo Gaussiano la funzione che la descrive é la classica e la probabilità che un certo valore cada in un intervallo è:
+\[
+P_k=\int_{x_i -\frac{\Delta x}{2}}^{x_i + \frac{\Delta x}{2}} f(x, \hat{\mu}, \sigma^2) dx \simeq f(\bar{x}_k) \Delta x. 
+\]
+da cui ottengo il numero di eventi atteso all'interno dell'intervallo $n_k$ e per ogni intervallo ho un certo $\sigma$, per ognuno di questi intervalli posso fare un confronto per verificare la compatibilità
+\begin{equation*}
+\left| {n_k}^s-{n_k}^m \right| \leq 3 \sigma_k
+\end{equation*}
+dove $m$ sta per eventi misurati ed $s$ per eventi attesi, avremo quindi un grafico con un valore atteso di eventi con barra di errore di larghezza $\sigma$, dunque in un grafico mi aspetto che:
+\begin{itemize}
+\item il 68\% deve toccare con le barre di errore il valore di aspettazione
+\item il 27\% si trova a 2 $\sigma$
+\item il 5\% si trova a 3 $\sigma$
+\end{itemize}
+La deviazione standard della binomiale è circa $\sqrt{n_k^m}$ se $n_{tot}>>>n_k^c$, che in realtà è un approssimazione che va bene quando $n_k^c > 5$
+
 \subsection{Variabili Aleatorie e Combinazioni Lineari}
 
 Si può dimostrare un importante teorema: una combinazione lineare di variabili casuali normali e statisticamente indipendenti è anch'essa distribuita secondo una legge normale.
@@ -3543,7 +3565,6 @@ dove $m$ sta per eventi misurati ed $s$ per eventi attesi, avremo quindi un graf
 \item il 27\% si trova a 2 $\sigma$
 \item il 5\% si trova a 3 $\sigma$
 \end{itemize}
-La deviazione standard della binomiale è circa $\sqrt{n_k^m}$ se $n_{tot}>>>n_k^c$, che in realtà è un approssimazione che va bene quando $n_k^c > 5$
 
 \pagebreak
 

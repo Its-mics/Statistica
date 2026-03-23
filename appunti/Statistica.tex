@@ -379,98 +379,7 @@ Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\
 
 
 
-\subsection{Variabili casuali e funzione di ripartizione}
-Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
-dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
 
-Essa può essere discreta (numerabile) oppure continua, se almeno idealmente posso considerare $\Omega$ continuo.
-
-\subsubsection{Funzione di ripartizione}
-Data una variabile casuale $X$, la funzione $F$ che fa corrispondere a un valore x la probabilità cumulativa $P(X \geq x)$ viene detta funzione di ripartizione
-
-\[
-F_X:\mathbf{R} \rightarrow [0,1] \; F_X(x)=P(X \leq x)
-\]
-
-La funzione di ripartizione è definita sia per le variabili casuali discrete che per le variabili casuali
-continue.
-
-Proprietà delle funzioni di ripartizioni:
-\begin{enumerate}
-    \item $0 \geq F_X(x) \geq 1$
-    \item nel caso che il dominio sia \textbf{R}, allora $\displaystyle \lim_{x \rightarrow -\infty} F_X(x)=0 \; e \; \lim_{x \rightarrow \infty}F_X(x)=1$
-    \item È una funzione monotona crescente;
-    \item \( P(x_1 < X \leq x_2) = F_X(x_2) - F_X(x_1) \) dunque la funzione di ripartizione consente di stabilire la probabilità che la variabile casuale semplice \( X \) 
-    assuma valori compresi in intervalli di tipo \((x_1, x_2]\) dove \( x_1, x_2 \in \mathbf{R} \), con \( x_1 < x_2 \). A partire da questo posso calcolare anche le altre probabilità, ad esempio:  
-    \[ P(x_1 \leq X < x_2) = F_X(x_2) - F_X(x_1) + P(X = x_1) - P(X = x_2)\]
- 
-    \item Nel caso di una variabile casuale discreta, la funzione di ripartizione è continua a destra:  
-    \[ \lim_{x \to x_0^+} F_X(x) = F_X(x_0).\]  
-    mentre a sinistra abbiamo una discontinuità di 1° specie (o salto):  
-    \[ \lim_{x \to x_0^-} F_X(x) \neq F_X(x_0)\]  
-    Questo è dovuto al fatto che la probabilità di un evento elementare è diversa da zero, quindi la funzione di ripartizione ha un salto in corrispondenza di ogni valore che può assumere la variabile casuale discreta (pensa lancio dei dati dove cambia la probabilità)
-\end{enumerate}
-
-In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in cui la funzione di probabilità è costante (ex nel caso dei dadi la funz. di ripartizione è a gradini)
-
-\subsection{Densità di probabiità}
-
- Data la variabile casuale continua \( X: \Omega \to \mathbf{R} \) che associa valori dallo spazio campionario all'intervallo 
- \((a, b)\), con \( -\infty \leq a < b \leq +\infty \), la funzione di densità di probabilità (PDF) o funzione di distribuzione di probabilità è 
- la funzione \( f_X: \mathbf{R} \to \mathbf{R}^+ \) che ad ogni \( x \) associa il limite per \( dx \rightarrow 0\), del rapporto tra la probabilità 
- che la variabile casuale assuma valori nell'intervallo \((x, x + dx]\) e l'ampiezza \( dx \), ovverosia possiamo supporre la probabiità che un certo 
- evento cada in un intervallo.
-
- In simboli:
- 
- \[ f_X: \mathbf{R} \to \mathbf{R}^+ : x \mapsto \lim_{dx \to 0} \left[ \frac{P(x < X \leq x + dx)}{dx} \right] = \lim_{dx \to 0} \frac{F_X(x+dx)- F_X(x)}{dx}\]
-
- Ogni evento deve essere ricondotto all'unione, negazione o intersezione di intervalli del tipo $( -\infty, x] $
-
- \textbf{Attenzione} a non confondere la funzione di densità con una probabilità.
- Essa mi determina la densità di probabilità che la variabile casuale sia nell'intervallo $dx$.
-
- Definimamo la \textbf{Funzione di distribuzione cumulativa}:
- \[
- F(x)=\int_{x_{min}}^x f_X(t)dt
- \]
-
-
-\begin{center}
-\begin{tikzpicture}[scale=1.5]
-    
-    % Asse x
-    \draw[->] (-0.5,0) -- (4,0) node[right]{$x$};
-    % Asse y
-    \draw[->] (0,-0.5) -- (0,3) node[above]{$y$};
-    
-    % Etichette
-    \node at (1.5,-0.2) {$a$};
-    \node at (3,-0.2) {$b$};
-    \node at (0.7,2.5) {$y = f_X(x)$};
-    
-    % Curva della PDF
-    \draw[domain=0.5:3.5, smooth, variable=\x, blue] plot ({\x}, {2.5*exp(-0.5*(\x-2)^2)});
-    
-    % Area evidenziata
-    \fill[blue!20] (1.5,0) -- plot[domain=1.5:3, smooth, variable=\x] ({\x}, {2.5*exp(-0.5*(\x-2)^2)}) -- (3,0) -- cycle;
-    
-    % Linee verticali
-    \draw[dashed] (1.5,0) -- (1.5,{2.5*exp(-0.5*(1.5-2)^2)});
-    \draw[dashed] (3,0) -- (3,{2.5*exp(-0.5*(3-2)^2)});
-    
-    % Etichetta probabilità
-    \node at (2.25,0.7) {$P(a \leq X \leq b)=\int_{a}^{b}f_X(x)dx$};
-\end{tikzpicture}
-\end{center}
-
-\subsubsection{Proprietà della funzione densità di probabilità}
-\begin{itemize}
-    \item non può essere mai negativa (altrimenti avremmo una probabiità negativa per qualche $X$)
-    \item condizione di normalizzazione: \[ \int_{- \infty}^{\infty} f(x)=1\]
-    dunque si deve avere che: $\lim_{x \rightarrow \pm \infty} f_X(x)=0$
-    \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
-\end{itemize}
 
 
 
@@ -2747,6 +2656,100 @@ Pertanto, la probabilità che $T > t$ coincide con la probabilità di osservare 
     \text{Prob}(T > t) = P(0; \lambda t) = \frac{e^{-\lambda t} (\lambda t)^0}{0!} = e^{-\lambda t}
 \end{equation}
 
+
+\ripasso{Variabili casuali e funzione di ripartizione}
+Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
+dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
+
+Essa può essere discreta (numerabile) oppure continua, se almeno idealmente posso considerare $\Omega$ continuo.
+
+\subsubsection{\color{red} Funzione di ripartizione}
+Data una variabile casuale $X$, la funzione $F$ che fa corrispondere a un valore x la probabilità cumulativa $P(X \geq x)$ viene detta funzione di ripartizione
+
+\[
+F_X:\mathbf{R} \rightarrow [0,1] \; F_X(x)=P(X \leq x)
+\]
+
+La funzione di ripartizione è definita sia per le variabili casuali discrete che per le variabili casuali
+continue.
+
+Proprietà delle funzioni di ripartizioni:
+\begin{enumerate}
+    \item $0 \geq F_X(x) \geq 1$
+    \item nel caso che il dominio sia \textbf{R}, allora $\displaystyle \lim_{x \rightarrow -\infty} F_X(x)=0 \; e \; \lim_{x \rightarrow \infty}F_X(x)=1$
+    \item È una funzione monotona crescente;
+    \item \( P(x_1 < X \leq x_2) = F_X(x_2) - F_X(x_1) \) dunque la funzione di ripartizione consente di stabilire la probabilità che la variabile casuale semplice \( X \) 
+    assuma valori compresi in intervalli di tipo \((x_1, x_2]\) dove \( x_1, x_2 \in \mathbf{R} \), con \( x_1 < x_2 \). A partire da questo posso calcolare anche le altre probabilità, ad esempio:  
+    \[ P(x_1 \leq X < x_2) = F_X(x_2) - F_X(x_1) + P(X = x_1) - P(X = x_2)\]
+ 
+    \item Nel caso di una variabile casuale discreta, la funzione di ripartizione è continua a destra:  
+    \[ \lim_{x \to x_0^+} F_X(x) = F_X(x_0).\]  
+    mentre a sinistra abbiamo una discontinuità di 1° specie (o salto):  
+    \[ \lim_{x \to x_0^-} F_X(x) \neq F_X(x_0)\]  
+    Questo è dovuto al fatto che la probabilità di un evento elementare è diversa da zero, quindi la funzione di ripartizione ha un salto in corrispondenza di ogni valore che può assumere la variabile casuale discreta (pensa lancio dei dati dove cambia la probabilità)
+\end{enumerate}
+
+In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in cui la funzione di probabilità è costante (ex nel caso dei dadi la funz. di ripartizione è a gradini)
+
+\subsubsection{ \color{red} Densità di probabiità}
+
+ Data la variabile casuale continua \( X: \Omega \to \mathbf{R} \) che associa valori dallo spazio campionario all'intervallo 
+ \((a, b)\), con \( -\infty \leq a < b \leq +\infty \), la funzione di densità di probabilità (PDF) o funzione di distribuzione di probabilità è 
+ la funzione \( f_X: \mathbf{R} \to \mathbf{R}^+ \) che ad ogni \( x \) associa il limite per \( dx \rightarrow 0\), del rapporto tra la probabilità 
+ che la variabile casuale assuma valori nell'intervallo \((x, x + dx]\) e l'ampiezza \( dx \), ovverosia possiamo supporre la probabiità che un certo 
+ evento cada in un intervallo.
+
+ In simboli:
+ 
+ \[ f_X: \mathbf{R} \to \mathbf{R}^+ : x \mapsto \lim_{dx \to 0} \left[ \frac{P(x < X \leq x + dx)}{dx} \right] = \lim_{dx \to 0} \frac{F_X(x+dx)- F_X(x)}{dx}\]
+
+ Ogni evento deve essere ricondotto all'unione, negazione o intersezione di intervalli del tipo $( -\infty, x] $
+
+ \textbf{Attenzione} a non confondere la funzione di densità con una probabilità.
+ Essa mi determina la densità di probabilità che la variabile casuale sia nell'intervallo $dx$.
+
+ Definimamo la \textbf{Funzione di distribuzione cumulativa}:
+ \[
+ F(x)=\int_{x_{min}}^x f_X(t)dt
+ \]
+
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    
+    % Asse x
+    \draw[->] (-0.5,0) -- (4,0) node[right]{$x$};
+    % Asse y
+    \draw[->] (0,-0.5) -- (0,3) node[above]{$y$};
+    
+    % Etichette
+    \node at (1.5,-0.2) {$a$};
+    \node at (3,-0.2) {$b$};
+    \node at (0.7,2.5) {$y = f_X(x)$};
+    
+    % Curva della PDF
+    \draw[domain=0.5:3.5, smooth, variable=\x, blue] plot ({\x}, {2.5*exp(-0.5*(\x-2)^2)});
+    
+    % Area evidenziata
+    \fill[blue!20] (1.5,0) -- plot[domain=1.5:3, smooth, variable=\x] ({\x}, {2.5*exp(-0.5*(\x-2)^2)}) -- (3,0) -- cycle;
+    
+    % Linee verticali
+    \draw[dashed] (1.5,0) -- (1.5,{2.5*exp(-0.5*(1.5-2)^2)});
+    \draw[dashed] (3,0) -- (3,{2.5*exp(-0.5*(3-2)^2)});
+    
+    % Etichetta probabilità
+    \node at (2.25,0.7) {$P(a \leq X \leq b)=\int_{a}^{b}f_X(x)dx$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Proprietà della funzione densità di probabilità}
+\begin{itemize}
+    \item non può essere mai negativa (altrimenti avremmo una probabiità negativa per qualche $X$)
+    \item condizione di normalizzazione: \[ \int_{- \infty}^{\infty} f(x)=1\]
+    dunque si deve avere che: $\lim_{x \rightarrow \pm \infty} f_X(x)=0$
+    \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
+\end{itemize}
+
 \subsection{Funzione di Ripartizione e Densità di Probabilità}
 La \textbf{funzione di ripartizione} (o distribuzione cumulativa $F_X(x)$) indica la probabilità che una variabile $x'$ assuma un valore minore o uguale a $x$:
 \begin{equation}
@@ -3013,260 +3016,588 @@ plt.show()
 
 %------------------------------------------------------------------------------
 
-\lezione{Distribuzione di probabilità a più variabili}{23/03/2026}
-Consideriamo due variabili alleatori X,Y. La loro distribuzione di probabilità congiunta è data da: \[P_{X,Y}(x,y) = \text{Prob}(x<X<x+dx, y<Y<y+dy)\] che rappresenta la probabilità che $X$ assuma il valore $x$ e $Y$ assuma il valore $y$ contemporaneamente. 
-La distribuzione congiunta è normalizzata, cioè $\int \int P_{X,Y}(x,y) dx dy = 1$. \\
-La funzione di ripartizione congiunta è definita da:
-\[
-\int_{-\infty}^{x}du \int_{-\infty}^{y}dv P_{X,Y}(u,v) = F(x,y) 
-\]
-La \textit{probabilità marginale} di $X$ è data da:
-\[
-\int_{-\infty}^{+\infty} P_{X,Y}(x,y) dy = P_X(x)
-\]
-Stesso concetto per $Y$. La \textit{probabilità condizionata} di $X$ dato da $Y$ è data da:
-\[
-\Pi (x | y) = \frac{P_{X,Y}(x,y)}{P_Y(y)}
-\]
-Se $X$ e $Y$ sono indipendenti, allora $P_{X,Y}(x,y) = P_X(x) P_Y(y)$ e quindi $\Pi (x | y) = P_X(x)$, cioè la probabilità di $X$ non dipende da $Y$. \\
-Per ricavare la probabilità congiunta $P_{X,Y}(x,y)$ è scrivibile come: $ P_{X,Y}(x,y)= P_Y(y) \Pi (x|y)$. \\
-Prendendo dunque una qualsiasi funzione $f(x,y)$, il suo valore di aspettazione è dato da:
-\[
-E[f(x,y)]= \int_{-\infty}^{\infty}du \int_{-\infty}^{\infty}dv P_{X,Y}(u,v) f(u,v)
-\]
-Dunque i miei momenti sono dati da: 
-\[
-\mu_{m,n}= E[x^n y^m]
-\]
-dove valgono le relazioni: $\mu_{0,0}=1$, $\mu_{1,0}=\mu_x$, $\mu_{0,1}=\mu_y$\\
-I momenti centrali, rispetto al $\mu_x$ e $\mu_y$ sono dati da: 
-\[
-\bar{\mu}_{n,m}= E[{(x-\mu_x)}^n {(y-\mu_y)}^m]
-\]
-Dunque ho le seguente proprietà: $\bar{\mu}_{2,0}= \text{var}(x)$, $\bar{\mu}_{1,1}= \text{cov}(x,y)$.\\
+\lezione{Variabili casuali bidimensionali}{23/03/2026}
 
-Consideriamo ora il caso di due variabili discrete $X$ e $Y$; il valore di aspettazione di una determinata funzione è dato da:
-\[
-E[f(x,y)]= \sum_{i,j} P_{X,Y}(x_i,y_j) f(x_i,y_j)
-\]
-dunque la covarianza è descrivibile da:
-\[
-\text{cov}(x,y)= E[(x-\mu_x)(y-\mu_y)]= \sum_{i,j} P_{X,Y}(x_i,y_j) (x_i-\mu_x)(y_j-\mu_y) = E[xy] - \mu_x \mu_y
-\]
-Da qui è evidente che se $X$ e $Y$ sono indipendenti, allora $E[xy] = \sum_{i,j}^{} P_{X,Y}(x_i,y_j) x_i y_j = E[x] E[y]$, per cui $\text{cov}(x,y)=0$. 
-
-\begin{example}
-    Supponiamo la funzione $z= ax+ by$, con ipotesi che $E[x]=E[y]=0$, allora $E[z]=0$.\\ Possiamo calcolare allora la varianza di $z$:
-    \[
-    \text{var}(z)= E[{(z-E[z])}^2] = E[z^2]= a^2 E[x^2] + b^2 E[y^2] + 2abE[xy]= a^2 \text{var}(x) + b^2 \text{var}(y) + 2ab \text{cov}(x,y)
-    \]
-    Se invece avessi avuto due variabili, con valore di aspettazione non nulla, $\tilde{x}= x - E[x]$ e $\tilde{y}= y- E[y]$, allora avrei avuto:
-    \[
-    \text{var}(\tilde{x})= \text{var}(x), \quad \text{var}(\tilde{y})= \text{var}(y), \quad \text{cov}(\tilde{x},\tilde{y})= \text{cov}(x,y)
-    \] 
-\end{example}
-Utile è introdurre la matrice delle covarianze, che è una matrice simmetrica definita da:
+Abbiamo già accennato ad alcune proprietà delle distribuzioni di più variabili, adesso concentriamoci sul caso più semplice di distribuzione di più variabili, ovvero quando le variabili sono due.\\
+Supponiamo allora di avere una coppia di variabili aleatorie $X$ e $Y$ (caso di un esperimento in cui si misurano due quantità).
+\\
+La \textbf{densità di probabilità congiunta} $P(x,y)$ indica la probabilità che una certa realizzazione $X$ di $x$ e una certa realizzazione $Y$ di $y$ abbiano valori, rispettivamente, in $(x, x+dx)$ e $(y, y+dy)$ per $dx \to 0$ e $dy \to 0$.
+\\
+Come nel caso unidimensionale, si può usare $P(x,y)$ per definire altre funzioni, per esempio la \textbf{funzione di distribuzione congiunta}:
 \begin{equation}
-    \Sigma = \begin{pmatrix}
-        \text{var}(x) & \text{cov}(x,y) \\
-        \text{cov}(x,y) & \text{var}(y)
-    \end{pmatrix}
+    F(x,y) = \int_{-\infty}^{x} du \int_{-\infty}^{y} dv \, P(u,v) = Prob(X \le x, Y \le y)
 \end{equation}
-Questa matrice nel caso di variabili indipendenti è diagonale, mentre nel caso di funzioni lineari mi resistuisce la varianza delle mia variabile z.\\
-Infatti nel nostro esempio precedente, avendo $z=ax+ by$, posso definire il vettore $v= (a,b)$, per ottenere che:
-\[
-\text{var}(z) = v^T \Sigma v
-\]
-
-Il \textit{coefficiente di correlazione} è definito come:
-\[
-\rho = \frac{\text{cov}(x,y)}{\sqrt{\text{var}(x) \text{var}(y)}} \quad -1 \leq \rho \leq 1
-\]
-È una misura adimensionale che indica la forza e la direzione della relazione lineare tra due variabili. 
-Per dimostrarlo uso la variabile $z = \sigma_y x \pm \sigma_x y$, dunque ottengo che:
-\[
-\text{var}(z) = \sigma_y^2 \text{var}(x) + \sigma_x^2 \text{var}(y) \pm 2\sigma_x \sigma_y \text{cov}(x,y) = 2\sigma_x^2 \sigma_y^2 (1 \pm \rho) \geq 0
-\]
-Dunque essendo i termini quadratici sempre negativi trovo la relazione $1 \pm \rho \geq 0$. 
-\begin{example}
-    Consideriamo $y= mx +q$, allora posso calcolare il mio coefficiente di correlazione:
-    \begin{itemize}
-        \item $E[y] = mE[x] + q$ 
-        \item $\text{var}(y) = m^2 \text{var} (x)$
-        \item $E[xy] = m E[x^2] + q E[x]$
-        \item $\text{cov}(x,y) = E[xy] - E[x]E[y] = m \text{var} (x)$
-        \item $\rho = \frac{m}{|m|} = \pm 1$
-    \end{itemize}
-\end{example}
-
-\subsection{Multinormale o Gaussiana Multivariata}
-La distribuzione multinormale è una generalizzazione della distribuzione normale a più variabili. Noi studieremo principalmente il caso di due variabili $X$ e $Y$.\\
-Nel caso di variabili indipendetni questa è rappresentata da: 
-\[
-P_{X,Y}(x,y)= \frac{1}{2 \pi \sigma_x \sigma_y } \exp(-\frac{1}{2}[\frac{{(x-\mu_x)}^2}{{\sigma_x}^2} + \frac{{(y-\mu_y)}^2}{{\sigma_y}^2}]) = \frac{1}{2 \pi \sigma_x \sigma_y} e^{-\frac{Q^2}{2}}
-\]
-dove Q è il mio termine in parentesi sotto radice. 
+che indica la probabilità di ottenere valori delle due variabili non superiori a quantità prefissate $x, y$. A partire dalla $F(x,y)$ si può scrivere la condizione di normalizzazione come $F(+\infty, +\infty) = 1$, cioè:
+\begin{equation}
+    \int_{-\infty}^{+\infty} dx \int_{-\infty}^{+\infty} dy \, P(x,y) = 1
+\end{equation}
 
 
-\subsection{\color{red} Funzione di distribuzione per variabili casuali}
-Se la funzione di densità di probabilità dipende da più variabili si ha, per il valore di aspettazione
-\[
-E(x_1, \ldots, x_n) = \int \vec {x}f(\vec{x})d\vec{x}
-\]
-dove $\vec{x}=(x_1, \ldots, x_n)$.
+\subsection{Distribuzioni marginali e condizionate}
+A partire da $P(x,y)$ si può calcolare la densità di probabilità per una delle due variabili \textit{qualunque valore abbia l'altra}, cioè le funzioni di \textbf{distribuzioni marginali}:
+\begin{equation}
+    P_X(x) = \int_{-\infty}^{+\infty} P(x,y) \,dy \quad \text{e} \quad P_Y(y) = \int_{-\infty}^{+\infty} P(x,y) \,dx
+\end{equation}
 
-Per un singolo valore $x_i$ si ha
-\[
-E(x_i) = \int x_i f(\vec{x}) d\vec{x}
-\]
+Altre distribuzioni che si definiscono nel caso di più variabili sono le \textbf{funzioni di distribuzione condizionate}, che rappresentano la densità di probabilità dei valori di una variabile fissato il valore dell'altra, che indicheremo con $\prod(x|y)$ e $\prod(y|x)$. La cui espressione si può ricavare dal calcolo:
+\begin{equation}
+    P(x,y)\,dx\,dy = P_X(x)\,dx \cdot \prod(y|x)\,dy = P_Y(y)\,dy \cdot \prod(x|y)\,dx
+\end{equation}
+Si ha quindi:
+\begin{equation}
+    \prod(y|x) = \frac{P(x,y)}{P_X(x)} \quad \text{e} \quad \prod(x|y) = \frac{P(x,y)}{P_Y(y)}
+\end{equation}
 
-Si definisce allora l' elemento di posizione  $ij$ della$matrice$ $della$ $covarianza$:
-\[
-V_{ij}=E[(x_i-\mu_i)(x_j-\mu_j)]=\int (x_i-\mu_i)(x_j-\mu_j)f(\vec{x}) d\vec{x}
-\]
-si ha allora che:
-\begin{itemize}
-    \item $\sigma_i^2=V_{ii}=\sigma^2$
-    \item la $covarianza$ è un qualsiasi elemento della matrice $i\neq j$
-\end{itemize}
-E' utile definire il $coefficente$ $di$ $correlazione$:
-
-\[\rho(x_i,x_j)=\frac{Cov(x_i,x_j)}{\sigma_i \sigma_j}\]
-
-Si ha così una nuova definizione di variabili indipendenti:
-\begin{description}
-    \item[] $f_X(x_1, \ldots, x_n) = f_1(x_1)f_2(x_2)\ldots f_n(x_n)$
-    \item[] $E(x_i,x_j)=E(x_i)E(x_j) \rightarrow Cov(x_i,x_j)=0$ e $\rho(x_i,x_j)=0$
-\end{description}
-
-è la probabilità che la n variabili causali cadano all'interno  di certi intervalli contemporaneamente
-,essa ha le stesse proprità della funzioe di distribuzione usuale, si può così definire la funzione di distribuzione marginale per una variabile $x_i$, ottenuta integrando
-la funzione citata sopra sui vari intervalli dove $x_j\neq x_i$
-
-Posso costruire il valore di aspettazione di due variabili causali (\textbf{covarianza}), il cui valore è 0 se le variabili sono indipendenti fra loro
-\[
-Cov (X, Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
-\]
+Nel caso in cui $X$ e $Y$ siano \textbf{indipendenti}, allora aver fissato il valore di una variabile non dovrebbe alterare la distribuzione dell'altra, cioè ci aspettiamo che sia:
+\begin{equation}
+    \prod(x|y) = P_X(x) \quad \text{e} \quad \prod(y|x) = P_Y(y)
+\end{equation}
+Se sostituiamo in una delle equazioni precedenti, per esempio in $\pi(y|x) = P(x,y)/P_X(x)$, abbiamo:
+\begin{equation}
+    P_Y(y) = \frac{P(x,y)}{P_X(x)} \implies P(x,y) = P_X(x)P_Y(y)
+\end{equation}
 
 
 
-Se le variabili sono indipendenti la funzione di distribuzione di Gauss diviene:
-\[
-f(x_i)=\frac{1}{\sqrt{2\pi}\sigma_i}e^{-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}}
-\]
-La distribuzione congiunta
-\[
-f(x_1, ..., x_n)=\prod f(x_i) = \frac{1}{(2\pi)^n \prod \sigma_i} e^{-\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2}}
-\]
-Se le varianze sono i valori medi:
-\[
-f(x_1, ..., x_n)=\frac{1}{(2\pi)^n \prod \sigma_i} e^{ \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{2\sigma^2}}
-\]
+\subsection{Momenti delle densità di probabilità bidimensionali}
 
-Data $y=y(x)$ variabile casuale dipendente da un altra variabile casuale $x$, nel caso di \textbf{corrispondenza biunivoca} (ex. $y=ax -b$)si deve avere:
-\[
-f(x_a)dx=g(y_a)dy
-\]
-dove $y_a=f(x_a)$, allora la detrminazione di $g(y)$ si riduce ad una trasformazione di varibile. 
-Ossia le funzioni di distribuzioni devono essere identiche, se esiste la funzione inversa $x=x(y)$ si ha: 
-\[
-g(y)=f(x(y))\left|\frac{dx(y)}{dy}\right|
-\]
+Come nel caso unidimensionale si può calcolare il valore di aspettazione, però stavolta per generalizzare, considero una qualunque funzione di $x$ e $y$, $f(x,y)$, e definisco il suo \textbf{valore di aspettazione} come:
+\begin{equation}
+    \mathbb{E}[f(x,y)] = \int_{-\infty}^{+\infty} \,dx \int_{-\infty}^{+\infty} \,dy \, f(x,y) P(x,y)
+\end{equation}
 
-Nel caso invece di funzioni \textbf{non biunivoche}, cioè esistono m valori $x_i$ tali che $y=y(x_i)$ (ex. $y=ax^2$), allora "sommo le diverse componenti biunivuche":
-\[
-    g(y)=\sum_{i=0}^{n}f(x_i(y))\left|\frac{dx_i(y)}{dy}\right|
-\]
-Se è difficile calcolare la $g(y)$, utilizzo il valore di aspettazione
-\[
-\mu_y = E[y]=\int yg(y)dy= E[y(x)] =\int y(x)f(x)dx
-\]
-\[
-\sigma_y^2=E[(y(x)-\mu_y)]= \int (y(x)-\mu_y)^2f(x)dx
-\]
-Calcolo dunque il valore di aspettazione e la varianza
-
-Se l'andamento è lineare $y(x)=ax+b$ si ha:
-\[
-E[y(x)]=aE(x)+b
-\]
-Utilizzando questo è facile verificare che: 
-\[
-\sigma_y^2=E[y^2]-\mu_y^2= a^2\sigma_x^2
-\]
-Che è quanto si ottiene dalla legge di propagazione della varianza.
-
-Se $y(x)$ non è lineare utilizzo l'approssimazione lineare intorno a $\mu_x$ e tronco al secondo ordine:
+A partire da ciò posso definire i \textbf{momenti rispetto all'origine} come:
+\begin{equation}
+    \mu_{mn} = \mathbb{E}[X^m Y^n]
+\end{equation}
+per cui:
 \begin{align*}
-    \mu_y = E[y] &= E \left[ y(\mu_x) + \left( \frac{dy}{dx} \right)_{x=\mu_x} (x - \mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} (x - \mu_x)^2 + \cdots \right] \\
-    &= E[y(\mu_x)] + \left( \frac{dy}{dx} \right)_{x=\mu_x} E[(x - \mu_x)] + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} E[(x - \mu_x)^2] + \cdots \\
-    &\approx y(\mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} \sigma_x^2
-    \end{align*}
-Dove il secondo termine scompare perchè $E[x]=\mu_x$
-
-Per la varianza
-\[
-\sigma_y^2 = E[y^2] - \mu_y^2 = E\left[
-\left(
-y(\mu_x) + \left( \frac{dy}{dx} \right)_{x=\mu_x} (x - \mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} (x - \mu_x)^2 + \cdots
-\right)^2
-\right] - \mu_y^2 =
-\]
-\[
-E\left[ \left( y(\mu_x) \right)^2 \right] + 2 y(\mu_x) \left( \frac{dy}{dx} \right)_{x=\mu_x} E[(x - \mu_x)] + \left( \left( \frac{dy}{dx} \right)_{x=\mu_x} \right)^2 E[(x - \mu_x)^2] + \cdots - \mu_y^2 =
-\]
-\[
-\approx \left( \left( \frac{dy}{dx} \right)_{x=\mu_x} \right)^2 \sigma_x^2
-\]
-Esattamente ciò che si ottiene con la \textbf{legge di propagazione della varianza}.
-
-
-
-Sapendo che per variabili indipendenti $E[x_1,x_2]=E[x_1]E[x_2]$
-
-Per funzioni a più variabili
-\begin{align*}
-y(x_1, x_2, \cdots, x_n) &= \sum_{k_1=0}^\infty \sum_{k_2=0}^\infty \cdots \sum_{k_n=0}^\infty \frac{(x_1 - \mu_{x_1})^{k_1} (x_2 - \mu_{x_2})^{k_2} \cdots (x_n - \mu_{x_n})^{k_n}}{k_1! k_2! \cdots k_n!} \left[ \frac{\partial^{k_1 k_2 \cdots k_n} y}{\partial x_1^{k_1} \cdots \partial x_n^{k_n}} \right]_{\bar{x}=\bar{\mu}_x}=
+    \mu_{00} &= \mathbb{E}[1] = \int_{-\infty}^{+\infty} \,dx \int_{-\infty}^{+\infty} \,dy \, P(x,y) = 1 \\
+    \mu_{10} &= \mathbb{E}[X] \\
+    \mu_{01} &= \mathbb{E}[Y]
 \end{align*}
 
-\[y(\mu_{x_1}, \mu_{x_2}, \cdots, \mu_{x_n}) + \sum_{i=1}^n (x_i - \mu_{x_i}) \left[ \frac{\partial y}{\partial x_i} \right]_{\bar{x}=\bar{\mu}_x} + \frac{1}{2} \sum_{i=1}^n (x_i - \mu_{x_i})^2 \left[ \frac{\partial^2 y}{\partial x_i^2} \right]_{\bar{x}=\bar{\mu}_x} + 
-\sum_{i=1}^n \sum_{j=i+1}^n (x_i - \mu_{x_i}) (x_j - \mu_{x_j}) \left[ \frac{\partial^2 y}{\partial x_i \partial x_j} \right]_{\bar{x}=\bar{\mu}_x}
-\]
-Ricordiamo inoltre che se $y=\sum_{i=1}^n  x_i^{\alpha_i}$ allora:
-\[
-\frac{\sigma_y^2}{y^2}= \sum_{i=1}^n \alpha_i^2 \left( \frac{\sigma_{x_i}}{x_i} \right)^2
-\]
-da cui si può ricavare quali sono gli errori trascurabili.
+Analogamente è possibile definire i \textbf{momenti rispetto al valore di aspettazione} di $X$ e $Y$ (momenti centrali) come:
+\begin{equation}
+    \bar{\mu}_{mn} = \mathbb{E}\left[ (X - \mathbb{E}[X])^m (Y - \mathbb{E}[Y])^n \right]
+\end{equation}
+dove i più notevoli sono:
+\begin{align*}
+    \bar{\mu}_{20} &= \mathbb{E}\left[ (X - \mathbb{E}[X])^2 \right] = \text{Var}(X) \\
+    \bar{\mu}_{02} &= \mathbb{E}\left[ (Y - \mathbb{E}[Y])^2 \right] = \text{Var}(Y) \\
+    \bar{\mu}_{11} &= \mathbb{E}\left[ (X - \mathbb{E}[X])(Y - \mathbb{E}[Y]) \right] = \text{Cov}(X,Y)
+\end{align*}
 
-\vspace{1cm}
+Quest'ultima quantità si chiama \textbf{covarianza} ed è un parametro importante nel caso di più variabili perché \textit{indica come sono correlate fra loro le variabili}. Infatti si può dimostrare che $\text{Cov}(X,Y) = 0$ se $X$ e $Y$ sono indipendenti l'una dall'altra.
 
-Vediamo il caso di $n$ misure:
+\subsection{Dimostrazione nel caso discreto}
+Per dimostrarlo è conveniente trovare un altro modo di scrivere la covarianza che si ricava più facilmente assumendo il caso discreto.
+Consideriamo il caso di 2 variabili discrete $X$ e $Y$; il valore di aspettazione di una determinata funzione è dato da: 
 \[
-\overline{x}=\frac{1}{n}\sum_{i=1}^n x_i
+\mathbb{E}[f(x,y] = \sum_{i,j} P_{X,Y}(x_i,y_i)f(x_i,y_i)
 \]
-La varianza sarà:
-\[
-\sigma_x^2=\sum_{i=1}^n \left(\frac{\partial \overline{x}}{\partial x_i}\right)^2 \sigma_{x_i}^2
-\]
-Essendo che questa derivata vale sempre $\frac{1}{n^2}$ allora:
-\[
-\sigma_{\overline{x}}^2=\frac{1}{n^2} \sum_{i=1}^n \sigma_i^2 \rightarrow \sigma_{\overline{x}}=\frac{\sigma_i }{\sqrt{n}}
-\]
-Se ho compiuto 2 misure e mi chiedo se esse siano \textbf{compatbili}, costruisco una funzione derivata come $y=x_1-x_2$ (differenza fra le misure), supponiamo $\sigma_1 \neq \sigma_2$ e $E[x_1]=E[x_2]=\mu$
-\[
-E[y]=E[x_1-x_2]=0
-\]   
-\[
-\sigma_y^2=\sum_{i=1}^{n} \left(\frac{\partial y}{\partial x_i}\right)^2 \sigma_{x_i}^2=\sigma_1^2+\sigma_2^2
-\]
-La funzione di distribuzioe Gaussiana 
-\[
-f(y)=\frac{1}{\sqrt{2\pi \sigma_y^2}}e^{-\frac{y^2}{2\sigma_y^2}}
-\]
-Si ha compatibilità quando
-\[
-\left| x_1-x_2 \right| \leq 3\sqrt{{\sigma_1^2+\sigma_2^2}}
-\]
+
+dunque la covarianza è descrivibile da:
+
+\begin{align*}
+    \text{Cov}(X,Y) &= \mathbb{E}\left[ (X - \mathbb{E}[X])(Y - \mathbb{E}[Y]) \right] = \text{caso discreto} \\
+    &= \sum_{i,j} P_{ij} (x_i - \mathbb{E}[X])(y_j - \mathbb{E}[Y]) = \quad \text{(svolgo il prodotto)} \\
+    &= \sum_{i,j} P_{ij} x_i y_j - \sum_{i,j} P_{ij} x_i \mathbb{E}[Y] - \sum_{i,j} P_{ij} y_j \mathbb{E}[X] + \sum_{i,j} P_{ij} \mathbb{E}[X]\mathbb{E}[Y]
+\end{align*}
+
+Riconosciamo i vari termini:
+\begin{itemize}
+    \item $\sum_{i,j} P_{ij} x_i y_j = $ valore di aspettazione del prodotto $XY = \mathbb{E}[XY]$
+    \item $\sum_{i,j} P_{ij} x_i = \mathbb{E}[X]$
+    \item $\sum_{i,j} P_{ij} y_j = \mathbb{E}[Y]$
+    \item $\sum_{i,j} P_{ij} \mathbb{E}[X]\mathbb{E}[Y] = \mathbb{E}[X]\mathbb{E}[Y] \sum_{i,j} P_{ij} = \mathbb{E}[X]\mathbb{E}[Y] \cdot 1 = \mathbb{E}[X]\mathbb{E}[Y]$
+\end{itemize}
+
+Quindi mettendo tutto insieme:
+\begin{align}
+    \text{Cov}(X,Y) &= \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] - \mathbb{E}[Y]\mathbb{E}[X] + \mathbb{E}[X]\mathbb{E}[Y] \nonumber \\
+              &= \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+\end{align}
+
+Questa formula vale in generale, ma nel caso in cui le variabili siano indipendenti allora nella sommatoria il termine $P_{ij}$ si può scrivere come prodotto di un termine che dipende solo da $i$ (che indico con $P_{X,i}$) e un termine che dipende solo da $j$ (che indico con $P_{Y,j}$), in analogia a $P(x,y)=P_X(x)P_Y(y)$. Quindi:
+\begin{equation*}
+    \mathbb{E}[XY] = \sum_{i,j} P_{ij} x_i y_j = \sum_{i,j} P_{X,i} x_i P_{Y,j} y_j = \mathbb{E}[X]\mathbb{E}[Y]
+\end{equation*}
+Di conseguenza, in questo caso, $\text{Cov}(X,Y) = 0$.
+\subsection{Matrice delle covarianze (e combinazioni lineari di variabili)}
+
+Quando si lavora con più variabili si costruisce di solito la matrice delle covarianze che serve a semplificare la notazione. Il tipico esempio che fa capire da dove salta fuori è il calcolo del valore di aspettazione e varianza per una nuova variabile ottenuta come combinazione lineare di altre variabili.
+
+Il caso più semplice è quello di $Z = aX + bY$, dove $a$ e $b$ sono degli scalari e $X$ e $Y$ sono due variabili aleatorie che per semplicità supponiamo abbiano $\mathbb{E}[X] = \mathbb{E}[Y] = 0$.
+Il valore di aspettazione di $Z$ vale:
+\begin{equation*}
+    \mathbb{E}[Z] = a\mathbb{E}[X] + b\mathbb{E}[Y] = 0
+\end{equation*}
+
+La varianza di $Z$ vale:
+\begin{align*}
+    \text{Var}(Z) &= \mathbb{E}[(Z - \mathbb{E}[Z])^2] = \mathbb{E}[Z^2] = \mathbb{E}[(aX + bY)^2] = \\
+            &= \mathbb{E}[a^2 X^2] + \mathbb{E}[b^2 Y^2] + \mathbb{E}[2abXY] = \\
+            &= a^2 \mathbb{E}[X^2] + b^2 \mathbb{E}[Y^2] + 2ab \mathbb{E}[XY]
+\end{align*}
+il che si può scrivere in funzione delle varianze e della covarianza dato che $\mathbb{E}[X]=\mathbb{E}[Y]=0$, cioè:
+\begin{equation}
+\boxed{
+    \text{Var}(Z) = a^2 \text{Var}(X) + b^2 \text{Var}(Y) + 2ab \text{Cov}(X,Y)}
+\end{equation}
+
+Il risultato sulla varianza si può generalizzare al caso in cui $\mathbb{E}[X] \neq 0$ e $\mathbb{E}[Y] \neq 0$ perché basta fare il cambiamento di variabili $X' = X - \mathbb{E}[X]$ e $Y' = Y - \mathbb{E}[Y]$ che evidentemente hanno $\mathbb{E}[X'] = 0$ e $\mathbb{E}[Y'] = 0$. Inoltre:
+\begin{equation*}
+    \text{Var}(X') = \text{Var}(X - \mathbb{E}[X]) = \text{Var}(X)
+\end{equation*}
+(aggiungere o sottrarre una costante a una variabile non altera la varianza). Analogamente $\text{Var}(Y') = \text{Var}(Y)$, e infine si ha che:
+\begin{equation*}
+    \text{Cov}(X', Y') = \mathbb{E}\left[ (X' - \mathbb{E}[X'])(Y' - \mathbb{E}[Y']) \right] = \mathbb{E}\left[ (X - \mathbb{E}[X])(Y - \mathbb{E}[Y]) \right] = \text{Cov}(X,Y)
+\end{equation*}
+Quindi anche se le variabili non hanno valore di aspettazione nullo vale la stessa formula per $\text{Var}(Z)$.
+
+\subsubsection{Formulazione Matriciale}
+Risulta utile esprimere questo risultato sotto forma di moltiplicazioni di matrici (soprattutto quando si estende a più dimensioni) ed è a questo punto che si definisce la \textbf{matrice delle covarianze} (che è simmetrica) come:
+\begin{equation}
+    V = \begin{pmatrix}
+    \text{Var}(X) & \text{Cov}(X,Y) \\
+    \text{Cov}(X,Y) & \text{Var}(Y)
+    \end{pmatrix}
+\end{equation}
+Quindi $V$ ha nella diagonale principale le varianze e nelle altre le covarianze. Si definisce poi la matrice dei coefficienti $A = \begin{pmatrix} a \\ b \end{pmatrix}$, la cui trasposta è $A^T = (a \quad b)$, in modo che la formula di prima si può scrivere come:
+\begin{equation}
+    \text{Var}(Z) = A^T V A
+\end{equation}
+
+\begin{nota}
+Ci si convince abbastanza facilmente del risultato se si fa il conto:
+\begin{align*}
+    (a \quad b) \begin{pmatrix} \text{Var}(X) & \text{Cov}(X,Y) \\ \text{Cov}(X,Y) & \text{Var}(Y) \end{pmatrix} \begin{pmatrix} a \\ b \end{pmatrix} 
+    &= \big[ a\text{Var}(X) + b\text{Cov}(X,Y) \quad a\text{Cov}(X,Y) + b\text{Var}(Y) \big] \begin{pmatrix} a \\ b \end{pmatrix} \\
+    &= a^2 \text{Var}(X) + ab \text{Cov}(X,Y) + ab \text{Cov}(X,Y) + b^2 \text{Var}(Y)
+\end{align*}
+
+Si può poi ancora di più generalizzare al caso di $N$ variabili aleatorie $X_i$ come $Z = \sum_{i=1}^{N} a_i X_i$, e avremo ancora $\text{Var}(Z) = A^T V A$, dove stavolta la matrice delle covarianze ha elementi $V_{ij} = \text{Cov}(X_i, X_j)$. Essendo la diagonale:
+\begin{equation*}
+    V_{ii} = \text{Cov}(X_i, X_i) = \mathbb{E}\left[ (X_i - \mathbb{E}[X_i])(X_i - \mathbb{E}[X_i]) \right] = \mathbb{E}\left[ (X_i - \mathbb{E}[X_i])^2 \right] = \text{Var}(X_i)
+\end{equation*}
+Quindi $V$ è qualcosa come:
+\begin{equation}
+    V = \begin{pmatrix}
+    \text{Var}(X_1) & \text{Cov}(X_1, X_2) & \cdots & \text{Cov}(X_1, X_N) \\
+    \text{Cov}(X_2, X_1) & \text{Var}(X_2) & \cdots & \text{Cov}(X_2, X_N) \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \text{Cov}(X_N, X_1) & \text{Cov}(X_N, X_2) & \cdots & \text{Var}(X_N)
+    \end{pmatrix}
+\end{equation}
+mentre la matrice $A = \begin{pmatrix} a_1 \\ a_2 \\ \vdots \\ a_N \end{pmatrix}$.
+È chiaro che se le variabili $X_i$ sono indipendenti allora $V$ assume una forma molto semplice in cui gli elementi non nulli sono solo nella diagonale.
+\end{nota}
+
+
+\subsection{Coefficiente di correlazione}
+
+Una ultima quantità che si introduce parlando del caso di due variabili casuali $X$ e $Y$ è il \textbf{coefficiente di correlazione lineare} ( che indica  la forza e la direzione della relazione lineare tra due variabili) definito come:
+
+\begin{equation}
+\boxed{
+    \rho = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X) \cdot \text{Var}(Y)}} = \frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y}
+}
+\end{equation}
+
+
+È chiaro dalla definizione che $\rho$ è \textbf{adimensionale} (mentre la covarianza non lo è!), che $\rho = 0$ se $X$ e $Y$ sono statisticamente indipendenti (visto che in tal caso $\text{Cov}(X,Y)=0$), e si può dimostrare che:
+\begin{equation}
+    -1 \le \rho \le 1
+\end{equation}
+
+\textbf{Dimostrazione:} Esistono vari modi per dimostrarlo, una possibilità è definire la variabile $Z = \sigma_Y X - \sigma_X Y$ e calcolare $\text{Var}(Z)$ sfruttando la formula precedente:
+\begin{equation*}
+    \text{Var}(Z) = \sigma_Y^2 \text{Var}(X) + \sigma_X^2 \text{Var}(Y) - 2\sigma_X \sigma_Y \text{Cov}(X,Y)
+\end{equation*}
+ma $\text{Var}(X) = \sigma_X^2$ e $\text{Var}(Y) = \sigma_Y^2$, quindi:
+\begin{equation*}
+    \text{Var}(Z) = 2\sigma_X^2 \sigma_Y^2 - 2\sigma_X \sigma_Y \text{Cov}(X,Y)
+\end{equation*}
+Per come è definita sappiamo che $\text{Var}(Z) \ge 0$, quindi:
+\begin{align*}
+    & 2\sigma_X^2 \sigma_Y^2 - 2\sigma_X \sigma_Y \text{Cov}(X,Y) \ge 0 \\
+    \implies & \sigma_X^2 \sigma_Y^2 \ge \sigma_X \sigma_Y \text{Cov}(X,Y) \\
+    \implies & \frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y} \le 1 \implies \rho \le 1
+\end{align*}
+Viceversa se si definisce $Z = \sigma_Y X + \sigma_X Y$ e si fa lo stesso conto si trova $\rho \ge -1$.
+
+
+\begin{example}
+È istruttivo vedere quanto vale $\rho$ nel caso di due variabili legate da una relazione lineare come $Y = mX + q$, cioè l'equazione della retta. In questo caso si può calcolare $\rho$ partendo da:
+\begin{itemize}
+    \item $\mathbb{E}[Y] = m\mathbb{E}[X] + q$
+    \item $\text{Var}(Y) = m^2 \text{Var}(X)$
+    \item $\mathbb{E}[XY] = \mathbb{E}[X(mX + q)] = \mathbb{E}[mX^2 + qX] = m\mathbb{E}[X^2] + q\mathbb{E}[X]$
+    \item $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = \\
+          = m\mathbb{E}[X^2] + q\mathbb{E}[X] - \mathbb{E}[X]\big(m\mathbb{E}[X] + q\big) = \\
+          = m\mathbb{E}[X^2] + q\mathbb{E}[X] - m\{\mathbb{E}[X]\}^2 - q\mathbb{E}[X] = \\
+          = m\left( \mathbb{E}[X^2] - \{\mathbb{E}[X]\}^2 \right) = m\text{Var}(X)$
+\end{itemize}
+Premesso questo posso calcolare $\rho$ come:
+\begin{equation}
+    \rho = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} = \frac{m \text{Var}(X)}{\sqrt{m^2 [\text{Var}(X)]^2}} = \frac{m}{|m|} = \pm 1
+\end{equation}
+Quindi $\rho$ vale $1$ con il \textit{segno} del coefficiente angolare della retta. Questo mostra che man mano che la relazione tra $X$ e $Y$ approssima una relazione lineare il valore di $|\rho|$ si avvicina a 1.
+
+\end{example}
+
+
+\subsubsection{Visualizzazione dei casi}
+
+% Disegno dei grafici di correlazione con TikZ
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+    % rho = 0
+    \begin{scope}[shift={(0,0)}]
+        \draw[->, thick] (0,-0.2) -- (0,3) node[left] {$Y$};
+        \draw[->, thick] (-0.2,0) -- (3,0) node[below] {$X$};
+        \node at (2,2.5) {$\rho = 0$};
+        \foreach \i in {1,...,50} {\filldraw (rand*0.8+1.5, rand*0.8+1.5) circle (1pt);}
+    \end{scope}
+    
+    % rho > 0
+    \begin{scope}[shift={(5,0)}]
+        \draw[->, thick] (0,-0.2) -- (0,3) node[left] {$Y$};
+        \draw[->, thick] (-0.2,0) -- (3,0) node[below] {$X$};
+        \node at (2,2.5) {$\rho > 0$};
+        \foreach \i in {1,...,40} {\filldraw (rand*0.6+1.5, {rand*0.6+1.5 + (\i*0.01 - 0.2)}) circle (1pt);}
+        % Approximation of positive slope cloud
+        \fill [white] (0,0) rectangle (3,3); % clear area to redraw accurately
+        \draw[->, thick] (0,-0.2) -- (0,3) node[left] {$Y$};
+        \draw[->, thick] (-0.2,0) -- (3,0) node[below] {$X$};
+        \node at (2,2.5) {$\rho > 0$};
+        \foreach \i in {1,...,60} {
+            \pgfmathsetmacro{\x}{rand*0.7+1.5}
+            \pgfmathsetmacro{\y}{\x*0.8 + rand*0.4 + 0.2}
+            \filldraw (\x,\y) circle (1pt);
+        }
+    \end{scope}
+
+    % rho < 0
+    \begin{scope}[shift={(10,0)}]
+        \draw[->, thick] (0,-0.2) -- (0,3) node[left] {$Y$};
+        \draw[->, thick] (-0.2,0) -- (3,0) node[below] {$X$};
+        \node at (2.5,2.5) {$\rho < 0$};
+        \foreach \i in {1,...,60} {
+            \pgfmathsetmacro{\x}{rand*0.7+1.5}
+            \pgfmathsetmacro{\y}{-\x*0.7 + rand*0.4 + 2.5}
+            \filldraw (\x,\y) circle (1pt);
+        }
+    \end{scope}
+
+    % rho ~ 1
+    \begin{scope}[shift={(2.5,-4)}]
+        \draw[->, thick] (0,-0.2) -- (0,3) node[left] {$Y$};
+        \draw[->, thick] (-0.2,0) -- (3,0) node[below] {$X$};
+        \node at (2.5,2) {$\rho \sim 1$};
+        \foreach \i in {1,...,40} {
+            \pgfmathsetmacro{\x}{\i*0.06 + 0.3}
+            \pgfmathsetmacro{\y}{\x + rand*0.1}
+            \filldraw (\x,\y) circle (1pt);
+        }
+    \end{scope}
+
+    % rho ~ -1
+    \begin{scope}[shift={(7.5,-4)}]
+        \draw[->, thick] (0,-0.2) -- (0,3) node[left] {$Y$};
+        \draw[->, thick] (-0.2,0) -- (3,0) node[below] {$X$};
+        \node at (2.5,2) {$\rho \sim -1$};
+        \foreach \i in {1,...,40} {
+            \pgfmathsetmacro{\x}{\i*0.06 + 0.3}
+            \pgfmathsetmacro{\y}{-\x*1.1 + 3 + rand*0.1}
+            \ifdim \y pt > 0 pt
+                \filldraw (\x,\y) circle (1pt);
+            \fi
+        }
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+Come in precedenza, quanto detto per due variabili si può facilmente estendere al caso di $N$ variabili $X_i$, e in tal caso il coefficiente di correlazione si calcola comunque per una coppia delle $N$ variabili:
+\begin{equation}
+    \rho_{ij} = \frac{\text{Cov}(X_i, X_j)}{\sigma_i \sigma_j}
+\end{equation}
+Si noti anche che da questo segue che $\text{Cov}(X_i, X_j) = \sigma_i \sigma_j \rho_{ij}$ e quindi la matrice delle covarianze si può anche scrivere come:
+\begin{equation}
+    V_{ij} = \sigma_i \sigma_j \rho_{ij}
+\end{equation}
+
+\section{Distribuzione normale in più dimensioni (o multinormale)}
+
+La distribuzione gaussiana che abbiamo visto in una dimensione si può estendere al caso di due o più dimensioni partendo dal caso più semplice in cui le variabili sono indipendenti. Supponiamo quindi che $X$ abbia densità di probabilità:
+\begin{equation}
+    P_X(x) = \frac{1}{\sigma_X \sqrt{2\pi}} \exp\left[ -\frac{(x-\mu_X)^2}{2\sigma_X^2} \right]
+\end{equation}
+e analogamente $Y$ ha densità di probabilità:
+\begin{equation}
+    P_Y(y) = \frac{1}{\sigma_Y \sqrt{2\pi}} \exp\left[ -\frac{(y-\mu_Y)^2}{2\sigma_Y^2} \right]
+\end{equation}
+
+Essendo indipendenti, la densità di probabilità congiunta sarà:
+\begin{align*}
+    P(x,y) &= P_X(x) P_Y(y) \\
+           &= \frac{1}{2\pi \sigma_X \sigma_Y} \exp\left[ -\frac{(x-\mu_X)^2}{2\sigma_X^2} \right] \cdot \exp\left[ -\frac{(y-\mu_Y)^2}{2\sigma_Y^2} \right]
+\end{align*}
+Essendo $e^a e^b = e^{a+b}$ posso riscrivere come:
+\begin{equation}
+    P(x,y) = \frac{1}{2\pi \sigma_X \sigma_Y} \cdot \exp\left\{ -\left[ \frac{(x-\mu_X)^2}{2\sigma_X^2} + \frac{(y-\mu_Y)^2}{2\sigma_Y^2} \right] \right\}
+\end{equation}
+Se si definisce la quantità:
+\begin{equation}
+    Q^2 = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2}
+\end{equation}
+allora si può riscrivere la probabilità come:
+\begin{equation}
+    P(x,y) = \frac{1}{2\pi \sigma_X \sigma_Y} \cdot \exp\left( -\frac{Q^2}{2} \right)
+\end{equation}
+
+La definizione di $Q^2$ è utile perché le intersezioni di $P(x,y)$ con piani paralleli al piano $XY$ sono definite proprio dall'equazione $Q^2 = \text{costante}$. Questo si capisce facilmente perché occorre fare l'intersezione con il piano $Z=K$, quindi servono valori di $X$ e $Y$ tali che $P(x,y) = K$, ma l'unica dipendenza da $X$ e $Y$ è contenuta in $Q$, per il resto si tratta di costanti:
+\begin{align*}
+    \frac{1}{2\pi \sigma_X \sigma_Y} \exp\left( -\frac{Q^2}{2} \right) &= K \\
+    \exp\left( -\frac{Q^2}{2} \right) &= K \, 2\pi \sigma_X \sigma_Y \\
+    -\frac{Q^2}{2} &= \ln(2\pi \sigma_X \sigma_Y K) \\
+    Q^2 &= -2\ln(2\pi \sigma_X \sigma_Y K) = C
+\end{align*}
+Scrivendo esplicitamente si ha:
+\begin{equation}
+    \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} = C
+\end{equation}
+che è l'equazione di un'\textbf{ellisse centrata in} $(\mu_X, \mu_Y)$.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/gaussiana_3d.png}
+    \caption{Rappresentazione 3D della densità di probabilità congiunta. La linea rossa rappresenta l'intersezione con il piano $z=K$, la cui proiezione sul piano $XY$ è un'ellisse di equazione $Q^2 = C$. Per provare il grafico interattivo: \url{https://colab.research.google.com/drive/1mZmU06E-0UsUTA-w0U_cUEBHEPlPrn5u?usp=sharing}}
+    \label{fig:gaussiana_3d}
+\end{figure}
+
+
+
+
+Essendo $Q^2$ dato dalla somma di quadrati di variabili normali, si può dimostrare che la sua distribuzione di probabilità è una distribuzione notevole che si chiama \textbf{distribuzione del chi quadro}, indicata con $\chi^2$, che vedremo meglio più avanti. Per ora quello che  è utile sapere è che si può calcolare, per ogni valore di $C$, la probabilità che il generico punto $(X,Y)$ cada dentro l'ellisse $Q^2 \le C$. 
+
+Per esempio, per $C=1$ (il che equivale al caso in cui l'ellisse ha come semiassi $\sigma_X$ e $\sigma_Y$) si vede che tale probabilità è \textbf{0.39}.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    % Assi
+    \draw[->, thick] (0,-0.5) -- (0,3) node[left] {$Y$};
+    \draw[->, thick] (-0.5,0) -- (4,0) node[below] {$X$};
+    
+    % Centro
+    \filldraw (2,1.5) circle (1pt);
+    \node[below] at (2,0) {$\mu_X$};
+    \node[left] at (0,1.5) {$\mu_Y$};
+    \draw[dashed] (2,0) -- (2,1.5) -- (0,1.5);
+    
+    % Ellisse
+    \draw[thick] (2,1.5) ellipse (1.2cm and 0.8cm);
+    
+    % Rettangolo circoscritto
+    \draw[dashed] (0.8, 0.7) rectangle (3.2, 2.3);
+    
+    % Etichette su X
+    \draw (0.8, 0.1) -- (0.8, -0.1) node[below] {$\mu_X - \sigma_X$};
+    \draw (3.2, 0.1) -- (3.2, -0.1) node[below] {$\mu_X + \sigma_X$};
+    
+    % Etichette su Y
+    \draw (0.1, 0.7) -- (-0.1, 0.7) node[left] {$\mu_Y - \sigma_Y$};
+    \draw (0.1, 2.3) -- (-0.1, 2.3) node[left] {$\mu_Y + \sigma_Y$};
+\end{tikzpicture}
+\end{center}
+
+Si noti che se io considerassi il rettangolo che circoscrive l'ellisse, mi aspetterei:
+\begin{align*}
+    \text{Prob}\Big( \mu_X - \sigma_X \le X \le \mu_X + \sigma_X \ &\&\ \mu_Y - \sigma_Y \le Y \le \mu_Y + \sigma_Y \Big) = \\
+    &= 0.68 \cdot 0.68 = 0.46
+\end{align*}
+
+In maniera analoga è facile graficamente intuire che forma avranno le \textbf{densità di probabilità condizionate} $\prod(x|y)$ e $\prod(y|x)$: nel caso di variabili indipendenti saranno ancora delle gaussiane e rappresentano le intersezioni con i piani del tipo $X = \text{costante}$ e $Y = \text{costante}$.
+
+
+
+\lezione{???}{26 Marzo 2026}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\ripasso{ Proprietà generali e Propagazione degli Errori}
+
+In questa sezione richiamiamo alcuni concetti generali sulle funzioni di distribuzione a più variabili e sulla propagazione degli errori, utili per il prosieguo.
+
+\subsubsection*{Funzione di distribuzione per variabili casuali n-dimensionali}
+Se la funzione di densità di probabilità $f(\vec{x})$ dipende da $n$ variabili, indicate con il vettore $\vec{x}=(x_1, \ldots, x_n)$, il \textbf{valore di aspettazione} è dato da:
+\begin{equation}
+    \mathbb{E}[\vec{x}] = \int \vec{x} f(\vec{x}) \, d\vec{x}
+\end{equation}
+
+Per un singolo valore $x_i$ si ha:
+\begin{equation}
+    \mathbb{E}[x_i] = \int x_i f(\vec{x}) \, d\vec{x}
+\end{equation}
+
+Si definisce allora il generico elemento $ij$ della \textbf{matrice della covarianza} $V$ come:
+\begin{equation}
+    V_{ij} = \mathbb{E}[(x_i-\mu_i)(x_j-\mu_j)] = \int (x_i-\mu_i)(x_j-\mu_j) f(\vec{x}) \, d\vec{x}
+\end{equation}
+da cui deduciamo che:
+\begin{itemize}
+    \item Gli elementi sulla diagonale ($i = j$) sono le varianze: $V_{ii} = \sigma_i^2$
+    \item Gli elementi fuori dalla diagonale ($i \neq j$) rappresentano le covarianze tra le diverse variabili.
+\end{itemize}
+
+È utile definire il \textbf{coefficiente di correlazione}:
+\begin{equation}
+    \rho(x_i,x_j) = \frac{\text{Cov}(x_i,x_j)}{\sigma_i \sigma_j}
+\end{equation}
+
+\subsubsection*{Indipendenza e funzione marginale}
+La funzione di distribuzione congiunta rappresenta la probabilità che le $n$ variabili casuali cadano contemporaneamente all'interno di certi intervalli. Essa gode delle stesse proprietà della funzione di distribuzione usuale. 
+
+È possibile definire la \textbf{funzione di distribuzione marginale} per una singola variabile $x_i$, ottenuta integrando la funzione congiunta su tutti i domini delle restanti variabili $x_j$ (con $j \neq i$).
+
+Si ha così una definizione rigorosa per variabili \textbf{indipendenti}:
+\begin{itemize}
+    \item La distribuzione congiunta fattorizza: $f(\vec{x}) = f_1(x_1)f_2(x_2)\cdots f_n(x_n)$
+    \item I valori di aspettazione si separano: $\mathbb{E}[x_i x_j] = \mathbb{E}[x_i]\mathbb{E}[x_j]$
+    \item Di conseguenza: $\text{Cov}(x_i,x_j) = 0$ e $\rho(x_i,x_j) = 0$.
+\end{itemize}
+
+A livello campionario (misurazioni sperimentali), la covarianza tra due variabili $X$ e $Y$ si stima come:
+\begin{equation}
+    \text{Cov}(X, Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
+\end{equation}
+
+\subsubsection*{La distribuzione normale multivariata}
+Se le variabili sono \textit{indipendenti}, la funzione di distribuzione di Gauss per la singola variabile è:
+\begin{equation}
+    f(x_i) = \frac{1}{\sqrt{2\pi}\sigma_i} \exp\left[-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}\right]
+\end{equation}
+La distribuzione congiunta diventa quindi il prodotto delle singole marginali:
+\begin{equation}
+    f(x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^n \sigma_i} \exp\left[ -\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2} \right]
+\end{equation}
+
+\subsection{Trasformazione di variabili casuali}
+
+Data una variabile casuale $Y = y(X)$ dipendente da un'altra variabile casuale $X$, vogliamo ricavare la densità di probabilità $g(y)$ conoscendo $f(x)$.
+
+Nel caso di \textbf{corrispondenza biunivoca} (es. $y = ax + b$), la conservazione della probabilità impone che $f(x)dx = g(y)dy$. Se esiste la funzione inversa $x = x(y)$, la determinazione di $g(y)$ si riduce ad una trasformazione di variabile:
+\begin{equation}
+    g(y) = f(x(y))\left|\frac{dx(y)}{dy}\right|
+\end{equation}
+
+Nel caso di funzioni \textbf{non biunivoche}, cioè in cui esistono $m$ rami invertibili per cui $y = y(x_i)$ (es. $y = ax^2$), allora si "sommano le diverse componenti biunivoche":
+\begin{equation}
+    g(y) = \sum_{i=1}^{m} f(x_i(y))\left|\frac{dx_i(y)}{dy}\right|
+\end{equation}
+
+\subsection{Legge di propagazione degli errori}
+Se risulta difficile calcolare analiticamente $g(y)$, ci si accontenta di calcolare il \textbf{valore di aspettazione} e la \textbf{varianza} della nuova variabile:
+\begin{align*}
+    \mu_y &= \mathbb{E}[y] = \int y \, g(y) \, dy = \int y(x) f(x) \, dx \\
+    \sigma_y^2 &= \mathbb{E}[(y - \mu_y)^2] = \int (y(x) - \mu_y)^2 f(x) \, dx
+\end{align*}
+
+Se l'andamento è \textbf{lineare} ($y(x) = ax + b$), si ha banalmente:
+\begin{equation}
+    \mathbb{E}[y(x)] = a\mathbb{E}[x] + b \quad \implies \quad \sigma_y^2 = \mathbb{E}[y^2] - \mu_y^2 = a^2\sigma_x^2
+\end{equation}
+
+Se $y(x)$ \textbf{non è lineare}, si utilizza lo sviluppo di Taylor centrato in $\mu_x$. Troncando lo sviluppo per il valore di aspettazione al secondo ordine:
+\begin{align*}
+    \mu_y = \mathbb{E}[y] &= \mathbb{E} \left[ y(\mu_x) + \left. \frac{dy}{dx} \right|_{\mu_x} (x - \mu_x) + \frac{1}{2} \left. \frac{d^2y}{dx^2} \right|_{\mu_x} (x - \mu_x)^2 + \cdots \right] \\
+    &= y(\mu_x) + \left. \frac{dy}{dx} \right|_{\mu_x} \mathbb{E}[x - \mu_x] + \frac{1}{2} \left. \frac{d^2y}{dx^2} \right|_{\mu_x} \mathbb{E}[(x - \mu_x)^2] + \cdots \\
+    &\approx y(\mu_x) + \frac{1}{2} \left. \frac{d^2y}{dx^2} \right|_{\mu_x} \sigma_x^2
+\end{align*}
+(Il termine del primo ordine scompare perché $\mathbb{E}[x - \mu_x] = \mu_x - \mu_x = 0$).
+
+Per la varianza, approssimando al primo ordine, otteniamo la nota \textbf{legge di propagazione della varianza}:
+\begin{align*}
+    \sigma_y^2 &= \mathbb{E}[(y - \mu_y)^2] \approx \mathbb{E} \left[ \left( y(\mu_x) + \left. \frac{dy}{dx} \right|_{\mu_x} (x - \mu_x) - y(\mu_x) \right)^2 \right] \\
+    &= \mathbb{E} \left[ \left( \left. \frac{dy}{dx} \right|_{\mu_x} \right)^2 (x - \mu_x)^2 \right] = \left( \left. \frac{dy}{dx} \right|_{\mu_x} \right)^2 \sigma_x^2
+\end{align*}
+
+\subsubsection{Generalizzazione a più variabili}
+Per funzioni a più variabili $y(x_1, \ldots, x_n)$, lo sviluppo in serie di Taylor nell'intorno del punto medio $\vec{\mu}_x$ genera termini con le derivate parziali. La varianza finale, assumendo variabili \textit{indipendenti} (per cui i termini incrociati $\text{Cov}(x_i, x_j)=0$), risulta essere:
+\begin{equation}
+    \sigma_y^2 = \sum_{i=1}^n \left( \frac{\partial y}{\partial x_i} \right)^2_{\vec{\mu}_x} \sigma_{x_i}^2
+\end{equation}
+
+\begin{nota}
+Ricordiamo inoltre un caso notevole: se la funzione è un \textbf{prodotto} del tipo $y = \prod_{i=1}^n x_i^{\alpha_i}$, applicando la formula precedente si ottiene la relazione per la \textit{propagazione dell'errore relativo}:
+\begin{equation}
+    \frac{\sigma_y^2}{y^2} = \sum_{i=1}^n \alpha_i^2 \left( \frac{\sigma_{x_i}}{x_i} \right)^2
+\end{equation}
+da cui si può dedurre rapidamente quali incertezze sono dominanti e quali trascurabili.
+\end{nota}
+
+\subsection{Varianza della media e Compatibilità}
+
+Vediamo il caso di una variabile che è la media di $n$ misure indipendenti:
+\begin{equation}
+    \overline{x} = \frac{1}{n}\sum_{i=1}^n x_i
+\end{equation}
+Applicando la propagazione degli errori, la varianza della media è:
+\begin{equation}
+    \sigma_{\overline{x}}^2 = \sum_{i=1}^n \left(\frac{\partial \overline{x}}{\partial x_i}\right)^2 \sigma_{x_i}^2
+\end{equation}
+Essendo che questa derivata vale sempre $1/n$, se assumiamo che tutte le misure provengano dalla stessa distribuzione (e abbiano quindi la stessa varianza $\sigma_i^2 = \sigma^2$), si ottiene il celebre risultato dell'\textbf{errore della media}:
+\begin{equation}
+    \sigma_{\overline{x}}^2 = \frac{1}{n^2} \sum_{i=1}^n \sigma^2 = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n} \quad \implies \quad \sigma_{\overline{x}} = \frac{\sigma}{\sqrt{n}}
+\end{equation}
+
+\paragraph{Compatibilità tra due misure.} 
+Se ho compiuto 2 misure e mi chiedo se esse siano \textbf{compatibili}, costruisco una nuova variabile casuale come $y = x_1 - x_2$ (differenza fra le misure). Supponiamo $\sigma_1 \neq \sigma_2$ e $\mathbb{E}[x_1] = \mathbb{E}[x_2] = \mu$.
+
+Il valore atteso della differenza è:
+\begin{equation}
+    \mathbb{E}[y] = \mathbb{E}[x_1 - x_2] = 0
+\end{equation}   
+Mentre la varianza della differenza (sempre per la propagazione degli errori) è:
+\begin{equation}
+    \sigma_y^2 = \left(\frac{\partial y}{\partial x_1}\right)^2 \sigma_1^2 + \left(\frac{\partial y}{\partial x_2}\right)^2 \sigma_2^2 = (1)^2\sigma_1^2 + (-1)^2\sigma_2^2 = \sigma_1^2 + \sigma_2^2
+\end{equation}
+La funzione di distribuzione gaussiana associata a $y$ sarà:
+\begin{equation}
+    f(y) = \frac{1}{\sqrt{2\pi \sigma_y^2}}\exp\left[-\frac{y^2}{2\sigma_y^2}\right]
+\end{equation}
+Si ha statistica \textbf{compatibilità} (entro 3 deviazioni standard) quando:
+\begin{equation}
+    \left| x_1 - x_2 \right| \leq 3\sqrt{\sigma_1^2 + \sigma_2^2}
+\end{equation}
+
 
 \subsection{\color{red} Funzione di distribuzione congiunta}
 Da un set di misure indipendenti posso costruire la "funzione di distribuzione congiunta" (prodotto fra le funzioni gaussiane delle n variabili):

@@ -3009,14 +3009,10 @@ plt.show()
     \label{fig:gauss_plot}
 \end{figure}
 
-
-
-
-
-
-
-
 \pagebreak  
+
+%------------------------------------------------------------------------------
+
 \lezione{Distribuzione di probabilità a più variabili}{23/03/2026}
 Consideriamo due variabili alleatori X,Y. La loro distribuzione di probabilità congiunta è data da: \[P_{X,Y}(x,y) = \text{Prob}(x<X<x+dx, y<Y<y+dy)\] che rappresenta la probabilità che $X$ assuma il valore $x$ e $Y$ assuma il valore $y$ contemporaneamente. 
 La distribuzione congiunta è normalizzata, cioè $\int \int P_{X,Y}(x,y) dx dy = 1$. \\
@@ -3112,14 +3108,228 @@ P_{X,Y}(x,y)= \frac{1}{2 \pi \sigma_x \sigma_y } \exp(-\frac{1}{2}[\frac{{(x-\mu
 dove Q è il mio termine in parentesi sotto radice. 
 
 
+\subsection{\color{red} Funzione di distribuzione per variabili casuali}
+Se la funzione di densità di probabilità dipende da più variabili si ha, per il valore di aspettazione
+\[
+E(x_1, \ldots, x_n) = \int \vec {x}f(\vec{x})d\vec{x}
+\]
+dove $\vec{x}=(x_1, \ldots, x_n)$.
+
+Per un singolo valore $x_i$ si ha
+\[
+E(x_i) = \int x_i f(\vec{x}) d\vec{x}
+\]
+
+Si definisce allora l' elemento di posizione  $ij$ della$matrice$ $della$ $covarianza$:
+\[
+V_{ij}=E[(x_i-\mu_i)(x_j-\mu_j)]=\int (x_i-\mu_i)(x_j-\mu_j)f(\vec{x}) d\vec{x}
+\]
+si ha allora che:
+\begin{itemize}
+    \item $\sigma_i^2=V_{ii}=\sigma^2$
+    \item la $covarianza$ è un qualsiasi elemento della matrice $i\neq j$
+\end{itemize}
+E' utile definire il $coefficente$ $di$ $correlazione$:
+
+\[\rho(x_i,x_j)=\frac{Cov(x_i,x_j)}{\sigma_i \sigma_j}\]
+
+Si ha così una nuova definizione di variabili indipendenti:
+\begin{description}
+    \item[] $f_X(x_1, \ldots, x_n) = f_1(x_1)f_2(x_2)\ldots f_n(x_n)$
+    \item[] $E(x_i,x_j)=E(x_i)E(x_j) \rightarrow Cov(x_i,x_j)=0$ e $\rho(x_i,x_j)=0$
+\end{description}
+
+è la probabilità che la n variabili causali cadano all'interno  di certi intervalli contemporaneamente
+,essa ha le stesse proprità della funzioe di distribuzione usuale, si può così definire la funzione di distribuzione marginale per una variabile $x_i$, ottenuta integrando
+la funzione citata sopra sui vari intervalli dove $x_j\neq x_i$
+
+Posso costruire il valore di aspettazione di due variabili causali (\textbf{covarianza}), il cui valore è 0 se le variabili sono indipendenti fra loro
+\[
+Cov (X, Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
+\]
 
 
 
+Se le variabili sono indipendenti la funzione di distribuzione di Gauss diviene:
+\[
+f(x_i)=\frac{1}{\sqrt{2\pi}\sigma_i}e^{-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}}
+\]
+La distribuzione congiunta
+\[
+f(x_1, ..., x_n)=\prod f(x_i) = \frac{1}{(2\pi)^n \prod \sigma_i} e^{-\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2}}
+\]
+Se le varianze sono i valori medi:
+\[
+f(x_1, ..., x_n)=\frac{1}{(2\pi)^n \prod \sigma_i} e^{ \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{2\sigma^2}}
+\]
+
+Data $y=y(x)$ variabile casuale dipendente da un altra variabile casuale $x$, nel caso di \textbf{corrispondenza biunivoca} (ex. $y=ax -b$)si deve avere:
+\[
+f(x_a)dx=g(y_a)dy
+\]
+dove $y_a=f(x_a)$, allora la detrminazione di $g(y)$ si riduce ad una trasformazione di varibile. 
+Ossia le funzioni di distribuzioni devono essere identiche, se esiste la funzione inversa $x=x(y)$ si ha: 
+\[
+g(y)=f(x(y))\left|\frac{dx(y)}{dy}\right|
+\]
+
+Nel caso invece di funzioni \textbf{non biunivoche}, cioè esistono m valori $x_i$ tali che $y=y(x_i)$ (ex. $y=ax^2$), allora "sommo le diverse componenti biunivuche":
+\[
+    g(y)=\sum_{i=0}^{n}f(x_i(y))\left|\frac{dx_i(y)}{dy}\right|
+\]
+Se è difficile calcolare la $g(y)$, utilizzo il valore di aspettazione
+\[
+\mu_y = E[y]=\int yg(y)dy= E[y(x)] =\int y(x)f(x)dx
+\]
+\[
+\sigma_y^2=E[(y(x)-\mu_y)]= \int (y(x)-\mu_y)^2f(x)dx
+\]
+Calcolo dunque il valore di aspettazione e la varianza
+
+Se l'andamento è lineare $y(x)=ax+b$ si ha:
+\[
+E[y(x)]=aE(x)+b
+\]
+Utilizzando questo è facile verificare che: 
+\[
+\sigma_y^2=E[y^2]-\mu_y^2= a^2\sigma_x^2
+\]
+Che è quanto si ottiene dalla legge di propagazione della varianza.
+
+Se $y(x)$ non è lineare utilizzo l'approssimazione lineare intorno a $\mu_x$ e tronco al secondo ordine:
+\begin{align*}
+    \mu_y = E[y] &= E \left[ y(\mu_x) + \left( \frac{dy}{dx} \right)_{x=\mu_x} (x - \mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} (x - \mu_x)^2 + \cdots \right] \\
+    &= E[y(\mu_x)] + \left( \frac{dy}{dx} \right)_{x=\mu_x} E[(x - \mu_x)] + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} E[(x - \mu_x)^2] + \cdots \\
+    &\approx y(\mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} \sigma_x^2
+    \end{align*}
+Dove il secondo termine scompare perchè $E[x]=\mu_x$
+
+Per la varianza
+\[
+\sigma_y^2 = E[y^2] - \mu_y^2 = E\left[
+\left(
+y(\mu_x) + \left( \frac{dy}{dx} \right)_{x=\mu_x} (x - \mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} (x - \mu_x)^2 + \cdots
+\right)^2
+\right] - \mu_y^2 =
+\]
+\[
+E\left[ \left( y(\mu_x) \right)^2 \right] + 2 y(\mu_x) \left( \frac{dy}{dx} \right)_{x=\mu_x} E[(x - \mu_x)] + \left( \left( \frac{dy}{dx} \right)_{x=\mu_x} \right)^2 E[(x - \mu_x)^2] + \cdots - \mu_y^2 =
+\]
+\[
+\approx \left( \left( \frac{dy}{dx} \right)_{x=\mu_x} \right)^2 \sigma_x^2
+\]
+Esattamente ciò che si ottiene con la \textbf{legge di propagazione della varianza}.
 
 
 
+Sapendo che per variabili indipendenti $E[x_1,x_2]=E[x_1]E[x_2]$
 
+Per funzioni a più variabili
+\begin{align*}
+y(x_1, x_2, \cdots, x_n) &= \sum_{k_1=0}^\infty \sum_{k_2=0}^\infty \cdots \sum_{k_n=0}^\infty \frac{(x_1 - \mu_{x_1})^{k_1} (x_2 - \mu_{x_2})^{k_2} \cdots (x_n - \mu_{x_n})^{k_n}}{k_1! k_2! \cdots k_n!} \left[ \frac{\partial^{k_1 k_2 \cdots k_n} y}{\partial x_1^{k_1} \cdots \partial x_n^{k_n}} \right]_{\bar{x}=\bar{\mu}_x}=
+\end{align*}
 
+\[y(\mu_{x_1}, \mu_{x_2}, \cdots, \mu_{x_n}) + \sum_{i=1}^n (x_i - \mu_{x_i}) \left[ \frac{\partial y}{\partial x_i} \right]_{\bar{x}=\bar{\mu}_x} + \frac{1}{2} \sum_{i=1}^n (x_i - \mu_{x_i})^2 \left[ \frac{\partial^2 y}{\partial x_i^2} \right]_{\bar{x}=\bar{\mu}_x} + 
+\sum_{i=1}^n \sum_{j=i+1}^n (x_i - \mu_{x_i}) (x_j - \mu_{x_j}) \left[ \frac{\partial^2 y}{\partial x_i \partial x_j} \right]_{\bar{x}=\bar{\mu}_x}
+\]
+Ricordiamo inoltre che se $y=\sum_{i=1}^n  x_i^{\alpha_i}$ allora:
+\[
+\frac{\sigma_y^2}{y^2}= \sum_{i=1}^n \alpha_i^2 \left( \frac{\sigma_{x_i}}{x_i} \right)^2
+\]
+da cui si può ricavare quali sono gli errori trascurabili.
+
+\vspace{1cm}
+
+Vediamo il caso di $n$ misure:
+\[
+\overline{x}=\frac{1}{n}\sum_{i=1}^n x_i
+\]
+La varianza sarà:
+\[
+\sigma_x^2=\sum_{i=1}^n \left(\frac{\partial \overline{x}}{\partial x_i}\right)^2 \sigma_{x_i}^2
+\]
+Essendo che questa derivata vale sempre $\frac{1}{n^2}$ allora:
+\[
+\sigma_{\overline{x}}^2=\frac{1}{n^2} \sum_{i=1}^n \sigma_i^2 \rightarrow \sigma_{\overline{x}}=\frac{\sigma_i }{\sqrt{n}}
+\]
+Se ho compiuto 2 misure e mi chiedo se esse siano \textbf{compatbili}, costruisco una funzione derivata come $y=x_1-x_2$ (differenza fra le misure), supponiamo $\sigma_1 \neq \sigma_2$ e $E[x_1]=E[x_2]=\mu$
+\[
+E[y]=E[x_1-x_2]=0
+\]   
+\[
+\sigma_y^2=\sum_{i=1}^{n} \left(\frac{\partial y}{\partial x_i}\right)^2 \sigma_{x_i}^2=\sigma_1^2+\sigma_2^2
+\]
+La funzione di distribuzioe Gaussiana 
+\[
+f(y)=\frac{1}{\sqrt{2\pi \sigma_y^2}}e^{-\frac{y^2}{2\sigma_y^2}}
+\]
+Si ha compatibilità quando
+\[
+\left| x_1-x_2 \right| \leq 3\sqrt{{\sigma_1^2+\sigma_2^2}}
+\]
+
+\subsection{\color{red} Funzione di distribuzione congiunta}
+Da un set di misure indipendenti posso costruire la "funzione di distribuzione congiunta" (prodotto fra le funzioni gaussiane delle n variabili):
+\begin{equation*}
+    f(x_1, x_2, \ldots, x_n) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^{N}\sigma_i} e^{-\sum_{i=1}^n \frac{(x_i - \mu_i)^2}{2\sigma_i^2}} \: per \; \mu \; e \; \sigma=cost. \rightarrow \frac{1}{(2\pi)^{n/2} \sigma^n} e^{\frac{-\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^{2n}}}
+    \end{equation*}
+
+    \begin{equation*}
+        P(x_1^m - \Delta x \leq x_1 \leq x_1^m + \Delta x, \ldots, x_n^m - \Delta x \leq x_n \leq x_n^m + \Delta x) = \frac{(\Delta x)^n}{(2\pi)^{n/2} \sigma^n} e^{-\frac{\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^2}}
+        \end{equation*}
+
+\subsubsection{\color{red} Stima dei parametri}
+Posso ottenere una stima dei parametri della funzione di distribuzione, voglio che sia a minima varianza (rispetto ai dati sperimentali che ho raccolto) e che il valore sia centrato nel valore vero, posso usare:
+\begin{itemize}
+    \item \textbf{Metodo della massima verosimiglianza} (o Likelihood)
+    \item \textbf{Metodo dei minimi quadrati}, meno preciso rispetto al primo
+\end{itemize}
+
+Dato un set di misure ho che la funzione di distribuzione cumuluativa (o congiunta) 
+$f(x_1, \dots, x_n, \lambda_1, \dots \lambda_n)$, dove $\lambda_i$ sono i parametri da stimare.
+Voglio trovare i valori $\lambda_1,\dots \lambda_m$ che minimizzano il valore di $\mathfrak{L}=f(x_1^m, \dots, x_n^m, \lambda_1, \dots \lambda_m)$, dove $x_i^m$ sono i valori misurati.
+
+Questo perchè voglio massimizzare la probabilità di trovare i miei valori misurati all'interno di $x_i \pm \Delta x$
+
+In realtà però si punta a massimizzare il logaritmo di $\mathfrak{L}$, per esempio per delle misure con distribuzione gaussiana
+\[
+\ln(\mathfrak{L})= \ln\frac{1}{2\pi\sigma^n} - \frac{\sum_{i=1}^n (x_i - \mu_x)^2}{2\sigma_x^2}
+\]
+
+Le equazioni di Likelihood sono:
+
+\[
+\frac{\partial \mathfrak{L}}{\partial \mu}=0 \quad  \frac{\partial^2 \mathfrak{L}}{\partial \sigma^2}<0
+\]
+Da cui si ottengono: 
+\[ \mu=\frac{1}{n} \sum_{i=1}^n x_i \hspace{1cm} e \hspace{1cm} \sigma^2=\sum_{i=1}^n \frac{(x_i-\mu)^2}{n} 
+\]
+
+ma facendo qualche calcolo
+\[
+(x-\mu)^2=(x-\overline{x}+\overline{x}-\mu)^2=(x-\overline{x})^2+-2(\overline{x}-\mu)(x-\overline{x})+(\overline{x}-\mu)^2
+\]
+da cui:
+\[
+E\left[(x-\mu)^2\right]=E\left[(x-\overline{x})^2\right]+E\left[2(\overline{x}-\mu)(x-\overline{x})\right]+\left[(\overline{x}-\mu)^2\right]
+\]
+\[\sigma^2=E\left[(x-\overline{x})^2\right]+\frac{\sigma^2}{n}                     
+\]
+e raccogliendo \[\sigma^2=\frac{1}{n-1}\sum {(x_i-\overline{x})^2}\]
+
+Supponiamo di avere più misure con $\sigma$ differenti, in questo caso allora la misura $x_1$ avrà una funzione di distribuzione gaussiana e la distribuzione congiunta sarà una produttoria di queste funzioni.
+In questo caso la funzione di distribuzione manterrà la sommatoria anche per i $\sigma_i$:
+\begin{equation*}
+    f(x_1, x_2, \cdots, x_n) = \frac{1}{(2\pi)^{n/2} \sigma_x^n} e^{-\sum_{i=1}^n \frac{(x_i - \mu_x)^2}{2\sigma_{x_{i}}^2}}
+    \end{equation*}
+Utilizzando le equazioni di Likelihood si ottengono:
+\[
+\mu=\frac{\sum_{i=1}^n \frac{x_i^m}{\sigma_i^2} }{\frac{1}{\sum_{j=1}^{n}\sigma_i^2}}
+\]
+Ovvero una media pesata delle misure per le loro varianze dal termine, in cui la sommatoria del fattore di peso è uguale a 1, le misure più precise hanno peso maggiore.
+\[
+\sigma_\mu=\frac{1}{\sum_{i=1}^{n}\frac{1}{\sigma_i^2}}
+\]
 
 
 
@@ -3316,257 +3526,5 @@ Essa mi garantisce:
 
 
 \end{itemize}
-
-
-\section{Funzione di distribuzione per variabili casuali}
-Se la funzione di densità di probabilità dipende da più variabili si ha, per il valore di aspettazione
-\[
-E(x_1, \ldots, x_n) = \int \vec {x}f(\vec{x})d\vec{x}
-\]
-dove $\vec{x}=(x_1, \ldots, x_n)$.
-
-Per un singolo valore $x_i$ si ha
-\[
-E(x_i) = \int x_i f(\vec{x}) d\vec{x}
-\]
-
-Si definisce allora l' elemento di posizione  $ij$ della$matrice$ $della$ $covarianza$:
-\[
-V_{ij}=E[(x_i-\mu_i)(x_j-\mu_j)]=\int (x_i-\mu_i)(x_j-\mu_j)f(\vec{x}) d\vec{x}
-\]
-si ha allora che:
-\begin{itemize}
-    \item $\sigma_i^2=V_{ii}=\sigma^2$
-    \item la $covarianza$ è un qualsiasi elemento della matrice $i\neq j$
-\end{itemize}
-E' utile definire il $coefficente$ $di$ $correlazione$:
-
-\[\rho(x_i,x_j)=\frac{Cov(x_i,x_j)}{\sigma_i \sigma_j}\]
-
-Si ha così una nuova definizione di variabili indipendenti:
-\begin{description}
-    \item[] $f_X(x_1, \ldots, x_n) = f_1(x_1)f_2(x_2)\ldots f_n(x_n)$
-    \item[] $E(x_i,x_j)=E(x_i)E(x_j) \rightarrow Cov(x_i,x_j)=0$ e $\rho(x_i,x_j)=0$
-\end{description}
-
-è la probabilità che la n variabili causali cadano all'interno  di certi intervalli contemporaneamente
-,essa ha le stesse proprità della funzioe di distribuzione usuale, si può così definire la funzione di distribuzione marginale per una variabile $x_i$, ottenuta integrando
-la funzione citata sopra sui vari intervalli dove $x_j\neq x_i$
-
-Posso costruire il valore di aspettazione di due variabili causali (\textbf{covarianza}), il cui valore è 0 se le variabili sono indipendenti fra loro
-\[
-Cov (X, Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
-\]
-
-
-
-Se le variabili sono indipendenti la funzione di distribuzione di Gauss diviene:
-\[
-f(x_i)=\frac{1}{\sqrt{2\pi}\sigma_i}e^{-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}}
-\]
-La distribuzione congiunta
-\[
-f(x_1, ..., x_n)=\prod f(x_i) = \frac{1}{(2\pi)^n \prod \sigma_i} e^{-\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2}}
-\]
-Se le varianze sono i valori medi:
-\[
-f(x_1, ..., x_n)=\frac{1}{(2\pi)^n \prod \sigma_i} e^{ \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{2\sigma^2}}
-\]
-
-Data $y=y(x)$ variabile casuale dipendente da un altra variabile casuale $x$, nel caso di \textbf{corrispondenza biunivoca} (ex. $y=ax -b$)si deve avere:
-\[
-f(x_a)dx=g(y_a)dy
-\]
-dove $y_a=f(x_a)$, allora la detrminazione di $g(y)$ si riduce ad una trasformazione di varibile. 
-Ossia le funzioni di distribuzioni devono essere identiche, se esiste la funzione inversa $x=x(y)$ si ha: 
-\[
-g(y)=f(x(y))\left|\frac{dx(y)}{dy}\right|
-\]
-
-Nel caso invece di funzioni \textbf{non biunivoche}, cioè esistono m valori $x_i$ tali che $y=y(x_i)$ (ex. $y=ax^2$), allora "sommo le diverse componenti biunivuche":
-\[
-    g(y)=\sum_{i=0}^{n}f(x_i(y))\left|\frac{dx_i(y)}{dy}\right|
-\]
-Se è difficile calcolare la $g(y)$, utilizzo il valore di aspettazione
-\[
-\mu_y = E[y]=\int yg(y)dy= E[y(x)] =\int y(x)f(x)dx
-\]
-\[
-\sigma_y^2=E[(y(x)-\mu_y)]= \int (y(x)-\mu_y)^2f(x)dx
-\]
-Calcolo dunque il valore di aspettazione e la varianza
-
-Se l'andamento è lineare $y(x)=ax+b$ si ha:
-\[
-E[y(x)]=aE(x)+b
-\]
-Utilizzando questo è facile verificare che: 
-\[
-\sigma_y^2=E[y^2]-\mu_y^2= a^2\sigma_x^2
-\]
-Che è quanto si ottiene dalla legge di propagazione della varianza.
-
-Se $y(x)$ non è lineare utilizzo l'approssimazione lineare intorno a $\mu_x$ e tronco al secondo ordine:
-\begin{align*}
-    \mu_y = E[y] &= E \left[ y(\mu_x) + \left( \frac{dy}{dx} \right)_{x=\mu_x} (x - \mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} (x - \mu_x)^2 + \cdots \right] \\
-    &= E[y(\mu_x)] + \left( \frac{dy}{dx} \right)_{x=\mu_x} E[(x - \mu_x)] + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} E[(x - \mu_x)^2] + \cdots \\
-    &\approx y(\mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} \sigma_x^2
-    \end{align*}
-Dove il secondo termine scompare perchè $E[x]=\mu_x$
-
-Per la varianza
-\[
-\sigma_y^2 = E[y^2] - \mu_y^2 = E\left[
-\left(
-y(\mu_x) + \left( \frac{dy}{dx} \right)_{x=\mu_x} (x - \mu_x) + \frac{1}{2} \left( \frac{d^2y}{dx^2} \right)_{x=\mu_x} (x - \mu_x)^2 + \cdots
-\right)^2
-\right] - \mu_y^2 =
-\]
-\[
-E\left[ \left( y(\mu_x) \right)^2 \right] + 2 y(\mu_x) \left( \frac{dy}{dx} \right)_{x=\mu_x} E[(x - \mu_x)] + \left( \left( \frac{dy}{dx} \right)_{x=\mu_x} \right)^2 E[(x - \mu_x)^2] + \cdots - \mu_y^2 =
-\]
-\[
-\approx \left( \left( \frac{dy}{dx} \right)_{x=\mu_x} \right)^2 \sigma_x^2
-\]
-Esattamente ciò che si ottiene con la \textbf{legge di propagazione della varianza}.
-
-
-
-Sapendo che per variabili indipendenti $E[x_1,x_2]=E[x_1]E[x_2]$
-
-Per funzioni a più variabili
-\begin{align*}
-y(x_1, x_2, \cdots, x_n) &= \sum_{k_1=0}^\infty \sum_{k_2=0}^\infty \cdots \sum_{k_n=0}^\infty \frac{(x_1 - \mu_{x_1})^{k_1} (x_2 - \mu_{x_2})^{k_2} \cdots (x_n - \mu_{x_n})^{k_n}}{k_1! k_2! \cdots k_n!} \left[ \frac{\partial^{k_1 k_2 \cdots k_n} y}{\partial x_1^{k_1} \cdots \partial x_n^{k_n}} \right]_{\bar{x}=\bar{\mu}_x}=
-\end{align*}
-
-\[y(\mu_{x_1}, \mu_{x_2}, \cdots, \mu_{x_n}) + \sum_{i=1}^n (x_i - \mu_{x_i}) \left[ \frac{\partial y}{\partial x_i} \right]_{\bar{x}=\bar{\mu}_x} + \frac{1}{2} \sum_{i=1}^n (x_i - \mu_{x_i})^2 \left[ \frac{\partial^2 y}{\partial x_i^2} \right]_{\bar{x}=\bar{\mu}_x} + 
-\sum_{i=1}^n \sum_{j=i+1}^n (x_i - \mu_{x_i}) (x_j - \mu_{x_j}) \left[ \frac{\partial^2 y}{\partial x_i \partial x_j} \right]_{\bar{x}=\bar{\mu}_x}
-\]
-Ricordiamo inoltre che se $y=\sum_{i=1}^n  x_i^{\alpha_i}$ allora:
-\[
-\frac{\sigma_y^2}{y^2}= \sum_{i=1}^n \alpha_i^2 \left( \frac{\sigma_{x_i}}{x_i} \right)^2
-\]
-da cui si può ricavare quali sono gli errori trascurabili.
-
-\vspace{1cm}
-
-Vediamo il caso di $n$ misure:
-\[
-\overline{x}=\frac{1}{n}\sum_{i=1}^n x_i
-\]
-La varianza sarà:
-\[
-\sigma_x^2=\sum_{i=1}^n \left(\frac{\partial \overline{x}}{\partial x_i}\right)^2 \sigma_{x_i}^2
-\]
-Essendo che questa derivata vale sempre $\frac{1}{n^2}$ allora:
-\[
-\sigma_{\overline{x}}^2=\frac{1}{n^2} \sum_{i=1}^n \sigma_i^2 \rightarrow \sigma_{\overline{x}}=\frac{\sigma_i }{\sqrt{n}}
-\]
-Se ho compiuto 2 misure e mi chiedo se esse siano \textbf{compatbili}, costruisco una funzione derivata come $y=x_1-x_2$ (differenza fra le misure), supponiamo $\sigma_1 \neq \sigma_2$ e $E[x_1]=E[x_2]=\mu$
-\[
-E[y]=E[x_1-x_2]=0
-\]   
-\[
-\sigma_y^2=\sum_{i=1}^{n} \left(\frac{\partial y}{\partial x_i}\right)^2 \sigma_{x_i}^2=\sigma_1^2+\sigma_2^2
-\]
-La funzione di distribuzioe Gaussiana 
-\[
-f(y)=\frac{1}{\sqrt{2\pi \sigma_y^2}}e^{-\frac{y^2}{2\sigma_y^2}}
-\]
-Si ha compatibilità quando
-\[
-\left| x_1-x_2 \right| \leq 3\sqrt{{\sigma_1^2+\sigma_2^2}}
-\]
-
-\section{Funzione di distribuzione congiunta}
-Da un set di misure indipendenti posso costruire la "funzione di distribuzione congiunta" (prodotto fra le funzioni gaussiane delle n variabili):
-\begin{equation*}
-    f(x_1, x_2, \ldots, x_n) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^{N}\sigma_i} e^{-\sum_{i=1}^n \frac{(x_i - \mu_i)^2}{2\sigma_i^2}} \: per \; \mu \; e \; \sigma=cost. \rightarrow \frac{1}{(2\pi)^{n/2} \sigma^n} e^{\frac{-\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^{2n}}}
-    \end{equation*}
-
-    \begin{equation*}
-        P(x_1^m - \Delta x \leq x_1 \leq x_1^m + \Delta x, \ldots, x_n^m - \Delta x \leq x_n \leq x_n^m + \Delta x) = \frac{(\Delta x)^n}{(2\pi)^{n/2} \sigma^n} e^{-\frac{\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^2}}
-        \end{equation*}
-
-\subsection{Stima dei parametri}
-Posso ottenere una stima dei parametri della funzione di distribuzione, voglio che sia a minima varianza (rispetto ai dati sperimentali che ho raccolto) e che il valore sia centrato nel valore vero, posso usare:
-\begin{itemize}
-    \item \textbf{Metodo della massima verosimiglianza} (o Likelihood)
-    \item \textbf{Metodo dei minimi quadrati}, meno preciso rispetto al primo
-\end{itemize}
-
-Dato un set di misure ho che la funzione di distribuzione cumuluativa (o congiunta) 
-$f(x_1, \dots, x_n, \lambda_1, \dots \lambda_n)$, dove $\lambda_i$ sono i parametri da stimare.
-Voglio trovare i valori $\lambda_1,\dots \lambda_m$ che minimizzano il valore di $\mathfrak{L}=f(x_1^m, \dots, x_n^m, \lambda_1, \dots \lambda_m)$, dove $x_i^m$ sono i valori misurati.
-
-Questo perchè voglio massimizzare la probabilità di trovare i miei valori misurati all'interno di $x_i \pm \Delta x$
-
-In realtà però si punta a massimizzare il logaritmo di $\mathfrak{L}$, per esempio per delle misure con distribuzione gaussiana
-\[
-\ln(\mathfrak{L})= \ln\frac{1}{2\pi\sigma^n} - \frac{\sum_{i=1}^n (x_i - \mu_x)^2}{2\sigma_x^2}
-\]
-
-Le equazioni di Likelihood sono:
-
-\[
-\frac{\partial \mathfrak{L}}{\partial \mu}=0 \quad  \frac{\partial^2 \mathfrak{L}}{\partial \sigma^2}<0
-\]
-Da cui si ottengono: 
-\[ \mu=\frac{1}{n} \sum_{i=1}^n x_i \hspace{1cm} e \hspace{1cm} \sigma^2=\sum_{i=1}^n \frac{(x_i-\mu)^2}{n} 
-\]
-
-ma facendo qualche calcolo
-\[
-(x-\mu)^2=(x-\overline{x}+\overline{x}-\mu)^2=(x-\overline{x})^2+-2(\overline{x}-\mu)(x-\overline{x})+(\overline{x}-\mu)^2
-\]
-da cui:
-\[
-E\left[(x-\mu)^2\right]=E\left[(x-\overline{x})^2\right]+E\left[2(\overline{x}-\mu)(x-\overline{x})\right]+\left[(\overline{x}-\mu)^2\right]
-\]
-\[\sigma^2=E\left[(x-\overline{x})^2\right]+\frac{\sigma^2}{n}                     
-\]
-e raccogliendo \[\sigma^2=\frac{1}{n-1}\sum {(x_i-\overline{x})^2}\]
-
-Supponiamo di avere più misure con $\sigma$ differenti, in questo caso allora la misura $x_1$ avrà una funzione di distribuzione gaussiana e la distribuzione congiunta sarà una produttoria di queste funzioni.
-In questo caso la funzione di distribuzione manterrà la sommatoria anche per i $\sigma_i$:
-\begin{equation*}
-    f(x_1, x_2, \cdots, x_n) = \frac{1}{(2\pi)^{n/2} \sigma_x^n} e^{-\sum_{i=1}^n \frac{(x_i - \mu_x)^2}{2\sigma_{x_{i}}^2}}
-    \end{equation*}
-Utilizzando le equazioni di Likelihood si ottengono:
-\[
-\mu=\frac{\sum_{i=1}^n \frac{x_i^m}{\sigma_i^2} }{\frac{1}{\sum_{j=1}^{n}\sigma_i^2}}
-\]
-Ovvero una media pesata delle misure per le loro varianze dal termine, in cui la sommatoria del fattore di peso è uguale a 1, le misure più precise hanno peso maggiore.
-\[
-\sigma_\mu=\frac{1}{\sum_{i=1}^{n}\frac{1}{\sigma_i^2}}
-\]
-
-
-
-
-
-\section{Confronto istogramma/gaussiana}
-Date 100 misure che cadono in $k$ intervalli di valore centrale $x^k$ e larghezza $\Delta x$, ci chiediamo quale sia la funzione di distribuzione che mi definisca la probabilità che un certo dato cada in un
-certo intervallo (successo), questa è la \textbf{funzione di distribuzione binomiale}:
-
-Sapendo che la probabilità per un intervallo $k$ è: $P_k= \binom{n}{l}p^l(1-p)^{n-l}$, dove $p$ è la probabilità di successo e $l$ il numero di successi, so che $E[l]=np$ e  $\sigma^2= np(1-p)$.
-
-Considerando ora una distribuzione di tipo Gaussiano la funzione che la descrive é la classica e la probabilità che un certo valore cada in un intervallo è:
-\[
-P_k=\int_{x_i -\frac{\Delta x}{2}}^{x_i + \frac{\Delta x}{2}} f(x, \hat{\mu}, \sigma^2) dx \simeq f(\bar{x}_k) \Delta x. 
-\]
-da cui ottengo il numero di eventi atteso all'interno dell'intervallo $n_k$ e per ogni intervallo ho un certo $\sigma$, per ognuno di questi intervalli posso fare un confronto per verificare la compatibilità
-\begin{equation*}
-\left| {n_k}^s-{n_k}^m \right| \leq 3 \sigma_k
-\end{equation*}
-dove $m$ sta per eventi misurati ed $s$ per eventi attesi, avremo quindi un grafico con un valore atteso di eventi con barra di errore di larghezza $\sigma$, dunque in un grafico mi aspetto che:
-\begin{itemize}
-\item il 68\% deve toccare con le barre di errore il valore di aspettazione
-\item il 27\% si trova a 2 $\sigma$
-\item il 5\% si trova a 3 $\sigma$
-\end{itemize}
-
-\pagebreak
-
 
 \end{document}

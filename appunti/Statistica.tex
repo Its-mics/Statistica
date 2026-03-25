@@ -2862,7 +2862,8 @@ Continuando ricorsivamente, si ottiene la densità di probabilità di Erlang:
 
 \section{Metodi Monte Carlo}
 I metodi Monte Carlo sono algoritmi computazionali che sfruttano la generazione di numeri casuali per risolvere problemi matematici complessi.
-
+Questo campionamento casuale ha un certo numero di applicazioni, ma una delle più utili è che consente
+di calcolare in modo pratico integrali altrimenti impossibili.  
 \paragraph{Esempio}
 Per calcolare l'area di una superficie irregolare:\\
 1. Si lancia un numero $N$ di chicchi di riso a caso su un foglio di area nota. \\
@@ -3327,6 +3328,66 @@ Si noti anche che da questo segue che $\text{Cov}(X_i, X_j) = \sigma_i \sigma_j 
 \begin{equation}
     V_{ij} = \sigma_i \sigma_j \rho_{ij}
 \end{equation}
+
+\subsection*{(Approfondimento facoltativo: Significato quantitativo di $\rho$) \footnote{Fonte: John R. Taylor, \textit{Introduzione all'analisi degli errori - Lo studio delle incertezze nelle misure fisiche}, 3\textsuperscript{a} ed., Bologna, Zanichelli Editore SpA, 2023}}
+
+
+
+Finora abbiamo definito il coefficiente di correlazione e le sue proprietà teoriche. Tuttavia, in un caso reale, ci si trova sempre a lavorare con un \textbf{campione finito} di $N$ coppie di misure $(x_i, y_i)$. 
+\\
+\\
+Supponiamo di calcolare il coefficiente di correlazione per i nostri dati misurati e di ottenere un valore, che chiameremo $\rho_{oss}$ (correlazione \textit{osservata}), per esempio $\rho_{oss} = 0,8$. La domanda sorge spontanea: \textit{questo valore è sufficiente per affermare con certezza che le variabili sono correlate linearmente?}
+\\
+\\
+Per rispondere, dobbiamo fare un ragionamento al contrario, basato sul calcolo delle probabilità. Supponiamo che le variabili $X$ e $Y$ siano in realtà \textbf{completamente non correlate} (ovvero, nel limite di infinite misure avremmo $\rho = 0$). Poiché abbiamo effettuato solo un numero finito $N$ di misure, è quasi impossibile che il calcolo dia esattamente $0$; per puro caso, i dati mostreranno sempre una qualche correlazione spuria. 
+
+Si definisce quindi la probabilità:
+\begin{equation}
+    P_N(|\rho| \ge |\rho_{oss}|)
+\end{equation}
+che rappresenta la probabilità che $N$ misure di due variabili \textit{non correlate} producano, per puro caso, un coefficiente di correlazione in valore assoluto grande almeno quanto quello osservato. 
+
+\begin{itemize}
+    \item Se questa probabilità è \textbf{alta}, il valore $\rho_{oss}$ ottenuto potrebbe benissimo essere frutto del caso. Non abbiamo prove di una vera correlazione.
+    \item Se questa probabilità è \textbf{bassa}, è estremamente improbabile che variabili scorrelate abbiano prodotto quel valore. Concludiamo quindi che le variabili sono quasi certamente correlate.
+\end{itemize}
+
+Per convenzione, si considera una correlazione:
+\begin{itemize}
+    \item \textbf{Significativa:} se la probabilità è $\le 5\%$
+    \item \textbf{Altamente significativa:} se la probabilità è $\le 1\%$
+\end{itemize}
+
+Il calcolo esatto di queste probabilità è complesso, ma i risultati per alcuni valori rappresentativi sono riportati nella tabella seguente:
+
+\begin{table}[h!]
+    \centering
+    \caption{Probabilità percentuale $P_N(|\rho| \ge |\rho_{oss}|)$ che $N$ misure di due variabili non correlate producano un coefficiente di correlazione $\ge |\rho_{oss}|$. Gli spazi vuoti indicano valori inferiori allo $0,05\%$.}
+    \vspace{2mm}
+    \renewcommand{\arraystretch}{1.2} % Migliora la spaziatura verticale delle righe
+    \begin{tabular}{c | c c c c c c c c c c c}
+        \hline
+        & \multicolumn{11}{c}{$|\rho_{oss}|$} \\
+        $N$ & $0$ & $0,1$ & $0,2$ & $0,3$ & $0,4$ & $0,5$ & $0,6$ & $0,7$ & $0,8$ & $0,9$ & $1$ \\
+        \hline
+        3  & 100 & 94 & 87 & 81 & 74  & 67 & 59  & 51  & 41  & 29 & 0 \\
+        6  & 100 & 85 & 70 & 56 & 43  & 31 & 21  & 12  & 6   & 1  & 0 \\
+        10 & 100 & 78 & 58 & 40 & 25  & 14 & 7   & 2   & 0,5 &    & 0 \\
+        20 & 100 & 67 & 40 & 20 & 8   & 2  & 0,5 & 0,1 &     &    & 0 \\
+        50 & 100 & 49 & 16 & 3  & 0,4 &    &     &     &     &    & 0 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{example}
+Facendo riferimento alla tabella, si può notare come il numero di dati $N$ influenzi drasticamente la significatività di un risultato. Supponiamo di aver calcolato un coefficiente $\rho_{oss} = 0,7$:
+\begin{itemize}
+    \item Con sole \textbf{$N=3$} misure, la probabilità che variabili totalmente scorrelate diano $|\rho| \ge 0,7$ per puro caso è del \textbf{51\%}. Il risultato non dimostra assolutamente nulla.
+    \item Con \textbf{$N=6$} misure, la probabilità scende al \textbf{12\%}. La situazione migliora, ma non è ancora considerabile "significativa" (siamo sopra la soglia del 5\%).
+    \item Con \textbf{$N=20$} misure, la probabilità crolla allo \textbf{0,1\%}. In questo caso l'evidenza è fortissima ("altamente significativa"): possiamo escludere quasi con certezza che le variabili non siano correlate.
+\end{itemize}
+In sintesi, un coefficiente di correlazione non ha significato pratico se non viene contestualizzato rispetto al numero di misurazioni effettuate.
+\end{example}
 
 \section{Distribuzione normale in più dimensioni (o multinormale)}
 

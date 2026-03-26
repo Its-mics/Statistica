@@ -3474,7 +3474,7 @@ Per esempio, per $C=1$ (il che equivale al caso in cui l'ellisse ha come semiass
 \end{tikzpicture}
 \end{center}
 
-Si noti che se io considerassi il rettangolo che circoscrive l'ellisse, mi aspetterei:
+Si noti che se io considerassi il rettangolo che circoscrive l'ellisse, mi aspetterei \footnote{Ricordando che integrando la gaussiana entro un sigma ottengo una probabilità del 68\%}:
 \begin{align*}
     \text{Prob}\Big( \mu_X - \sigma_X \le X \le \mu_X + \sigma_X \ &\&\ \mu_Y - \sigma_Y \le Y \le \mu_Y + \sigma_Y \Big) = \\
     &= 0.68 \cdot 0.68 = 0.46
@@ -3482,9 +3482,180 @@ Si noti che se io considerassi il rettangolo che circoscrive l'ellisse, mi aspet
 
 In maniera analoga è facile graficamente intuire che forma avranno le \textbf{densità di probabilità condizionate} $\prod(x|y)$ e $\prod(y|x)$: nel caso di variabili indipendenti saranno ancora delle gaussiane e rappresentano le intersezioni con i piani del tipo $X = \text{costante}$ e $Y = \text{costante}$.
 
+\lezione{Trattazzione con variabili non indipendenti}{26 Marzo 2026}
+Applicheremo una trattazzione euristica, rendendo più generale la formula per $Q^2$.
+Consideriamo la matrice delle varianza
+Consideriamo la matrice delle varianze:
+\[
+V = \begin{pmatrix}
+    \sigma_x^2 & 0 \\
+    0 & \sigma_y^2
+\end{pmatrix}
+\]
+definiamo i vettori:
+\[
+ \vec{x}=\begin{pmatrix}
+    x \\
+    y
+\end{pmatrix}, \quad
+\vec{\mu} =\begin{pmatrix}
+    \mu_x \\
+    \mu_y
+\end{pmatrix}
+\]
+calcoliamo allora l'inversa della matrice delle covarianza per trovare
+\[
+Q^2 = (\vec{x} - \vec{\mu})^T V^{-1} (\vec{x} - \vec{\mu})
+\]
+calcoliamo allora il determinante della matrice delle covarianze:
+\[
+\text{det} V = \sigma_x^2 \sigma_y^2 
+\]
+da cui:
+\[
+V^-1 = \frac{1}{\text{det}V}
+\begin{pmatrix}
+    \sigma_x^2 & 0 \\
+    0 & \sigma_y^2
+\end{pmatrix}
+\]
+dunque:
+\[
+Q^2= \begin{pmatrix}
+ x - \mu_x & y - \mu_y
+\end{pmatrix}
+\frac{1}{\text{det}V}
+\begin{pmatrix}[]
+    \sigma_x^2 & 0 \\
+    0 & \sigma_y^2
+\end{pmatrix}
+\begin{pmatrix}
+ x - \mu_x & y - \mu_y
+\end{pmatrix} =
+ (x - \mu_x)^2 \frac{1}{\sigma_x^2} + (y - \mu_y)^2 \frac{1}{\sigma_y^2}
+\]
+da cui ottengo la distribuzione gaussiana in n dimensioni:
+\[
+P(\vec{x})= \frac{1}{\sqrt{2\pi}\sqrt{|\text{det}V|}} \exp\left[ -\frac{1}{2} \left( \frac{1}{\sigma_x^2} (x - \mu_x)^2 + \frac{1}{\sigma_y^2} (y - \mu_y)^2 \right) \right]
+\]
+
+\subsection{Binormale nel caso x e y dipendenti}
+Ora osserivamo come si comporta nel caso x e y siano dipendenti:
+\[
+V=
+\begin{pmatrix}
+    \sigma_x^2 & \rho \sigma_x \sigma_y \\
+    - \rho \sigma_x \sigma_y & \sigma_y^2
+\end{pmatrix}, \quad
+\text{det}(V) = \sigma_x^2 \sigma_y^2 (1 - \rho^2)
+\]
+allora nella forma più generale ho la distribuzione:
+\[
+p(x,y)=\frac{1}{2\pi \sigma_x \sigma_y \sqrt{1-\rho^2}} \exp(-Q^2/2)
+\]
+dove 
+\[
+Q^2= \frac{1}{\sigma_x^2 \sigma_y^2 (1 - \rho^2)} 
+\begin{pmatrix}
+    \sigma_x^2 & \rho \sigma_x \sigma_y \\
+    - \rho \sigma_x \sigma_y & \sigma_y^2
+\end{pmatrix}
+ = 
+ \frac{1}{1-\rho^2} \left[\frac{(x-\mu_x)^2}{\sigma_x^2} + \frac{(y-\mu_y)^2}{\sigma_x \sigma_y}+ 2\rho \frac{(x-\mu_x)(y-\mu_y)}{\sigma_x \sigma_y}\right]
+\]
+allora in questo caso l'ellisse per $Q^2=1$ è siffatta:
+IMMAGINE
+
+con punti estremi:
+\[
+P_{1/2}=(\mu_x \pm \sigma_x \sqrt{1-\rho^2}, \mu_y)
+\]
+
+Consideriamo ora la distribuzione marginale di $x$:
+\[
+P_X=\int_{-\infty}^{+\infty}P(x,y) \,dy=\frac{1}{\sqrt{2\pi}\sqrt{\sigma_x^2}} \exp\left[ -\frac{1}{2} \frac{1}{\sigma_x^2} (x - \mu_x)^2 \right] = P_{X}(x) = \mathcal{N}(\mu_x,\sigma_x^2)
+\]
+Sorprendentemente, la distribuzione margianle risulta nuovamente la distribuzione della sola variabile $x$, anche nel caso di variabili correlate
+
+Vediamo le condizionate come divengono:
+\[
+\prod (X|Y) = \frac{P(x,y)}{P_y(y)} = \frac{F \exp(-Q^2/2)}{F_1 \exp (-Q_1^2/2)}\]
+vediamo che
+\[
+\frac{F}{F_1}=\frac{\sqrt{2\pi}\sigma_y}{2\pi \sigma_x \sigma_y \sqrt{1-\rho^2}} =  \sigma_x \frac{1}{\sqrt{2\pi}\sqrt{1-\rho^2}}\]
+otteniamo
+
+\[
+\sigma_{xy}=\sigma_x \sqrt{1-\rho^2}\]
+definisco
+\[
+\mathcal{U}=x-\mu_x, \quad \mathcal{V}=y-\mu_y
+\]
+otteniamo
+\[
+\frac{\exp(-Q^2/2)}{\exp(-Q_1^2/2)} = \exp\left[ -\frac{1}{2} \left( \frac{\mathcal{U}^2}{\sigma_{xy}^2} + \frac{\mathcal{V}^2}{\sigma_y^2} + 2 \rho \frac{\mathcal{U}\mathcal{V}}{\sigma_{xy}\sigma_y} \right) \right]
+\]
+\begin{align*}
+Q^2-Q_1^2= \\
+\frac{1}{1-\rho^2} \left(\frac{\mathcal{U}^2}{\sigma_x^2}+ \frac{\mathcal{V}^2}{\sigma_y^2} + 2 \rho \frac{\mathcal{U}\mathcal{V}}{\sigma_x \sigma_y}\right) = \\
+ \frac{1}{1-\rho^2} \left(\frac{\mathcal{U}^2}{\sigma_x^2} - 2 \rho \frac{\mathcal{U}\mathcal{V}}{\sigma_x \sigma_y} \right)+ \left(\frac{1}{1-\rho^2} -\right) = \\
+\frac{1}{1-\rho^2} \left[\frac{1}{\sigma_x^2} \left(\mathcal{U}-\rho \frac{\sigma_x}{\sigma_y}\mathcal{V}\right)-\rho^2\frac{\mathcal{V}}{\sigma_y^2}\right] + \\
+\frac{\rho^2}{1-\rho^2}\frac{\mathcal{V}^2}{\sigma_y^2} = \\
+\frac{1}{\sigma_x (1-\rho^2)}\left[x-\mu_x \rho \frac{\sigma_x}{\sigma_y}(y-\mu_y)\right]^2
+\end{align*}
+dunque il valore di aspettazzione della condizionata è:
+\[
+\mu_{xy}= \mu_x + \rho \frac{\sigma_x}{\sigma_y}(y-\mu_y)
+\]
+Otteniamo altre gaussiane, con valore di aspettazione $\mu_x$ e deviazione standard $\sigma_x$ influenzati dal $\rho$.
+
+\subsection{Stima dei parametri}
+In generale le nostre densità di probabilità dipendono da dei parametri:
+\[
+P(x, \theta)
+\]
+Allora cerchiamo di trovare il valore di questo parametro, a noi incognito. Questo è molto comune in fisica: sapere com'è distribuito una 
+certa variabile, ma non conoscere il valori di $\sigma$.
+
+Allora introduciamo $\hat{\theta}$ come la \textit{stima di $\theta$}:
+\[
+\hat{\theta}= \hat{\theta}(x_1, \dots ,x_N)
+\]
+dove ho supposto di aver svolto N misure. Poichè si possono svolgere varie stime, ci concentreremo sul capire qual'è la stima migliore.
+
+Definiamo le \textbf{proprietà delle stime}:
+\begin{itemize}
+    \item \textit{consistenza}: diremo che la stima è consistente se 
+    \[
+    \lim_{N\to\infty} \hat{\theta} = \theta
+    \]
+    dal T.G.N. abbiamo che la media è una misura consistente;
+    \item \textit{non distorta}: la stima è un-baised se:
+    \[
+    \mathbb{E}[\hat{\theta}] = \theta
+    \]
+    per la media abbiamo: $\mathbb{E}[\hat{\mu}] = \mathbb{E}[\bar{x}] =\mathbb{E}[\frac{1}{N}\sum_{i=1}^N x_i] =  \mu$, 
+    supponendo che tutte le misure abbiano stessa distribuzione;
+    \item \textit{efficenza}: anche la stima è una variabile aleatoria (funzione di variabile aleatoria)
+    $var(\hat{\theta})$ è piccola, 
+    per la media abbiamo $var(\bar{x})=\frac{\sigma^2}{n}$ è in generale la minor varianza che si può ottenere
+\end{itemize}
 
 
-\lezione{???}{26 Marzo 2026}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3885,7 +4056,7 @@ cioè
 p(v) \, dv = 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right] dv
 \]
 \item la funzione presenta un massimo in $v_M=\sqrt{\frac{2kT}{m}} \rightarrow kT= \frac{1}{2}m {v_M}^2$, la velocità più probabile!!
-\item Usando la funzione di distribuzione di Maxwell-Boltzmann, posso ricavare la velocità media (in modulo) delle molecole:
+    \item Usando la funzione di distribuzione di Maxwell-Boltzmann, posso ricavare la velocità media (in modulo) delle molecole:
 
 \[
 \mu_v = E[v] = \frac{4}{\sqrt{\pi}} \frac{1}{v_M^3} \int_0^\infty v^3 \exp\left[-\frac{v^2}{v_M^2}\right] dv = \frac{2}{\sqrt{\pi}} v_M = \sqrt{\frac{8kT}{m}}
@@ -3901,12 +4072,12 @@ v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\int_0^\infty v^2 p(v) \, dv}
     \toprule
     Costante di normalizzazione & Probabilità di occupazione del livello energetico & Spazio delle fasi \\
     \midrule
-    \end{tabular}
+\end{tabular}
 
-    
-    \[
-    p(v) dv = \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\} \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\} \left\{ v^2 dv \right\}
-    \]
+\[
+p(v) dv = \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\} \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\} \left\{ v^2 dv \right\}
+\]
+
 Essa mi garantisce:
 \begin{itemize}
     \item La costante di normalizzazione assicura che l'integrale della \( p(v) \) esteso a tutte le velocità possibili sia uguale a 1.

@@ -3482,165 +3482,248 @@ Si noti che se io considerassi il rettangolo che circoscrive l'ellisse, mi aspet
 
 In maniera analoga è facile graficamente intuire che forma avranno le \textbf{densità di probabilità condizionate} $\prod(x|y)$ e $\prod(y|x)$: nel caso di variabili indipendenti saranno ancora delle gaussiane e rappresentano le intersezioni con i piani del tipo $X = \text{costante}$ e $Y = \text{costante}$.
 
-\lezione{Trattazzione con variabili non indipendenti}{26 Marzo 2026}
-Applicheremo una trattazzione euristica, rendendo più generale la formula per $Q^2$.
-Consideriamo la matrice delle varianza
-Consideriamo la matrice delle varianze:
-\[
+
+
+
+
+
+
+
+
+
+\lezione{Distribuzione Multi-normale (Variabili dipendenti)}{26 Marzo 2026}
+\subsection{Richiamo al caso di variabili indipendenti}
+Abbiamo visto che per due variabili indipendenti con distribuzione normale si trova:
+\begin{equation}
+P(x,y) = \frac{1}{2\pi\sigma_x\sigma_y} \cdot \exp\left(-\frac{Q^2}{2}\right)
+\end{equation}
+essendo la forma quadratica $Q^2$ definita come:
+\begin{equation}
+Q^2 = \frac{(x-\mu_x)^2}{\sigma_x^2} + \frac{(y-\mu_y)^2}{\sigma_y^2}
+\end{equation}
+
+Per estendere il discorso al caso di variabili \emph{correlate}, è utile esprimere $Q^2$ sotto forma di prodotto di matrici usando la \textbf{matrice delle covarianze} $V$, che per due variabili indipendenti ha la forma diagonale:
+\begin{equation}
 V = \begin{pmatrix}
-    \sigma_x^2 & 0 \\
-    0 & \sigma_y^2
+\sigma_x^2 & 0 \\
+0 & \sigma_y^2
 \end{pmatrix}
-\]
-definiamo i vettori:
-\[
- \vec{x}=\begin{pmatrix}
-    x \\
-    y
-\end{pmatrix}, \quad
-\vec{\mu} =\begin{pmatrix}
-    \mu_x \\
-    \mu_y
-\end{pmatrix}
-\]
-calcoliamo allora l'inversa della matrice delle covarianza per trovare
-\[
+\end{equation}
+
+Se si indicano i vettori colonna:
+\begin{equation*}
+\vec{x} = \begin{pmatrix} x \\ y \end{pmatrix} \quad \text{e} \quad \vec{\mu} = \begin{pmatrix} \mu_x \\ \mu_y \end{pmatrix}
+\end{equation*}
+
+allora si vede che la rappresentazione compatta di $Q^2$ è:
+\begin{equation}
 Q^2 = (\vec{x} - \vec{\mu})^T V^{-1} (\vec{x} - \vec{\mu})
-\]
-calcoliamo allora il determinante della matrice delle covarianze:
-\[
-\text{det} V = \sigma_x^2 \sigma_y^2 
-\]
-da cui:
-\[
-V^-1 = \frac{1}{\text{det}V}
-\begin{pmatrix}
-    \sigma_x^2 & 0 \\
-    0 & \sigma_y^2
-\end{pmatrix}
-\]
-dunque:
-\[
-Q^2= \begin{pmatrix}
- x - \mu_x & y - \mu_y
-\end{pmatrix}
-\frac{1}{\text{det}V}
-\begin{pmatrix}[]
-    \sigma_x^2 & 0 \\
-    0 & \sigma_y^2
-\end{pmatrix}
-\begin{pmatrix}
- x - \mu_x & y - \mu_y
-\end{pmatrix} =
- (x - \mu_x)^2 \frac{1}{\sigma_x^2} + (y - \mu_y)^2 \frac{1}{\sigma_y^2}
-\]
-da cui ottengo la distribuzione gaussiana in n dimensioni:
-\[
-P(\vec{x})= \frac{1}{\sqrt{2\pi}\sqrt{|\text{det}V|}} \exp\left[ -\frac{1}{2} \left( \frac{1}{\sigma_x^2} (x - \mu_x)^2 + \frac{1}{\sigma_y^2} (y - \mu_y)^2 \right) \right]
-\]
+\end{equation}
 
-\subsection{Binormale nel caso x e y dipendenti}
-Ora osserivamo come si comporta nel caso x e y siano dipendenti:
-\[
-V=
-\begin{pmatrix}
-    \sigma_x^2 & \rho \sigma_x \sigma_y \\
-    - \rho \sigma_x \sigma_y & \sigma_y^2
-\end{pmatrix}, \quad
-\text{det}(V) = \sigma_x^2 \sigma_y^2 (1 - \rho^2)
-\]
-allora nella forma più generale ho la distribuzione:
-\[
-p(x,y)=\frac{1}{2\pi \sigma_x \sigma_y \sqrt{1-\rho^2}} \exp(-Q^2/2)
-\]
-dove 
-\[
-Q^2= \frac{1}{\sigma_x^2 \sigma_y^2 (1 - \rho^2)} 
-\begin{pmatrix}
-    \sigma_x^2 & \rho \sigma_x \sigma_y \\
-    - \rho \sigma_x \sigma_y & \sigma_y^2
-\end{pmatrix}
- = 
- \frac{1}{1-\rho^2} \left[\frac{(x-\mu_x)^2}{\sigma_x^2} + \frac{(y-\mu_y)^2}{\sigma_x \sigma_y}+ 2\rho \frac{(x-\mu_x)(y-\mu_y)}{\sigma_x \sigma_y}\right]
-\]
-allora in questo caso l'ellisse per $Q^2=1$ è siffatta:
-IMMAGINE
+Questo si può verificare facilmente ricavando innanzitutto quanto vale $V^{-1}$. Ricordiamo che per una generica matrice $2 \times 2$ del tipo $M = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, la sua inversa è $M^{-1} = \frac{1}{\det M} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$. 
+Nel nostro caso, $\det V = \sigma_x^2 \sigma_y^2$, quindi:
+\begin{equation}
+V^{-1} = \frac{1}{\sigma_x^2\sigma_y^2} \begin{pmatrix} \sigma_y^2 & 0 \\ 0 & \sigma_x^2 \end{pmatrix} = \begin{pmatrix} \sigma_x^{-2} & 0 \\ 0 & \sigma_y^{-2} \end{pmatrix}
+\end{equation}
 
-con punti estremi:
-\[
-P_{1/2}=(\mu_x \pm \sigma_x \sqrt{1-\rho^2}, \mu_y)
-\]
-
-Consideriamo ora la distribuzione marginale di $x$:
-\[
-P_X=\int_{-\infty}^{+\infty}P(x,y) \,dy=\frac{1}{\sqrt{2\pi}\sqrt{\sigma_x^2}} \exp\left[ -\frac{1}{2} \frac{1}{\sigma_x^2} (x - \mu_x)^2 \right] = P_{X}(x) = \mathcal{N}(\mu_x,\sigma_x^2)
-\]
-Sorprendentemente, la distribuzione margianle risulta nuovamente la distribuzione della sola variabile $x$, anche nel caso di variabili correlate
-
-Vediamo le condizionate come divengono:
-\[
-\prod (X|Y) = \frac{P(x,y)}{P_y(y)} = \frac{F \exp(-Q^2/2)}{F_1 \exp (-Q_1^2/2)}\]
-vediamo che
-\[
-\frac{F}{F_1}=\frac{\sqrt{2\pi}\sigma_y}{2\pi \sigma_x \sigma_y \sqrt{1-\rho^2}} =  \sigma_x \frac{1}{\sqrt{2\pi}\sqrt{1-\rho^2}}\]
-otteniamo
-
-\[
-\sigma_{xy}=\sigma_x \sqrt{1-\rho^2}\]
-definisco
-\[
-\mathcal{U}=x-\mu_x, \quad \mathcal{V}=y-\mu_y
-\]
-otteniamo
-\[
-\frac{\exp(-Q^2/2)}{\exp(-Q_1^2/2)} = \exp\left[ -\frac{1}{2} \left( \frac{\mathcal{U}^2}{\sigma_{xy}^2} + \frac{\mathcal{V}^2}{\sigma_y^2} + 2 \rho \frac{\mathcal{U}\mathcal{V}}{\sigma_{xy}\sigma_y} \right) \right]
-\]
+Sostituendo si ottiene esattamente l'espressione nota di $Q^2$:
 \begin{align*}
-Q^2-Q_1^2= \\
-\frac{1}{1-\rho^2} \left(\frac{\mathcal{U}^2}{\sigma_x^2}+ \frac{\mathcal{V}^2}{\sigma_y^2} + 2 \rho \frac{\mathcal{U}\mathcal{V}}{\sigma_x \sigma_y}\right) = \\
- \frac{1}{1-\rho^2} \left(\frac{\mathcal{U}^2}{\sigma_x^2} - 2 \rho \frac{\mathcal{U}\mathcal{V}}{\sigma_x \sigma_y} \right)+ \left(\frac{1}{1-\rho^2} -\right) = \\
-\frac{1}{1-\rho^2} \left[\frac{1}{\sigma_x^2} \left(\mathcal{U}-\rho \frac{\sigma_x}{\sigma_y}\mathcal{V}\right)-\rho^2\frac{\mathcal{V}}{\sigma_y^2}\right] + \\
-\frac{\rho^2}{1-\rho^2}\frac{\mathcal{V}^2}{\sigma_y^2} = \\
-\frac{1}{\sigma_x (1-\rho^2)}\left[x-\mu_x \rho \frac{\sigma_x}{\sigma_y}(y-\mu_y)\right]^2
+(\vec{x} - \vec{\mu})^T V^{-1} (\vec{x} - \vec{\mu}) &= \begin{pmatrix} x-\mu_x & y-\mu_y \end{pmatrix} \begin{pmatrix} \sigma_x^{-2} & 0 \\ 0 & \sigma_y^{-2} \end{pmatrix} \begin{pmatrix} x-\mu_x \\ y-\mu_y \end{pmatrix} \\
+&= \begin{pmatrix} \frac{x-\mu_x}{\sigma_x^2} & \frac{y-\mu_y}{\sigma_y^2} \end{pmatrix} \begin{pmatrix} x-\mu_x \\ y-\mu_y \end{pmatrix} \\
+&= \frac{(x-\mu_x)^2}{\sigma_x^2} + \frac{(y-\mu_y)^2}{\sigma_y^2} = Q^2
 \end{align*}
-dunque il valore di aspettazzione della condizionata è:
-\[
-\mu_{xy}= \mu_x + \rho \frac{\sigma_x}{\sigma_y}(y-\mu_y)
-\]
-Otteniamo altre gaussiane, con valore di aspettazione $\mu_x$ e deviazione standard $\sigma_x$ influenzati dal $\rho$.
 
-\subsection{Stima dei parametri}
-In generale le nostre densità di probabilità dipendono da dei parametri:
-\[
-P(x, \theta)
-\]
-Allora cerchiamo di trovare il valore di questo parametro, a noi incognito. Questo è molto comune in fisica: sapere com'è distribuito una 
-certa variabile, ma non conoscere il valori di $\sigma$.
+\subsection{Generalizzazione a $n$ dimensioni}
+Mettendo tutto insieme ed estendendo al caso di $n$ dimensioni (e usando $\det V$ al posto di $\sigma_x^2\sigma_y^2$), si ottiene l'espressione generale:
+\begin{equation}
+P(\vec{x}) = \frac{1}{(2\pi)^{n/2} |\det V|^{1/2}} \exp\left[ -\frac{1}{2}(\vec{x}-\vec{\mu})^T V^{-1} (\vec{x}-\vec{\mu}) \right]
+\end{equation}
 
-Allora introduciamo $\hat{\theta}$ come la \textit{stima di $\theta$}:
-\[
-\hat{\theta}= \hat{\theta}(x_1, \dots ,x_N)
-\]
-dove ho supposto di aver svolto N misure. Poichè si possono svolgere varie stime, ci concentreremo sul capire qual'è la stima migliore.
+\subsection{Il caso binormale correlato}
+Scritta così, l'espressione vale \emph{anche nel caso in cui le variabili non siano indipendenti}. Ritornando al caso particolare di 2 variabili, la matrice $V$ assume la forma:
+\begin{equation}
+V = \begin{pmatrix}
+\text{var}(x) & \text{cov}(x,y) \\
+\text{cov}(x,y) & \text{var}(y)
+\end{pmatrix} = \begin{pmatrix}
+\sigma_x^2 & \rho \sigma_x \sigma_y \\
+\rho \sigma_x \sigma_y & \sigma_y^2
+\end{pmatrix}
+\end{equation}
 
-Definiamo le \textbf{proprietà delle stime}:
+Il suo determinante è:
+\begin{equation}
+\det V = \sigma_x^2 \sigma_y^2 - \rho^2 \sigma_x^2 \sigma_y^2 = \sigma_x^2 \sigma_y^2 (1 - \rho^2)
+\end{equation}
+
+Per calcolare $Q^2$ bisogna calcolare $V^{-1}$, che in questo caso vale:
+\begin{equation}
+V^{-1} = \frac{1}{\sigma_x^2\sigma_y^2(1-\rho^2)} \begin{pmatrix}
+\sigma_y^2 & -\rho\sigma_x\sigma_y \\
+-\rho\sigma_x\sigma_y & \sigma_x^2
+\end{pmatrix}
+\end{equation}
+
+Svolgendo tutti i calcoli matriciali, si trova la forma quadratica espansa:
+\begin{equation}
+Q^2 = \frac{1}{1-\rho^2} \left[ \frac{(x-\mu_x)^2}{\sigma_x^2} - 2\rho\frac{(x-\mu_x)(y-\mu_y)}{\sigma_x\sigma_y} + \frac{(y-\mu_y)^2}{\sigma_y^2} \right]
+\end{equation}
+E la gaussiana in 2D diventa:
+\begin{equation}
+P(x,y) = \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}} \exp\left(-\frac{Q^2}{2}\right)
+\end{equation}
+
+\subsection{Interpretazione geometrica: L'ellisse}
+La cosa interessante è che ponendo $Q^2 = c$ si ottiene ancora un'ellisse, ma stavolta è \emph{inclinata}, cioè non ha gli assi paralleli agli assi cartesiani $x$ ed $y$.
+
+Data la geometria del problema, dalla forma dell'ellisse si potrebbe riuscire a ricavare $\rho$. Infatti:
 \begin{itemize}
-    \item \textit{consistenza}: diremo che la stima è consistente se 
-    \[
-    \lim_{N\to\infty} \hat{\theta} = \theta
-    \]
-    dal T.G.N. abbiamo che la media è una misura consistente;
-    \item \textit{non distorta}: la stima è un-baised se:
-    \[
-    \mathbb{E}[\hat{\theta}] = \theta
-    \]
-    per la media abbiamo: $\mathbb{E}[\hat{\mu}] = \mathbb{E}[\bar{x}] =\mathbb{E}[\frac{1}{N}\sum_{i=1}^N x_i] =  \mu$, 
-    supponendo che tutte le misure abbiano stessa distribuzione;
-    \item \textit{efficenza}: anche la stima è una variabile aleatoria (funzione di variabile aleatoria)
-    $var(\hat{\theta})$ è piccola, 
-    per la media abbiamo $var(\bar{x})=\frac{\sigma^2}{n}$ è in generale la minor varianza che si può ottenere
+    \item La retta $x = \mu_x$ interseca l'ellisse nei punti di coordinate $y = \mu_y \pm \sigma_y\sqrt{1-\rho^2}$.
+    \item La retta $y = \mu_y$ interseca l'ellisse nei punti di coordinate $x = \mu_x \pm \sigma_x\sqrt{1-\rho^2}$.
 \end{itemize}
 
+Invece, le rette di equazione $x = \mu_x \pm \sigma_x$ (parallele all'asse $y$) sono tangenti all'ellisse, e i punti di intersezione/tangenza hanno coordinate $y = \mu_y \pm \sigma_y\rho$.
+Analogamente, le rette $y = \mu_y \pm \sigma_y$ sono tangenti all'ellisse nei punti di coordinate $x = \mu_x \pm \rho\sigma_x$.
+
+\begin{nota}
+Anche in questo caso, la probabilità che una misurazione $(x,y)$ cada dentro l'ellisse $Q^2 \leq 1$ è approssimativamente $0.39$.
+\end{nota}
+
+
+
+\section{Distribuzioni Marginali e Condizionate}
+
+Per definizione, le distribuzioni marginali sono date da:
+\begin{equation}
+P_x(x) = \int_{-\infty}^{+\infty} P(x,y) \, dy \quad \text{e} \quad P_y(y) = \int_{-\infty}^{+\infty} P(x,y) \, dx
+\end{equation}
+
+Nel caso in cui $x$ e $y$ siano \textbf{indipendenti}, per una binormale è ovvio che $P_x(x)$ e $P_y(y)$ rappresentano le singole gaussiane. Infatti:
+\begin{equation*}
+P_x(x) = \int_{-\infty}^{+\infty} P_x(x)P_y(y) \, dy = P_x(x) \underbrace{\int_{-\infty}^{+\infty} P_y(y) \, dy}_{=1} = P_x(x)
+\end{equation*}
+Quindi $P_x(x) = \mathcal{N}(\mu_x, \sigma_x^2)$ e $P_y(y) = \mathcal{N}(\mu_y, \sigma_y^2)$.
+
+Se $x$ e $y$ \textbf{non sono indipendenti}, si arriva allo stesso risultato ma con più passaggi. La sostanza del calcolo si basa sul fatto che $Q^2$ dipende dai quadrati dei termini $(x-\mu_x)^2$ e $(y-\mu_y)^2$; con un po' di passaggi algebrici si riescono ad ottenere due gaussiane.
+
+\subsection{Distribuzioni Condizionate}
+È più istruttivo calcolare con più dettaglio le \textbf{distribuzioni condizionate}. Si vede che anche queste sono gaussiane, ma con $\mu$ e $\sigma$ alterati da $\rho$.
+Dalla definizione sappiamo che:
+\begin{equation}
+\pi(x|y) = \frac{P(x,y)}{P_y(y)} = \frac{F \exp[-Q^2/2]}{F_1 \exp[-Q_1^2/2]}
+\end{equation}
+dove abbiamo scritto schematicamente le probabilità come prodotto di un fattore di normalizzazione ($F$ e $F_1$) per degli esponenziali, ponendo $Q_1^2 = \frac{(y-\mu_y)^2}{\sigma_y^2}$.
+
+Il calcolo più facile da fare è il rapporto dei coefficienti:
+\begin{equation}
+\frac{F}{F_1} = \frac{\frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}}}{\frac{1}{\sqrt{2\pi}\sigma_y}} = \frac{1}{\sqrt{2\pi}\sigma_x\sqrt{1-\rho^2}}
+\end{equation}
+Da questo si nota che per avere la forma di una gaussiana normalizzata, la nuova deviazione standard deve essere:
+\begin{equation}
+\sigma_{x|y} = \sigma_x \sqrt{1-\rho^2}
+\end{equation}
+(Si noti che per $\rho = 0$ si ritrova $\sigma_{x|y} = \sigma_x$).
+
+\subsubsection{Calcolo della media condizionata}
+Per ricavare come varia $\mu$ bisogna calcolare come varia l'esponente. Per semplificare la notazione utilizziamo il cambiamento di variabili:
+$u = x - \mu_x$ e $v = y - \mu_y$.
+
+Con questa scelta, il rapporto tra i due esponenziali è dipendente da:
+\begin{equation*}
+Q^2 - Q_1^2 = \frac{1}{1-\rho^2} \left( \frac{u^2}{\sigma_x^2} + \frac{v^2}{\sigma_y^2} - 2\rho\frac{uv}{\sigma_x\sigma_y} \right) - \frac{v^2}{\sigma_y^2}
+\end{equation*}
+
+Separiamo i termini che dipendono da $x$ (cioè $u$) e quelli che dipendono solo da $y$ (cioè $v$):
+\begin{align*}
+Q^2 - Q_1^2 &= \frac{1}{1-\rho^2} \left( \frac{u^2}{\sigma_x^2} - 2\rho\frac{uv}{\sigma_x\sigma_y} \right) - \left[ \frac{1}{1-\rho^2} - 1 \right] \frac{v^2}{\sigma_y^2} \\
+\end{align*}
+Riscriviamo il termine in parentesi quadra come un quadrato di binomio mettendo in evidenza $\frac{1}{\sigma_x^2}$:
+\begin{equation*}
+\frac{1}{\sigma_x^2} (u^2 - 2\rho\frac{\sigma_x}{\sigma_y}uv) = \frac{1}{\sigma_x^2} \left[ \left(u - \rho\frac{\sigma_x}{\sigma_y}v\right)^2 - \rho^2\frac{\sigma_x^2}{\sigma_y^2}v^2 \right]
+\end{equation*}
+
+Sostituendo nell'espressione precedente e semplificando i termini in $v^2$:
+\begin{align*}
+Q^2 - Q_1^2 &= \frac{1}{1-\rho^2} \left[ \frac{1}{\sigma_x^2} \left( u - \rho\frac{\sigma_x}{\sigma_y}v \right)^2 - \rho^2\frac{v^2}{\sigma_y^2} + \rho^2\frac{v^2}{\sigma_y^2} \right] \\
+&= \frac{1}{(1-\rho^2)\sigma_x^2} \left( u - \rho\frac{\sigma_x}{\sigma_y}v \right)^2
+\end{align*}
+
+Tornando alle variabili originarie $x$ e $y$:
+\begin{equation}
+Q^2 - Q_1^2 = \frac{1}{(1-\rho^2)\sigma_x^2} \left\{ \left(x-\mu_x\right) - \rho\frac{\sigma_x}{\sigma_y}(y-\mu_y) \right\}^2
+\end{equation}
+
+Da qui si evince che l'espressione di $\pi(x|y)$ è ancora una gaussiana con deviazione standard $\sigma_{x|y} = \sigma_x\sqrt{1-\rho^2}$ (come visto prima) e con valore atteso:
+\begin{equation}
+\mu_{x|y} = \mu_x + \rho\frac{\sigma_x}{\sigma_y}(y-\mu_y)
+\end{equation}
+Anche in questo caso, se $\rho = 0$ si ha $\mu_{x|y} = \mu_x$, mentre se $\rho \neq 0$, il valore atteso è spostato rispetto al valore $\mu_x$ originale in base al valore di $y$.
+
+
+\section{Teoria della Stima dei Parametri}
+
+Finora abbiamo parlato molto di distribuzioni teoriche, ma il problema che ci si trova spesso ad affrontare è trovare un modo di risalire ai \textbf{parametri della distribuzione della popolazione}, dato un insieme di misure di un campione.
+
+Detto in maniera più formale, supponiamo che la densità di probabilità $P(x;\theta)$ di una variabile casuale $x$ dipenda da un parametro $\theta$, il cui \textbf{valore vero} $\theta_v$ ci sia ignoto (per esempio, se $P$ è una gaussiana, avremo due parametri: $\mu$ e $\sigma$).
+
+Avendo a disposizione $N$ misure $x_i$ della grandezza $x$, vogliamo trovare una funzione:
+\begin{equation*}
+\hat{\theta} = \hat{\theta}(x_1, x_2, \dots, x_N)
+\end{equation*}
+che, a partire da esse, ci permetta di ricavare il valore di $\theta_v$. Le funzioni $\hat{\theta}$ di questo tipo si chiamano \textbf{stime} (o stimatori).
+
+Ovviamente si possono immaginare molte stime possibili, ma si cerca di preferire quelle che hanno tre proprietà fondamentali: \textbf{consistenza}, \textbf{imparzialità} ed \textbf{efficienza}.
+
+\subsection{Consistenza}
+\begin{definizione} \textbf{Stimatore Consistente}:
+Una stima si dice \emph{consistente} quando tende al valore vero del parametro al tendere all'infinito del numero di campioni, cioè se:
+\begin{equation*}
+\lim_{N \to \infty} \hat{\theta} = \theta_v
+\end{equation*}
+\end{definizione}
+
+Per esempio, la legge dei grandi numeri ci garantisce che $\lim_{N \to \infty} \bar{x} = \mu$. Quindi la media aritmetica è una stima consistente del valore di aspettazione della distribuzione teorica che regola la popolazione.
+
+\subsection{Imparzialità (Non distorsione)}
+\begin{definizione} \textbf{Stimatore Imparziale}
+Una stima si dice \emph{imparziale} (o non distorta, in inglese \emph{unbiased}) se il suo valore di aspettazione è uguale al valore vero, cioè:
+\begin{equation*}
+\mathbb{E}[\hat{\theta}] = \theta_v
+\end{equation*}
+\end{definizione}
+
+Si noti che, essendo $\hat{\theta}$ una funzione di variabili casuali, è essa stessa una variabile casuale, e quindi per questo si può parlare del suo valore atteso $\mathbb{E}[\hat{\theta}]$.
+
+Per esempio, nel caso della \textbf{media aritmetica} $\bar{x}$, si può facilmente verificare che soddisfa questa proprietà:
+\begin{equation}
+\mathbb{E}[\bar{x}] = \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^N x_i \right] = \frac{1}{N} \sum_{i=1}^N \mathbb{E}[x_i]
+\end{equation}
+Se tutte le $x_i$ seguono la stessa $P(x)$ (cioè sono misure della stessa grandezza fisica), allora i valori attesi delle singole $x_i$ sono tutti uguali: $\mathbb{E}[x_i] = \mathbb{E}[x]$. Sostituendo si ottiene:
+\begin{equation*}
+\mathbb{E}[\bar{x}] = \frac{1}{N} \cdot N \cdot \mathbb{E}[x] = \mathbb{E}[x] = \mu
+\end{equation*}
+Quindi la media aritmetica è una stima non distorta del valore atteso della popolazione.
+
+\subsection{Efficienza}
+\begin{definizione} \textbf{Efficienza} 
+La proprietà dell'efficienza della stima ha a che fare con la dispersione della stima attorno al suo valore di aspettazione, misurata dalla \textbf{varianza}. In altre parole, una stima è \emph{più efficiente} di un'altra se la sua \emph{varianza è più piccola}.
+\end{definizione}
+
+Se la varianza è più piccola, il suo valore è più prossimo a $\mathbb{E}[\hat{\theta}]$, che coincide con $\theta_v$ se la stima è imparziale.
+
+La scelta della migliore stima da usare non è sempre banale e richiede lo studio del singolo caso. Per esempio, l'efficienza di una stima può dipendere dal particolare problema considerato, oppure confrontando due stime si può trovare che la più efficiente è anche \emph{distorta}; in tal caso bisogna decidere (in base al problema) se è più accettabile la distorsione o la bassa efficienza.
+
+\subsection{La media aritmetica come stima ottimale}
+Consideriamo lo stimatore della media aritmetica: $\hat{\mu} = \bar{x}$.
+Abbiamo già notato che la media è una buona stima di $\mu$ perché è \textbf{consistente} e \textbf{imparziale}.
+
+Inoltre, dal Teorema del Limite Centrale, sappiamo che la sua varianza è:
+\begin{equation*}
+\text{var}(\bar{x}) = \frac{\sigma^2}{N}
+\end{equation*}
+dove $\sigma$ è la deviazione standard della popolazione.
+
+In generale si vede che questa stima è la \textbf{più efficiente}, o almeno lo è per le densità di probabilità gaussiane.
 
 
 

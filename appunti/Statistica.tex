@@ -213,7 +213,7 @@ Le sotto sezioni in Rosso sono quelle che riguardano il ripasso di Bressan, tutt
     \item Ricevimento: Giovedì dalle 14:00 alle 1:00
 \end{itemize}
 
-\lezione{Introduzione / Ripasso di Bressan}{2024}
+\lezione{\color{red}Introduzione / Ripasso di Bressan}{2025}
 
 La probabilità è la misura del grado della credenza che un certo evento avvenga.
 
@@ -221,7 +221,7 @@ L'oggetto della teoria è un certo \textit{esperimento causale}, la cui esecuzio
 tutti gli $\omega$ possibili è detto \textit{spazio campione $\Omega$}. Un \textit{Evento A} è un sottoinsieme di $\Omega$, se $\omega$ $\in$ A allora esso realizza l'Evento.
 Se esso è l'unico elemento costituente di A allora esso è l'\textit{evento elementare}, altrimenti A è un \textit{evento composto}.
 Altre nomenclature sono legate alla teoria insiemistica (per esempio due eventi A e B sono disgiunti se l'insieme A non interseca l'insieme B).
-\subsection{Definizioni di probabilità}
+\subsection{\color{red} Definizioni di probabilità}
 Si possono dare due definizioni di probabilità:
 \begin{description}
 
@@ -244,7 +244,7 @@ dove $n$ è il numero di volte che si verifica un evento, mentre N è le volte c
 \end{description}
 
 
-\subsection{Definizione assiomatica di probabilità}
+\subsection{\color{red} Definizione assiomatica di probabilità}
 Dato un evento A $\subseteq \Omega$ la misura di probabilità $P$ è una funzione $P:\Omega \rightarrow \mathbf{R}  $ le cui caratteristiche sono:
 
 
@@ -258,7 +258,7 @@ Dato un evento A $\subseteq \Omega$ la misura di probabilità $P$ è una funzion
     \]
 \end{itemize}
 
-\subsection{Proprietà della misura di probabilità}
+\subsection{\color{red} Proprietà della misura di probabilità}
 \begin{itemize}
 
     \item Probabilità negazione: $P(\overline{A})=1-P(A)$
@@ -274,7 +274,7 @@ Dato un evento A $\subseteq \Omega$ la misura di probabilità $P$ è una funzion
 \end{itemize}
 
 
-\subsubsection{Probabilità condizionata}
+\subsubsection{\color{red} Probabilità condizionata}
 
 La probabilità che si verifichi $A$ se si verifica $B$: 
 \[
@@ -289,11 +289,11 @@ P(A)=\sum_{i=1}^{n}P(A|M_i)P(M_i)
 \]
 Mentre per l'indipendenza si ha $P(A \cap B)=P(A)P(B)$
 
-\subsubsection{Probabilità delle cause}
+\subsubsection{\color{red} Probabilità delle cause}
 Ci chiediamo quale sia la probabilità che $M_j$ sia la causa di un certo evento $A$.
 
 
-\subsection{Teorema di Bayes }
+\subsection{\color{red} Teorema di Bayes }
 Dato un certo set di ipotesi ($M_i$) e un certo evento $A$ il teorema mi dice come la probabilità a "posteriori" $P(M_i|A)$ cambia dopo che l'evento $A$ si è verificato.
 
 Consideriamo un eveneto $A$ e una classe completa di ipotesi ($M_j$):
@@ -319,12 +319,12 @@ Dove:
 
 
 
-\subsection{Indipendenza}
+\subsection{\color{red}Indipendenza}
 Si dicono due eventi indipendenti: $P(A \cap B)=P(A) \cdot P(B)$ e quindi $P(A|B)=P(A)$ 
 
 Per esempio: nella misura del pendolo fermare il pendolo ad ogni misura rende le misure indipendenti fra di loro (una misura di un periodo sbagliato non influisce sulla misura successiva).
 
-\subsection{Cenni di calcolo combinatorio e fattoriale}
+\subsection{\color{red}Cenni di calcolo combinatorio e fattoriale}
 Si chiama combinazione semplice quella in cui non importa l'ordine degli elementi e il numero di combinazioni $C_{n,r}$ è dato da:
 
 \[
@@ -383,7 +383,8 @@ Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\
 
 
 
-\lezione{Introduzione e Statistica}{6 Ottobre 2026} 
+\lezione{Introduzione e Statistica}{6 Ottobre 2025} 
+\subsection{Rappresentazione grafica dei dati}
 Le nostre misure saranno del tipo ${x_1, x_2, ..., x_N}$, il nostro obiettivo è quello di rappresentare questi dati per capire il fenomeno fisico
 che stiamo studiando.\\
 Per quanto riguarda la parte grafica, la rappresentazione dipende dai dati a disposizione:
@@ -554,7 +555,8 @@ plt.show()
     \caption{Istogramma comparativo delle due serie di misure simulate.}
 \end{figure}
 
-\subsection{Propagazione degli Errori}
+\subsection{Errore di sensibilità e Propagazione}
+\subsubsection{Propagazione degli Errori}
 Data una funzione $f(x,y)$ di variabili casuali indipendenti, la varianza si propaga come:
 \begin{equation}
     \sigma_f^2 = \left( \frac{\partial f}{\partial x} \right)^2 \sigma_x^2 + \left( \frac{\partial f}{\partial y} \right)^2 \sigma_y^2
@@ -603,7 +605,7 @@ Imponendo la condizione di normalizzazione ($\int P(x)dx = 1$), si ricavano i pa
     $\displaystyle \sigma = \sqrt{\int_{-\Delta}^{+\Delta} (x - 0)^2 \frac{1}{2 \Delta } dx} = \sqrt{\frac{\Delta^2}{3}} = \frac{\Delta}{\sqrt{3}}$.
 \end{itemize}
 
-\subsection{Errore di Sensibilità e Distribuzione Uniforme}
+\subsubsection{Errore di Sensibilità}
 Quando non è possibile ripetere molte volte la misura, associamo alle misure l'errore dovuto alla sensibilità dello strumento. Questo errore si ottiene leggendo il minimo scarto della variabile consentito dallo strumento (risoluzione):
 \[ \Delta x = \frac{x_{max} - x_{min}}{2} \]
 Questo è l'errore massimo $x \pm \Delta x$. Statisticamente, assumere che il valore vero si trovi in $[x_{min}, x_{max}]$ equivale ad assumere una \textbf{densità di probabilità uniforme} $P(x)$ di larghezza $2\Delta$.
@@ -624,6 +626,21 @@ Quindi, se si vuole convertire un errore massimo $\Delta$ in una deviazione stan
 \end{equation}
 
 \section{Metodo dei Minimi Quadrati}
+\subsection{Il Principio}
+
+L'obiettivo è dedurre informazioni fisiche dai dati (fit). Partiamo dalle ipotesi:
+\begin{enumerate}
+    \item Ho effettuato misure $(x_i, y_i)$ dove l'errore su $x$ è trascurabile.
+    \item Per ogni $x$ fisso, ho misurato $y$ con incertezza $\sigma_i$.
+    \item Esiste una legge $y = f(x; p)$ (dove $p$ sono i parametri).
+\end{enumerate}
+
+Il metodo consiste nel minimizzare la somma degli scarti quadratici pesati, detta \textbf{Chi Quadro} $\chi^2$:
+\begin{equation}
+    \chi^2 = \sum_{i=1}^{N} \left[ \frac{y_i - f(x_i; p)}{\sigma_i} \right]^2
+\end{equation}
+
+Minimizzare significa porre le derivate rispetto ai parametri uguali a zero: $\frac{\partial \chi^2}{\partial p} = 0$.
 
 \ripasso{Metodo dei Minimi Quadrati}
 
@@ -649,73 +666,6 @@ Se il modello è una costante $y = \lambda$ (cioè cerchiamo il miglior valore u
     \item Con errori differenti ($\sigma_i$): Media pesata
     \[ \hat{\lambda} = \frac{\sum_{i=1}^n \frac{y_i}{\sigma_i^2}}{\sum_{j=1}^{n}\frac{1}{\sigma_j^2}} \]
 \end{itemize}
-
-\subsection{Il Principio}
-
-L'obiettivo è dedurre informazioni fisiche dai dati (fit). Partiamo dalle ipotesi:
-\begin{enumerate}
-    \item Ho effettuato misure $(x_i, y_i)$ dove l'errore su $x$ è trascurabile.
-    \item Per ogni $x$ fisso, ho misurato $y$ con incertezza $\sigma_i$.
-    \item Esiste una legge $y = f(x; p)$ (dove $p$ sono i parametri).
-\end{enumerate}
-
-Il metodo consiste nel minimizzare la somma degli scarti quadratici pesati, detta \textbf{Chi Quadro} $\chi^2$:
-\begin{equation}
-    \chi^2 = \sum_{i=1}^{N} \left[ \frac{y_i - f(x_i; p)}{\sigma_i} \right]^2
-\end{equation}
-
-Minimizzare significa porre le derivate rispetto ai parametri uguali a zero: $\frac{\partial \chi^2}{\partial p} = 0$.
-\ripasso{Fit di una retta (Regressione Lineare)}
-
-Vogliamo determinare la retta che meglio descrive un set di dati $(x_i, y_i \pm \sigma_i)$.
-Utilizziamo la parametrizzazione $f(x) = mx + q$ (oppure $\theta_2 x + \theta_1$), dove i parametri da stimare sono la pendenza $m$ e l'intercetta $q$.
-Per trovare il minimo, è necessario risolvere il sistema di equazioni ottenuto annullando le derivate parziali del $\chi^2$:
-\[ \frac{\partial \chi^2}{\partial m}=0 \quad \text{e} \quad \frac{\partial \chi^2}{\partial q}=0 \]
-
-\subsubsection*{Caso 1: Errori uguali o trascurabili}
-Se gli errori $\sigma_i$ sono tutti uguali, la funzione da minimizzare è:
-\[
-X^2 = \sum_{i=1}^{N} (y_i - q - m x_i)^2
-\]
-Introducendo i valori medi $\bar{x}, \bar{y}, \overline{x^2}, \overline{xy}$, le soluzioni per i parametri (stimatori) sono:
-\[ 
-\begin{split}
-q &= \hat{\theta}_1 = \frac{\bar{y} \cdot \overline{x^2} - \bar{x} \cdot \overline{xy}}{\overline{x^2} - \bar{x}^2} \\
-m &= \hat{\theta}_2 = \frac{\overline{xy} - \bar{x} \cdot \bar{y}}{\overline{x^2} - \bar{x}^2}
-\end{split}
-\]
-Gli errori sui parametri si ricavano dalla legge di propagazione della varianza (assumendo $\sigma_y = \sigma$ costante per tutti i punti):
-\[
-\sigma_q^2 = \sigma^2 \frac{\overline{x^2}}{N(\overline{x^2}-\bar{x}^2)}
-\quad , \quad
-\sigma_m^2 = \sigma^2 \frac{1}{N(\overline{x^2}-\bar{x}^2)}
-\]
-Nota: Il termine al denominatore $(\overline{x^2}-\bar{x}^2)$ è la varianza dei valori $x_i$ del campione.
-
-\textbf{Caso 2: Errori differenti (Fit pesato)}
-Quando ogni misura ha un errore $\sigma_i$ diverso, la probabilità di ottenere il set di misure osservato è data dal prodotto delle probabilità (Likelihood):
-\[ P(y_1, \ldots, y_N) \propto \prod_{i=1}^N \exp\left( -\frac{(y_i - q - m x_i)^2}{2\sigma_i^2} \right) = \exp\left( -\frac{1}{2} \sum_{i=1}^N \frac{(y_i - q - m x_i)^2}{\sigma_i^2} \right) \]
-Massimizzare questa probabilità equivale a minimizzare l'esponente, ovvero il $\chi^2$:
-\[ \chi^2 = \sum_{i=1}^N \frac{(y_i - q - m x_i)^2}{\sigma_i^2} \]
-Definiamo le seguenti somme pesate per semplificare la notazione:
-\[
-S = \sum \frac{1}{\sigma_i^2}, \quad S_x = \sum \frac{x_i}{\sigma_i^2}, \quad S_y = \sum \frac{y_i}{\sigma_i^2}, \quad S_{xx} = \sum \frac{x_i^2}{\sigma_i^2}, \quad S_{xy} = \sum \frac{x_i y_i}{\sigma_i^2}
-\]
-Definiamo inoltre il determinante del sistema come $\Delta = S \cdot S_{xx} - S_x^2$.
-Le migliori stime per i parametri sono:
-\[
-q = \frac{S_{xx} \cdot S_y - S_x \cdot S_{xy}}{\Delta}
-\quad , \quad
-m = \frac{S \cdot S_{xy} - S_x \cdot S_y}{\Delta}
-\]
-Le varianze dei parametri, ottenute tramite la propagazione degli errori, sono:
-\[
-\sigma_q^2 = \frac{S_{xx}}{\Delta}
-\quad , \quad
-\sigma_m^2 = \frac{S}{\Delta}
-\]
-Il valore minimo del $\chi^2$ può essere utilizzato per il \textit{test delle ipotesi} (goodness of fit), per verificare se i dati sono compatibili con l'ipotesi lineare.
-
 
 \subsection{Fit Lineare ($y = mx + q$)}
 Nel caso di funzione lineare $f(x) = mx + q$ e $\sigma_i = \sigma$ costanti, risolvendo il sistema delle derivate parziali $\frac{\partial \chi^2}{\partial m} = 0$ e $\frac{\partial \chi^2}{\partial q} = 0$, si ottengono le stime analitiche:
@@ -768,27 +718,58 @@ plt.legend(); plt.show()
     \caption{Fit Lineare}
 \end{figure}
 
+\ripasso{Fit di una retta (Regressione Lineare)}
+
+Vogliamo determinare la retta che meglio descrive un set di dati $(x_i, y_i \pm \sigma_i)$.
+Utilizziamo la parametrizzazione $f(x) = mx + q$ (oppure $\theta_2 x + \theta_1$), dove i parametri da stimare sono la pendenza $m$ e l'intercetta $q$.
+Per trovare il minimo, è necessario risolvere il sistema di equazioni ottenuto annullando le derivate parziali del $\chi^2$:
+\[ \frac{\partial \chi^2}{\partial m}=0 \quad \text{e} \quad \frac{\partial \chi^2}{\partial q}=0 \]
+
+\subsubsection*{Caso 1: Errori uguali o trascurabili}
+Se gli errori $\sigma_i$ sono tutti uguali, la funzione da minimizzare è:
+\[
+X^2 = \sum_{i=1}^{N} (y_i - q - m x_i)^2
+\]
+Introducendo i valori medi $\bar{x}, \bar{y}, \overline{x^2}, \overline{xy}$, le soluzioni per i parametri (stimatori) sono:
+\[ 
+\begin{split}
+q &= \hat{\theta}_1 = \frac{\bar{y} \cdot \overline{x^2} - \bar{x} \cdot \overline{xy}}{\overline{x^2} - \bar{x}^2} \\
+m &= \hat{\theta}_2 = \frac{\overline{xy} - \bar{x} \cdot \bar{y}}{\overline{x^2} - \bar{x}^2}
+\end{split}
+\]
+Gli errori sui parametri si ricavano dalla legge di propagazione della varianza (assumendo $\sigma_y = \sigma$ costante per tutti i punti):
+\[
+\sigma_q^2 = \sigma^2 \frac{\overline{x^2}}{N(\overline{x^2}-\bar{x}^2)}
+\quad , \quad
+\sigma_m^2 = \sigma^2 \frac{1}{N(\overline{x^2}-\bar{x}^2)}
+\]
+Nota: Il termine al denominatore $(\overline{x^2}-\bar{x}^2)$ è la varianza dei valori $x_i$ del campione.
+
+\textbf{Caso 2: Errori differenti (Fit pesato)}
+Quando ogni misura ha un errore $\sigma_i$ diverso, la probabilità di ottenere il set di misure osservato è data dal prodotto delle probabilità (Likelihood):
+\[ P(y_1, \ldots, y_N) \propto \prod_{i=1}^N \exp\left( -\frac{(y_i - q - m x_i)^2}{2\sigma_i^2} \right) = \exp\left( -\frac{1}{2} \sum_{i=1}^N \frac{(y_i - q - m x_i)^2}{\sigma_i^2} \right) \]
+Massimizzare questa probabilità equivale a minimizzare l'esponente, ovvero il $\chi^2$:
+\[ \chi^2 = \sum_{i=1}^N \frac{(y_i - q - m x_i)^2}{\sigma_i^2} \]
+Definiamo le seguenti somme pesate per semplificare la notazione:
+\[
+S = \sum \frac{1}{\sigma_i^2}, \quad S_x = \sum \frac{x_i}{\sigma_i^2}, \quad S_y = \sum \frac{y_i}{\sigma_i^2}, \quad S_{xx} = \sum \frac{x_i^2}{\sigma_i^2}, \quad S_{xy} = \sum \frac{x_i y_i}{\sigma_i^2}
+\]
+Definiamo inoltre il determinante del sistema come $\Delta = S \cdot S_{xx} - S_x^2$.
+Le migliori stime per i parametri sono:
+\[
+q = \frac{S_{xx} \cdot S_y - S_x \cdot S_{xy}}{\Delta}
+\quad , \quad
+m = \frac{S \cdot S_{xy} - S_x \cdot S_y}{\Delta}
+\]
+Le varianze dei parametri, ottenute tramite la propagazione degli errori, sono:
+\[
+\sigma_q^2 = \frac{S_{xx}}{\Delta}
+\quad , \quad
+\sigma_m^2 = \frac{S}{\Delta}
+\]
+Il valore minimo del $\chi^2$ può essere utilizzato per il \textit{test delle ipotesi} (goodness of fit), per verificare se i dati sono compatibili con l'ipotesi lineare.
 
 
-\ripasso{Caso non lineare}
-Se la relazione tra le grandezze non è lineare, spesso è possibile "linearizzare" il problema con un cambio di variabile.
-
-\begin{example}
-    Consideriamo la legge del moto: $s = \frac{1}{2} g t^2$. 
-    Supponiamo di voler misurare $g$ trascurando l'incertezza su $s$ e considerando solo l'errore su $t$.
-    Possiamo riscrivere l'equazione come:
-    \[ t = \sqrt{\frac{2}{g}} \sqrt{s} \]
-    Ponendo $y = t$, $x = \sqrt{s}$ e il parametro $m = \sqrt{\frac{2}{g}}$, otteniamo una relazione lineare $y = mx$ (con intercetta nulla).
-    
-    Una volta stimato $m$ e la sua varianza $\sigma_m^2$ con il metodo dei minimi quadrati, ricaviamo $g$ invertendo la relazione: $g = \frac{2}{m^2}$.
-    L'errore su $g$ si ottiene con la propagazione:
-    \[
-    \sigma_g = \left| \frac{\partial g}{\partial m} \right| \sigma_m = \left| -\frac{4}{m^3} \right| \sigma_m
-    \]
-    Questo esempio evidenzia l'importanza della scelta delle variabili dipendenti e indipendenti.
-\end{example}
-
-Nei casi in cui la linearizzazione non è possibile, si ricorre all'espansione di Taylor del modello attorno a valori iniziali dei parametri o a metodi numerici iterativi.
 \subsection{Caso Non Lineare e Linearizzazione}
 se $f(x; p)$ non è lineare spesso si cerca un'espressione linearizzata cambiando variabili.
 \\
@@ -822,6 +803,28 @@ sigma_g = (4 / m_calc**3) * sigma_m
 print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
 \end{lstlisting}
 
+
+
+
+\ripasso{Caso non lineare}
+Se la relazione tra le grandezze non è lineare, spesso è possibile "linearizzare" il problema con un cambio di variabile.
+
+\begin{example}
+    Consideriamo la legge del moto: $s = \frac{1}{2} g t^2$. 
+    Supponiamo di voler misurare $g$ trascurando l'incertezza su $s$ e considerando solo l'errore su $t$.
+    Possiamo riscrivere l'equazione come:
+    \[ t = \sqrt{\frac{2}{g}} \sqrt{s} \]
+    Ponendo $y = t$, $x = \sqrt{s}$ e il parametro $m = \sqrt{\frac{2}{g}}$, otteniamo una relazione lineare $y = mx$ (con intercetta nulla).
+    
+    Una volta stimato $m$ e la sua varianza $\sigma_m^2$ con il metodo dei minimi quadrati, ricaviamo $g$ invertendo la relazione: $g = \frac{2}{m^2}$.
+    L'errore su $g$ si ottiene con la propagazione:
+    \[
+    \sigma_g = \left| \frac{\partial g}{\partial m} \right| \sigma_m = \left| -\frac{4}{m^3} \right| \sigma_m
+    \]
+    Questo esempio evidenzia l'importanza della scelta delle variabili dipendenti e indipendenti.
+\end{example}
+
+Nei casi in cui la linearizzazione non è possibile, si ricorre all'espansione di Taylor del modello attorno a valori iniziali dei parametri o a metodi numerici iterativi.
 
 
 
@@ -977,6 +980,7 @@ Per la varianza, sfruttando la proprietà $E[x^2]-{E[x]}^2$, si ottiene:
 
 
 \vspace{1 cm}
+\subsection{Funzioni Generatrici e Funzione Caratteristica}
 L'introduzione dei momenti risulta utile per diversi motivi. Un risultato fondamentale è il seguente: se due variabili casuali $X$ e $Y$ possiedono gli stessi momenti, allora le loro funzioni di distribuzione di probabilità ($f_X$ e $f_Y$) sono identiche.
 
 \begin{definizione}
@@ -1059,7 +1063,7 @@ M_Z(t) = E[e^{tX}]E[e^{tY}] = M_X(t)M_Y(t)
 \]
 Questo è dovuto al fatto che $\Omega_X \cap \Omega_Y=0$, dunque vale che $f_{X+Y}(x)=f_X(x) f_Y(x)$
 
-\subsection{Approfondimento sulla funzione caratteristica}
+\subsubsection*{Approfondimento sulla funzione caratteristica}
 Quella che noi abbiamo visto come i momenti algebrici e centrali, in realtà sono solo due casi particolari di una famiglia più ampia di momenti, 
 che possono essere generati da funzioni più generali. La funzione caratteristica è un esempio di funzione generatrice dei momenti che utilizza l'esponenziale complesso $e^{itx}$ invece di $e^{tx}$.\\
 La funzione caratteristica è la trasformata della mia p.d.f (probability density function); essa è ben definita valendo $f_X(x) \in L^2[\mathbb{R}]$
@@ -1103,7 +1107,7 @@ Casi particolari immediati:
     \]
 \end{example}
 
-\subsubsection{Proprietà della distribuzione binomiale}
+\subsubsection*{Proprietà della distribuzione binomiale}
 \begin{itemize}
     \item \textbf{Normalizzazione}: La somma di tutte le probabilità è 1. Questo deriva dallo sviluppo del binomio di Newton:
     \[ \sum_{k=0}^{n} \binom {n}{k}p^kq^{n-k} = (p+q)^n = (1)^n = 1 \]
@@ -1121,7 +1125,7 @@ Casi particolari immediati:
     \item \textbf{Varianza}: La varianza è data da $\sigma_x^2 = E[x^2] - E[x]^2 = npq$.
 \end{itemize}
 
-\subsubsection{Funzione generatrice dei momenti della Binomiale}
+\subsubsection*{Funzione generatrice dei momenti della Binomiale}
 Calcoliamo il momento generatore per la binomiale:
 \[
 M_k(t) = E[e^{tk}] = \sum_{k=0}^{n} e^{tk} \binom{n}{k} p^k q^{n-k} = \sum_{k=0}^{n} \binom{n}{k} (pe^t)^k q^{n-k}
@@ -1178,9 +1182,9 @@ Se stimiamo la probabilità $p_i$ tramite i dati misurati come $\hat{p_i} = n_i^
 Di conseguenza, l'errore standard (deviazione standard) sul conteggio di un bin è approssimabile con la radice quadrata del conteggio stesso:
 \[ \sigma_{n_i} \approx \sqrt{n_i^{mis}} \]
 
-\lezione{Codice python e Distribuizione di Poisson}{26 Febbraio 2026}
+\lezione{Distribuizione di Poisson e Approsimazioni}{26 Febbraio 2026}
 
-\subsection{Esempi Python: La Distribuzione Binomiale}
+\subsection*{Esempi Python: La Distribuzione Binomiale}
 
 In questo esercizio simuliamo il lancio di una moneta per applicare la distribuzione binomiale.
 \textbf{Problema:} Lanciamo una moneta $n=10$ volte. Qual è la probabilità di ottenere esattamente $k=6$ teste?
@@ -1257,7 +1261,7 @@ print(f"Su 100 esperimenti, ho ottenuto 6 teste {risultato} volte")
 
 
 
-
+\subsection{Dalla Binomiale alla Poissoniana}
 
 \ripasso{Distribuzione di Poisson}
 La distribuzione di Poisson è un caso limite fondamentale, spesso utilizzato in fisica nucleare, e serve per indicare la probabilità di osservare $k$ eventi in un determinato intervallo di tempo $t$, basandosi su tre ipotesi principali:
@@ -1323,7 +1327,7 @@ E la varianza coincide con la media:
 \]
 Si nota dunque che la distribuzione di Poisson non è altro che il limite per $n \rightarrow \infty$ della distribuzione di Bernoulli (Binomiale).
 
-\subsection{Confronto: Poisson vs Binomiale}
+\subsubsection{Confronto: Poisson vs Binomiale}
 La distribuzione \textbf{Binomiale} descrive casi in cui un risultato particolare si ottiene in un numero preciso e finito di tentativi ($n$).
 
 La distribuzione di \textbf{Poisson}, invece, si usa per descrivere casi in cui si contano eventi rari in un continuo (tempo o spazio), dove non si ha un'idea precisa del numero di tentativi totali, né ha senso parlare di casi "sfavorevoli" nel senso classico.
@@ -1406,7 +1410,7 @@ Possiamo quindi scrivere la forma finale della Funzione Generatrice dei Momenti 
 \boxed{M_k(t) = e^{\lambda(e^t - 1)}}
 \end{equation}
 
-\subsubsection{Calcolo di Media e Varianza}
+\subsubsection*{Calcolo di Media e Varianza}
 Dalle proprietà della Funzione Generatrice dei Momenti sappiamo che la derivata prima valutata in $t=0$ fornisce la media, mentre la derivata seconda fornisce il momento secondo.
 
 \paragraph{1. Media (Valore Atteso):}
@@ -1479,11 +1483,11 @@ M_{tot}(t) = M_a(t) \cdot M_b(t) = e^{\lambda_a(e^t - 1)} \cdot e^{\lambda_b(e^t
 Questa forma corrisponde a una Poissoniana con parametro $\lambda_a + \lambda_b$.
 \textit{Esempio fisico:} Un contatore Geiger che rileva radiazioni da due sorgenti diverse non distinguibili; il conteggio totale sarà ancora Poissoniano.
 
-\subsection{Esempi Python: Grafici e Confronti}
+\subsection*{Esempi Python: Grafici e Confronti}
 
 Di seguito riportiamo il codice per visualizzare le distribuzioni e verificare numericamente le proprietà discusse.
 
-\subsubsection{1. Visualizzazione della Distribuzione Binomiale}
+\subsubsection*{1. Visualizzazione della Distribuzione Binomiale}
 Questo script mostra come varia la forma della distribuzione binomiale al variare di $n$ (numero di prove) e $p$ (probabilità).
 
 \begin{lstlisting}[language=Python, frame=single, caption={Plot della Binomiale al variare di n e p}]
@@ -1554,7 +1558,7 @@ plt.show()
 \end{figure}
 
 
-\subsubsection{2. Esercizio Poisson: La notte di San Lorenzo}
+\subsubsection*{2. Esercizio Poisson: La notte di San Lorenzo}
 \textbf{Problema:} Se ci si aspetta di osservare 15.7 stelle cadenti all'ora, qual è la probabilità di osservarne meno di 5 in 30 minuti?
 
 \begin{lstlisting}[language=Python, frame=single, caption={Calcolo Poisson e confronto con Binomiale}]
@@ -1693,8 +1697,9 @@ Se $P_i$ fosse nota a priori, per un confronto visivo con l'istogramma si potreb
 
 \newpage
 
-\lezione{Funzione di distribuzione di Gauss}{02 Marzo 2026}
+\lezione{La Distribuzione Normale (Gaussiana)}{02 Marzo 2026}
 
+\subsection{Definizione e Proprietà Fondamentali}
 \ripasso{Distribuzione Normale}
 
 Data una variabile casuale $x$, la funzione di densità di probabilità normale è definita come:
@@ -1788,7 +1793,7 @@ Graficamente:
     \item Il valore a metà altezza (FWHM) corrisponde a una larghezza di $2\sqrt{2 \ln(2)}\sigma \approx 2.355\sigma$.
 \end{itemize}    
 
-\subsubsection{\color{red} Esempio di distribuzione di Gauss}
+\subsubsection*{Esempio di distribuzione di Gauss}
 Consideriamo un esempio basato sulla distribuzione binomiale per modellare gli errori di misura.
 Assumiamo le seguenti ipotesi:
 \begin{itemize}
@@ -1801,7 +1806,7 @@ u_k = k\varepsilon - (n-k)\varepsilon = (2k - n)\varepsilon
 \]
 Il valore di aspettazione è $E[u_k] = 0$. Per il teorema del limite centrale, quando $n \rightarrow \infty$, la distribuzione di questi errori tende a una gaussiana centrata in 0.
 
-\subsubsection{\color{red} Dimostrazione Euristica}
+\subsubsection*{Dimostrazione Euristica}
 Vogliamo giustificare euristicamente perché la distribuzione degli errori accidentali è gaussiana.
 Come visto sopra, se abbiamo $k$ deviazioni positive su $n$ totali, l'errore e la sua probabilità (data dalla binomiale) sono:
 \[
@@ -1975,7 +1980,7 @@ In particolare, per la normale standard $N(0,1)$, si ha:
 M_x(t) = \bar{M}_x(t) = e^{\frac{t^2}{2}}
 \end{equation}
 
-\subsection{\color{red} Parte Bressan: Confronto istogramma/gaussiana}
+\ripasso{Confronto istogramma/gaussiana}
 Date 100 misure che cadono in $k$ intervalli di valore centrale $x^k$ e larghezza $\Delta x$, ci chiediamo quale sia la funzione di distribuzione che mi definisca la probabilità che un certo dato cada in un
 certo intervallo (successo), questa è la \textbf{funzione di distribuzione binomiale}:
 
@@ -2600,7 +2605,7 @@ Al limite per $n \to \infty$, $\frac{1}{n} \to 0$ per cui questo dimostra che
 \noindent $\star \quad \text{Prob}(|X - \mu| \ge K\sigma) = 1 - \text{Prob}(|X - \mu| < K\sigma) \le \frac{1}{K^2}$ \\
 $\implies \text{Prob}(|X - \mu| < K\sigma) \ge 1 - \frac{1}{K^2}$
 
-\subsection{Distribuzione Esponenziale}
+\subsection{Cenni di Distribuzione Esponenziale}
 
 \[
 P_{\text{exp}}(x; \tau) = \frac{1}{\tau} e^{-x/\tau} \quad \quad 0 \le x \le +\infty
@@ -2633,7 +2638,7 @@ Ora calcolo la varianza come
 
 
 
-\lezione{Distribuzione Esponenziale}{19 Marzo 2026}
+\lezione{Processi di Poisson, Esponenziale ed Erlang}{19 Marzo 2026}
 
 La distribuzione esponenziale descrive il tempo che intercorre tra due eventi consecutivi in un processo di Poisson.
 
@@ -2656,7 +2661,7 @@ Pertanto, la probabilità che $T > t$ coincide con la probabilità di osservare 
     \text{Prob}(T > t) = P(0; \lambda t) = \frac{e^{-\lambda t} (\lambda t)^0}{0!} = e^{-\lambda t}
 \end{equation}
 
-
+\subsection{Richiami di Variabili casuali e CDF/PDF}
 \ripasso{Variabili casuali e funzione di ripartizione}
 Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
 dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
@@ -2750,7 +2755,7 @@ In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in
     \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
 \end{itemize}
 
-\subsection{Funzione di Ripartizione e Densità di Probabilità}
+\subsection{Proprietà dell'Esponenziale}
 La \textbf{funzione di ripartizione} (o distribuzione cumulativa $F_X(x)$) indica la probabilità che una variabile $x'$ assuma un valore minore o uguale a $x$:
 \begin{equation}
     F_X(x) = \text{Prob}(x' \le x) = \int_{-\infty}^{x} P_X(z) \, dz
@@ -2789,7 +2794,7 @@ Questa è la densità di probabilità esponenziale. Indica che i tempi di attesa
 \end{figure}
 
 
-\subsection{Proprietà di Assenza di Memoria}
+\subsubsection*{Proprietà di Assenza di Memoria}
 Una caratteristica fondamentale è l'\textbf{assenza di memoria}: il tempo che resta da aspettare affinché un evento si verifichi è indipendente da quanto abbiamo già aspettato.
 Usando la probabilità condizionata $\text{Prob}(A|M) = \frac{\text{Prob}(A \cap M)}{\text{Prob}(M)}$:
 \begin{itemize}
@@ -2810,7 +2815,7 @@ Spesso si scrive la distribuzione utilizzando $\tau = 1/\lambda$, dove $\tau$ ra
 
 
 
-\section{Distribuzione di Erlang}
+\subsection{Distribuzione di Erlang}
 La distribuzione di Erlang è una generalizzazione della distribuzione esponenziale. Mentre l'esponenziale regola il tempo tra due eventi successivi ($k=1$), la distribuzione di Erlang regola il tempo di attesa per il \textbf{k-esimo evento}.
 
 
@@ -3017,8 +3022,8 @@ plt.show()
 
 %------------------------------------------------------------------------------
 
-\lezione{Variabili casuali bidimensionali}{23/03/2026}
-
+\lezione{Variabili Casuali bidimensionali}{23/03/2026}
+\subsection{Distribuzioni congiunte, marginali e condizionate}
 Abbiamo già accennato ad alcune proprietà delle distribuzioni di più variabili, adesso concentriamoci sul caso più semplice di distribuzione di più variabili, ovvero quando le variabili sono due.\\
 Supponiamo allora di avere una coppia di variabili aleatorie $X$ e $Y$ (caso di un esperimento in cui si misurano due quantità).
 \\
@@ -3034,7 +3039,6 @@ che indica la probabilità di ottenere valori delle due variabili non superiori 
 \end{equation}
 
 
-\subsection{Distribuzioni marginali e condizionate}
 A partire da $P(x,y)$ si può calcolare la densità di probabilità per una delle due variabili \textit{qualunque valore abbia l'altra}, cioè le funzioni di \textbf{distribuzioni marginali}:
 \begin{equation}
     P_X(x) = \int_{-\infty}^{+\infty} P(x,y) \,dy \quad \text{e} \quad P_Y(y) = \int_{-\infty}^{+\infty} P(x,y) \,dx
@@ -3060,7 +3064,7 @@ Se sostituiamo in una delle equazioni precedenti, per esempio in $\pi(y|x) = P(x
 
 
 
-\subsection{Momenti delle densità di probabilità bidimensionali}
+\subsection{Momenti: Matrice delle Covarianze e Combinazioni Lineari}
 
 Come nel caso unidimensionale si può calcolare il valore di aspettazione, però stavolta per generalizzare, considero una qualunque funzione di $x$ e $y$, $f(x,y)$, e definisco il suo \textbf{valore di aspettazione} come:
 \begin{equation}
@@ -3091,7 +3095,7 @@ dove i più notevoli sono:
 
 Quest'ultima quantità si chiama \textbf{covarianza} ed è un parametro importante nel caso di più variabili perché \textit{indica come sono correlate fra loro le variabili}. Infatti si può dimostrare che $\text{Cov}(X,Y) = 0$ se $X$ e $Y$ sono indipendenti l'una dall'altra.
 
-\subsection{Dimostrazione nel caso discreto}
+\subsubsection*{Dimostrazione nel caso discreto}
 Per dimostrarlo è conveniente trovare un altro modo di scrivere la covarianza che si ricava più facilmente assumendo il caso discreto.
 Consideriamo il caso di 2 variabili discrete $X$ e $Y$; il valore di aspettazione di una determinata funzione è dato da: 
 \[
@@ -3125,7 +3129,7 @@ Questa formula vale in generale, ma nel caso in cui le variabili siano indipende
     \mathbb{E}[XY] = \sum_{i,j} P_{ij} x_i y_j = \sum_{i,j} P_{X,i} x_i P_{Y,j} y_j = \mathbb{E}[X]\mathbb{E}[Y]
 \end{equation*}
 Di conseguenza, in questo caso, $\text{Cov}(X,Y) = 0$.
-\subsection{Matrice delle covarianze (e combinazioni lineari di variabili)}
+\subsubsection*{Matrice delle covarianze (e combinazioni lineari di variabili)}
 
 Quando si lavora con più variabili si costruisce di solito la matrice delle covarianze che serve a semplificare la notazione. Il tipico esempio che fa capire da dove salta fuori è il calcolo del valore di aspettazione e varianza per una nuova variabile ottenuta come combinazione lineare di altre variabili.
 
@@ -3157,7 +3161,7 @@ Il risultato sulla varianza si può generalizzare al caso in cui $\mathbb{E}[X] 
 \end{equation*}
 Quindi anche se le variabili non hanno valore di aspettazione nullo vale la stessa formula per $\text{Var}(Z)$.
 
-\subsubsection{Formulazione Matriciale}
+\subsubsection*{Formulazione Matriciale}
 Risulta utile esprimere questo risultato sotto forma di moltiplicazioni di matrici (soprattutto quando si estende a più dimensioni) ed è a questo punto che si definisce la \textbf{matrice delle covarianze} (che è simmetrica) come:
 \begin{equation}
     V = \begin{pmatrix}
@@ -3249,7 +3253,7 @@ Quindi $\rho$ vale $1$ con il \textit{segno} del coefficiente angolare della ret
 \end{example}
 
 
-\subsubsection{Visualizzazione dei casi}
+\subsubsection*{Visualizzazione dei casi}
 
 % Disegno dei grafici di correlazione con TikZ
 \begin{center}
@@ -3390,7 +3394,7 @@ In sintesi, un coefficiente di correlazione non ha significato pratico se non vi
 \end{example}
 
 \section{Distribuzione normale in più dimensioni (o multinormale)}
-
+\subsection{Caso di variabili indipendenti}
 La distribuzione gaussiana che abbiamo visto in una dimensione si può estendere al caso di due o più dimensioni partendo dal caso più semplice in cui le variabili sono indipendenti. Supponiamo quindi che $X$ abbia densità di probabilità:
 \begin{equation}
     P_X(x) = \frac{1}{\sigma_X \sqrt{2\pi}} \exp\left[ -\frac{(x-\mu_X)^2}{2\sigma_X^2} \right]
@@ -3492,7 +3496,7 @@ In maniera analoga è facile graficamente intuire che forma avranno le \textbf{d
 
 
 \lezione{Distribuzione Multi-normale (Variabili dipendenti)}{26 Marzo 2026}
-\subsection{Richiamo al caso di variabili indipendenti}
+\subsection*{Richiamo al caso di variabili indipendenti}
 Abbiamo visto che per due variabili indipendenti con distribuzione normale si trova:
 \begin{equation}
 P(x,y) = \frac{1}{2\pi\sigma_x\sigma_y} \cdot \exp\left(-\frac{Q^2}{2}\right)
@@ -3533,13 +3537,13 @@ Sostituendo si ottiene esattamente l'espressione nota di $Q^2$:
 &= \frac{(x-\mu_x)^2}{\sigma_x^2} + \frac{(y-\mu_y)^2}{\sigma_y^2} = Q^2
 \end{align*}
 
-\subsection{Generalizzazione a $n$ dimensioni}
+\subsection*{Generalizzazione a $n$ dimensioni}
 Mettendo tutto insieme ed estendendo al caso di $n$ dimensioni (e usando $\det V$ al posto di $\sigma_x^2\sigma_y^2$), si ottiene l'espressione generale:
 \begin{equation}
 P(\vec{x}) = \frac{1}{(2\pi)^{n/2} |\det V|^{1/2}} \exp\left[ -\frac{1}{2}(\vec{x}-\vec{\mu})^T V^{-1} (\vec{x}-\vec{\mu}) \right]
 \end{equation}
 
-\subsection{Il caso binormale correlato}
+\subsection*{Il caso binormale correlato}
 Scritta così, l'espressione vale \emph{anche nel caso in cui le variabili non siano indipendenti}. Ritornando al caso particolare di 2 variabili, la matrice $V$ assume la forma:
 \begin{equation}
 V = \begin{pmatrix}
@@ -3656,7 +3660,7 @@ Anche in questo caso, la probabilità che una misurazione $(x,y)$ cada dentro l'
 \end{figure}
 
 
-\section{Distribuzioni Marginali e Condizionate}
+\subsection{Distribuzioni Marginali e Condizionate per la Multinormale}
 
 Per definizione, le distribuzioni marginali sono date da:
 \begin{equation}
@@ -3671,7 +3675,7 @@ Quindi $P_x(x) = \mathcal{N}(\mu_x, \sigma_x^2)$ e $P_y(y) = \mathcal{N}(\mu_y, 
 
 Se $x$ e $y$ \textbf{non sono indipendenti}, si arriva allo stesso risultato ma con più passaggi. La sostanza del calcolo si basa sul fatto che $Q^2$ dipende dai quadrati dei termini $(x-\mu_x)^2$ e $(y-\mu_y)^2$; con un po' di passaggi algebrici si riescono ad ottenere due gaussiane.
 
-\subsection{Distribuzioni Condizionate}
+\subsubsection*{Distribuzioni Condizionate}
 È più istruttivo calcolare con più dettaglio le \textbf{distribuzioni condizionate}. Si vede che anche queste sono gaussiane, ma con $\mu$ e $\sigma$ alterati da $\rho$.
 Dalla definizione sappiamo che:
 \begin{equation}
@@ -3689,7 +3693,7 @@ Da questo si nota che per avere la forma di una gaussiana normalizzata, la nuova
 \end{equation}
 (Si noti che per $\rho = 0$ si ritrova $\sigma_{x|y} = \sigma_x$).
 
-\subsubsection{Calcolo della media condizionata}
+\subsubsection*{Calcolo della media condizionata}
 Per ricavare come varia $\mu$ bisogna calcolare come varia l'esponente. Per semplificare la notazione utilizziamo il cambiamento di variabili:
 $u = x - \mu_x$ e $v = y - \mu_y$.
 
@@ -3739,7 +3743,8 @@ che, a partire da esse, ci permetta di ricavare il valore di $\theta_v$. Le funz
 
 Ovviamente si possono immaginare molte stime possibili, ma si cerca di preferire quelle che hanno tre proprietà fondamentali: \textbf{consistenza}, \textbf{imparzialità} ed \textbf{efficienza}.
 
-\subsection{Consistenza}
+\subsection{Proprietà degli Stimatori (Consistenza, Imparzialità)}
+\subsubsection*{Consistenza}
 \begin{definizione} \textbf{Stimatore Consistente}:
 Una stima si dice \emph{consistente} quando tende al valore vero del parametro al tendere all'infinito del numero di campioni, cioè se:
 \begin{equation*}
@@ -3749,7 +3754,7 @@ Una stima si dice \emph{consistente} quando tende al valore vero del parametro a
 
 Per esempio, la legge dei grandi numeri ci garantisce che $\lim_{N \to \infty} \bar{x} = \mu$. Quindi la media aritmetica è una stima consistente del valore di aspettazione della distribuzione teorica che regola la popolazione.
 
-\subsection{Imparzialità (Non distorsione)}
+\subsubsection*{Imparzialità (Non distorsione)}
 \begin{definizione} \textbf{Stimatore Imparziale}
 Una stima si dice \emph{imparziale} (o non distorta, in inglese \emph{unbiased}) se il suo valore di aspettazione è uguale al valore vero, cioè:
 \begin{equation*}
@@ -3769,7 +3774,7 @@ Se tutte le $x_i$ seguono la stessa $P(x)$ (cioè sono misure della stessa grand
 \end{equation*}
 Quindi la media aritmetica è una stima non distorta del valore atteso della popolazione.
 
-\subsection{Efficienza}
+\subsubsection*{Efficienza}
 \begin{definizione} \textbf{Efficienza} 
 La proprietà dell'efficienza della stima ha a che fare con la dispersione della stima attorno al suo valore di aspettazione, misurata dalla \textbf{varianza}. In altre parole, una stima è \emph{più efficiente} di un'altra se la sua \emph{varianza è più piccola}.
 \end{definizione}
@@ -3832,6 +3837,12 @@ In generale si vede che questa stima è la \textbf{più efficiente}, o almeno lo
 
 
 \newpage
+
+
+
+
+\section{da integrare dopo}
+
 \ripasso{ Proprietà generali e Propagazione degli Errori}
 
 In questa sezione richiamiamo alcuni concetti generali sulle funzioni di distribuzione a più variabili e sulla propagazione degli errori, utili per il prosieguo.
@@ -4044,9 +4055,6 @@ Ovvero una media pesata delle misure per le loro varianze dal termine, in cui la
 
 
 
-
-
-\section{da integrare dopo}
 \subsection{Distribuzione di Maxwell-Boltzmann}
 
 Si considera un gas con peso molare \( M = N_A m \) in equilibrio termodinamico a temperatura \( T \). La costante dei gas è \( R = N_A k \approx 8.31 \, \text{J} \, \text{K}^{-1} \text{mol}^{-1} \).

@@ -3588,7 +3588,72 @@ Analogamente, le rette $y = \mu_y \pm \sigma_y$ sono tangenti all'ellisse nei pu
 \begin{nota}
 Anche in questo caso, la probabilità che una misurazione $(x,y)$ cada dentro l'ellisse $Q^2 \leq 1$ è approssimativamente $0.39$.
 \end{nota}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.2, every node/.style={scale=0.9}]
+    
+    % Assi cartesiani principali
+    \draw[->, thick] (-1, 0) -- (9, 0) node[right] {$x$};
+    \draw[->, thick] (0, -1) -- (0, 6.5) node[above] {$y$};
 
+    % --- Parametri usati per il disegno ---
+    % \mu_x = 4, \mu_y = 3
+    % \sigma_x = 3, \sigma_y = 2
+    % \rho = 0.6  (il che implica \sqrt{1-\rho^2} = 0.8)
+    
+    % Rettangolo di contenimento (Bounding box) corrispondente a \mu \pm \sigma
+    \draw[dashed, gray] (1, 1) rectangle (7, 5);
+    
+    % Proiezioni della bounding box sugli assi cartesiani
+    \draw[dashed, gray] (1, 1) -- (1, 0) node[below] {$\mu_x - \sigma_x$};
+    \draw[dashed, gray] (7, 1) -- (7, 0) node[below] {$\mu_x + \sigma_x$};
+    \draw[dashed, gray] (1, 1) -- (0, 1) node[left] {$\mu_y - \sigma_y$};
+    \draw[dashed, gray] (1, 5) -- (0, 5) node[left] {$\mu_y + \sigma_y$};
+    
+    % Rette passanti per il centro (\mu_x, \mu_y)
+    \draw[dashed, darkgray] (4, 0) node[below] {$\mu_x$} -- (4, 6);
+    \draw[dashed, darkgray] (0, 3) node[left] {$\mu_y$} -- (8, 3);
+
+    % --- Disegno dell'Ellisse ---
+    % Equazione parametrica esatta derivata dalla forma quadratica Q^2 = 1
+    % x(t) = \mu_x + \sigma_x \cos(t)
+    % y(t) = \mu_y + \sigma_y (\rho \cos(t) + \sqrt{1-\rho^2} \sin(t))
+    \draw[thick, blue, domain=0:360, samples=100] 
+        plot ({4 + 3*cos(\x)}, {3 + 2*(0.6*cos(\x) + 0.8*sin(\x))});
+        
+    % --- Punti di tangenza con il bounding box (Rossi, come negli appunti) ---
+    \filldraw[red] (7, 4.2) circle (2pt);   % Tangenza destra
+    \filldraw[red] (1, 1.8) circle (2pt);   % Tangenza sinistra
+    \filldraw[red] (5.8, 5) circle (2pt);   % Tangenza superiore
+    \filldraw[red] (2.2, 1) circle (2pt);   % Tangenza inferiore
+    
+    % --- Punti di intersezione con le medie (Neri) ---
+    \filldraw[black] (6.4, 3) circle (2pt); % Intersezione asse \mu_y (destra)
+    \filldraw[black] (1.6, 3) circle (2pt); % Intersezione asse \mu_y (sinistra)
+    \filldraw[black] (4, 4.6) circle (2pt); % Intersezione asse \mu_x (sopra)
+    \filldraw[black] (4, 1.4) circle (2pt); % Intersezione asse \mu_x (sotto)
+
+    % --- Frecce e Quote per indicare le distanze ---
+    % Distanza: \sigma_x \sqrt{1-\rho^2}
+    \draw[<->, >=stealth] (4, 3.2) -- (6.4, 3.2) 
+        node[midway, above, font=\footnotesize] {$\sigma_x\sqrt{1-\rho^2}$};
+        
+    % Distanza: \rho \sigma_x
+    \draw[<->, >=stealth] (4, 5.2) -- (5.8, 5.2) 
+        node[midway, above, font=\footnotesize] {$\rho\sigma_x$};
+        
+    % Distanza: \sigma_y \sqrt{1-\rho^2}
+    \draw[<->, >=stealth] (4.2, 3) -- (4.2, 4.6) 
+        node[midway, right, font=\footnotesize] {$\sigma_y\sqrt{1-\rho^2}$};
+        
+    % Distanza: \rho \sigma_y
+    \draw[<->, >=stealth] (7.2, 3) -- (7.2, 4.2) 
+        node[midway, right, font=\footnotesize] {$\rho\sigma_y$};
+
+\end{tikzpicture}
+\caption{Rappresentazione geometrica dell'ellisse di equazione $Q^2 = c$. Si notano le intersezioni con gli assi passanti per il centro e i punti di tangenza con il box $\mu \pm \sigma$, che permettono di ricavare visivamente il coefficiente di correlazione $\rho$.}
+\label{fig:ellisse_covarianza}
+\end{figure}
 
 
 \section{Distribuzioni Marginali e Condizionate}

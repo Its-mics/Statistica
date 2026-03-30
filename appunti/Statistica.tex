@@ -3853,36 +3853,269 @@ dove $\sigma$ è la deviazione standard della popolazione.
 In generale si vede che questa stima è la \textbf{più efficiente}, o almeno lo è per le densità di probabilità gaussiane.
 
 
+\lezione{Stime, Propagazione e Likelihood}{30 Marzo 2026}
+
+\subsection{Stima della Varianza e Correzione di Bessel}
+
+Si è visto nelle prime lezioni che il modo più naturale per misurare la dispersione rispetto alla media del campione è lo scarto quadratico medio, che indichiamo qui per comodità come $s^2$:
+\begin{equation}
+s^2 = \frac{1}{N} \sum_{i=1}^N (x_i - \bar{x})^2
+\end{equation}
+
+Si può quindi pensare che questa sia una buona stima della varianza della popolazione. Tuttavia si vede abbastanza facilmente che \textbf{questa stima è distorta}. Infatti, preso un qualsiasi valore di $x$ che indico con $\tilde{x}$, posso calcolare la quantità:
+\begin{align*}
+\frac{1}{N} \sum_{i=1}^N (x_i - \tilde{x})^2 &= \frac{1}{N} \sum_{i=1}^N \left[ (x_i - \bar{x}) + (\bar{x} - \tilde{x}) \right]^2 \\
+&= \frac{1}{N} \left[ \sum_{i=1}^N (x_i - \bar{x})^2 + \underbrace{\sum_{i=1}^N (\bar{x} - \tilde{x})^2}_{\text{non dipende da } i} + 2 \sum_{i=1}^N (x_i - \bar{x})(\bar{x} - \tilde{x}) \right]
+\end{align*}
+
+Analizzando l'ultimo termine, notiamo che $(\bar{x} - \tilde{x})$ si può tirare fuori dalla sommatoria, e rimane $\sum_{i} (x_i - \bar{x}) = \sum_{i} x_i - N\bar{x} = N\bar{x} - N\bar{x} = 0$. Il termine misto si annulla. L'espressione si riduce quindi a:
+\begin{align*}
+\frac{1}{N} \sum_{i=1}^N (x_i - \tilde{x})^2 &= \frac{1}{N} \left[ \sum_{i=1}^N (x_i - \bar{x})^2 + N(\bar{x} - \tilde{x})^2 \right] \\
+&= s^2 + (\bar{x} - \tilde{x})^2
+\end{align*}
+
+Invertendo il risultato si ricava che $s^2$ si può scrivere come:
+\begin{equation}
+s^2 = \frac{1}{N} \sum_{i=1}^N (x_i - \tilde{x})^2 - (\bar{x} - \tilde{x})^2
+\end{equation}
+Questo vale per un qualunque $\tilde{x}$ e quindi in particolare per il valore vero della media, cioè il valore di aspettazione $\mu$:
+\begin{equation}
+s^2 = \frac{1}{N} \sum_{i=1}^N (x_i - \mu)^2 - (\bar{x} - \mu)^2
+\end{equation}
+
+Se si calcola il valore di aspettazione di $s^2$ ho:
+\begin{equation}
+\mathbb{E}[s^2] = \frac{1}{N} \sum_{i=1}^N \mathbb{E}\left[(x_i - \mu)^2\right] - \mathbb{E}\left[(\bar{x} - \mu)^2\right]
+\end{equation}
+
+Se le $x_i$ hanno tutte la stessa densità di probabilità, allora $\mathbb{E}[(x_i - \mu)^2] = \mathbb{E}[(x - \mu)^2] = \text{Var}(x)$. Viceversa, essendo $\mathbb{E}[\bar{x}] = \mu$, allora il termine $\mathbb{E}[(\bar{x} - \mu)^2] = \mathbb{E}[(\bar{x} - \mathbb{E}[\bar{x}])^2] = \text{Var}(\bar{x}) = \frac{\text{Var}(x)}{N}$.
+
+Sostituendo si ha quindi:
+\begin{equation}
+\mathbb{E}[s^2] = \frac{1}{N} N \text{Var}(x) - \frac{\text{Var}(x)}{N} = \frac{N-1}{N} \text{Var}(x)
+\end{equation}
+
+In sostanza $s^2$ è una \textbf{stima distorta} della varianza e tende ad essere più piccola della varianza di un fattore $(N-1)/N$.
+Riflettendoci, si capisce che il risultato deriva dal fatto che nel caso ideale si vorrebbe conoscere $\mu$ e calcolare gli scarti rispetto a $\mu$, invece che rispetto a $\bar{x}$, e da questo segue che $\mathbb{E}[s^2] < \text{Var}(x)$.
+
+\paragraph{Correzione di Bessel}
+Avendo però quantificato la relazione tra $\mathbb{E}[s^2]$ e la varianza vera, si può correggere il nostro calcolo definendo una nuova stima della varianza:
 
 
+\begin{equation}
+\sigma_m^2 = \frac{N}{N-1} s^2 = \frac{1}{N-1} \sum_{i=1}^N (x_i - \bar{x})^2
+\end{equation}
+Questa espressione prende il nome di \emph{correzione di Bessel} e fornisce uno stimatore non distorto per la varianza.
+
+\emph{Nota: si usa il pedice $m$ per ricordare che questa è la stima della varianza a partire dalle misure.}
+
+\subsection{Stima della Covarianza}
+Abbiamo visto che, date due variabili aleatorie $x$ e $y$, la loro covarianza si calcola come:
+\begin{equation}
+\text{cov}(x,y) = \mathbb{E}\left[ (x - \mathbb{E}[x])(y - \mathbb{E}[y]) \right]
+\end{equation}
+e nel caso in cui $x=y \implies \text{cov}(x,x) = \text{Var}(x)$.
+
+Allora è abbastanza naturale utilizzare come stima della covarianza la quantità $\frac{1}{N} \sum_{i} (x_i - \bar{x})(y_i - \bar{y})$. 
+Però, di nuovo, per la discussione fatta sulla varianza, questa stima è distorta. Quindi, per analogia, una stima migliore (imparziale) è:
+\begin{equation}
+\hat{\text{cov}}(x,y) = \frac{1}{N-1} \sum_{i=1}^N (x_i - \bar{x})(y_i - \bar{y})
+\end{equation}
 
 
+\subsubsection*{Note sull'esercitazione: Errori Sistematici}
+In questa esercitazione simuleremo il caso di due misure indipendenti che diventano correlate quando c'è un errore sistematico.
+
+Per considerare un esempio semplice, simuleremo le misure di due lunghezze il cui valore vero è $L1_v$ e $L2_v$, aggiungendo degli errori casuali gaussiani:
+\begin{align*}
+L1 &= L1_v + e_1 \\
+L2 &= L2_v + e_2
+\end{align*}
+dove $e_1 \sim \mathcal{N}(0, \sigma^2)$ e $e_2 \sim \mathcal{N}(0, \sigma^2)$ sono i due errori con la stessa $\sigma$. 
+Essendo $L1_v$ e $L2_v$ delle costanti, questo equivale a simulare $L1 \sim \mathcal{N}(L1_v, \sigma^2)$ e $L2 \sim \mathcal{N}(L2_v, \sigma^2)$.
+
+Ora introduciamo un \textbf{errore sistematico}, per esempio una deformazione dello strumento dovuta alla temperatura esterna. Questo vuol dire che le due misure vengono alterate nello stesso modo, per esempio di un valore $S$. Le misure saranno in questo caso:
+\begin{align*}
+L1_s &= L1 + S \\
+L2_s &= L2 + S
+\end{align*}
+e supponiamo che $S \sim \mathcal{N}(0, \sigma_S^2)$.
+
+Se facciamo $N$ misure e simuliamo anche $N$ errori di tipo $S$, ogni coppia di misure $L1[i]$ e $L2[i]$ sarà affetta dallo \emph{stesso} errore $S[i]$ (ma in generale per un altro indice $j$ l'errore $S[j]$ sarà diverso).
+Possiamo studiare la binormale ottenuta da $(L1_s, L2_s)$ e notare che $\text{cov}(L1_s, L2_s) \neq 0$, perché l'aggiunta di $S$ ha creato una correlazione tra le due variabili.
+
+Il valore di questa covarianza ci dà un'informazione su $S$. Per vederlo usiamo una notazione semplificata $x_s = x + S$ e $y_s = y + S$:
+\begin{align*}
+\text{cov}(x_s, y_s) &= \mathbb{E}[x_s y_s] - \mathbb{E}[x_s]\mathbb{E}[y_s] \\
+&= \mathbb{E}[(x+S)(y+S)] - \mathbb{E}[x+S]\mathbb{E}[y+S] \\
+&= \mathbb{E}[xy] + \mathbb{E}[xS] + \mathbb{E}[Sy] + \mathbb{E}[S^2] - \mathbb{E}[x]\mathbb{E}[y] - \mathbb{E}[x]\mathbb{E}[S] - \mathbb{E}[y]\mathbb{E}[S] - \mathbb{E}[S]^2 \\
+&= \text{cov}(x,y) + \text{cov}(x,S) + \text{cov}(y,S) + \text{cov}(S,S) \\
+&= \text{Var}(S)
+\end{align*}
+L'ultimo passaggio dipende dal fatto che le coppie $(x,y)$, $(x,S)$ e $(y,S)$ sono indipendenti (covarianza nulla).
+Nel nostro caso avremo quindi che:
+\begin{equation}
+\text{cov}(L1_s, L2_s) = \text{Var}(S)
+\end{equation}
+
+Dato che il valore di $S$ cambia in ogni misura, non è facile risalire al valore del singolo $S$ e qui l'unico modo per eliminarlo è calcolare la differenza tra le due lunghezze:
+\begin{equation*}
+L1_s - L2_s = L1 + S - (L2 + S) = L1 - L2
+\end{equation*}
+
+In questo caso serve un riferimento esterno per stimare l'errore sistematico. Per esempio, prima di misurare le lunghezze incognite, facciamo la stessa procedura con due lunghezze \emph{note}. In tal caso, una stima di $S$ può venire dalla media delle misure:
+\begin{equation*}
+m = \frac{L1_s + L2_s}{2} = \frac{L1_v + e_1 + S + L2_v + e_2 + S}{2} = \frac{L1_v + L2_v}{2} + \frac{e_1 + e_2}{2} + S
+\end{equation*}
+
+Quindi $\hat{S}$ si può stimare togliendo da $m$ la media delle misure vere che conosco:
+\begin{equation}
+\hat{S} = \frac{L1_s + L2_s}{2} - \frac{L1_v + L2_v}{2} = S + \frac{e_1 + e_2}{2}
+\end{equation}
+Si ottiene quindi una sovrastima di $S$ (spesso per gli errori sistematici si ha una sovrastima).
 
 
+\subsection{Dimostrazione della Propagazione degli Errori}
+
+Per completare il discorso sugli errori vediamo velocemente da dove viene la formula di propagazione degli errori.
+Se abbiamo una variabile $y = ax + b$, abbiamo visto dalle proprietà della varianza che:
+\begin{equation*}
+\text{Var}(y) = \text{Var}(ax+b) = \text{Var}(ax) = a^2 \text{Var}(x)
+\end{equation*}
+
+Se ora supponiamo di avere una generica funzione $f(x)$ che sviluppiamo con la tipica formula di Taylor attorno a $x_0$, e tronchiamo lo sviluppo al primo ordine, avremo:
+\begin{equation}
+f(x) \simeq f(x_0) + (x - x_0) \left. \frac{df}{dx} \right|_{x=x_0}
+\end{equation}
+
+Applicando ora le formule precedenti (notando che $f(x_0) \to b$ e $\left.\frac{df}{dx}\right|_{x_0} \to a$), abbiamo:
+\begin{equation}
+\text{Var}(f) \approx \left( \frac{df}{dx} \right)^2 \text{Var}(x)
+\end{equation}
+La formula ha senso per errori piccoli e la derivata va calcolata in $x_0$, che di solito si assume essere il valore misurato.
+
+\subsubsection{Caso Multivariato}
+Nel caso di più variabili si procede in modo analogo. Per esempio nel caso di due variabili:
+\begin{equation*}
+f(x,y) \simeq f(x_0, y_0) + (x - x_0)\left.\frac{\partial f}{\partial x}\right|_{x=x_0} + (y - y_0)\left.\frac{\partial f}{\partial y}\right|_{y=y_0}
+\end{equation*}
+
+Di nuovo la varianza si può calcolare in analogia al caso lineare $z = ax + by$, per cui abbiamo visto che:
+\begin{equation*}
+\text{Var}(z) = a^2\text{Var}(x) + b^2\text{Var}(y) + 2ab \, \text{cov}(x,y)
+\end{equation*}
+L'espressione precedente è più del tipo $z' = ax + by + c$, ma $\text{Var}(z') = \text{Var}(z)$. Quindi possiamo ricavare la varianza di $f$ per analogia:
+\begin{equation}
+\text{Var}(f) = \left( \frac{\partial f}{\partial x} \right)^2 \text{Var}(x) + \left( \frac{\partial f}{\partial y} \right)^2 \text{Var}(y) + 2 \left(\frac{\partial f}{\partial x}\right) \left(\frac{\partial f}{\partial y}\right) \text{cov}(x,y)
+\end{equation}
+che, nel caso in cui le variabili siano indipendenti (covarianza nulla), si riduce alla formula che si conosce.
+
+Nel caso più generale in cui $f$ sia funzione di $n$ variabili $f(x_1, x_2, \dots, x_n)$, allora:
+\begin{equation}
+\text{Var}(f) = \sum_{i=1}^n \left( \frac{\partial f}{\partial x_i} \right)^2 \text{Var}(x_i) + 2 \sum_{i < j} \frac{\partial f}{\partial x_i} \frac{\partial f}{\partial x_j} \text{cov}(x_i, x_j)
+\end{equation}
 
 
+\subsection{Metodo della Massima Verosimiglianza (MLE), (Maximum Likelihood)}
 
+Supponiamo di avere $N$ misure $\{x_1, x_2, \dots, x_N\}$ di una certa grandezza fisica $x$. Queste misure sono delle variabili aleatorie descritte da una certa densità di probabilità $P$ che dipende da un certo parametro $\theta$ il cui \textbf{valore vero $\theta_v$ è incognito}, cioè per ognuna ho $P(x_i ; \theta_v)$.
 
+Se si mette insieme, la densità congiunta è $\prod_i P(x_i ; \theta_v)$ (se le $x_i$ sono indipendenti). 
+Se ora si prova a "ribaltare" il problema e assumo che, fissate le $x_i$ (quindi avendo fissato un set di misure), si voglia ricavare $\theta_v$, allora si può  riscrivere la produttoria di prima come una funzione di $\theta$:
 
+\begin{definizione}\textbf{Funzione di Likelihood}
+\begin{equation}
+\mathcal{L}(x_1, x_2, \dots, x_N ; \theta) = \prod_{i=1}^N P(x_i ; \theta)
+\end{equation}
+Questa quantità si chiama \emph{Likelihood} e indica la probabilità che il \emph{particolare set di misure} $x_1, x_2, \dots, x_N$ sia prodotto da un dato $\theta$ (quindi fisso le $x$ e la mia variabile incognita è $\theta$).
+\end{definizione}
 
+Il metodo della massima verosimiglianza consiste nell'adottare come stima del parametro $\theta$ quel valore $\hat{\theta}$ che \textbf{rende massima la funzione di Likelihood}, cioè tale che:
+\begin{equation}
+\frac{d\mathcal{L}}{d\theta} = 0
+\end{equation}
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.2]
+    
+    % Assi cartesiani
+    \draw[->, thick] (-1, 0) -- (6, 0) node[right] {$\theta$};
+    \draw[->, thick] (0, -0.5) -- (0, 4.5) node[above] {$\mathcal{L}(\theta)$};
 
+    % Curva della Likelihood (Parabola rivolta verso il basso)
+    % Vertice impostato in (3, 3.5)
+    \draw[thick, blue, domain=0.5:5.5, samples=100] 
+        plot (\x, {-0.4*(\x-3)*(\x-3) + 3.5});
 
+    % Indicazione del massimo (tangente orizzontale)
+    \draw[thick, red] (1.5, 3.5) -- (4.5, 3.5) 
+        node[right, text=black] {$\frac{d\mathcal{L}}{d\theta} = 0$};
+    
+    % Punto di massimo
+    \filldraw[red] (3, 3.5) circle (2pt);
 
+    % Proiezioni sugli assi
+    \draw[dashed, darkgray] (3, 3.5) -- (3, 0) node[below] {$\hat{\theta}$};
+    \draw[dashed, darkgray] (3, 3.5) -- (0, 3.5) node[left] {$\mathcal{L}_{max}$};
 
+\end{tikzpicture}
+\caption{Rappresentazione grafica della funzione di Likelihood $\mathcal{L}(\theta)$. Il metodo della massima verosimiglianza individua il valore stimato $\hat{\theta}$ in corrispondenza del picco della curva, dove la derivata prima si annulla.}
+\label{fig:likelihood_parabola}
+\end{figure}
 
+ Questo certe volte consente di ottenere un'equazione che si può risolvere analiticamente per ottenere $\hat{\theta}$, a volte invece bisogna ricorrere a soluzioni numeriche.
 
+\subsection{La Log-Likelihood}
+Spesso risulta scomodo lavorare con $\mathcal{L}$ e si preferisce utilizzare il suo logaritmo, di solito in base $e$. Essendo $\ln(\mathcal{L})$ una funzione monotona crescente con il suo argomento, il massimo di $\ln(\mathcal{L})$ si trova per i valori dei parametri che rendono massima la $\mathcal{L}$.
+Quindi di solito il problema diventa trovare i valori di $\theta$ per cui:
+\begin{equation}
+\frac{d(\ln \mathcal{L})}{d\theta} = 0
+\end{equation}
 
+\subsection{Esempio: Funzione Esponenziale}
+Un esempio semplice di applicazione del metodo del Maximum Likelihood è il caso di un processo la cui densità di probabilità è data da:
+\begin{equation}
+P(t ; \tau) = \frac{1}{\tau} e^{-t/\tau}
+\end{equation}
+e abbiamo visto che questo regola i tempi di attesa tra due eventi consecutivi, se gli eventi seguono la statistica di Poisson, cioè eventi casuali con media fissa. Per esempio i decadimenti radioattivi sono un esempio di questo tipo di fenomeno.
 
+Supponiamo quindi di aver accumulato $N$ misure dei tempi $t_i$ e vogliamo usarle per trovare $\hat{\tau}$ usando il metodo di ML.
+Dobbiamo innanzitutto trovare $\mathcal{L}$ che per definizione è data da:
+\begin{equation}
+\mathcal{L}(t_1, t_2, \dots, t_N ; \tau) = \prod_{i=1}^N P(t_i ; \tau) = \prod_{i=1}^N \frac{1}{\tau} e^{-t_i/\tau}
+\end{equation}
 
+Come detto, qui è comodo prendere il logaritmo così i prodotti diventano somme:
+\begin{align*}
+\ln \mathcal{L}(x_1, \dots, x_N ; \tau) &= \ln \left( \prod_{i=1}^N \frac{1}{\tau} e^{-t_i/\tau} \right) \\
+&= \sum_{i=1}^N \ln \left( \frac{1}{\tau} e^{-t_i/\tau} \right) \\
+&= \sum_{i=1}^N \left( -\ln \tau - \frac{t_i}{\tau} \right) \\
+&= -N \ln \tau - \sum_{i=1}^N \frac{t_i}{\tau}
+\end{align*}
 
+Di questa dobbiamo trovare il massimo derivando rispetto a $\tau$:
+\begin{align*}
+\frac{d\ln \mathcal{L}}{d\tau} &= \frac{d}{d\tau} \left( -N \ln \tau - \sum_i \frac{t_i}{\tau} \right) \\
+&= -N \frac{1}{\tau} - \sum_i t_i \left( -\frac{1}{\tau^2} \right) \\
+&= -\frac{N}{\tau} + \frac{\sum_i t_i}{\tau^2}
+\end{align*}
 
+La stima di $\tau$, $\hat{\tau}$, sarà data dai valori che soddisfano:
+\begin{equation}
+-\frac{N}{\hat{\tau}} + \sum_i \frac{t_i}{\hat{\tau}^2} = 0
+\end{equation}
+Raccogliamo a fattore comune:
+\begin{equation}
+\underbrace{\frac{N}{\hat{\tau}^2}}_{\text{sempre } > 0} \left( -\hat{\tau} + \frac{1}{N} \sum_i t_i \right) = 0
+\end{equation}
 
+Affinché l'espressione sia nulla, deve annullarsi il termine in parentesi:
+\begin{equation}
+-\hat{\tau} + \frac{1}{N} \sum_i t_i = 0 \implies \hat{\tau} = \frac{1}{N} \sum_{i=1}^N t_i
+\end{equation}
 
-
-
-
-
+Quindi la stima del valore atteso medio $\tau$ è data semplicemente dalla media aritmetica dei $t_i$.
 
 
 

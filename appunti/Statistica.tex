@@ -4117,12 +4117,184 @@ Affinché l'espressione sia nulla, deve annullarsi il termine in parentesi:
 
 Quindi la stima del valore atteso medio $\tau$ è data semplicemente dalla media aritmetica dei $t_i$.
 
+\subsection{PDF Gaussiane}
+Supponiamo che le densità di proabilità che descrivono le nostre misure siano gaussiane, cioè:
+\[
+P(x_i, \mu_i, \sigma_i) = \frac{1}{\sqrt{2\pi}\sigma_i}e^{-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}}
+\]
+allora la funzione di Likelihood è data da:
+\[
+\mathcal{L} = \prod_{i=1}^N P(x_i, \mu_i, \sigma_i) = \prod_{i=1}^N \frac{1}{\sqrt{2\pi}\sigma_i}e^{-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}} = 
+\frac{1}{(2\pi)^{N/2}} \prod_{i=1}^N \frac{1}{\sigma_i} e^{-\frac{1}{2} \sum_{i=1}^N \frac{(x_i-\mu_i)^2}{\sigma_i^2}}
+\]
+passando ai logaritmi:
+\[
+\ln \mathcal{L} = -\frac{N}{2} \ln(2\pi) - \sum_{i=1}^N \ln \sigma_i - \frac{1}{2} \sum_{i=1}^N \frac{(x_i-\mu_i)^2}{2\sigma_i^2}
+\]
+e massimizzando:
+\[
+\frac{d \ln \mathcal{L}}{d \mu} = \frac{d}{d\mu}\left[-\sum_i \frac{(x_i-\mu)^2}{2\sigma_i^2}\right] = \sum_i \frac{(x_i-\mu)}{\sigma_i^2} = 0
+\]
+allora 
+\[
+\sum_i \frac{(x_i-\mu_i)}{\sigma_i^2} = 0  \implies \sum_i \frac{x_i}{\sigma_i^2} = \hat{\mu} \sum_i \frac{1}{\sigma_i^2} 
+\]
+da cui 
+\[
+\hat{\mu} = \frac{\sum_i \frac{x_i}{\sigma_i^2}}{\sum_i \frac{1}{\sigma_i^2}}
+\]
+che è una media pesata, con pesi $w_i = 1/\sigma_i^2$.
 
+Mentre per la stima di con un $\sigma$ comune a tutte le misure, si ha:
+\[
+\frac{d \mathcal{L}}{d \mu} = \sum_i \frac{(x_i-\mu)}{\sigma^2} = 0 \implies \hat{\mu} = \frac{1}{N} \sum_i x_i
+\]
+in questo caso cerchiamo $\hat(\sigma)$
+\[
+\frac{d \ln (\mathcal{L})}{d \sigma} = \frac{d}{d\sigma}\left[-N \ln (\sigma) -\frac {1}{2 \sigma^2} \sum_i (x_i-\mu)^2\right] = -\frac{N}{\sigma} + \frac{1}{\sigma^3} \sum_i (x_i-\mu)^2 = 0
+\]
+e otteniamo:
+\[
+\hat{\sigma}^2 = \frac{1}{N} \sum_i (x_i-\mu)^2
+\]
+che è la stima della varianza baised. Ricordiamo che asintoticamente (per $N \to \infty$) questa stima coincide con quella non distorta. Questo "problema" è tipico delle 
+stime di $\sigma$ ottenute con il metodo ML. 
 
+In compenso, si può vedere che tali stime sono \textit{invarianti per trasformazione dei parametri}. Cioè, se ho un parametro $\theta$ e compiamo una trasformazione, è equivalente ricerare:
+\[
+f(\theta) = \hat{f}(\hat{\theta})
+\]
+in questo caso infatti:
+\[
+\frac{d \mathcal{L}}{d \theta}=\frac{d \mathcal{L}}{d f} \cdot \frac{d f}{d \theta} = 0
+\]
+il fattore $\frac{d f}{d \theta}$ è ciò che mi da il bias.
 
+Poichè anche le stime sono variabili aleatorie, posso cercare:
+\[
+\text{var}(\hat{\theta}) = \mathbb{E}[(\hat{\theta} - \mathbb{E}[\hat{\theta}])^2]
+\]
+in molti casi conosco già questa quantità, infatti spesso \footnote{basti vedere il caso della distribuzione esponenziale}:
+\[
+\hat{\mu} = \bar{x} \implies \text{var}(\hat{\mu})=\frac{\sigma^2}{N}
+\]
+Altri casi in cui si conosce è per esempio durante simulazioni Monte Carlo: supponendo di poter stimare $\hat{\tau}$, come posso agire se non riesco a calcolare $\text{var}(\hat{\tau})$. \\
 
+Agisco nel seguente modo: compio M volte la simulazione della media di $\tau$, le inserisco in un grafico (che per TLC) avrà distribuzione normale, da cui trovo $\sigma^2$ e lo considero come stima della varianza.\\
 
+Oltrè a ciò posso attuare la \textit{diseguaglianza di Cramér-Rao} che fornisce un limite inferiore alla varianza di una stima, comuqnue essa sia calcolata (anche con 
+metodi differenti dal ML):
+\[
+\text{var}(\hat{\theta})= \frac{1}{ - \mathbb{E}\left[ \left( \frac{d^2 \ln \mathcal{L}}{d \theta^2} \right) \right]}
+\]
+Facendo però attenzione che richiediamo che $\hat{\theta}$ sia una stima unbiased, cioè che $\mathbb{E}[\hat{\theta}] = \theta_v$.\\ 
 
+Inoltre, essendo questo il limite inferiore, quando si riesce ad ottenere una stima che soddisfa questa l'uguaglianza, allora possiamo affermare che la stima fatta è efficiente.
+
+\begin{example}
+Caso della media aritmetica:
+ 
+Supponiamo $x_i$ con stessa distrbuzione gaussiana:
+\[
+\frac{d \ln (\mathcal{L})}{d \mu} = \frac{\sum_i x_i}{\sigma^2} - \frac{N \mu}{\sigma^2} = 0 \implies \hat{\mu} = \frac{1}{N} \sum_i x_i
+\]
+\[
+\frac{d^2 \ln (\mathcal{L})}{d \mu^2} = -\frac{N}{\sigma^2} \implies \text{var}(\hat{\mu}) = \frac{\sigma^2}{N}
+\]
+Inoltre poichè $\mathbb{E}\left[d^2 \ln (\mathcal{L})\right] = - \frac{N}{\sigma^2}$, posso affermare che la $\hat{\mu}$ sia la stima più efficente possibile.
+\end{example}
+\begin{example}
+Per la distribuzione espoenenziale, invece, abbiamo:
+\[
+P(t_i, \tau)= \frac{1}{\tau} e^{-t_i/\tau} \implies \ln(\mathcal{L})= -N \ln \tau - \frac{1}{\tau} \sum_i t_i \implies \frac{d \ln(\mathcal{L})}{d \tau} = -\frac{N}{\tau} + \frac{1}{\tau^2} \sum_i t_i
+\implies \frac{d^2 \ln(\mathcal{L})}{d \tau^2} = \frac{N}{\tau^2} - \frac{2}{\tau^3} \sum_i t_i
+\]
+Calcoliamo il valore atteso della derivata seconda:
+\[
+\mathbb{E}\left[\frac{d^2 \ln(\mathcal{L})}{d \tau^2}\right] = \frac{N}{\tau^2} - \frac{2}{\tau^3} \sum_i \mathbb{E}[t_i] = \frac{N}{\tau^2} - \frac{2}{\tau^3} N \tau = -\frac{N}{\tau^2}
+\]
+dove abbiamo usato che $\hat{\tau} = \bar{t} \rightarrow \mathbb{E}[\hat{\tau}] = \mathbb{E}[\bar{t}] = \tau$ per la distribuzione esponenziale. 
+
+Nuovamente: la stima di $\tau$ ottenuta con il metood ML è efficente.
+\end{example}
+
+\textit{Dimostrazione della diseguaglianza di Cramér-Rao:}
+
+Dividiamo la dimostrazione in due passaggi:
+\begin{itemize}
+    \item PARTE 1: dimostriamo che la stima non è distrota: $\mathbb{E}[\hat{\theta}] = \theta$
+Devo calcolare:
+\[
+\displaystyle  \int_{-\infty}^{\infty}dx_1\int_{-\infty}^{\infty}dx_2 \dots \int_{-\infty}^{\infty}dx_n \hat{\theta} \mathcal{L}(x_1, x_2, \dots, x_n ; \theta) = \theta
+\]
+che riscriviamo come:
+\[
+\displaystyle  \int_{-\infty}^{\infty}d\vec{x} \hat{\theta} \mathcal{L}(\vec{x} ; \theta) = \theta
+\]
+Calcolo la derivata rispetto a $\theta$ di ambo i membri:
+\[
+\displaystyle \int_{-\infty}^{\infty}d\vec{x} \hat{\theta} \frac{d \mathcal{L}}{d \theta} = 1
+\] 
+utilizzando:
+\[
+\frac{d \ln{\mathcal{L}}}{d\theta} = \frac{1}{\mathcal{L}}\frac{d \mathcal{L}}{d \theta} 
+\]
+ottengo:
+\[
+\displaystyle \int_{-\infty}^{\infty}d\vec{x} \hat{\theta} \frac{d {\ln (\mathcal L)}}{d \theta} \mathcal{L}(\vec{x} ; \theta)= 1
+\]
+
+\item PARTE 2: utilizziamo le seguenti condizioni:
+\[
+\displaystyle  \int_{-\infty}^{\infty}d\vec{x} \mathcal{L}(\vec{x} ; \theta) = 1
+\hspace{1cm}
+\displaystyle  \int_{-\infty}^{\infty}d\vec{x} \frac{d \ln(\mathcal{L})}{d \theta} \mathcal{L}(\vec{x} ; \theta) = 0
+\hspace{1cm}
+\displaystyle \int_{-\infty}^{\infty}d\vec{x} \frac{d {\ln (\mathcal L)}}{d \theta} \mathcal{L}(\vec{x} ; \theta) = 0
+\]
+infine, sottraendo questa espressione da quella ottenuta nella parte 1 (e anche i risultati), ottengo:
+\[
+\displaystyle \int_{-\infty}^{\infty}d\vec{x} \hat{\theta} \frac{d {\ln (\mathcal L)}}{d \theta} \mathcal{L}(\vec{x} ; \theta) - \int_{-\infty}^{\infty}d\vec{x} \theta \frac{d {\ln (\mathcal L)}}{d \theta} \mathcal{L}(\vec{x} ; \theta) = 1
+\]
+unendo i due integrali:
+\[
+\displaystyle \int_{-\infty}^{\infty}d\vec{x} (\hat{\theta} - \theta) \frac{d {\ln (\mathcal L)}}{d \theta} \mathcal{L}(\vec{x} ; \theta) = 1
+\]
+utilizzando la \textit{disuguaglianza di Cauchy-Schwarz}:
+\[
+\left\{\int_{a}^{b} f(x) g(x) \, dx\right\}^2 \leq \left\{\int_{a}^{b} f(x)^2 \, dx\right\}\left\{\int_{a}^{b} g(x)^2 \, dx\right\}
+\]
+con:
+\[
+f(\vec{x})=(\hat{\theta}-\theta)\sqrt{\mathcal{L}(\vec{x},\theta)} \hspace{1cm} g(\vec{x}) = \frac{d \ln(\mathcal{L})}{d \theta} \sqrt{\mathcal{L}(\vec{x},\theta)}
+\]
+allora:
+\[
+\displaystyle 1 \leq \underbrace{{\int_{-\infty}^{\infty}d\vec{x} (\hat{\theta}-\theta)^2 \mathcal{L}(\vec{x},\theta)}}_{\text{var}(\hat{\theta})} \cdot \underbrace{{\int_{-\infty}^{\infty}d\vec{x} \left( \frac{d \ln(\mathcal{L})}{d \theta} \right)^2 \mathcal{L}(\vec{x},\theta)}}_{\mu}
+\]
+allora si ha:
+\[
+\text{var}(\hat{\theta})\cdot\mathbb{E}(\frac{d \ln(\mathcal{L})}{d \theta}^2) \geq 1 \implies \text{var}(\hat{\theta}) \geq \frac{1}{\mathbb{E}\left[ \left( \frac{d \ln(\mathcal{L})}{d \theta} \right)^2 \right]}
+\]
+\end{itemize}
+Generalmente indichiamo il denominatore come \textit{informazione di Fisher} $I(\theta)$.
+
+Derivando nuovamente $\displaystyle  \int_{-\infty}^{\infty}d\vec{x} \frac{d \ln(\mathcal{L})}{d \theta} \mathcal{L}(\vec{x} ; \theta) = 0 $:
+\[
+\displaystyle  \int_{-\infty}^{\infty}d\vec{x} \frac{d^2 \ln(\mathcal{L})}{d \theta^2} \mathcal{L}(\vec{x} ; \theta) + \int_{-\infty}^{\infty}d\vec{x} \left( \frac{d \ln(\mathcal{L})}{d \theta} \right)^2 \mathcal{L}(\vec{x} ; \theta) = 0
+\]
+ottengo:
+\[
+\displaystyle  \mathbb{E}\left[\frac{d^2 \ln(\mathcal{L})}{d\theta^2}\right] = \int_{-\infty}^{\infty}d\vec{x} \frac{d^2 \ln(\mathcal{L})}{d \theta^2} \mathcal{L}(\vec{x} ; \theta)  = - \int_{-\infty}^{\infty}d\vec{x} \left( \frac{d \ln(\mathcal{L})}{d \theta} \right)^2 \mathcal{L}(\vec{x} ; \theta) = -\mathbb{E}\left[ \left( \frac{d \ln(\mathcal{L})}{d \theta} \right)^2 \right]
+\]
+ovvero, nella forma più usuale:
+\[
+\text{var}(\hat{\theta}) \geq \frac{1}{\mathbb{E}\left[\frac{d^2 \ln(\mathcal{L})}{d\theta^2}\right]}
+\]
+Se invece la quantità e biased, cioè: $\hat{\theta} = \theta + b(\theta)$, il teorema di Cramér-Rao si modifica in:
+\[
+\text{var}(\hat{\theta}) \geq \frac{1}{(1 + \frac{d b(\theta)}{d\theta})^2\mathbb{E}\left[\frac{d^2 \ln(\mathcal{L})}{d\theta^2}\right]}
+\]
 
 
 
@@ -4134,7 +4306,7 @@ Quindi la stima del valore atteso medio $\tau$ è data semplicemente dalla media
 
 \section{da integrare dopo}
 
-\ripasso{ Proprietà generali e Propagazione degli Errori}
+\ripasso{Proprietà generali e Propagazione degli Errori}
 
 In questa sezione richiamiamo alcuni concetti generali sulle funzioni di distribuzione a più variabili e sulla propagazione degli errori, utili per il prosieguo.
 

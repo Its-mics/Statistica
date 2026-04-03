@@ -4198,11 +4198,11 @@ Un grande vantaggio del metodo ML, in compenso, è che si può dimostrare che ta
 \end{equation}
 Per esempio, nel calcolo precedente saremmo arrivati allo stesso risultato se invece di calcolare $\frac{\partial \mathscr{L}}{\partial \sigma}$ avessimo calcolato $\frac{\partial \mathscr{L}}{\partial \sigma^2}$.
 
-Questa è una proprietà molto comoda, che in generale non si applica a tutte le stime. Da questa proprietà deriva il fatto che la stima di ML può risultare distorta: la stima di $f(\theta)$ è legata alla stima di $\theta$ dalla derivata $df/d\theta$, cioè:
+Questa è una proprietà molto comoda, che in generale non si applica a tutte le stime. Da questa proprietà deriva spesso il fatto che la stima di ML può risultare distorta: la stima di $f(\theta)$ è legata alla stima di $\theta$ dalla derivata $df/d\theta$, cioè \footnote{in generale questo avviene quando $f$ non è lineare, infatti dalla \textit{diseguaglianza di Jensen}: $\mathbb{E}[f(\theta)] \neq f(\mathbb{E}[\theta])$}:
 \begin{equation}
     \frac{\partial \mathscr{L}}{\partial \theta} = \frac{\partial \mathscr{L}}{\partial f} \frac{df}{d\theta}
 \end{equation}
-L'aggiunta di questo $df/d\theta$ fa sì che se una stima $\hat{\theta}$ non è distorta, l'altra $\widehat{f(\theta)}$ potrebbe esserlo.
+L'aggiunta di questo $df/d\theta$ fa sì che se una stima $\hat{\theta}$ non è distorta, l'altra ${f(\hat \theta)}$ potrebbe esserlo.
 
 \subsection{Efficienza e Disuguaglianza di Cramér-Rao}
 

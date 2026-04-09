@@ -4395,31 +4395,84 @@ Si noti che il primo passaggio della dimostrazione sfrutta il fatto che la stima
 \newpage
 
 \lezione{Rilevatore Geiger e studio dei dati}{09 Aprile 2026}
-Tutte le prossime esercitazioni saranno dovuti dall'analisi di dati provenienti da un contatore Geiger.
-Questo serve ad analizzare i \textit{decadimenti gamma}, che seguono la cui p.d.f. è data da una \textit{Distribuzione di Poisson}.\\
-Si è costruito un circuito di rilevamento per quanto rigurda il rilevamnto delle particelle ionizzanti attraverso la misura dell'impulso che si genera all'interno del tubo Geiger. 
-Questo viene poi convertito in digitale attraverso un arduino (due), che fa in modo di avere un circuito acceso/spento attraverso la quale misura la differenza di tempo. L'arduino lavora a $48GHz$.\\
+I dati delle prossime esercitazioni saranno dovuti dall'analisi di dati provenienti da un contatore Geiger.
+Esso serve ad analizzare i \textit{decadimenti gamma}, la cui distribuzione è data da una \textit{Poissoniana}.\\
+Per il loro rivelamento si è usato un tubo Geiger, che è un cilindro di metallo con all'interno un gas a bassa pressione. Quando una particella ionizzante attraversa il tubo, ionizza il gas e genera una scarica elettrica che viene rilevata da un circuito elettronico.
+Il segnale così rilevato viene poi convertito in digitale attraverso un arduino, il quale, tramite l'accensione e lo spegnimento del circuito, misura la differenza di tempo fra 2 eventi. L'arduino lavora a $48GHz$.\\
 
-
-Abbiamo visto la scorsa volta la stima della varianza del mio paramentro è dato dalla disuguaglianza di Schwarz \refeq{eq:var_like}.
-
-Per $ N \rightarrow \infty$, allora vale:
+\section{Varianza della stima}
+Si è visto chela stima della varianza del mio paramentro è dato dalla disuguaglianza di Cramer-Rao \refeq{eq:var_like}.
+Inanziatutto, notiamo che, se supponiamo di avere $N$ misure indipendenti e che la distribuzione di ogni $x_i$ sia data da $P(x_i; \theta)$, allora la funzione di Likelihood è data da:
 \begin{equation}
-    var(\hat{\theta}) = - \frac{1}{\frac{d^2 ln \mathscr{L}}{d \theta^2} }
+    \mathscr{L}(\theta) = \prod_{i=1}^{N} P(x_i; \theta)    \rightarrow \ln \mathscr{L}(\theta) = \sum_{i=1}^{N} \ln P(x_i; \theta) = N \cdot \ln P(x_i; \theta)
 \end{equation}
-Questo mi porta a suppore che, anche non nel limite di N, ho che:
+allora dalla \refeq{eq:var_like} abbiamo che la varianza decresce come $1/N$.
+
+Si può vedere che quando siamo nel limite di $ N \rightarrow \infty$, allora vale:
 \begin{equation}
-     var(\hat{\theta}) \approx  - \frac{1}{\frac{d^2 ln \mathscr{L}}{d \theta^2} }
+    var(\hat{\theta}) = - \frac{1}{\frac{d^2 ln \mathscr{L}}{d \theta^2} \left. \right|_{\theta = \theta_v} }
+\end{equation}
+Ma poichè $\theta_v$ è ignoto, lo approssimo con $\hat{\theta}$, e quindi si ottiene:
+\begin{equation}
+     var(\hat{\theta}) \approx  - \frac{1}{\frac{d^2 ln \mathscr{L}}{d \theta^2} \left. \right|_{\theta = \hat{\theta}} }
 \end{equation}
 
-Se vado ora a sviluppare $\ln(\mathscr{L}(\theta))$ intorno a $\hat{\theta}$, allora vado a trovare:
+Se vado ora a sviluppare $\ln(\mathscr{L}(\theta))$ intorno a $\hat{\theta}$, allora vado a trovare \footnote{la derivata prima si annulla per definizione di $\hat{\theta}$}:
 \begin{equation*}
-    \ln(\mathscr{L}(\theta))= \ln(\mathscr{L}(\hat{\theta})) - \frac{1}{2}\frac{{(\theta - \hat{\theta})}^2}{var(\hat{\theta})}
+    \ln(\mathscr{L}(\theta)) \approx \ln(\mathscr{L}(\hat{\theta})) - \frac{1}{2}\frac{{(\theta - \hat{\theta})}^2}{var(\hat{\theta})}
 \end{equation*}
-Questa mi genera una parabola dell'intorno di $\hat{\theta}$, dunque posso andare a cercare un $\tilde{\theta}$, tale che valga: 
-\begin{equation*}
+Essa è una una parabola dell'intorno di $\hat{\theta}$, dunque posso andare a cercare un $\tilde{\theta}$, tale che valga: 
+\begin{equation}
     \frac{{(\tilde{\theta} - \hat{\theta})}^2}{var(\hat{\theta})}= 1 \; \rightarrow \; \tilde{\theta}= \hat{\theta} \pm \sigma_{\hat{\theta}}
+    \label{eq:appunto}
+\end{equation}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.2]
+    
+    % Assi cartesiani
+    \draw[->, thick] (-1, 0) -- (6, 0) node[right] {$\theta$};
+    \draw[->, thick] (0, -0.5) -- (0, 4.5) node[above] {$\mathscr{L}(\theta)$};
+
+    % Curva della Likelihood (Parabola rivolta verso il basso)
+    % Vertice impostato in (3, 3.5)
+    \draw[thick, blue, domain=0.5:5.5, samples=100] 
+        plot (\x, {-0.4*(\x-3)*(\x-3) + 3.5});
+
+    % Indicazione del massimo (tangente orizzontale)
+    \draw[thick, red] (1.5, 3.5) -- (4.5, 3.5) 
+        node[right, text=black] {$\frac{d\mathscr{L}}{d\theta} = 0$};
+    
+    \draw[thick, red] (0.5, 2.5) -- (5.5, 2.5) 
+        node[right, text=black] {$\mathscr{L}_{max}-\frac{1}{2}$};
+
+    % Punto di massimo
+    \filldraw[red] (3, 3.5) circle (2pt);
+
+    % Proiezioni sugli assi
+    \draw[dashed, darkgray] (3, 3.5) -- (3, 0) node[below] {$\hat{\theta}$};
+    \draw[dashed, darkgray] (3, 3.5) -- (0, 3.5) node[left] {$\mathscr{L}_{max}$};
+
+\end{tikzpicture}
+\label{fig:likelihood_parabola}
+\end{figure}
+
+\subsection{Approfondimento dal Rotondi \refeq{eq:appunto}}
+Consideriamo l'espansione di Taylor eseguita in precedenza:
+\begin{equation*}
+    \ln(\mathscr{L}(\theta)) \approx \ln(\mathscr{L}(\hat{\theta})) - \frac{1}{2}\frac{{(\theta - \hat{\theta})}^2}{var(\hat{\theta})}
 \end{equation*}
+poichè sappiamo che la funzione ML è invariante sotto riparametrizzazzioni di $\theta$, allora cerchiamo una funzione $\nu(\theta)$ tale che $\frac{1}{var(\hat{\theta})}= 1$ 
+
+Possiamo allora riformulare l'espansione di Taylor come:
+\begin{equation*}
+       2 \left[\ln(\mathscr{L}(\hat{\nu})) - \ln(\mathscr{L}(\nu)) \right] \approx \frac{{( \hat{\nu} -\nu)}^2}{var(\hat{\nu})}
+\end{equation*}
+poichè per N grande $\hat{\nu} \sim \mathcal{N}(\nu,1)$ allora ho l'intervallo di confidenza del $68.3\%$ per $\hat{\nu} \pm 1$, da cui risolvendo per $\nu$:
+\begin{equation*}
+     \ln(\mathscr{L}(\hat{\nu})) - \ln(\mathscr{L}(\nu)) = 0.5
+\end{equation*}
+
 
 \subsection{Likelihood di più parametri}
 Cosideriamo un set di $N$ misure, dove vado a ricercare $n$ parametri. Per trovare questi paramentri:

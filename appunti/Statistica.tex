@@ -4220,7 +4220,7 @@ Un'alternativa, qualora il calcolo analitico risulti complesso (ad esempio suppo
 
 Oltre a questi approcci, si può sfruttare la \textbf{disuguaglianza di Cramér-Rao}. Questo importante teorema fornisce un \textit{limite inferiore} (lower bound) teorico alla varianza di una stima, indipendentemente dal metodo con cui essa è stata calcolata (anche se differisce dal ML):
 \begin{equation}
-    \boxed{ \mathrm{Var}(\hat{\theta}) \geq \frac{1}{-\mathbb{E}\left[ \frac{\partial^2 \ln \mathscr{L}}{\partial \theta^2} \right]} }
+    \boxed{ \mathrm{Var}(\hat{\theta}) \geq \frac{1}{-\mathbb{E}\left[ \frac{\partial^2 \ln \mathscr{L}}{\partial \theta^2} \right]} } \label{eq:var_like}
 \end{equation}
 Per applicare questa disuguaglianza bisogna fare attenzione a un requisito fondamentale: è richiesto che $\hat{\theta}$ sia una stima \textit{unbiased} (non distorta), cioè che il suo valore atteso coincida col parametro vero, $\mathbb{E}[\hat{\theta}] = \theta_{vero}$.
 
@@ -4392,12 +4392,60 @@ Si noti che il primo passaggio della dimostrazione sfrutta il fatto che la stima
     \left( 1 + \frac{\partial b}{\partial \theta} \right)^2
 \end{equation}
 
-
-
-
-
-
 \newpage
+
+\lezione{Rilevatore Geiger e studio dei dati}{09 Aprile 2026}
+Tutte le prossime esercitazioni saranno dovuti dall'analisi di dati provenienti da un contatore Geiger.
+Questo serve ad analizzare i \textit{decadimenti gamma}, che seguono la cui p.d.f. è data da una \textit{Distribuzione di Poisson}.\\
+Si è costruito un circuito di rilevamento per quanto rigurda il rilevamnto delle particelle ionizzanti attraverso la misura dell'impulso che si genera all'interno del tubo Geiger. 
+Questo viene poi convertito in digitale attraverso un arduino (due), che fa in modo di avere un circuito acceso/spento attraverso la quale misura la differenza di tempo. L'arduino lavora a $48GHz$.\\
+
+
+Abbiamo visto la scorsa volta la stima della varianza del mio paramentro è dato dalla disuguaglianza di Schwarz \refeq{eq:var_like}.
+
+Per $ N \rightarrow \infty$, allora vale:
+\begin{equation}
+    var(\hat{\theta}) = - \frac{1}{\frac{d^2 ln \mathscr{L}}{d \theta^2} }
+\end{equation}
+Questo mi porta a suppore che, anche non nel limite di N, ho che:
+\begin{equation}
+     var(\hat{\theta}) \approx  - \frac{1}{\frac{d^2 ln \mathscr{L}}{d \theta^2} }
+\end{equation}
+
+Se vado ora a sviluppare $\ln(\mathscr{L}(\theta))$ intorno a $\hat{\theta}$, allora vado a trovare:
+\begin{equation*}
+    \ln(\mathscr{L}(\theta))= \ln(\mathscr{L}(\hat{\theta})) - \frac{1}{2}\frac{{(\theta - \hat{\theta})}^2}{var(\hat{\theta})}
+\end{equation*}
+Questa mi genera una parabola dell'intorno di $\hat{\theta}$, dunque posso andare a cercare un $\tilde{\theta}$, tale che valga: 
+\begin{equation*}
+    \frac{{(\tilde{\theta} - \hat{\theta})}^2}{var(\hat{\theta})}= 1 \; \rightarrow \; \tilde{\theta}= \hat{\theta} \pm \sigma_{\hat{\theta}}
+\end{equation*}
+
+\subsection{Likelihood di più parametri}
+Cosideriamo un set di $N$ misure, dove vado a ricercare $n$ parametri. Per trovare questi paramentri:
+\begin{equation*}
+    \frac{\partial \mathscr{L}(x_1, x_2, \dots, x_N ; \theta_1, \theta_2, \dots)}{\partial \theta_i} \; i= 1,2, \dots
+\end{equation*}
+Per $N \rightarrow \infty$, allora la funzione di Likelihood segue una gaussiana $n$ dimensionale. 
+
+\subsection{Binned ML}
+Posso considerare allora il caso dei conteggi in un determinato bin, che sono distribuite come: $x_i \thicksim P(x, \theta)$. 
+Il valore di aspettazione di n conteggi in un determinato bin è allora dato da:
+\begin{equation}
+    E[n_i]= Np_i=N P(\bar{x_i}, \theta) \Delta x= \nu_i(\theta)
+\end{equation}
+La mia funzione di Likelihood sarà dunque:
+\begin{equation}
+    \mathscr{L}(n_1, n_2, \dots, n_N ; \theta)= \frac{N!}{n_1! \dots n_m1}\prod_{i=1}^{m} p_{i}^{n_i} =  \frac{N!}{n_1! \dots n_m1}\prod_{i=1}^{m} {[\frac{{\nu(\theta)}_{i}}{N}]}^{n_i} 
+\end{equation}
+
+\begin{equation}
+    \ln(\mathscr{L}(n_1, n_2, \dots, n_N ; \theta))= \sum_{i}^{m} n_i \ln(\frac{{\nu_{i}(\theta)}}{N}) + cost
+\end{equation}
+
+\subsection{Extended ML}
+
+
 
 
 

@@ -4399,6 +4399,20 @@ I dati delle prossime esercitazioni saranno dovuti dall'analisi di dati provenie
 Esso serve ad analizzare i \textit{decadimenti gamma}, la cui distribuzione è data da una \textit{Poissoniana}.\\
 Per il loro rivelamento si è usato un tubo Geiger, che è un cilindro di metallo con all'interno un gas a bassa pressione. Quando una particella ionizzante attraversa il tubo, ionizza il gas e genera una scarica elettrica che viene rilevata da un circuito elettronico.
 Il segnale così rilevato viene poi convertito in digitale attraverso un arduino, il quale, tramite l'accensione e lo spegnimento del circuito, misura la differenza di tempo fra 2 eventi. L'arduino lavora a $48GHz$.\\
+\subsection{Esercitazione 4}
+\begin{enumerate}
+    \item Utilizziamo i dati forniti e grafichiamo l'istrogramma dei tempi d'attesa;
+    \item Utilizziamo il metodo ML per calcolare analiticamente la stima di $\tau$ ($\hat{\tau}=\bar{t}$) e la sua varianza ($\sigma_{\hat{\tau}}=\sqrt{\frac{{\bar{t}}}{n}}$, dove $n$ e' il numero di misure);
+    \item Verifichiamo col metodo grafico, spiegato di seguito, se otteniamo valori compatibili. Ricordando che plottando la distribuzione dobbiamo graficare entro $2/3 \sigma_{\hat{\tau}}$, altrimenti non dovremo il massimo;
+    \item Attuiamo una stima Monte-Carlo per ricavare $\sigma_{\hat{\tau}}$:
+    \begin{enumerate}
+        \item simulo $n$ (uguale a quello dei dati) eventi $\frac{1}{\tau}e^{\frac{-t}{\tau}}$ con $\tau=\hat{\tau}$;
+        \item ripeto per $m$ volte in modo da avere $m$ stime di $\hat{\tau}$;
+        \item costruisco un grafico con le $m$ stime, mi aspetto una gaussiana centrata in $\hat{\tau}$ e con deviazione standard dato da $ \sum_i{\frac{(\hat{\tau}_i - \hat{\tau})^2}{n}}$, e dovrei trovare che 
+                quest'ultimo è compatibile con i $\sigma_{\hat{\tau}}$ trovati prima;
+    \end{enumerate}
+\end{enumerate}
+
 
 \section{Varianza della stima}
 Si è visto chela stima della varianza del mio paramentro è dato dalla disuguaglianza di Cramer-Rao \refeq{eq:var_like}.
@@ -4421,7 +4435,7 @@ Se vado ora a sviluppare $\ln(\mathscr{L}(\theta))$ intorno a $\hat{\theta}$, al
 \begin{equation*}
     \ln(\mathscr{L}(\theta)) \approx \ln(\mathscr{L}(\hat{\theta})) - \frac{1}{2}\frac{{(\theta - \hat{\theta})}^2}{var(\hat{\theta})}
 \end{equation*}
-Essa è una una parabola dell'intorno di $\hat{\theta}$, dunque posso andare a cercare un $\tilde{\theta}$, tale che valga: 
+Essa è una una parabola dell'intorno di $\hat{\theta}$, ponendo $\tilde{\theta}$, tale che valga: 
 \begin{equation}
     \frac{{(\tilde{\theta} - \hat{\theta})}^2}{var(\hat{\theta})}= 1 \; \rightarrow \; \tilde{\theta}= \hat{\theta} \pm \sigma_{\hat{\theta}}
     \label{eq:appunto}
@@ -4457,7 +4471,7 @@ Essa è una una parabola dell'intorno di $\hat{\theta}$, dunque posso andare a c
 \label{fig:likelihood_parabola}
 \end{figure}
 
-\subsection{Approfondimento dal Rotondi \refeq{eq:appunto}}
+\subsubsection{Approfondimento dal Rotondi sull' equazione \refeq{eq:appunto}}
 Consideriamo l'espansione di Taylor eseguita in precedenza:
 \begin{equation*}
     \ln(\mathscr{L}(\theta)) \approx \ln(\mathscr{L}(\hat{\theta})) - \frac{1}{2}\frac{{(\theta - \hat{\theta})}^2}{var(\hat{\theta})}
@@ -4466,42 +4480,67 @@ poichè sappiamo che la funzione ML è invariante sotto riparametrizzazzioni di 
 
 Possiamo allora riformulare l'espansione di Taylor come:
 \begin{equation*}
-       2 \left[\ln(\mathscr{L}(\hat{\nu})) - \ln(\mathscr{L}(\nu)) \right] \approx \frac{{( \hat{\nu} -\nu)}^2}{var(\hat{\nu})}
+       2 \left[\ln(\mathscr{L}(\hat{\nu})) - \ln(\mathscr{L}(\nu)) \right] \approx ( \hat{\nu} -\nu)^2
 \end{equation*}
-poichè per N grande $\hat{\nu} \sim \mathcal{N}(\nu,1)$ allora ho l'intervallo di confidenza del $68.3\%$ per $\hat{\nu} \pm 1$, da cui risolvendo per $\nu$:
+poichè per N grande $\hat{\nu} \sim \mathcal{N}(\nu,1)$ allora ho l'intervallo di confidenza del $68.3\%$ (1$\sigma$) per $\hat{\nu} \pm 1$, da cui risolvendo per $\nu$:
 \begin{equation*}
      \ln(\mathscr{L}(\hat{\nu})) - \ln(\mathscr{L}(\nu)) = 0.5
 \end{equation*}
 
-
 \subsection{Likelihood di più parametri}
-Cosideriamo un set di $N$ misure, dove vado a ricercare $n$ parametri. Per trovare questi paramentri:
+Cosideriamo un set di $N$ misure indipendenti, la cui distirbuzione dipende da $n$ parametri $\theta_1, \theta_2, \dots, \theta_n$. Per trovare questi parametri:
 \begin{equation*}
-    \frac{\partial \mathscr{L}(x_1, x_2, \dots, x_N ; \theta_1, \theta_2, \dots)}{\partial \theta_i} \; i= 1,2, \dots
+    \frac{\partial \mathscr{L}(x_1, x_2, \dots, x_N ; \theta_1, \theta_2, \dots, \theta_n)}{\partial \theta_i} \; i= 1,2, \dots, n
 \end{equation*}
-Per $N \rightarrow \infty$, allora la funzione di Likelihood segue una gaussiana $n$ dimensionale. 
+Il quale è un sistema di $n$ equazioni, la stima dei parametri si trova trovando le $n$ incognite.
 
+Si può dimostrare che per $N \rightarrow \infty$ la funzione di Likelihood tende ad una gaussiana $n$ dimensionale. 
+
+In questo caso otterremo una matrice di covarianza $V$ che è data da, in analogia con la \refeq{eq:var_like}:
+\begin{equation*}
+ V^{-1} = cov(\theta_i, \theta_j) = - \mathbb{E}\left[\frac{\partial^2}{\partial \theta_i \partial \theta_j}\right] \approx - \left[ \frac{\partial^2 \ln \mathscr{L}}{\partial \theta_i \partial \theta_j}\left.\right|_{\theta={\hat{\theta}}} \right]
+\end{equation*}
+Nel caso $n=2$ otteniamo un ellisse (se selezioniamo la superfice di livello $\ln{\mathscr{L}}=\ln{\mathscr{L}}_{max}-\frac{1}{2}$).
 \subsection{Binned ML}
-Posso considerare allora il caso dei conteggi in un determinato bin, che sono distribuite come: $x_i \thicksim P(x, \theta)$. 
-Il valore di aspettazione di n conteggi in un determinato bin è allora dato da:
-\begin{equation}
-    E[n_i]= Np_i=N P(\bar{x_i}, \theta) \Delta x= \nu_i(\theta)
-\end{equation}
-La mia funzione di Likelihood sarà dunque:
-\begin{equation}
-    \mathscr{L}(n_1, n_2, \dots, n_N ; \theta)= \frac{N!}{n_1! \dots n_m1}\prod_{i=1}^{m} p_{i}^{n_i} =  \frac{N!}{n_1! \dots n_m1}\prod_{i=1}^{m} {[\frac{{\nu(\theta)}_{i}}{N}]}^{n_i} 
-\end{equation}
+In generale calcolare la funzione di Likelihood per $N$ misure può essere complicato, soprattutto se $N$ è grande. Usiamo quindi un approccio alternativo, detto \textbf{Binned ML}.
 
+Consideriamo il caso di $n$ misure che sono distribuite egualmente come: $x_i \thicksim P(x, \theta)$. 
+L'idea è di graficare queste misure in un istrogramma e lavorare con i conteggi $n_i$ in ogni bin.
+Il valore di aspettazione di $n$ conteggi in un determinato bin è allora dato da:
+\begin{equation}
+    E[n_i]= Np_i \simeq N P(\bar{x_i}, \theta) \Delta x= \nu_i(\theta) \label{eq_E}
+\end{equation} 
+La mia funzione di Likelihood sarà una \textit{multinomiale}, ovvero (utilizzando la \eqref{eq_E}):
+\begin{equation}
+    \mathscr{L}(n_1, n_2, \dots, n_N ; \theta)= \frac{N!}{n_1! \dots n_m!}\prod_{i=1}^{m} p_{i}^{n_i} =  \frac{N!}{n_1! \dots n_m1}\prod_{i=1}^{m} {[\frac{{\nu(\theta)}_{i}}{N}]}^{n_i} 
+\end{equation}
+dove abbiamo $n_m$ possibili risultati (bin) e si vuole conoscere quanti eventi $n_1, n_2, \dots, n_m$ si sono verificati rispettivamente, su un totale di $N$ estrazioni. Passando ai lorgaritmi, otteniamo:
 \begin{equation}
     \ln(\mathscr{L}(n_1, n_2, \dots, n_N ; \theta))= \sum_{i}^{m} n_i \ln(\frac{{\nu_{i}(\theta)}}{N}) + cost
 \end{equation}
+dove i termini costanti non dipendono da $\theta$ e quindi non influenzano la sua stima.
+
+Poichè tale funzione di Likelihood risulta complicata da calcolare, utilizziamo il metodo grafico per ricavare $\hat{\theta}$ e $\sigma_{\hat{\theta}}$:
 
 \subsection{Extended ML}
-
-
-
-
-
+In questo caso consideriamo come variabile aletoria anche il numero di conteggi $N$. 
+Definiamo allora una nuova funzione di Likelihood, detta \textbf{Extended ML}, che è data da:
+\begin{equation}   
+ \mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu)= e^{-\nu} \cdot \frac{\nu^N}{N!} \prod_{i=1} P(x_i; \theta) 
+\end{equation}
+passando ai logaritmi, otteniamo:
+\begin{equation}
+    \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu))= \sum_i \ln (\nu P(x_i; \theta)) -\nu 
+\end{equation}
+e ritorniamo nel caso della funzione di Likelihood dipendente da 2 parametri. Nel caso in cui $\nu$ e $\theta$ siano
+indipendenti, ottengo:
+\[
+\frac{\partial  \ln(\mathscr{L}^{ext})}{\partial \nu} = \frac{N}{\nu} - 1 = 0 \; \rightarrow \; \hat{\nu} = N
+\]
+L'utilità di questa nuova funzione di Likelihood traspare quando abbiamo due tipologie di eventi: $N_f$ eventi di fondo e $N_s$ eventi di segnale, da cui si ottiene una Likelihood dipendente da 4 parametri:
+\begin{equation}
+ \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu_f, \nu_s))= (v_f + v_s) \sum_i \ln (\frac{v_f P_f(x_i; \theta) + v_s P_s(x_i; \theta)})
+\end{equation}
 
 \section{da integrare dopo}
 

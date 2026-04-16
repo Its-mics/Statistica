@@ -2897,7 +2897,7 @@ Sia $T_k$ il tempo di attesa fino al $k$-esimo evento.
 
 Procedendo per induzione per $P_3$:
 \begin{equation}
-    P_3(t; \lambda) = \int_0^t P_2(x; \lambda) P_1(t-x; \lambda) \, dx = \int_0^t \lambda^2 x e^{-\lambda x} \lambda e^{-\lambda(t-x)} \, dx = \frac{t^2}{2} \lambda^3 e^{-\lambda t}
+    P_3(t; \lambda) = \int_0^t P_2(x; \lambda) P_1(t-x; \lambda) \, dx = \int_0^t \lambda^2 x e^{-\lambda x} \lambda e^{-\lambda(t-x)} \, dx = \frac{t^2}{2} \lambda^3 e^{-\lambda t} \label{eq: pdf Erlang}
 \end{equation}
 
 
@@ -2946,10 +2946,12 @@ con la condizione di $\alpha >0$; ricordiamo per correttezza la proprietà della
 \end{equation*}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{Immagini/gamma_shapes.png}
+    \includegraphics[width=0.7\textwidth]{Immagini/gamma_shapes_alpha_beta.png}
     \caption{Al variare del parametro $\alpha$ trovo diverse pdf, il fattore $\beta$ rappresenta un riscalamento}
 \end{figure} 
-Nel caso in cui $\alpha \in\mathbb{N}$, vado a ritrovare la \textit{distribuzione di Erlang} 
+
+Nel caso in cui $\alpha \in \mathbb{N}$, vado a ritrovare la \textit{distribuzione di Erlang}\eqref{eq: pdf Erlang}; 
+nel caso in cui si ha $\beta=2$ e $\alpha= \frac{\nu}{2}$, con $\nu \in \mathbb{N}$, allora questa è la $\chi^2$ \textit{distribution}.
 
 
 
@@ -3109,7 +3111,7 @@ plt.show()
 
 \pagebreak  
 
-%------------------------------------------------------------------------------
+%--------------------------------------------------------------------------------------------------------------------------
 
 \lezione{Variabili Casuali bidimensionali}{23/03/2026}
 \subsection{Distribuzioni congiunte, marginali e condizionate}
@@ -3146,7 +3148,7 @@ Nel caso in cui $X$ e $Y$ siano \textbf{indipendenti}, allora aver fissato il va
 \begin{equation}
     \prod(x|y) = P_X(x) \quad \text{e} \quad \prod(y|x) = P_Y(y)
 \end{equation}
-Se sostituiamo in una delle equazioni precedenti, per esempio in $\pi(y|x) = P(x,y)/P_X(x)$, abbiamo:
+Se sostituiamo in una delle equazioni precedenti, per esempio in $\Pi(y|x) = P(x,y)/P_X(x)$, abbiamo:
 \begin{equation}
     P_Y(y) = \frac{P(x,y)}{P_X(x)} \implies P(x,y) = P_X(x)P_Y(y)
 \end{equation}
@@ -4570,11 +4572,7 @@ indipendenti, ottengo:
 L'utilità di questa nuova funzione di Likelihood traspare quando abbiamo due tipologie di eventi: $N_f$ eventi di fondo e $N_s$ eventi di segnale, da cui si ottiene una Likelihood dipendente da 4 parametri:
 
 \begin{equation}
-<<<<<<< HEAD
    \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu_f, \nu_s))= (v_f + v_s) \sum_i \ln \left(\frac{v_f P_f(x_i; \theta) + v_s P_s(x_i; \theta)}{1}\right)
-=======
- \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu_f, \nu_s))= (v_f + v_s) \sum_i \ln {v_f P_f(x_i; \theta) + v_s P_s(x_i; \theta)}
->>>>>>> 9f81cc78d59c09b8063ae501033b060244e152f5
 \end{equation}
 
 \lezione{Metodo dei minimi quadrati}{16 Aprile 2026}

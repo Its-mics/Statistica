@@ -17,7 +17,7 @@ plt.rcParams.update({
 x = np.linspace(0, 15, 1000)
 
 # Parametri da variare (forma alpha, tenendo la scala beta = 1)
-alpha_values = [0.5, 1, 2, 5, 9]
+alpha_values = [0.5, 1, 2.5, 5, 9]
 beta_val = 1.0
 
 # Creazione della figura

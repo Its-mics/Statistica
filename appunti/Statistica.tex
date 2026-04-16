@@ -52,6 +52,13 @@
     }
 }
 
+\usepackage{tikz}
+\newcommand{\circnum}[1]{%
+  \begin{tikzpicture}[baseline=(char.base)]
+    \node[shape=circle,draw,inner sep=1.2pt] (char) {\small #1};
+  \end{tikzpicture}%
+}
+
 \tikzset{standard/.style={/pgfplots/standard}}\usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{arrows.meta, angles, quotes, trees}
@@ -4538,9 +4545,191 @@ indipendenti, ottengo:
 \frac{\partial  \ln(\mathscr{L}^{ext})}{\partial \nu} = \frac{N}{\nu} - 1 = 0 \; \rightarrow \; \hat{\nu} = N
 \]
 L'utilità di questa nuova funzione di Likelihood traspare quando abbiamo due tipologie di eventi: $N_f$ eventi di fondo e $N_s$ eventi di segnale, da cui si ottiene una Likelihood dipendente da 4 parametri:
+
 \begin{equation}
- \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu_f, \nu_s))= (v_f + v_s) \sum_i \ln (\frac{v_f P_f(x_i; \theta) + v_s P_s(x_i; \theta)})
+ \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu_f, \nu_s))= (v_f + v_s) \sum_i \ln {v_f P_f(x_i; \theta) + v_s P_s(x_i; \theta)}
 \end{equation}
+
+\lezione{Metodo dei minimi quadrati}{16 Aprile 2026}
+Supponiamo di avere una serie di misure $(x,y) \rightarrow \{x_i, y_i\}$ e supponiamo che le $x_i$ non possediano errori, mentre le $y_i$ sì. 
+Inoltre supponiamo esista un modello $f$ che descrive la relazione tra $x$ e $y$: $f(x, \theta)=y$.
+
+Data la densità di probabilità gaussiana $P(y_i, \theta) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{(y_i-f(x_i, \theta))^2}{2\sigma^2}}$, utilizzando il fatto costruiamo la funzione di Likelihood, che è data da:
+\begin{equation}
+    \ln(\mathscr{L}(\vec{y}, \theta)) = -\sum_i \ln(\sigma_i \sqrt{2\pi}) - \frac{1}{2} \sum_i \frac{(y_i - f(x_i, \theta))^2}{\sigma_i^2}
+\end{equation}
+poichè l'unico termine dipendente da $\theta$ è il secondo, defininiamo:
+\[
+\chi^2 = \sum_i \frac{(y_i - f(x_i, \theta))^2}{\sigma_i^2}
+\]
+allora se $\hat \theta \rightarrow \text{max} \ln(\mathscr{L}(\vec{y}, \theta)) $ cercherò in modo identico $\hat \theta \rightarrow \text{min}\chi^2 $:
+\begin{equation}
+    \frac{\partial \chi^2}{\partial \theta} = 0
+\end{equation}
+Se abbiamo più parametri, risolviamo il sistema:
+\begin{equation}
+    \frac{\partial \chi^2}{\partial \theta_i} = 0 \; i=1,2, \dots, n
+\end{equation}
+Supponendo che vi sia stato un errore sistemiatico sulle misure la $y_i$ è data da:
+\begin{equation}
+    y_i= f(x_i, \theta ) + \epsilon_i 
+\end{equation}
+con $\epsilon_i \thicksim \mathcal{N}(0, \sigma^2)$ e dunque posso definire la quantità: $\nu_i = \frac{y_i - f(x_i, \theta)}{\sigma_i}$ e controllare che sia distribiutiso secondo $\mathcal{N}(0, 1)$.
+
+\subsection{Caso y=mx+q, $\sigma_i = \sigma$}
+Sostituendo da sopra:
+\begin{equation}
+    \chi^2 = \sum_i \frac{(y_i - mx_i - q)^2}{\sigma_i^2} = \frac{1}{\sigma^2} \sum_i (y_i - mx_i - q)^2
+\end{equation}
+Volendo minimizzare $\chi^2$:
+\begin{equation}
+    \begin{cases}
+        \frac{\partial \chi^2}{\partial m} = 0 \rightarrow \sum_i \frac{\partial}{\partial m} (y_i - mx_i -q)^2 = 0 \hspace{0.5cm} \circnum1\\ 
+        \frac{\partial \chi^2}{\partial q} = 0 \rightarrow \sum_i \frac{\partial}{\partial q} (y_i - mx_i -q)^2 = 0 \hspace{0.5cm} \circnum2
+    \end{cases}
+\end{equation}
+Che, sviluppate:
+\begin{equation}
+    \begin{cases}
+        \begin{aligned}
+            &\circnum{2} \sum_i 2(-1)(y_i - mx_i - q) = 0 \implies m \sum_i x_i + q N = \sum_i y_i \implies q= \bar{y} - m \bar{x} \\[1ex]
+            &\circnum{1} \sum_i 2(-x_i)(y_i - mx_i - q) = 0 \implies \bar{xy} - m \bar{x^2} -q = 0 \\
+            &\quad \implies \bar{xy}- m \bar{x^2} - \bar{x} (\bar{y} - m \bar{x}) = 0 \\
+            &\quad \implies \bar{xy} - m \bar{x^2} - \bar{x}\bar{y} + m \bar{x}^2 = 0 \implies m= \frac{\bar{xy} - \bar{x}\bar{y}}{\bar{x^2} - \bar{x}^2} \\[1ex]
+            &\implies \circnum{2} \quad q = \bar{y} - \frac{\bar{xy} - \bar{x}\bar{y}}{\bar{x^2} - \bar{x}^2} \bar{x} = \frac{\bar{y}\bar{x^2} - \bar{xy}\bar{x}}{\bar{x^2} - \bar{x}^2}
+        \end{aligned}
+    \end{cases}
+\end{equation}
+
+Generalmente, viste le numerose divisioni, si definiscono le quantità:
+\[
+S_{xy} = \sum_i x_i y_i, \quad S_x = \sum_i x_i, \quad S_y = \sum_i y_i, \quad S_{xx} = \sum_i x_i^2
+\]
+
+Riscrivendo le soluzioni:
+\begin{equation}
+    \begin{cases}
+        m = \dfrac{S_{xy} - \frac{S_x S_y}{N}}{S_{xx} - \frac{S_x^2}{N}} \\[3ex]
+        q = \dfrac{S_y S_{xx} - S_x S_{xy}}{N S_{xx} - S_x^2}
+    \end{cases}
+\end{equation}
+Infine, si definisce $D = N S_{xx} - S_x^2$: 
+\begin{equation}
+    \begin{cases}
+        m = \dfrac{N S_{xy} - S_x S_y}{D} \\[3ex]
+        q = \dfrac{S_y S_{xx} - S_x S_{xy}}{D}
+    \end{cases}
+\end{equation}
+Scrivendo in maniera esplicita la $\bar y$:
+\begin{equation}
+    \hat m = \dfrac{ \sum_i \frac{x_iy_i}{N} - \bar{x} \sum_i \frac{y_i}{N}}{\bar{x^2} - \bar{x}^2} = \sum_i \left(\frac{x_i - \bar{x}}{\bar{x^2} - \bar{x}^2}\right)\left(\frac{y_i}{N}\right)
+\end{equation}
+e utilizzando la legge di propagazione degli errori:
+\begin{equation}
+    \sigma_m^2 = \sum_i \left(\frac{\partial \hat m}{\partial y_i}\right)^2 \sigma^2 = 
+    \sum_i \left(\frac{x_i - \bar{x}}{\bar{x^2} - \bar{x}^2} \frac{1}{N}\right)^2 \sigma_i^2 \stackrel{*}{=} \frac{\sigma^2}{N(\bar{x^2} - \bar{x}^2)} = \frac{N \sigma^2}{D}
+\end{equation}
+Ricordando in * si è utilizzata la definizione di varianza $\displaystyle var(x) = \frac{1}{N} \sum_i (x_i - \bar{x})^2= \bar{x^2} - (\bar{x})^2$. Similmente per $ \displaystyle \sigma_q^2 = \frac{\sigma^2 S_{xx}}{D}$.
+
+\subsubsection{Estrapolazione}
+Suppiamo, una volta trovata la retta di best fit $y=\hat{m} x + \hat{q}$, vogliamo sapere l'errore di una nuova $y$, corrispondendente a una nuova $x$. Ricordiamo:
+\begin{equation}
+    z = a \tilde{x} + b \tilde{y} \; \rightarrow \; \sigma_z^2 = a^2 \sigma_{\tilde{x}}^2 + b^2 \sigma_{\tilde{y}}^2 + 2ab \cdot cov(\tilde{x}, \tilde{y})
+\end{equation}  
+nel nostro caso $m$ e $q$ sono le variabili aleatorie, mentre $x$ è una costante, quindi:
+\begin{equation}
+    \sigma_y^2 = x^2 \sigma_{\hat{m}}^2 + \sigma_{\hat{q}}^2 + 2x \cdot cov(\hat{m}, \hat{q})
+\end{equation}
+non svolgiamo il conto per $cov(m, q)$, che risulta:
+\begin{equation}
+    cov(\hat m, \hat q) = cov (\hat m, \bar y - \hat{m}\bar{x}) = \underbrace{cov (\hat m, \bar y)}_{\text{si dimostra che} =0} - \bar{x} cov(\hat m, \hat m) = -\bar{x} \sigma_{\hat{m}}^2
+\end{equation}
+dunque se $\bar x = 0$ allora $cov(\hat m, \hat q) = 0$, per questo è frequente fare questo cambio di varibile: 
+\[
+    x' = x - \bar{x} 
+\]
+\subsection{Caso y=mx+q, $\sigma_i$ differenti}
+Le medie diventano delle medie pesate, con peso $\frac{1}{\sigma_i^2}$, definiamo come prima:
+\begin{equation}
+        W_x = \sum_i \frac{x_i}{\sigma_i^2} \hspace{0.5cm}
+        W_y = \sum_i \frac{y_i}{\sigma_i^2} \hspace{0.5cm}
+        W_{xx} = \sum_i \frac{x_i^2}{\sigma_i^2} \hspace{0.5cm}      
+        W_{xy} = \sum_i \frac{x_i y_i}{\sigma_i^2} \hspace{0.5cm}
+        D_W = \sum_i \frac{1}{\sigma_i^2} W_{xx} - W_x^2
+\end{equation}
+E le stime divengono:
+\begin{equation}
+    \begin{cases}
+        \hat m = \dfrac{W_{xy}\frac{1}{\sigma_i^2} - W_x W_y}{D_W} \\[3ex]
+        \hat q = \dfrac{W_y W_{xx} - W_x W_{xy}}{D_W} \\[3ex]
+        \sigma_{\hat{m}}^2 = \dfrac{W_{xx}}{D_W} \\[3ex]
+        \sigma_{\hat{q}}^2 = \dfrac{\sum_i \frac{1}{\sigma_i^2}}{D_W}
+    \end{cases}
+\end{equation}
+quindi posso svolgrere un fit di una retta dati dei dati, ma se non conosco gli errori non possono conoscere l'errore su $m$ e $q$.
+
+\subsection{Istogramma e minimi quadrati}
+Supponiamo di aver preso delle misure di \textbf{1 sola grandezza}, supponiamo di conoscere la ditribuzione di probabilità $P(x,\theta)$ che i dati debbano seguire.
+Possiamo egualmente applicare il metodo dei minimi quadrati, ponendo:
+\begin{equation}
+    \begin{cases}
+    y_i = n_i  \\
+    f(x, \theta) = \mathbb{E}[n_i] = \nu_i(\theta) = \left(\int_{\tilde{x_i} - \frac{\Delta x}{2}}^{\tilde{x_i} + \frac{\Delta x}{2}} P(x, \theta) \, dx \right) \approx N P(\tilde{x_i}, \theta) \Delta x\\
+    \sigma_i = \sqrt{n_i}
+    \end{cases}
+\end{equation}
+dove $n_i$ è il numero di eventi nel bin $i$.
+Il $\chi^2$ si calcola come $\chi^2 = \sum_i \frac{(n_i - \nu_i(\theta))^2}{\nu_i(\theta)} \approx  \sum_i \frac{(n_i - \nu_i(\theta))^2}{n_i}$ (se $n_i \neq 0$),
+dove abbiamo posto $n_i = \nu_i(\theta)$ poichè $\nu_i(\theta)$ generalemente complicata
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{da integrare dopo}
 

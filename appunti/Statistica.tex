@@ -2923,6 +2923,29 @@ Continuando ricorsivamente, si ottiene la densità di probabilità di Erlang:
     \item Varianza: $Var(t) = \frac{k}{\lambda^2}$
 \end{itemize}
 
+\subsubsection{Distribuzione Gamma}
+Cosideriamo $\alpha$ e $\beta$ due costati maggiori di zero, allora la \textit{Gamma distribution} è definita come:
+\begin{equation}
+    f(x;\alpha,\beta)= \frac{1}{\Gamma(\alpha)\beta^\alpha}x^{\alpha-1}e^{-\frac{x}{\beta}} \label{eq: pdf Gamma}
+\end{equation}
+con la condizione di $0 \leqq x < \infty$.\\
+Questa risulta normalizzata in base alla condizione sulla funzione gamma:
+\begin{equation*}
+    \Gamma(\alpha)= \int_{0}^{\infty} y^{\alpha-1} e^{-y} dy
+\end{equation*}
+con la condizione di $\alpha >0$; ricordiamo per correttezza la proprietà della funzione Gamma:
+\begin{equation*}
+    \Gamma(\alpha)= (\alpha -1 ) \gamma(\alpha -1)
+\end{equation*}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Immagini/gamma_shapes.png}
+    \caption{Al variare del parametro $\alpha$ trovo diverse pdf, il fattore $\beta$ rappresenta un riscalamento}
+\end{figure} 
+Nel caso in cui $\alpha \in\mathbb{N}$, vado a ritrovare la \textit{distribuzione di Erlang} 
+
+
+
 
 \section{Metodi Monte Carlo}
 I metodi Monte Carlo sono algoritmi computazionali che sfruttano la generazione di numeri casuali per risolvere problemi matematici complessi.
@@ -4539,7 +4562,7 @@ indipendenti, ottengo:
 \]
 L'utilità di questa nuova funzione di Likelihood traspare quando abbiamo due tipologie di eventi: $N_f$ eventi di fondo e $N_s$ eventi di segnale, da cui si ottiene una Likelihood dipendente da 4 parametri:
 \begin{equation}
- \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu_f, \nu_s))= (v_f + v_s) \sum_i \ln (\frac{v_f P_f(x_i; \theta) + v_s P_s(x_i; \theta)})
+   \ln(\mathscr{L}^{ext}(n_1, n_2, \dots, n_N ; \theta, \nu_f, \nu_s))= (v_f + v_s) \sum_i \ln \left(\frac{v_f P_f(x_i; \theta) + v_s P_s(x_i; \theta)}{1}\right)
 \end{equation}
 
 \section{da integrare dopo}

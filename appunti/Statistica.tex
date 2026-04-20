@@ -3819,6 +3819,7 @@ Da qui si evince che l'espressione di $\pi(x|y)$ è ancora una gaussiana con dev
 \end{equation}
 Anche in questo caso, se $\rho = 0$ si ha $\mu_{x|y} = \mu_x$, mentre se $\rho \neq 0$, il valore atteso è spostato rispetto al valore $\mu_x$ originale in base al valore di $y$.
 
+\pagebreak
 
 \section{Teoria della Stima dei Parametri}
 
@@ -3852,9 +3853,14 @@ Una stima si dice \emph{imparziale} (o non distorta, in inglese \emph{unbiased})
 \mathbb{E}[\hat{\theta}] = \theta_v
 \end{equation*}
 \end{definizione}
-
 Si noti che, essendo $\hat{\theta}$ una funzione di variabili casuali, è essa stessa una variabile casuale, e quindi per questo si può parlare del suo valore atteso $\mathbb{E}[\hat{\theta}]$.
- 
+
+Più in generale si otterrano risultati del tipo:
+\begin{equation}
+    \mathbb{E}[\hat{\theta}] = \theta_v + b(\theta_{v}) \label{eq: valore di aspettazione dello stimatore}
+\end{equation} 
+dove la funzione $b$ è solitamente dell'ordine di $1/N$ o inferiore.
+
 Per esempio, nel caso della \textbf{media aritmetica} $\bar{x}$, si può facilmente verificare che soddisfa questa proprietà:
 \begin{equation}
 \mathbb{E}[\bar{x}] = \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^N x_i \right] = \frac{1}{N} \sum_{i=1}^N \mathbb{E}[x_i]
@@ -3874,6 +3880,7 @@ Se la varianza è più piccola, il suo valore è più prossimo a $\mathbb{E}[\ha
 
 La scelta della migliore stima da usare non è sempre banale e richiede lo studio del singolo caso. Per esempio, l'efficienza di una stima può dipendere dal particolare problema considerato, oppure confrontando due stime si può trovare che la più efficiente è anche \emph{distorta}; in tal caso bisogna decidere (in base al problema) se è più accettabile la distorsione o la bassa efficienza.
 
+Per esempio si può dimostrare che sia la media che la mediana diano un risultato consistente e imparizali per quanto riguarda la posizione di una popolazione di variabili normali con varianza nota. La media però presenta una minore varianza rispetto alla mediana, dunque è da preferirsi per quanto riguarda l'efficienza.
 \subsection{La media aritmetica come stima ottimale}
 Consideriamo lo stimatore della media aritmetica: $\hat{\mu} = \bar{x}$.
 Abbiamo già notato che la media è una buona stima di $\mu$ perché è \textbf{consistente} e \textbf{imparziale}.
@@ -4252,7 +4259,7 @@ Un'alternativa, qualora il calcolo analitico risulti complesso (ad esempio suppo
 
 Oltre a questi approcci, si può sfruttare la \textbf{disuguaglianza di Cramér-Rao}. Questo importante teorema fornisce un \textit{limite inferiore} (lower bound) teorico alla varianza di una stima, indipendentemente dal metodo con cui essa è stata calcolata (anche se differisce dal ML):
 \begin{equation}
-    \boxed{ \mathrm{Var}(\hat{\theta}) \geq \frac{1}{-\mathbb{E}\left[ \frac{\partial^2 \ln \mathscr{L}}{\partial \theta^2} \right]} } \label{eq:var_like}
+    \boxed{ \mathrm{Var}(\hat{\theta}) \geq \frac{1}{-\mathbb{E}\left[ \frac{\partial^2 \ln \mathscr{L}}{\partial \theta^2} \right]} }
 \end{equation}
 Per applicare questa disuguaglianza bisogna fare attenzione a un requisito fondamentale: è richiesto che $\hat{\theta}$ sia una stima \textit{unbiased} (non distorta), cioè che il suo valore atteso coincida col parametro vero, $\mathbb{E}[\hat{\theta}] = \theta_{vero}$.
 
@@ -4377,7 +4384,7 @@ Ora moltiplichiamo la (2) per $\theta$ e lo sottraiamo alla (1), cioè calcoliam
 \end{equation}
 e scrivendo tutto come un unico integrale ho:
 \begin{equation}\tag{3}
-    \boxed{ \int_{-\infty}^{+\infty} (\hat{\theta} - \theta) \frac{\partial \ln \mathscr{L}}{\partial \theta} \mathscr{L}(\vec{x}; \theta) d\vec{x} = 1 }
+    \boxed{ \int_{-\infty}^{+\infty} (\hat{\theta} - \theta) \frac{\partial \ln \mathscr{L}}{\partial \theta} \mathscr{L}(\vec{x}; \theta) d\vec{x} = 1 } \label{eq: cond. normalizzazione Cramér}
 \end{equation}
 
 A questo punto si usa la \textbf{disuguaglianza di Schwarz}:
@@ -4397,7 +4404,7 @@ in modo che $f(\vec{x})g(\vec{x})$ dà proprio la funzione integranda della (3) 
 \end{equation}
 Sostituendo ho quindi:
 \begin{equation}
-    \mathrm{Var}(\hat{\theta}) \cdot \mathbb{E}\left[ \left( \frac{\partial \ln \mathscr{L}}{\partial \theta} \right)^2 \right] \geq 1 \implies \mathrm{Var}(\hat{\theta}) \geq \frac{1}{\mathbb{E}\left[ \left( \frac{\partial \ln \mathscr{L}}{\partial \theta} \right)^2 \right]}
+    \mathrm{Var}(\hat{\theta}) \cdot \mathbb{E}\left[ \left( \frac{\partial \ln \mathscr{L}}{\partial \theta} \right)^2 \right] \geq 1 \implies \mathrm{Var}(\hat{\theta}) \geq \frac{1}{\mathbb{E}\left[ \left( \frac{\partial \ln \mathscr{L}}{\partial \theta} \right)^2 \right]} \label{eq: MVB derivata prima}
 \end{equation}
 che è proprio una delle formulazioni della disuguaglianza di Cramér-Rao. La quantità al denominatore si chiama spesso \textbf{Informazione} seguendo una denominazione introdotta da Fisher e viene indicata con $I(\theta)$.
 
@@ -4424,6 +4431,39 @@ Si noti che il primo passaggio della dimostrazione sfrutta il fatto che la stima
     \left( 1 + \frac{\partial b}{\partial \theta} \right)^2
 \end{equation}
  
+\subsection{Approfondimento sulla disuguagliaza di Cramér-Rao}
+Consideriamo la funzione $\mathscr{L}(\vec{x}; \theta) \in {\mathbb(C)}^2$ e lo stimatore t di una funzione $\tau(\theta)$. Possiamo definire il suo valore di aspettazione come:
+\begin{equation}
+    \int_{-\infty}^{+\infty} dx_1 \int_{-\infty}^{+\infty} dx_2 \dots \int_{-\infty}^{+\infty} dx_N t(\vec{x}) \mathscr{L}(x_1, x_2, \dots, x_N; \theta) = \tau(\theta) + b(\theta)
+\end{equation}
+con il significato della \eqref{eq: valore di aspettazione dello stimatore}.
+Con l'assunzione che il range di $\vec{x}$ sia indipendente da $\theta$, allora ottengo il risultato:
+\begin{equation}
+    \int_{-\infty}^{+\infty} t(\vec{x}) \frac{\partial \mathscr{L}}{\partial \theta} d\vec{x} = \frac{\partial \tau(\theta)}{\partial \theta} + \frac{\partial b(\theta)}{\theta}
+\end{equation}
+Eseguendo calcoli simili a quelli sopra \eqref{eq: cond. normalizzazione Cramér} si va ad ottenere:
+\begin{equation}
+    \int_{-\infty}^{+\infty} (t - \tau(\theta)) \frac{\partial \ln \mathscr{L}}{\partial \theta} \mathscr{L}(\vec{x}; \theta) d\vec{x} = \frac{\partial \tau(\theta)}{\partial \theta} + \frac{\partial b(\theta)}{\theta}
+\end{equation}
+che attraverso la disuguaglianza di Schwarz mi porta ad ottenere:
+\begin{equation}
+    \mathrm{Var}(\hat{\theta}) \geq \frac{{(\frac{\partial \tau}{\partial \theta} + \frac{\partial b}{\theta})}^2}{\mathbb{E}\left[ \left( \frac{\partial \ln \mathscr{L}}{\partial \theta} \right)^2 \right]}
+\end{equation}
+Nel caso in cui si ha $\tau(\theta)= \theta$ e $b=0$, riottengo la formula \eqref{eq: MVB derivata prima}. Condizione necessaria e sufficiente per avere un uguaglianza al posto della disuguaglianza di Schwarz è la seguente:
+\begin{equation}
+    \frac{\partial \ln(\mathscr{L})}{\partial \theta} = A(\theta) (t - \tau(\theta) - b(\theta))
+\end{equation}
+In questo caso vado ad ottenere una soluzione del tipo:
+\begin{equation}
+    \mathrm{Var}(\hat{\theta}) = \frac{{(\frac{\partial \tau}{\partial \theta} + \frac{\partial b}{\theta})}^2}{A(\theta)}
+\end{equation}
+\begin{definizione}{\textbf{Efficienza di uno stimatore}}
+
+    L'efficienza di uno stimatore è dato dal rapporto tra la MVB e la varianza dello stimatore:
+    \begin{equation*}
+        \text{efficienza}(t)= \frac{\mathrm{MVB}}{\mathrm{Var}}
+    \end{equation*}
+\end{definizione}
 
 \lezione{Rilevatore Geiger, Radioattività e Studio dei Dati}{09 Aprile 2026}
 
@@ -4462,7 +4502,7 @@ Abbiamo visto che la disuguaglianza di Cramer-Rao ci dice che, in generale, per 
     Var(\hat{\theta}) \ge \frac{-1}{\mathbb{E}\left[ \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right]} = \frac{1}{\mathbb{E}\left[ \left( \frac{d \ln \mathscr{L}}{d\theta} \right)^2 \right]}
     \label{eq:var_like}
 \end{equation}
-Una cosa che si può notare è che, data la definizione della funzione di Likelihood:
+Una cosa che si può notare è che, data la definizione della funzione di Likelihood per variabili indipendenti:
 \begin{equation}
     \mathscr{L}(x_1, x_2, \dots, x_N; \theta) = \prod_{i=1}^N P(x_i; \theta) \implies \ln \mathscr{L}(x_1, \dots, x_N; \theta) = \sum_{i=1}^N \ln P(x_i; \theta)
 \end{equation}
@@ -5481,7 +5521,9 @@ Si parte da un valore iniziale $\theta_0$, si calcola il $\chi^2$, e si procede 
 Nella pratica esistono molti modi matematici e librerie per fare ciò, applicando metodi numerici più o meno sofisticati. Qualunque sia il metodo usato, \textbf{la scelta del valore iniziale $\theta_0$ da cui partire è di solito fondamentale} per evitare di finire intrappolati in minimi locali.
 
 Vale la pena visualizzare preliminarmente la funzione teorica (con il $\theta_0$ scelto) sovrapposta ai dati sperimentali, per operare un "sanity check" del punto di partenza. 
-Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già scritte: ad esempio si può usare la funzione `curve_fit` contenuta nel modulo `scipy.optimize`.introduciamo una densità di particelle nello spazio delle velocità, in modo analogo a quello tridimensionale: \[ dn(\vec{v})=\eta (\vec{v})d^3v\]
+Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già scritte: ad esempio si può usare la funzione \texttt{curve\_fit} contenuta nel modulo \texttt{scipy.optimize}. 
+Introduciamo una densità di particelle nello spazio delle velocità, in modo analogo a quello tridimensionale: \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
+\begin{itemize}
     \item introduciamo ora la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T}\]
     \item se la distribuzione della velocità è isotropa, allora la funzione di distribuzione dipende solo dal modulo e non solo dal verso;
     \item Il numero di particelle \( dn \) comprese nell'elemento \( \dd{\vec{v}} = \dd[3]{v} \) dello spazio delle velocità vale:
@@ -5499,25 +5541,26 @@ Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già 
     \[
     dn(v)+c=4 \pi n_T p(K) v^2 dv 
     \]
+\end{itemize}
 \begin{nota}
     Ricordiamo la definizione di angolo solido:
 
-    Vogliamo sapere quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v+dv}$ Passiamo alle coordinate polari sferiche (r, $\theta$, $\psi$), l'area A identificata dal vettore $\vec{v}$
-    sarà l'intersenzione della superfice sferica di due cerchi la cui latitudine differisce per $d\theta$ e due la cui longitudine differisce per $d\psi$. Di conseguenza si ha:
+    Vogliamo sapere quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v}+d\vec{v}$. Passiamo alle coordinate polari sferiche (r, $\theta$, $\psi$), l'area A identificata dal vettore $\vec{v}$
+    sarà l'intersezione della superficie sferica di due cerchi la cui latitudine differisce per $d\theta$ e due la cui longitudine differisce per $d\psi$. Di conseguenza si ha:
     \[
-    dA=(rd\psi)(r\sin(\theta)d\psi)
+    dA=(rd\theta)(r\sin(\theta)d\psi)
     \]
     L'angolo solido sarà definito da:
     \[
     d\omega=\frac{dA}{r^2}=\sin(\theta)d\theta d\psi
     \]
-    Il numero di particelle con velocità $\vec{v+dv}$ sarà: $dn(v)\frac{d\omega}{4\pi}$ essendo $4\pi$ l'angolo solido massimo. Questa espressione ci dice
-    che non c'è una direzione preferenziale per le velocità
+    Il numero di particelle con velocità $\vec{v}+d\vec{v}$ sarà: $dn(v)\frac{d\omega}{4\pi}$ essendo $4\pi$ l'angolo solido massimo. Questa espressione ci dice
+    che non c'è una direzione preferenziale per le velocità.
 
-    Se consideriamo inoltre che moleco possono scontrarsi fra di loro prima di colpire l'area $A$, dobbiamo limitarci a considerare un cilindro di lunghezza $vd\tau$
+    Se consideriamo inoltre che le molecole possono scontrarsi fra di loro prima di colpire l'area $A$, dobbiamo limitarci a considerare un cilindro di lunghezza $vd\tau$
     dove $\tau$ è talmente piccolo che non avvengono urti fra le molecole, esso vale $dV=v d\tau \cos(\theta)dA$. 
     
-    Il numero di molecole che urterà l'area $dA$ sarà $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$
+    Il numero di molecole che urterà l'area $dA$ sarà $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
 \end{nota}
 
 

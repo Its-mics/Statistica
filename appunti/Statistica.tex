@@ -4844,7 +4844,7 @@ dove abbiamo posto $n_i = \nu_i(\theta)$ poichè $\nu_i(\theta)$ generalemente c
 
 
 
-\lezione{Dal Metodo di Maximum Likelihood ai Minimi Quadrati}{16 Aprile 2026}
+\section{Dal Metodo di Maximum Likelihood ai Minimi Quadrati}
 
 
 Supponiamo che i nostri dati consistano in un set di coppie di valori $(x_i, y_i)$ in cui supponiamo che le $x_i$ siano note con esattezza (senza errore), mentre le $y_i$ vengano misurate con una certa incertezza $\sigma_i$. 
@@ -5038,49 +5038,7 @@ Si parte da un valore iniziale $\theta_0$, si calcola il $\chi^2$, e si procede 
 Nella pratica esistono molti modi matematici e librerie per fare ciò, applicando metodi numerici più o meno sofisticati. Qualunque sia il metodo usato, \textbf{la scelta del valore iniziale $\theta_0$ da cui partire è di solito fondamentale} per evitare di finire intrappolati in minimi locali.
 
 Vale la pena visualizzare preliminarmente la funzione teorica (con il $\theta_0$ scelto) sovrapposta ai dati sperimentali, per operare un "sanity check" del punto di partenza. 
-Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già scritte: ad esempio si può usare la funzione '$curve_fit$' contenuta nel modulo '$scipy.optimize$'.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già scritte: ad esempio si può usare la funzione \texttt{curve\_fit} contenuta nel modulo \texttt{scipy.optimize}. 
 
 
 \newpage
@@ -5325,204 +5283,7 @@ La distribuzione fu ottenuta da Maxwell attraverso un ragionamento particolarmen
         \eta(\vec{r}) &= \frac{\rho(\vec{r})}{m} \quad \text{densità di particelle}, \\[6pt]
         dn &= \eta(\vec{r}) \, dV \quad \text{numero di particelle in } dV.
     \end{align*}
-    \item da cui ricaviamo che la distribuzione delle particelle nello spazio è:
-    \[ p(\vec{r})=\frac{\eta (\vec{r})}{n_T}\]
-    \item \lezione{Dal Metodo di Maximum Likelihood ai Minimi Quadrati}{16 Aprile 2026}
-
-\section{Dal ML al metodo dei minimi quadrati}
-Supponiamo che i nostri dati consistano in un set di coppie di valori $(x_i, y_i)$ in cui supponiamo che le $x_i$ siano note con esattezza (senza errore), mentre le $y_i$ vengano misurate con una certa incertezza $\sigma_i$. 
-Supponiamo inoltre che le $y_i$ siano in teoria descritte da una certa funzione $f$ delle $x_i$, che dipende da un certo parametro $\theta$ da stimare: $f(x_i; \theta) = y_i$.
-
-Per il teorema del limite centrale possiamo assumere che le misurazioni $y_i$ abbiano distribuzione gaussiana centrata sul valore vero $f(x_i; \theta)$:
-\begin{equation}
-    P(y_i; \theta) = \frac{1}{\sigma_i \sqrt{2\pi}} \exp \left\{ -\frac{[y_i - f(x_i; \theta)]^2}{2\sigma_i^2} \right\}
-\end{equation}
-
-Se si usa il metodo di Maximum Likelihood (ML), costruendo la funzione $\mathscr{L}(\vec{y}; \theta) = \prod_i P(y_i; \theta)$ e passandone al logaritmo, si ottiene:
-\begin{equation}
-    \ln \mathscr{L}(\vec{y}; \theta) = -\sum_{i=1}^N \ln(\sigma_i \sqrt{2\pi}) - \frac{1}{2} \sum_{i=1}^N \frac{[y_i - f(x_i; \theta)]^2}{\sigma_i^2}
-\end{equation}
-In questa espressione, il parametro $\theta$ entra solo nel secondo addendo. Per cui, trovare il $\hat{\theta}$ che massimizza $\ln \mathscr{L}$ equivale a trovare il $\hat{\theta}$ che \textbf{minimizza} la sommatoria finale, indicata abitualmente con $\chi^2$:
-\begin{equation}
-    \chi^2 = \sum_{i=1}^N \left[ \frac{y_i - f(x_i; \theta)}{\sigma_i} \right]^2
-\end{equation}
-
-Per trovare il $\theta$ che minimizza il $\chi^2$ si procede ponendo la derivata prima pari a zero (non serve la derivata seconda perché, essendo una somma di quadrati, il $\chi^2$ ha la forma di una parabola rivolta verso l'alto nell'intorno del minimo):
-\begin{equation}
-    \frac{\partial \chi^2}{\partial \theta} = 0 \implies \sum_{i=1}^N \frac{1}{\sigma_i^2} \frac{\partial f(x_i; \theta)}{\partial \theta}[y_i - f(x_i; \theta)] = 0
-\end{equation}
-
-Se la funzione $f$ dipende da $m$ parametri $\theta_1, \theta_2, \dots, \theta_m$, si dovrà risolvere un sistema di $m$ equazioni del tipo:
-\begin{equation}
-    \frac{\partial \chi^2}{\partial \theta_k} = 0 \quad \text{per } k=1,2, \dots, m
-\end{equation}
-
-Una cosa importante da notare è che, in generale, ci si aspetta che la differenza tra il valore misurato $y_i$ e la stima teorica $f(x_i; \theta)$ sia dovuta all'errore sperimentale $\epsilon_i$. Ovvero $y_i = f(x_i; \theta) + \epsilon_i$, con $\epsilon_i \sim \mathcal{N}(0, \sigma_i^2)$. Da ciò deriva che la quantità residua normalizzata:
-\begin{equation}
-    \frac{y_i - f(x_i; \theta)}{\sigma_i} \sim \mathcal{N}(0, 1)
-\end{equation}
-
-\section{Caso del fit lineare \texorpdfstring{$y = mx + q$}{}}
-Il caso più comune trattato con il metodo dei minimi quadrati è quello in cui si assume che \textbf{tutte le $y_i$ abbiano lo stesso errore $\sigma$} (cosa verosimile se si tratta di misurazioni della stessa grandezza fatte con lo stesso strumento) e siano legate alle $x_i$ dalla relazione lineare $y = mx + q$.
-
-I parametri da determinare sono la pendenza $m$ e l'intercetta $q$. Essendo $\sigma$ costante, il suo valore può essere portato fuori dalla sommatoria e non influenza la posizione del minimo. Dobbiamo minimizzare la quantità:
-\begin{equation}
-    \sum_{i=1}^N (y_i - m x_i - q)^2
-\end{equation}
-
-Risolviamo il sistema derivando rispetto ai due parametri:
-\begin{equation}
-    \begin{cases}
-        \displaystyle \frac{\partial}{\partial m} \sum_i (y_i - mx_i - q)^2 = 0 \\[3ex]
-        \displaystyle \frac{\partial}{\partial q} \sum_i (y_i - mx_i - q)^2 = 0
-    \end{cases}
-    \implies
-    \begin{cases}
-        \displaystyle \sum_i 2(-x_i)(y_i - mx_i - q) = 0 & (1) \\[2ex]
-        \displaystyle \sum_i 2(-1)(y_i - mx_i - q) = 0  & (2)
-    \end{cases}
-\end{equation}
-
-Ignorando i fattori costanti (-2), lavoriamo sull'equazione (2). Sfruttando la proprietà distributiva della sommatoria:
-\begin{equation*}
-    \sum_i y_i - m \sum_i x_i - \sum_i q = 0 \implies \sum_i y_i - m \sum_i x_i - Nq = 0
-\end{equation*}
-Dividendo per $N$, e introducendo le notazioni delle medie ($\bar{y} = \frac{\sum y_i}{N}$ e $\bar{x} = \frac{\sum x_i}{N}$):
-\begin{equation}
-    \hat{q} = \bar{y} - \hat{m}\bar{x}
-    \label{eq:stima_q}
-\end{equation}
-
-Sostituendo questo risultato nell'equazione (1) (che divisa per $N$ diventa $\overline{xy} - m\overline{x^2} - q\bar{x} = 0$):
-\begin{align*}
-    &\overline{xy} - m\overline{x^2} - (\bar{y} - m\bar{x})\bar{x} = 0 \\
-    &\overline{xy} - m\overline{x^2} - \bar{y}\bar{x} + m(\bar{x})^2 = 0 \implies m(\overline{x^2} - \bar{x}^2) = \overline{xy} - \bar{x}\bar{y}
-\end{align*}
-Da cui si ottiene la stima per $m$:
-\begin{equation}
-    \hat{m} = \frac{\overline{xy} - \bar{x}\bar{y}}{\overline{x^2} - (\bar{x})^2}
-\end{equation}
-E ri-sostituendo nella \eqref{eq:stima_q} si ottiene la forma esplicita per $\hat{q}$:
-\begin{equation}
-    \hat{q} = \bar{y} - \left[ \frac{\overline{xy} - \bar{x}\bar{y}}{\overline{x^2} - (\bar{x})^2} \right] \bar{x} = \frac{\bar{y}\overline{x^2} - \overline{xy}\bar{x}}{\overline{x^2} - (\bar{x})^2}
-\end{equation}
-
-\subsection{Notazione compatta}
-L'uso delle medie rende la notazione compatta da scrivere, ma per i calcoli al computer risulta scomoda per le troppe divisioni per $N$. Si è soliti definire le somme:
-\[
-S_x = \sum_i x_i, \quad S_y = \sum_i y_i, \quad S_{xx} = \sum_i x_i^2, \quad S_{xy} = \sum_i x_i y_i
-\]
-E il denominatore comune $D = N S_{xx} - (S_x)^2$. Le stime si riscrivono come:
-\begin{equation}
-    \begin{cases}
-        \hat{m} = \dfrac{N S_{xy} - S_x S_y}{D} \\[3ex]
-        \hat{q} = \dfrac{S_y S_{xx} - S_x S_{xy}}{D}
-    \end{cases}
-\end{equation}
-\textit{Nota:} $\hat{m}$ e $\hat{q}$ non dipendono da $\sigma$. Quindi le stime dei parametri si possono calcolare anche se non si conosce a priori l'errore sperimentale, purché si assuma che sia lo stesso per tutti i punti.
-
-\subsection{Errori associati alle stime}
-Per calcolare gli errori su $\hat{m}$ e $\hat{q}$ applichiamo la legge di propagazione degli errori. Poiché le uniche variabili aleatorie con errore sono le $y_i$, la varianza su una generica funzione $f(y_1 \dots y_N)$ è: $\sigma_f^2 = \sum_i \left( \frac{\partial f}{\partial y_i} \right)^2 \sigma_{y_i}^2$.
-
-Riscriviamo $\hat{m}$ mettendo in evidenza $y_i$:
-\begin{equation*}
-    \hat{m} = \frac{\sum_i \frac{x_i y_i}{N} - \bar{x} \sum_i \frac{y_i}{N}}{\overline{x^2} - (\bar{x})^2} = \sum_{i=1}^N \underbrace{\left[ \frac{x_i - \bar{x}}{\overline{x^2} - (\bar{x})^2} \frac{1}{N} \right]}_{\text{costante rispetto a } y_i} y_i
-\end{equation*}
-
-Calcoliamo ora la varianza, ricordando che l'errore $\sigma_{y_i} = \sigma$ è costante:
-\begin{equation}
-    \sigma_{\hat{m}}^2 = \sum_{i=1}^N \left(\frac{\partial \hat{m}}{\partial y_i}\right)^2 \sigma^2 = \sum_{i=1}^N \left[ \frac{x_i - \bar{x}}{\overline{x^2} - (\bar{x})^2} \frac{1}{N} \right]^2 \sigma^2
-\end{equation}
-Ricordando la definizione di varianza campionaria $\frac{1}{N} \sum_i (x_i - \bar{x})^2 = \overline{x^2} - (\bar{x})^2$, e semplificando i termini, si ottiene:
-\begin{equation}
-    \sigma_{\hat{m}}^2 = \frac{\sigma^2}{N[\overline{x^2} - (\bar{x})^2]} = \frac{N \sigma^2}{D}
-\end{equation}
-Con una procedura analoga per l'intercetta si ottiene:
-\begin{equation}
-    \sigma_{\hat{q}}^2 = \frac{\sigma^2 S_{xx}}{D}
-\end{equation}
-
-\subsection{Estrapolazione e Covarianza}
-Una volta trovata la retta di best fit $y = \hat{m}x + \hat{q}$, potremmo voler calcolare il valore previsto $y$ e il suo errore associato per una nuova coordinata $x$.
-Le variabili aleatorie in questa equazione sono i parametri stimati $\hat{m}$ e $\hat{q}$ (la $x$ è uno scalare da noi fissato). Per la propagazione degli errori su una somma $z = a\tilde{x} + b\tilde{y}$:
-\begin{equation}
-    Var(y) = x^2 Var(\hat{m}) + Var(\hat{q}) + 2x \cdot cov(\hat{m}, \hat{q})
-\end{equation}
-Per fare questo calcolo ci serve il termine di covarianza. Usando la definizione di $\hat{q} = \bar{y} - \hat{m}\bar{x}$:
-\begin{equation}
-    cov(\hat{m}, \hat{q}) = cov(\hat{m}, \bar{y} - \hat{m}\bar{x}) = \underbrace{cov(\hat{m}, \bar{y})}_{=0} - \bar{x} \cdot cov(\hat{m}, \hat{m}) = - \bar{x} \cdot \sigma_{\hat{m}}^2
-\end{equation}
-Esplicitando si ottiene:
-\begin{equation}
-    cov(\hat{m}, \hat{q}) = - \frac{\bar{x} \sigma^2}{N[\overline{x^2} - (\bar{x})^2]}
-\end{equation}
-
-\textbf{Trucco della traslazione:} La cosa interessante di questa formula è che se $\bar{x} = 0$, la covarianza si annulla ($cov(\hat{m}, \hat{q})=0$), rendendo la formula della varianza su $y$ molto più semplice.
-Per questo motivo, in alcuni casi è conveniente operare una traslazione, definendo $x' = x - \bar{x}$ (che ha per costruzione media nulla) ed eseguendo un nuovo fit $y = mx' + q'$. La pendenza della retta non cambia, ma cambia l'intercetta. Con le nuove coordinate si avrà semplicemente:
-$Var(y) = (x')^2 Var(\hat{m}) + Var(\hat{q}')$.
-
-\section{Caso \texorpdfstring{$y = mx + q$}{} con errori \texorpdfstring{$\sigma_i$}{} differenti}
-Se gli errori $\sigma_i$ non sono tutti uguali, la quantità da minimizzare non può espellere il $\sigma_i$ dalla sommatoria:
-\begin{equation}
-    \chi^2 = \sum_i \frac{(y_i - m x_i - q)^2}{\sigma_i^2}
-\end{equation}
-Rifacendo la procedura precedente, si trovano formule del tutto simili, eccetto per il fatto che tutte le medie diventano \textbf{medie pesate} con peso $w_i = 1/\sigma_i^2$, e la normalizzazione non è più $N$ ma la somma dei pesi. Definiamo:
-\begin{equation}
-    W_x = \sum_i \frac{x_i}{\sigma_i^2}, \quad
-    W_y = \sum_i \frac{y_i}{\sigma_i^2}, \quad
-    W_{xx} = \sum_i \frac{x_i^2}{\sigma_i^2}, \quad      
-    W_{xy} = \sum_i \frac{x_i y_i}{\sigma_i^2}, \quad
-    W = \sum_i \frac{1}{\sigma_i^2}
-\end{equation}
-Il nuovo denominatore diventa $D_W = W \cdot W_{xx} - (W_x)^2$. Le nuove stime e i relativi errori sono:
-\begin{equation}
-    \begin{cases}
-        \hat{m} = \dfrac{W \cdot W_{xy} - W_x W_y}{D_W} \\[3ex]
-        \hat{q} = \dfrac{W_y W_{xx} - W_x W_{xy}}{D_W}
-    \end{cases}
-    \quad \quad \text{ed i rispettivi errori:} \quad
-    \begin{cases}
-        \sigma_{\hat{m}}^2 = \dfrac{W}{D_W} \\[3ex]
-        \sigma_{\hat{q}}^2 = \dfrac{W_{xx}}{D_W}
-    \end{cases}
-\end{equation}
-In questo caso, \textbf{le stime di $m$ e $q$ dipendono dai $\sigma_i$}. Pertanto, se non conosco gli errori non posso calcolare il fit in maniera matematicamente rigorosa per i pesi sbilanciati.
-
-\section{Metodo dei minimi quadrati con istogrammi}
-Il metodo dei minimi quadrati si può applicare anche nel caso in cui abbiamo dati raccolti sotto forma di \textbf{istogramma} (misure di 1 sola grandezza).
-In tal caso, utilizziamo l'indice $j$ per indicare i bin dell'istogramma ($j=1, \dots, m$ bin) rispetto all'indice $i$ usato prima per gli $N$ dati.
-Sostituiamo:
-\begin{itemize}
-    \item $y_i \longrightarrow m_j$ (conteggi effettivi nel bin $j$-esimo)
-    \item $f(x_i; \theta) \longrightarrow \mathbb{E}[m_j] = \nu_j(\theta)$ (valore di aspettazione nel bin $j$-esimo)
-\end{itemize}
-Se immaginiamo di dividere l'asse $x$ in bin di uguale larghezza $\Delta x$, centrati in $\tilde{x}_j$:
-\begin{equation}
-    \mathbb{E}[m_j] = \nu_j(\theta) = N \int_{\tilde{x}_j - \frac{\Delta x}{2}}^{\tilde{x}_j + \frac{\Delta x}{2}} P(x; \theta) \, dx \approx N \cdot P(\tilde{x}_j; \theta) \Delta x
-\end{equation}
-Il nostro $\chi^2$ vale quindi:
-\begin{equation}
-    \chi^2 = \sum_{j=1}^m \frac{[m_j - \nu_j(\theta)]^2}{\sigma_j^2}
-\end{equation}
-Manca solo da definire $\sigma_j^2$. Assumendo che i conteggi in ogni bin seguano una statistica \textbf{Poissoniana}, il valore atteso coincide con la varianza: $\sigma_j^2 \simeq \nu_j(\theta)$ (Metodo del $\chi^2$ di \textit{Pearson}).
-\begin{equation}
-    \chi^2_{\text{Pearson}} = \sum_{j=1}^m \frac{[m_j - \nu_j(\theta)]^2}{\nu_j(\theta)}
-\end{equation}
-Molto spesso, per semplificare i conti, si usa l'approssimazione che la varianza del bin sia circa uguale ai conteggi misurati nel bin stesso, cioè $\sigma_j^2 \simeq m_j$ (Metodo del $\chi^2$ di \textit{Neyman}):
-\begin{equation}
-    \chi^2_{\text{Neyman}} = \sum_{j=1}^m \frac{[m_j - \nu_j(\theta)]^2}{m_j}
-\end{equation}
-Questa ultima formula \textbf{funziona bene solo se i bin hanno molti conteggi} e se $m_j$ non discosta molto da $\nu_j(\theta)$. In ogni caso bisogna prestare molta attenzione ai bin per cui $m_j = 0$ oppure $\nu_j(\theta)=0$ (bisogna eventualmente escluderli dal calcolo per evitare divisioni per zero).
-
-\section{Metodo dei minimi quadrati non lineare}
-Nel caso in cui il modello non riesca a essere ricondotto ad una forma lineare per cui si hanno soluzioni esatte esplicite, si usano \textbf{procedure iterative numeriche}.
-Si parte da un valore iniziale $\theta_0$, si calcola il $\chi^2$, e si procede iterativamente aggiornando i parametri ($\theta_1 = \theta_0 + \Delta \theta$) seguendo il gradiente fino a quando non si trova il minimo di $\chi^2$.
-
-Nella pratica esistono molti modi matematici e librerie per fare ciò, applicando metodi numerici più o meno sofisticati. Qualunque sia il metodo usato, \textbf{la scelta del valore iniziale $\theta_0$ da cui partire è di solito fondamentale} per evitare di finire intrappolati in minimi locali.
-
-Vale la pena visualizzare preliminarmente la funzione teorica (con il $\theta_0$ scelto) sovrapposta ai dati sperimentali, per operare un "sanity check" del punto di partenza. 
-Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già scritte: ad esempio si può usare la funzione \texttt{curve\_fit} contenuta nel modulo \texttt{scipy.optimize}. 
-Introduciamo una densità di particelle nello spazio delle velocità, in modo analogo a quello tridimensionale: \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
+    Introduciamo una densità di particelle nello spazio delle velocità, in modo analogo a quello tridimensionale: \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
 \begin{itemize}
     \item introduciamo ora la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T}\]
     \item se la distribuzione della velocità è isotropa, allora la funzione di distribuzione dipende solo dal modulo e non solo dal verso;
@@ -5563,44 +5324,8 @@ Introduciamo una densità di particelle nello spazio delle velocità, in modo an
     Il numero di molecole che urterà l'area $dA$ sarà $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
 \end{nota}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    \item da cui ricaviamo che la distribuzione delle particelle nello spazio è:
+    \[ p(\vec{r})=\frac{\eta (\vec{r})}{n_T}\]
     \item La probabilità che l'urto accada è \[P=Cp(K_1)p(K_2)\] ovvero è proporzionale alla probabiità di avere le due particelle con $K_1$ e $K_2$ e dopo $K'_1$ e $K'_2$
     
     Posso ora considerare due particelle che hanno energia cinetica inziale \[P=Cp(K'_1)p(K'_2)\]e, e che dopo urto abbiamo $K_1$ e $K_2$.

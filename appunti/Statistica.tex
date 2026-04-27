@@ -4707,148 +4707,7 @@ L'utilità del metodo EML traspare pienamente quando i dati hanno \textbf{due co
 essendo $P_s$ e $P_b$ le densità di probabilità normalizzate del segnale e del fondo.
 
 
-<<<<<<< HEAD
-\lezione{Dal Metodo di Maximum Likelihood ai Minimi Quadrati}{16 Aprile 2026}
-=======
-
-
-\lezione{Metodo dei minimi quadrati}{16 Aprile 2026}
-Supponiamo di avere una serie di misure $(x,y) \rightarrow \{x_i, y_i\}$ e supponiamo che le $x_i$ non possediano errori, mentre le $y_i$ sì. 
-Inoltre supponiamo esista un modello $f$ che descrive la relazione tra $x$ e $y$: $f(x, \theta)=y$.
-
-Data la densità di probabilità gaussiana $P(y_i, \theta) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{(y_i-f(x_i, \theta))^2}{2\sigma^2}}$, utilizzando il fatto costruiamo la funzione di Likelihood, che è data da:
-\begin{equation}
-    \ln(\mathscr{L}(\vec{y}, \theta)) = -\sum_i \ln(\sigma_i \sqrt{2\pi}) - \frac{1}{2} \sum_i \frac{(y_i - f(x_i, \theta))^2}{\sigma_i^2}
-\end{equation}
-poichè l'unico termine dipendente da $\theta$ è il secondo, defininiamo:
-\[
-\chi^2 = \sum_i \frac{(y_i - f(x_i, \theta))^2}{\sigma_i^2}
-\]
-allora se $\hat \theta \rightarrow \text{max} \ln(\mathscr{L}(\vec{y}, \theta)) $ cercherò in modo identico $\hat \theta \rightarrow \text{min}\chi^2 $:
-\begin{equation}
-    \frac{\partial \chi^2}{\partial \theta} = 0
-\end{equation}
-Se abbiamo più parametri, risolviamo il sistema:
-\begin{equation}
-    \frac{\partial \chi^2}{\partial \theta_i} = 0 \; i=1,2, \dots, n
-\end{equation}
-Supponendo che vi sia stato un errore sistemiatico sulle misure la $y_i$ è data da:
-\begin{equation}
-    y_i= f(x_i, \theta ) + \epsilon_i 
-\end{equation}
-con $\epsilon_i \thicksim \mathcal{N}(0, \sigma^2)$ e dunque posso definire la quantità: $\nu_i = \frac{y_i - f(x_i, \theta)}{\sigma_i}$ e controllare che sia distribiutiso secondo $\mathcal{N}(0, 1)$.
-
-\subsection{Caso y=mx+q, $\sigma_i = \sigma$}
-Sostituendo da sopra:
-\begin{equation}
-    \chi^2 = \sum_i \frac{(y_i - mx_i - q)^2}{\sigma_i^2} = \frac{1}{\sigma^2} \sum_i (y_i - mx_i - q)^2
-\end{equation}
-Volendo minimizzare $\chi^2$:
-\begin{equation}
-    \begin{cases}
-        \frac{\partial \chi^2}{\partial m} = 0 \rightarrow \sum_i \frac{\partial}{\partial m} (y_i - mx_i -q)^2 = 0 \hspace{0.5cm} \circnum1\\ 
-        \frac{\partial \chi^2}{\partial q} = 0 \rightarrow \sum_i \frac{\partial}{\partial q} (y_i - mx_i -q)^2 = 0 \hspace{0.5cm} \circnum2
-    \end{cases}
-\end{equation}
-Che, sviluppate:
-\begin{equation}
-    \begin{cases}
-        \begin{aligned}
-            &\circnum{2} \sum_i 2(-1)(y_i - mx_i - q) = 0 \implies m \sum_i x_i + q N = \sum_i y_i \implies q= \bar{y} - m \bar{x} \\[1ex]
-            &\circnum{1} \sum_i 2(-x_i)(y_i - mx_i - q) = 0 \implies \bar{xy} - m \bar{x^2} -q = 0 \\
-            &\quad \implies \bar{xy}- m \bar{x^2} - \bar{x} (\bar{y} - m \bar{x}) = 0 \\
-            &\quad \implies \bar{xy} - m \bar{x^2} - \bar{x}\bar{y} + m \bar{x}^2 = 0 \implies m= \frac{\bar{xy} - \bar{x}\bar{y}}{\bar{x^2} - \bar{x}^2} \\[1ex]
-            &\implies \circnum{2} \quad q = \bar{y} - \frac{\bar{xy} - \bar{x}\bar{y}}{\bar{x^2} - \bar{x}^2} \bar{x} = \frac{\bar{y}\bar{x^2} - \bar{xy}\bar{x}}{\bar{x^2} - \bar{x}^2}
-        \end{aligned}
-    \end{cases}
-\end{equation}
-
-Generalmente, viste le numerose divisioni, si definiscono le quantità:
-\[
-S_{xy} = \sum_i x_i y_i, \quad S_x = \sum_i x_i, \quad S_y = \sum_i y_i, \quad S_{xx} = \sum_i x_i^2
-\]
-
-Riscrivendo le soluzioni:
-\begin{equation}
-    \begin{cases}
-        m = \dfrac{S_{xy} - \frac{S_x S_y}{N}}{S_{xx} - \frac{S_x^2}{N}} \\[3ex]
-        q = \dfrac{S_y S_{xx} - S_x S_{xy}}{N S_{xx} - S_x^2}
-    \end{cases}
-\end{equation}
-Infine, si definisce $D = N S_{xx} - S_x^2$: 
-\begin{equation}
-    \begin{cases}
-        m = \dfrac{N S_{xy} - S_x S_y}{D} \\[3ex]
-        q = \dfrac{S_y S_{xx} - S_x S_{xy}}{D}
-    \end{cases}
-\end{equation}
-Scrivendo in maniera esplicita la $\bar y$:
-\begin{equation}
-    \hat m = \dfrac{ \sum_i \frac{x_iy_i}{N} - \bar{x} \sum_i \frac{y_i}{N}}{\bar{x^2} - \bar{x}^2} = \sum_i \left(\frac{x_i - \bar{x}}{\bar{x^2} - \bar{x}^2}\right)\left(\frac{y_i}{N}\right)
-\end{equation}
-e utilizzando la legge di propagazione degli errori:
-\begin{equation}
-    \sigma_m^2 = \sum_i \left(\frac{\partial \hat m}{\partial y_i}\right)^2 \sigma^2 = 
-    \sum_i \left(\frac{x_i - \bar{x}}{\bar{x^2} - \bar{x}^2} \frac{1}{N}\right)^2 \sigma_i^2 \stackrel{*}{=} \frac{\sigma^2}{N(\bar{x^2} - \bar{x}^2)} = \frac{N \sigma^2}{D}
-\end{equation}
-Ricordando in * si è utilizzata la definizione di varianza $\displaystyle var(x) = \frac{1}{N} \sum_i (x_i - \bar{x})^2= \bar{x^2} - (\bar{x})^2$. Similmente per $ \displaystyle \sigma_q^2 = \frac{\sigma^2 S_{xx}}{D}$.
-
-\subsubsection{Estrapolazione}
-Suppiamo, una volta trovata la retta di best fit $y=\hat{m} x + \hat{q}$, vogliamo sapere l'errore di una nuova $y$, corrispondendente a una nuova $x$. Ricordiamo:
-\begin{equation}
-    z = a \tilde{x} + b \tilde{y} \; \rightarrow \; \sigma_z^2 = a^2 \sigma_{\tilde{x}}^2 + b^2 \sigma_{\tilde{y}}^2 + 2ab \cdot cov(\tilde{x}, \tilde{y})
-\end{equation}  
-nel nostro caso $m$ e $q$ sono le variabili aleatorie, mentre $x$ è una costante, quindi:
-\begin{equation}
-    \sigma_y^2 = x^2 \sigma_{\hat{m}}^2 + \sigma_{\hat{q}}^2 + 2x \cdot cov(\hat{m}, \hat{q})
-\end{equation}
-non svolgiamo il conto per $cov(m, q)$, che risulta:
-\begin{equation}
-    cov(\hat m, \hat q) = cov (\hat m, \bar y - \hat{m}\bar{x}) = \underbrace{cov (\hat m, \bar y)}_{\text{si dimostra che} =0} - \bar{x} cov(\hat m, \hat m) = -\bar{x} \sigma_{\hat{m}}^2
-\end{equation}
-dunque se $\bar x = 0$ allora $cov(\hat m, \hat q) = 0$, per questo è frequente fare questo cambio di varibile: 
-\[
-    x' = x - \bar{x} 
-\]
-\subsection{Caso y=mx+q, $\sigma_i$ differenti}
-Le medie diventano delle medie pesate, con peso $\frac{1}{\sigma_i^2}$, definiamo come prima:
-\begin{equation}
-        W_x = \sum_i \frac{x_i}{\sigma_i^2} \hspace{0.5cm}
-        W_y = \sum_i \frac{y_i}{\sigma_i^2} \hspace{0.5cm}
-        W_{xx} = \sum_i \frac{x_i^2}{\sigma_i^2} \hspace{0.5cm}      
-        W_{xy} = \sum_i \frac{x_i y_i}{\sigma_i^2} \hspace{0.5cm}
-        D_W = \sum_i \frac{1}{\sigma_i^2} W_{xx} - W_x^2
-\end{equation}
-E le stime divengono:
-\begin{equation}
-    \begin{cases}
-        \hat m = \dfrac{W_{xy}\frac{1}{\sigma_i^2} - W_x W_y}{D_W} \\[3ex]
-        \hat q = \dfrac{W_y W_{xx} - W_x W_{xy}}{D_W} \\[3ex]
-        \sigma_{\hat{m}}^2 = \dfrac{W_{xx}}{D_W} \\[3ex]
-        \sigma_{\hat{q}}^2 = \dfrac{\sum_i \frac{1}{\sigma_i^2}}{D_W}
-    \end{cases}
-\end{equation}
-quindi posso svolgrere un fit di una retta dati dei dati, ma se non conosco gli errori non possono conoscere l'errore su $m$ e $q$.
-
-\subsection{Istogramma e minimi quadrati}
-Supponiamo di aver preso delle misure di \textbf{1 sola grandezza}, supponiamo di conoscere la ditribuzione di probabilità $P(x,\theta)$ che i dati debbano seguire.
-Possiamo egualmente applicare il metodo dei minimi quadrati, ponendo:
-\begin{equation}
-    \begin{cases}
-    y_i = n_i  \\
-    f(x, \theta) = \mathbb{E}[n_i] = \nu_i(\theta) = \left(\int_{\tilde{x_i} - \frac{\Delta x}{2}}^{\tilde{x_i} + \frac{\Delta x}{2}} P(x, \theta) \, dx \right) \approx N P(\tilde{x_i}, \theta) \Delta x\\
-    \sigma_i = \sqrt{n_i}
-    \end{cases}
-\end{equation}
-dove $n_i$ è il numero di eventi nel bin $i$.
-Il $\chi^2$ si calcola come $\chi^2 = \sum_i \frac{(n_i - \nu_i(\theta))^2}{\nu_i(\theta)} \approx  \sum_i \frac{(n_i - \nu_i(\theta))^2}{n_i}$ (se $n_i \neq 0$),
-dove abbiamo posto $n_i = \nu_i(\theta)$ poichè $\nu_i(\theta)$ generalemente complicata
-
-
-
-
 \section{Dal Metodo di Maximum Likelihood ai Minimi Quadrati}
->>>>>>> 77efa6f4071a425c7a562b879365cda6644430a4
 
 
 Supponiamo che i nostri dati consistano in un set di coppie di valori $(x_i, y_i)$ in cui supponiamo che le $x_i$ siano note con esattezza (senza errore), mentre le $y_i$ vengano misurate con una certa incertezza $\sigma_i$. 
@@ -4862,6 +4721,7 @@ Per il teorema del limite centrale possiamo assumere che le misurazioni $y_i$ ab
 Se si usa il metodo di Maximum Likelihood (ML), costruendo la funzione $\mathscr{L}(\vec{y}; \theta) = \prod_i P(y_i; \theta)$ e passandone al logaritmo, si ottiene:
 \begin{equation}
     \ln \mathscr{L}(\vec{y}; \theta) = -\sum_{i=1}^N \ln(\sigma_i \sqrt{2\pi}) - \frac{1}{2} \sum_{i=1}^N \frac{[y_i - f(x_i; \theta)]^2}{\sigma_i^2}
+    \label{eq:lnL_min_quad}
 \end{equation}
 In questa espressione, il parametro $\theta$ entra solo nel secondo addendo. Per cui, trovare il $\hat{\theta}$ che massimizza $\ln \mathscr{L}$ equivale a trovare il $\hat{\theta}$ che \textbf{minimizza} la sommatoria finale, indicata abitualmente con $\chi^2$:
 \begin{equation}
@@ -4881,6 +4741,7 @@ Se la funzione $f$ dipende da $m$ parametri $\theta_1, \theta_2, \dots, \theta_m
 Una cosa importante da notare è che, in generale, ci si aspetta che la differenza tra il valore misurato $y_i$ e la stima teorica $f(x_i; \theta)$ sia dovuta all'errore sperimentale $\epsilon_i$. Ovvero $y_i = f(x_i; \theta) + \epsilon_i$, con $\epsilon_i \sim \mathcal{N}(0, \sigma_i^2)$. Da ciò deriva che la quantità residua normalizzata:
 \begin{equation}
     \frac{y_i - f(x_i; \theta)}{\sigma_i} \sim \mathcal{N}(0, 1)
+    \label{eq:gaussiana_chi}
 \end{equation}
 
 \subsection{Caso del fit lineare \texorpdfstring{$y = mx + q$}{}}
@@ -5043,6 +4904,127 @@ Nella pratica esistono molti modi matematici e librerie per fare ciò, applicand
 
 Vale la pena visualizzare preliminarmente la funzione teorica (con il $\theta_0$ scelto) sovrapposta ai dati sperimentali, per operare un "sanity check" del punto di partenza. 
 Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già scritte: ad esempio si può usare la funzione \texttt{curve\_fit} contenuta nel modulo \texttt{scipy.optimize}. 
+
+\lezione{Binned Chi Squared}{27 Aprile 2026}
+Ricordiamo che con il metodo \textit{Binned Chi Squared}, si ottiene:
+\begin{equation}
+    \chi^2  (\theta) = \sum_{j=1}^m \frac{[m_j - \nu_j(\theta)]^2}{m_j}
+\end{equation}
+La cui minimizzazzione va svolta numericamente. Trovata la stima $\hat{\theta}$, bisogna trovare $\sigma_{\hat{\theta}}$, ciò va fatto sempre graficamente.
+
+Agiamo in modo equivalente a quanto fatto per la \textit{Binned ML}, in quanto ricaviamo $\chi^2$ dalla Likelihood, infatti (dalla \eqref{eq:lnL_min_quad}):
+\begin{equation}
+    \chi^2  (\theta) = -2 \log L(\theta)
+\end{equation}
+e derivando rispetto a $\theta$:
+\begin{equation}
+    \frac{\partial^2 \chi^2}{\partial \theta^2} = -2 \frac{\partial^2 \log L}{\partial \theta^2}
+\end{equation}
+e ricorndo la stima (194):
+\begin{equation}
+    \sigma_{\hat{\theta}}^2 = \frac{2}{\frac{\partial^2 \chi^2}{\partial \theta^2} \big|_{\theta = \hat{\theta}}}
+\end{equation}
+Per valutarlo graficamente, utilizziamo lo sviluppo in serie di Taylor:
+\begin{equation}
+    \chi^2(\theta) = \chi^2_{\text {min}} + \frac{1}{2} \frac{2}{var(\hat{\theta})} (\theta - \hat{\theta})
+\end{equation}
+Definendo: 
+\[
+\tilde{\theta} = \frac{(\theta - \hat{\theta})^2}{\sigma_{\hat{\theta}}^2} = 1 \implies \tilde \theta = \hat{\theta} \pm \sigma_{\hat{\theta}}
+\]
+avremo:
+\begin{equation}
+    \chi^2(\theta) = \chi^2_{\text{min}} + 1
+\end{equation}
+\begin{nota}
+    Notiamo che dalla definizione di $\chi^2$, cerchiamo il modello teorico che si discosta meno dalle misurazioni. Se il modello risulta corretto il 
+    valore di $\chi^2$ è "piccolo".
+\end{nota}
+\section{Distribuzione di $\chi^2$}
+Per capire se il valore di $\chi^2$ ottenuto è "piccolo" o "grande", è necessario conoscere la distribuzione di $\chi^2$.
+
+Vogliamo seguire un ragionamento euristico per capire la forma di questa distribuzione, senza ricavarla esplicitamente.
+
+Riprendendo il ragionamento che ci ha portato alla $\eqref{eq:gaussiana_chi}$ possiamo definire la variabile:
+\[
+u_i = \frac{y_i - f(x_i)}{\sigma_i}
+\]
+e definendo $u_i^2 = z_i$ si ottiene come distribuzione (utilizzando la formula per il cambio di variabile):
+\begin{equation}
+  )P(z_i)dz_i = P_u(u_i)du_i \implies P(z_i) = P_u(u_i) \frac{du_i}{dz_i} = P_u(\sqrt{z_i}) \frac{d\sqrt{z_i}}{dz_i} = P_u(\sqrt{z_i}) \frac{1}{2\sqrt{z_i}} \propto e^{-z_i/2}
+\end{equation}
+allora dal fatto che $\chi^2 = \sum_i z_i$ ottengo la distribuzione $ P(\chi^2) = \prod_i e^{-z_i/2} \propto e^{-\chi^2/2}$. La distribuzione di $\chi^2$ è:
+\begin{equation}
+    P(\chi^2, \nu) = \frac{1}{2^{\nu/2} \Gamma(\nu/2)} (\chi^2)^{\nu/2 - 1} e^{-\chi^2/2}
+\end{equation}
+dove $\nu$ è \textbf{il numero di gradi di libertà}, solo un numero $\nu$ degli $N$ elementi della somma sono indipendenti:
+\begin{equation}
+    \nu = N - \text{numero di parametri}- \text{numero di vincoli}
+\end{equation}
+\begin{example}
+    Nel caso della \textit{Binned Chi Squared}, abbiamo il vincolo $\sum_i m_i =N $ ed un parametro $\theta$, per cui $\nu = m - 1 - 1 = m-2$. 
+\end{example}
+Si ricavano le seguenti:
+\[
+\mathbb{E}[\chi^2] = \nu
+\]
+\[
+\text{var}(\chi^2) = 2\nu
+\]
+In generale si calcola il \textit{Chi quadro ridotto}, che serve per testare che il fit sia andato a buon fine, in quanto solitamente $\chi^2_{min}= \nu$:
+\[
+\frac{\chi^2}{\nu} \approx 1 
+\]
+\begin{nota}
+    Si presentano problemi nel caso in cui $\nu \geq 30$, in tal caso infatti $P(\chi^2,\nu) \thicksim \mathcal{N}(\nu, 2\nu)$, ovvero.
+    \[
+    P_x(x) = \frac{1}{\sqrt{2\pi}\sqrt{2\nu}}exp(-\frac{(x-\nu)^2}{4\nu})
+    \]
+    definendo $y=\frac{x}{\nu}$, ottengo:
+    \[
+    P_y(y)=P_x\frac{dx}{dy} = P_x(ny)\nu
+    \]
+    da cui, eseguendo i calcoli, si ottiene:
+    \[
+    P_x(ny)\nu \thicksim \mathcal{N}(1, \frac{2}{\nu})
+    \]
+    dunque se $\nu$ non è abbastanza grande, avremo una grande dispersione dei dati.
+
+    Quando $\nu \leq 30$ si utilizza la variabile $\sqrt{2\chi^2} \thicksim \mathcal{N}(\sqrt{2\nu-1}, 1)$ 
+\end{nota}
+
+\section{Esercitazione 5}
+L'esercitazione è comppsta da 3 parti:
+\begin{enumerate}
+    \item Utilizziamo i dati dell'esercitazione precedente per ricavare la distribuzione di Erlang e Poisson:
+    \begin{enumerate}
+        \item Erlang con $k=2$, sommiamo i due tempi fra i due eventi e facciamo un istogramma. Aggiungiamo gli errori e facciamo il fit con la distribuzione di Erlang.
+        \item Considero $\lambda = \frac{1}{\tau}$ (trovato la volta precedente), utilizziamo Likelihood e minimi quadrati per stimare $\lambda$, inoltre calcoliamo anche $\chi^2_{ridotto}$ e controlliamo che sia circa 1.
+        
+        Ricordiamo che la sommatoria va fatta solo su i bin non nulli, e solo questi vengono utilizzati per la determinazione dei gradi di libertà 
+
+        \item Poisson: Contiamo il numero di eventi in diversi intervalli $\Delta t$ (consigliato $\Delta t = 30s$). Nuovamente plotto l'istogramma e sovrappongo la distribuzione, per poterla sovrappore devo moltipliare $\lambda$ per $\Delta t$
+    \end{enumerate}
+    \item Fit pesato con i conteggi del contatore Geiger. Conoscendo $\lambda$ e supponendo di essere in presenza di $N(t)$ nuclei radioattivi, ad un certo intervallo di tempi avremo un numero di decadimenti:
+    \[
+     dt: N(t) =  N_0 e^{-\lambda t} 
+    \]
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage

@@ -4906,114 +4906,319 @@ Vale la pena visualizzare preliminarmente la funzione teorica (con il $\theta_0$
 Nel campo dell'analisi dati, in Python, tutto questo si fa usando librerie già scritte: ad esempio si può usare la funzione \texttt{curve\_fit} contenuta nel modulo \texttt{scipy.optimize}. 
 
 \lezione{Binned Chi Squared}{27 Aprile 2026}
-Ricordiamo che con il metodo \textit{Binned Chi Squared}, si ottiene:
-\begin{equation}
-    \chi^2  (\theta) = \sum_{j=1}^m \frac{[m_j - \nu_j(\theta)]^2}{m_j}
-\end{equation}
-La cui minimizzazzione va svolta numericamente. Trovata la stima $\hat{\theta}$, bisogna trovare $\sigma_{\hat{\theta}}$, ciò va fatto sempre graficamente.
+\subsection*{Stima dell'errore nel caso Binned $\chi^2$}
 
-Agiamo in modo equivalente a quanto fatto per la \textit{Binned ML}, in quanto ricaviamo $\chi^2$ dalla Likelihood, infatti (dalla \eqref{eq:lnL_min_quad}):
+Abbiamo visto che è possibile applicare il metodo dei minimi quadrati direttamente agli istogrammi. Nel caso del metodo \textit{Binned Chi Squared}, la funzione da minimizzare è:
 \begin{equation}
-    \chi^2  (\theta) = -2 \log L(\theta)
+    \chi^2(\theta) = \sum_{j=1}^m \frac{[m_j - \nu_j(\theta)]^2}{m_j}
 \end{equation}
-e derivando rispetto a $\theta$:
+dove $m_j$ è il contenuto dei bin dell'istogramma e $\nu_j(\theta)$ è il valore di aspettazione di ogni bin dell'istogramma, approssimabile come $\nu_j(\theta) \simeq N P(x_j; \theta) \Delta x$.
+
+Per trovare la stima $\hat{\theta}$ si procede trovando numericamente il minimo di $\chi^2$. Ma come si fa a trovare l'errore $\sigma_{\hat{\theta}}$? Il procedimento è analogo al metodo grafico visto nel caso della Maximum Likelihood (ML), poiché in fondo il $\chi^2$ deriva da $\ln \mathcal{L}$.
+
+Infatti, se i nostri dati sono coppie $(x_i, y_i)$ e si conosce la funzione che lega le grandezze (cioè $y = f(x; \theta)$), assumendo che le $y_i$ siano distribuite secondo gaussiane con errori $\sigma_i$, si arriva a scrivere la likelihood come:
 \begin{equation}
-    \frac{\partial^2 \chi^2}{\partial \theta^2} = -2 \frac{\partial^2 \log L}{\partial \theta^2}
+    \ln \mathcal{L}(\vec{y}; \theta) = -\frac{1}{2} \sum_i \frac{[y_i - f(x_i; \theta)]^2}{\sigma_i^2} + \text{cost} = -\frac{1}{2} \chi^2(\theta) + \text{cost}
 \end{equation}
-e ricorndo la stima (194):
+Da cui otteniamo la relazione fondamentale:
+\begin{equation} \label{eq:chi2_lnL}
+    \chi^2(\theta) = -2 \ln \mathcal{L}(\theta) + \text{cost}'
+\end{equation}
+
+Questo ci è utile perché avevamo visto che per la varianza vale:
 \begin{equation}
-    \sigma_{\hat{\theta}}^2 = \frac{2}{\frac{\partial^2 \chi^2}{\partial \theta^2} \big|_{\theta = \hat{\theta}}}
+    \text{var}(\hat{\theta}) \approx \frac{-1}{\frac{\partial^2 \ln \mathcal{L}}{\partial \theta^2}\bigg|_{\theta = \hat{\theta}}}
 \end{equation}
-Per valutarlo graficamente, utilizziamo lo sviluppo in serie di Taylor:
+Derivando la \eqref{eq:chi2_lnL} rispetto a $\theta$, otteniamo:
 \begin{equation}
-    \chi^2(\theta) = \chi^2_{\text {min}} + \frac{1}{2} \frac{2}{var(\hat{\theta})} (\theta - \hat{\theta})
+    \frac{\partial^2 \chi^2}{\partial \theta^2} = -2 \frac{\partial^2 \ln \mathcal{L}}{\partial \theta^2} \implies \frac{\partial^2 \ln \mathcal{L}}{\partial \theta^2} = -\frac{1}{2} \frac{\partial^2 \chi^2}{\partial \theta^2}
 \end{equation}
-Definendo: 
-\[
-\tilde{\theta} = \frac{(\theta - \hat{\theta})^2}{\sigma_{\hat{\theta}}^2} = 1 \implies \tilde \theta = \hat{\theta} \pm \sigma_{\hat{\theta}}
-\]
-avremo:
+Sostituendo, ricaviamo la stima della varianza in funzione del $\chi^2$:
 \begin{equation}
-    \chi^2(\theta) = \chi^2_{\text{min}} + 1
+    \sigma_{\hat{\theta}}^2 = \text{var}(\hat{\theta}) \approx \frac{2}{\frac{\partial^2 \chi^2}{\partial \theta^2}\bigg|_{\theta = \hat{\theta}}}
 \end{equation}
+
+\subsubsection*{Metodo Grafico per la determinazione dell'errore}
+Possiamo sviluppare $\chi^2(\theta)$ in serie di Taylor attorno al minimo $\hat{\theta}$:
+\begin{equation}
+    \chi^2(\theta) = \chi^2(\hat{\theta}) + \frac{\partial \chi^2}{\partial \theta}\bigg|_{\theta = \hat{\theta}} (\theta - \hat{\theta}) + \frac{1}{2} \frac{\partial^2 \chi^2}{\partial \theta^2}\bigg|_{\theta = \hat{\theta}} (\theta - \hat{\theta})^2 + \dots
+\end{equation}
+Essendo $\hat{\theta}$ un minimo, la derivata prima si annulla e poniamo $\chi^2(\hat{\theta}) = \chi^2_{\min}$. Sostituendo la derivata seconda con la varianza ricavata in precedenza:
+\begin{equation}
+    \chi^2(\theta) \simeq \chi^2_{\min} + \frac{1}{2} \left( \frac{2}{\text{var}(\hat{\theta})} \right) (\theta - \hat{\theta})^2 = \chi^2_{\min} + \frac{(\theta - \hat{\theta})^2}{\text{var}(\hat{\theta})}
+\end{equation}
+Definendo $\tilde{\theta}$ i valori tali per cui $\frac{(\tilde{\theta} - \hat{\theta})^2}{\text{var}(\hat{\theta})} = 1$, ovvero $\tilde{\theta} = \hat{\theta} \pm \sigma_{\hat{\theta}}$, avremo graficamente che:
+\begin{equation}
+    \chi^2(\tilde{\theta}) = \chi^2_{\min} + 1
+\end{equation}
+Quindi $\sigma_{\hat{\theta}}$ si ricava cercando le intersezioni della parabola locale con il valore del minimo $+1$.
+
 \begin{nota}
-    Notiamo che dalla definizione di $\chi^2$, cerchiamo il modello teorico che si discosta meno dalle misurazioni. Se il modello risulta corretto il 
-    valore di $\chi^2$ è "piccolo".
+    Dalla definizione, cerchiamo il modello teorico che si discosta meno dalle misurazioni. Se il modello descrive bene i dati ci aspettiamo che il numeratore del $\chi^2$ sia dell'ordine dell'errore al quadrato al denominatore. Un valore di $\chi^2$ "troppo grande" indica problemi nel modello o nei dati, mentre un valore "troppo piccolo" (cioè varianza dei dati molto minore dell'errore stimato) può significare che stiamo sovrastimando gli errori.
 \end{nota}
-\section{Distribuzione di $\chi^2$}
-Per capire se il valore di $\chi^2$ ottenuto è "piccolo" o "grande", è necessario conoscere la distribuzione di $\chi^2$.
 
-Vogliamo seguire un ragionamento euristico per capire la forma di questa distribuzione, senza ricavarla esplicitamente.
+\section{Distribuzione del $\chi^2$}
 
-Riprendendo il ragionamento che ci ha portato alla $\eqref{eq:gaussiana_chi}$ possiamo definire la variabile:
-\[
-u_i = \frac{y_i - f(x_i)}{\sigma_i}
-\]
-e definendo $u_i^2 = z_i$ si ottiene come distribuzione (utilizzando la formula per il cambio di variabile):
+Per avere un riferimento quantitativo con cui confrontare il risultato della minimizzazione, bisogna conoscere la distribuzione di probabilità $P(\chi^2)$. Seguiamo un ragionamento intuitivo.
+Se $y_i = f(x_i) + \varepsilon_i$, con errore di misura $\varepsilon_i \sim \mathcal{N}(0, \sigma_i^2)$, allora la variabile standardizzata:
 \begin{equation}
-  )P(z_i)dz_i = P_u(u_i)du_i \implies P(z_i) = P_u(u_i) \frac{du_i}{dz_i} = P_u(\sqrt{z_i}) \frac{d\sqrt{z_i}}{dz_i} = P_u(\sqrt{z_i}) \frac{1}{2\sqrt{z_i}} \propto e^{-z_i/2}
+    u_i = \frac{y_i - f(x_i)}{\sigma_i} \sim \mathcal{N}(0, 1) \implies P_u(u_i) \propto e^{-u_i^2/2}
 \end{equation}
-allora dal fatto che $\chi^2 = \sum_i z_i$ ottengo la distribuzione $ P(\chi^2) = \prod_i e^{-z_i/2} \propto e^{-\chi^2/2}$. La distribuzione di $\chi^2$ è:
+Nel $\chi^2$ i termini appaiono al quadrato, definendo $z_i = u_i^2$. Con il cambio di variabile:
 \begin{equation}
-    P(\chi^2, \nu) = \frac{1}{2^{\nu/2} \Gamma(\nu/2)} (\chi^2)^{\nu/2 - 1} e^{-\chi^2/2}
+    P_z(z_i) = P_u(u_i) \left| \frac{du_i}{dz_i} \right| = P_u(\sqrt{z_i}) \frac{1}{2\sqrt{z_i}} \propto \frac{1}{\sqrt{z_i}} e^{-z_i/2}
 \end{equation}
-dove $\nu$ è \textbf{il numero di gradi di libertà}, solo un numero $\nu$ degli $N$ elementi della somma sono indipendenti:
+Il nostro $\chi^2 = \sum_i z_i$. Per le proprietà degli esponenziali, la somma produce un termine del tipo $\prod_i e^{-z_i/2} = e^{-\sum z_i / 2} = e^{-\chi^2/2}$.
+Tenendo conto di tutti i fattori e della normalizzazione, la distribuzione esatta è:
 \begin{equation}
-    \nu = N - \text{numero di parametri}- \text{numero di vincoli}
+    P(\chi^2; \nu) = \frac{1}{2^{\nu/2} \Gamma(\nu/2)} (\chi^2)^{\nu/2 - 1} e^{-\chi^2/2}
+\end{equation}
+Dove $\Gamma(\alpha) = \int_0^{+\infty} y^{\alpha-1} e^{-y} dy$ è la funzione Gamma di Eulero, e $\nu$ è il \textbf{numero di gradi di libertà} (ndf).
+
+Il parametro $\nu$ corrisponde al numero di elementi indipendenti della sommatoria:
+\begin{equation}
+    \nu = N - \text{numero di parametri} - \text{numero di vincoli}
 \end{equation}
 \begin{example}
-    Nel caso della \textit{Binned Chi Squared}, abbiamo il vincolo $\sum_i m_i =N $ ed un parametro $\theta$, per cui $\nu = m - 1 - 1 = m-2$. 
+    Nel caso del Binned $\chi^2$, abbiamo il vincolo $\sum_{i=1}^m h_i = N$ (la normalizzazione che lega le altezze dei bin) ed un parametro stimato $\theta$. Per cui i gradi di libertà sono $\nu = m - 1 - 1 = m - 2$.
 \end{example}
-Si ricavano le seguenti:
-\[
-\mathbb{E}[\chi^2] = \nu
-\]
-\[
-\text{var}(\chi^2) = 2\nu
-\]
-In generale si calcola il \textit{Chi quadro ridotto}, che serve per testare che il fit sia andato a buon fine, in quanto solitamente $\chi^2_{min}= \nu$:
-\[
-\frac{\chi^2}{\nu} \approx 1 
-\]
-\begin{nota}
-    Si presentano problemi nel caso in cui $\nu \geq 30$, in tal caso infatti $P(\chi^2,\nu) \thicksim \mathcal{N}(\nu, 2\nu)$, ovvero.
-    \[
-    P_x(x) = \frac{1}{\sqrt{2\pi}\sqrt{2\nu}}exp(-\frac{(x-\nu)^2}{4\nu})
-    \]
-    definendo $y=\frac{x}{\nu}$, ottengo:
-    \[
-    P_y(y)=P_x\frac{dx}{dy} = P_x(ny)\nu
-    \]
-    da cui, eseguendo i calcoli, si ottiene:
-    \[
-    P_x(ny)\nu \thicksim \mathcal{N}(1, \frac{2}{\nu})
-    \]
-    dunque se $\nu$ non è abbastanza grande, avremo una grande dispersione dei dati.
 
-    Quando $\nu \leq 30$ si utilizza la variabile $\sqrt{2\chi^2} \thicksim \mathcal{N}(\sqrt{2\nu-1}, 1)$ 
-\end{nota}
+Valore atteso e varianza della distribuzione sono:
+\begin{equation}
+    \mathbb{E}[\chi^2] = \nu \quad \text{e} \quad \text{var}(\chi^2) = 2\nu
+\end{equation}
 
-\section{Esercitazione 5}
-L'esercitazione è comppsta da 3 parti:
+% --- INSERIRE QUI FIGURA 1 ---
+\begin{figure}[H]
+    \centering
+     \includegraphics[width=0.8\textwidth]{Immagini/chi1.png} % Sostituisci con il vero nome del file generato dal codice Python
+    \caption{Distribuzione $\chi^2$ per diversi gradi di libertà ($\nu$). Si nota come all'aumentare di $\nu$ la distribuzione si sposti verso destra.}
+\end{figure}
+
+\subsection{Comportamento Asintotico e $\chi^2$ ridotto}
+Questo ci dà un riferimento importante: il valore atteso del minimo del $\chi^2$ è $\approx \nu$. Si definisce quindi il \textbf{$\chi^2$ ridotto}:
+\begin{equation}
+    \chi^2_{\text{rid}} = \frac{\chi^2}{\nu}
+\end{equation}
+che in teoria dovrebbe essere $\approx 1$. 
+
+\subsubsection{Caso $\nu$ grande ($\nu \gtrsim 30$)}
+Il controllo sul $\chi^2$ ridotto ha senso quando $\nu$ è grande. Per il Teorema del Limite Centrale, la distribuzione tende a una Normale:
+\begin{equation}
+    P(\chi^2; \nu) \xrightarrow{\nu \gg 1} \mathcal{N}(\nu, 2\nu)
+\end{equation}
+
+% --- INSERIRE QUI FIGURA 2 ---
+\begin{figure}[H]
+    \centering
+     \includegraphics[width=0.8\textwidth]{Immagini/chi2.png}
+    \caption{Zoom per grandi valori di $\nu$. Si apprezza l'ottima approssimazione a curva Gaussiana.}
+\end{figure}
+
+Per la variabile ridotta $y = \chi^2 / \nu$:
+\begin{equation}
+    P_y(y) = P_{\chi^2}(\nu y) \cdot \nu = \frac{1}{\sqrt{2\pi}\sqrt{2\nu}} e^{-\frac{(\nu y - \nu)^2}{2(2\nu)}} \cdot \nu = \frac{1}{\sqrt{2\pi}\sqrt{2/\nu}} e^{-\frac{(y - 1)^2}{2(2/\nu)}}
+\end{equation}
+Quindi $\chi^2 / \nu \sim \mathcal{N}(1, \frac{2}{\nu})$. È una gaussiana centrata in $1$, tanto più stretta quanto maggiore è $\nu$.
+
+% --- INSERIRE QUI FIGURA 4 ---
+\begin{figure}[H]
+    \centering
+     \includegraphics[width=0.8\textwidth]{Immagini/chi4.png}
+    \caption{Distribuzione del $\chi^2$ ridotto. Per $\nu=50$ si nota la perfetta sovrapposizione con la normale $\mathcal{N}(1, 2/\nu)$.}
+\end{figure}
+
+\subsubsection{Caso $\nu$ piccolo}
+Per $\nu$ piccoli la distribuzione del $\chi^2$ è fortemente asimmetrica con lunghe code a destra. Qui la probabilità di fluttuazioni grandi è molto alta, e usare la regola $\chi^2/\nu \approx 1$ non è più un criterio affidabile (grande dispersione).
+
+% --- INSERIRE QUI FIGURA 3 ---
+\begin{figure}[H]
+    \centering
+     \includegraphics[width=0.8\textwidth]{Immagini/chi3.png}
+    \caption{Asimmetria della distribuzione per piccoli gradi di libertà.}
+\end{figure}
+
+Per $\nu$ piccoli, si preferisce usare la variabile causale $z = \sqrt{2\chi^2}$. Calcoliamo la sua distribuzione tramite $x = z^2/2 \implies dx/dz = z$:
+\begin{equation}
+    P_z(z) = P_x\left(\frac{z^2}{2}\right) \cdot z
+\end{equation}
+Si dimostra che questa variabile si può ben approssimare (anche per $\nu$ piccoli) come:
+\begin{equation}
+    \sqrt{2\chi^2} \sim \mathcal{N}(\sqrt{2\nu - 1}, 1)
+\end{equation}
+
+% --- INSERIRE QUI FIGURA 5 ---
+\begin{figure}[H]
+    \centering
+     \includegraphics[width=0.8\textwidth]{Immagini/chi5.png}
+    \caption{Distribuzione della variabile ausiliaria $\sqrt{2\chi^2}$ che approssima una gaussiana di varianza 1 anche per bassi $\nu$.}
+\end{figure}
+
+\section*{Esercitazione 5}
+L'esercitazione pratica si compone di diverse parti applicative.
+
+\subsection*{Parte 1: Distribuzioni di Erlang e Poisson}
+Utilizziamo i dati dell'esercitazione precedente:
 \begin{enumerate}
-    \item Utilizziamo i dati dell'esercitazione precedente per ricavare la distribuzione di Erlang e Poisson:
-    \begin{enumerate}
-        \item Erlang con $k=2$, sommiamo i due tempi fra i due eventi e facciamo un istogramma. Aggiungiamo gli errori e facciamo il fit con la distribuzione di Erlang.
-        \item Considero $\lambda = \frac{1}{\tau}$ (trovato la volta precedente), utilizziamo Likelihood e minimi quadrati per stimare $\lambda$, inoltre calcoliamo anche $\chi^2_{ridotto}$ e controlliamo che sia circa 1.
-        
-        Ricordiamo che la sommatoria va fatta solo su i bin non nulli, e solo questi vengono utilizzati per la determinazione dei gradi di libertà 
-
-        \item Poisson: Contiamo il numero di eventi in diversi intervalli $\Delta t$ (consigliato $\Delta t = 30s$). Nuovamente plotto l'istogramma e sovrappongo la distribuzione, per poterla sovrappore devo moltipliare $\lambda$ per $\Delta t$
-    \end{enumerate}
-    \item Fit pesato con i conteggi del contatore Geiger. Conoscendo $\lambda$ e supponendo di essere in presenza di $N(t)$ nuclei radioattivi, ad un certo intervallo di tempi avremo un numero di decadimenti:
-    \[
-     dt: N(t) =  N_0 e^{-\lambda t} 
-    \]
+    \item \textbf{Erlang ($k=2$):} Sommiamo i tempi tra eventi consecutivi a coppie (tempo tra evento $i$ ed $i+2$) e costruiamo un istogramma. Aggiungiamo gli errori ($\sqrt{m_i}$) e facciamo il fit con la distribuzione di Erlang per ricavare la stima di $\tau$.
+    \item \textbf{Stima di $\lambda$:} Considerando $\lambda = 1/\tau$, utilizziamo i metodi di Maximum Likelihood e Minimi Quadrati per stimarlo. Si calcoli il $\chi^2_{\text{ridotto}}$ controllando che sia prossimo a $1$.
+    \begin{nota}
+        La sommatoria nel $\chi^2$ va fatta \textit{solo} sui bin non nulli ($m_i > 0$). Solo questi vengono contati nel calcolo dei gradi di libertà $\nu$.
+    \end{nota}
+    \item \textbf{Poisson:} Contiamo il numero di eventi in prefissati intervalli $\Delta t$ (consigliato $\Delta t = 30$ s). Si tracci l'istogramma dei conteggi e si sovrapponga la distribuzione di Poisson teorica (per sovrapporla correttamente ai dati occorre utilizzare come parametro $\mu = \lambda \Delta t$).
 \end{enumerate}
 
+\subsection*{Parte 2: Decadimento Radioattivo e Fit Lineare}
+Vogliamo eseguire un fit pesato con i conteggi di un contatore Geiger. Se $\lambda$ è la probabilità di decadimento per unità di tempo, e $N(t)$ è il numero di nuclei non decaduti, la variazione di $N$ nel tempo $dt$ è:
+\begin{equation}
+    dN = -\lambda N(t) dt \implies \frac{dN}{N} = -\lambda dt
+\end{equation}
+Integrando tra $0$ e $t$ (dove a $t=0$ i nuclei sono $N_0$):
+\begin{equation}
+    \ln N = -\lambda t + \text{cost} \implies N(t) = N_0 e^{-\lambda t}
+\end{equation}
+Il contatore Geiger misura i decadimenti per unità di tempo (il tasso di conteggio):
+\begin{equation}
+    m(t) \propto -\frac{dN}{dt} = \lambda N_0 e^{-\lambda t} = m_0 e^{-t/\tau}
+\end{equation}
+Per usare il metodo dei minimi quadrati lineari, passiamo ai logaritmi:
+\begin{equation}
+    \ln m(t) = \ln m_0 - \frac{t}{\tau}
+\end{equation}
+Che è l'equazione di una retta $y = ax + b$ dove:
+\begin{itemize}
+    \item $y_i = \ln m(t_i)$
+    \item $x_i = t_i$
+    \item $a = -1/\tau$
+    \item $b = \ln m_0$
+\end{itemize}
+Sapendo che i conteggi seguono una statistica di Poisson, l'errore sul singolo conteggio è $\sigma_{m_i} = \sqrt{m_i}$. Poiché abbiamo applicato una trasformazione logaritmica ($y = \ln m$), dobbiamo usare la \textbf{propagazione degli errori} per trovare $\sigma_{y_i}$:
+\begin{equation}
+    \sigma_{y_i}^2 = \left( \frac{\partial \ln m}{\partial m} \right)^2 \sigma_{m_i}^2 = \left( \frac{1}{m_i} \right)^2 m_i = \frac{1}{m_i} \implies \sigma_{y_i} = \frac{1}{\sqrt{m_i}}
+\end{equation}
+Faremo un fit lineare pesato utilizzando pesi $w_i = 1/\sigma_{y_i}^2 = m_i$.
+
+\begin{nota}
+    Questo metodo funziona bene se $m_i$ è abbastanza grande (dell'ordine delle decine), perché la Poissoniana si può approssimare a una Gaussiana. Il logaritmo inoltre amplifica enormemente le differenze per piccoli valori (mentre $\ln 10 \sim \ln 11$, tra $\ln 1$ e $\ln 2$ c'è molta differenza). Le asimmetrie naturali della Poissoniana a bassi conteggi verrebbero amplificate dalla distorsione del logaritmo, invalidando i presupposti dei minimi quadrati gaussiani.
+\end{nota}
 
 
+\section*{Codice Python: Generazione Distribuzioni $\chi^2$}
 
+Di seguito il codice Python utilizzato per esplorare la forma analitica della distribuzione del $\chi^2$, i suoi limiti per grandi gradi di libertà ($\nu \geq 30$) e la linearizzazione per $\nu$ piccolo tramite la variabile ausiliaria $\sqrt{2\chi^2}$.
+
+\begin{lstlisting}[language=Python, caption={Script per l'analisi della distribuzione del $\chi^2$}]
+# -*- coding: utf-8 -*-
+"""Distribuzione del chi quadro"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import chi2, norm
+
+# 1. Valori di gradi di liberta (generale)
+ndf_values =[2, 5, 10, 30, 50]
+x = np.linspace(0, 100, 1000)
+
+plt.figure(figsize=(10, 6))
+for ndf in ndf_values:
+    y = chi2.pdf(x, df=ndf)
+    plt.plot(x, y, label=f'$\chi^2$ (n={ndf})')
+
+# Sovrapposizione gaussiana per n grande
+ndf_large = 50
+mean = ndf_large
+std = np.sqrt(2 * ndf_large)
+gauss = norm.pdf(x, loc=mean, scale=std)
+plt.plot(x, gauss, 'k--', linewidth=2, label=f'Gaussiana (n={ndf_large})')
+
+plt.title('Distribuzione $\chi^2$ per diversi gradi di liberta')
+plt.xlabel('$\chi^2$')
+plt.ylabel('Densita di probabilita')
+plt.legend()
+plt.grid()
+plt.show()
+
+# 2. Zoom per grandi valori di gradi di liberta
+ndf_values = [30, 50]
+plt.figure(figsize=(10, 6))
+for ndf in ndf_values:
+    y = chi2.pdf(x, df=ndf)
+    plt.plot(x, y, label=f'$\chi^2$ (n={ndf})')
+    mean = ndf
+    std = np.sqrt(2 * ndf)
+    gauss = norm.pdf(x, loc=mean, scale=std)
+    plt.plot(x, gauss, '--', linewidth=2, label=f'Gaussiana (n={ndf})')
+
+plt.title('Distribuzione $\chi^2$ per grandi gradi di liberta')
+plt.xlabel('$\chi^2$')
+plt.ylabel('Densita di probabilita')
+plt.legend()
+plt.grid()
+plt.show()
+
+# 3. Zoom per piccoli valori di gradi di liberta
+ndf_values = [5, 10]
+x_small = np.linspace(0, 30, 300)
+plt.figure(figsize=(10, 6))
+for ndf in ndf_values:
+    y = chi2.pdf(x_small, df=ndf)
+    plt.plot(x_small, y, label=f'$\chi^2$ (n={ndf})')
+    mean = ndf
+    std = np.sqrt(2 * ndf)
+    gauss = norm.pdf(x_small, loc=mean, scale=std)
+    plt.plot(x_small, gauss, '--', linewidth=2, label=f'Gaussiana (n={ndf})')
+
+plt.title('Distribuzione $\chi^2$ per piccoli gradi di liberta')
+plt.xlabel('$\chi^2$')
+plt.ylabel('Densita di probabilita')
+plt.legend()
+plt.grid()
+plt.show()
+
+# 4. Forma del chi quadro ridotto
+ndf_values =[2, 5, 10, 30, 50]
+plt.figure(figsize=(10, 6))
+x_red = np.linspace(0, 3, 1000)
+
+for ndf in ndf_values:
+    y = chi2.pdf(x_red * ndf, df=ndf) * ndf  # cambio variabile P(y)=P(x)*dx/dy
+    plt.plot(x_red, y, label=f'$\chi^2$ ridotto (n={ndf})')
+
+# Gaussiana di riferimento N(1, 2/n)
+ndf_large = 50
+mean = 1
+std = np.sqrt(2 / ndf_large)
+gauss = norm.pdf(x_red, loc=mean, scale=std)
+plt.plot(x_red, gauss, ls='--', label=f'Gaussiana N(1, 2/n) (n={ndf_large})')
+
+plt.title('Distribuzione $\chi^2$ ridotto per diversi gradi di liberta')
+plt.xlabel('$\chi^2 /n$')
+plt.ylabel('Densita di probabilita')
+plt.legend()
+plt.grid()
+plt.show()
+
+# 5. Plot della variabile ausiliaria radice di 2 * chi quadro
+ndf_values = [5, 10]
+x_aux = np.linspace(0, 10, 100)
+plt.figure(figsize=(10, 6))
+
+for ndf in ndf_values:
+    y = chi2.pdf(x_aux**2 / 2, df=ndf) * x_aux  # cambio variabile
+    plt.plot(x_aux, y, label=f'$\sqrt{{2\chi^2}}$ (n={ndf})')
+    
+    mean = np.sqrt(2 * ndf - 1)
+    std = 1
+    gauss = norm.pdf(x_aux, loc=mean, scale=std)
+    plt.plot(x_aux, gauss, '--', linewidth=2, label=f'Gaussiana N($\sqrt{{2n-1}}$, 1) (n={ndf})')
+
+plt.title('Distribuzione di $\sqrt{{2\chi^2}}$ per piccoli gradi di liberta')
+plt.xlabel('$\sqrt{{2\chi^2}}$')
+plt.ylabel('Densita di probabilita')
+plt.legend()
+plt.grid()
+plt.show()
+\end{lstlisting}
 
 
 

@@ -4950,12 +4950,51 @@ Essendo $\hat{\theta}$ un minimo, la derivata prima si annulla e poniamo $\chi^2
 Definendo $\tilde{\theta}$ i valori tali per cui $\frac{(\tilde{\theta} - \hat{\theta})^2}{\text{var}(\hat{\theta})} = 1$, ovvero $\tilde{\theta} = \hat{\theta} \pm \sigma_{\hat{\theta}}$, avremo graficamente che:
 \begin{equation}
     \chi^2(\tilde{\theta}) = \chi^2_{\min} + 1
+    \label{eq:Chi}
 \end{equation}
 Quindi $\sigma_{\hat{\theta}}$ si ricava cercando le intersezioni della parabola locale con il valore del minimo $+1$.
 
 \begin{nota}
     Dalla definizione, cerchiamo il modello teorico che si discosta meno dalle misurazioni. Se il modello descrive bene i dati ci aspettiamo che il numeratore del $\chi^2$ sia dell'ordine dell'errore al quadrato al denominatore. Un valore di $\chi^2$ "troppo grande" indica problemi nel modello o nei dati, mentre un valore "troppo piccolo" (cioè varianza dei dati molto minore dell'errore stimato) può significare che stiamo sovrastimando gli errori.
 \end{nota}
+
+\subsubsection{Approfondimento dal Cowan di $\eqref{eq:Chi}$}
+Per un modello lineare: $f=A\theta$, posso utilizzare la definizione di $\chi^2$ e ricavare:
+\begin{equation*}
+\chi^2(\theta) = (\mathbf{y} - A\theta)^T V^{-1} (\mathbf{y} - A\theta)
+\end{equation*}
+
+Volendo trovare $\hat \theta$ risolvo:
+\[
+\frac{\partial \chi^2}{\partial \theta} = -2 A^T V^{-1} (\mathbf{y} - A\theta) \implies \hat \theta = (A^T V^{-1} A )^ -1 2 A^T V^{-1} \mathbf{y} = B \mathbf{y}
+\]
+Utilizzando la propagazione degli errori:
+\[
+cov(\theta_i, \theta_j) =  U = B V B^T = (A^T V^{-1} A)^{-1}
+\]
+dove si è utilizzato quanto trovato sopra per calcolare $B V B^T $.
+
+Espandendo $\chi^2$ rispetto a $\theta$ otteniamo:
+\begin{equation*}
+    \chi^2(\theta) = \chi^2(\hat{\theta}) + \frac{1}{2} \sum_{i,j} \left[ \frac{\partial^2 \chi^2}{\partial \theta_i \partial \theta_j} \right]_{\theta=\hat{\theta}} (\theta_i - \hat{\theta}_i)(\theta_j - \hat{\theta}_j) =
+\end{equation*}
+\begin{equation*}
+    \chi^2(\hat{\theta}) + \frac{1}{2}2(A^T V^{-1} A)_{ij} (\theta_i - \hat{\theta}_i)(\theta_j - \hat{\theta}_j) =
+    \chi^2(\hat{\theta}) + \frac{1}{2}2(U)_{ij} (\theta_i - \hat{\theta}_i)(\theta_j - \hat{\theta}_j) 
+\end{equation*}
+\begin{equation*}
+\chi^2(\theta) = \chi^2(\hat{\theta}) + (\theta - \hat{\theta})^T U^{-1} (\theta - \hat{\theta})
+\end{equation*}
+
+Per definizione statistica, il contorno di confidenza a \textbf{una deviazione standard ($1\sigma$)} per una distribuzione gaussiana multivariata è il luogo dei punti dove:
+\begin{equation*}
+(\theta - \hat{\theta})^T U^{-1} (\theta - \hat{\theta}) = 1
+\end{equation*}
+
+Sostituendo questo valore nell'espansione:
+\begin{equation}
+\chi^2(\theta) = \chi^2(\hat{\theta}) + 1 = \chi^2_{\text{min}} + 1
+\end{equation}
 
 \section{Distribuzione del $\chi^2$}
 
@@ -4968,7 +5007,7 @@ Nel $\chi^2$ i termini appaiono al quadrato, definendo $z_i = u_i^2$. Con il cam
 \begin{equation}
     P_z(z_i) = P_u(u_i) \left| \frac{du_i}{dz_i} \right| = P_u(\sqrt{z_i}) \frac{1}{2\sqrt{z_i}} \propto \frac{1}{\sqrt{z_i}} e^{-z_i/2}
 \end{equation}
-Il nostro $\chi^2 = \sum_i z_i$. Per le proprietà degli esponenziali, la somma produce un termine del tipo $\prod_i e^{-z_i/2} = e^{-\sum z_i / 2} = e^{-\chi^2/2}$.
+Per le proprietà degli esponenziali, la somma produce un termine del tipo $\prod_i e^{-z_i/2} = e^{-\sum z_i / 2} = e^{-\chi^2/2}$.
 Tenendo conto di tutti i fattori e della normalizzazione, la distribuzione esatta è:
 \begin{equation}
     P(\chi^2; \nu) = \frac{1}{2^{\nu/2} \Gamma(\nu/2)} (\chi^2)^{\nu/2 - 1} e^{-\chi^2/2}

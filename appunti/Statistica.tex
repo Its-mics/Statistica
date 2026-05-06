@@ -61,7 +61,7 @@
 
 \tikzset{standard/.style={/pgfplots/standard}}\usepackage{tikz}
 \usepackage{tikz-3dplot}
-\usetikzlibrary{arrows.meta, angles, quotes, trees}
+\usetikzlibrary{arrows.meta, angles, quotes, trees, patterns}
 \usepackage[most]{tcolorbox}
 
 \definecolor{RoyalBlue}{RGB}{0, 83, 155}
@@ -5259,81 +5259,254 @@ plt.grid()
 plt.show()
 \end{lstlisting}
 
-%-------------------------------------------------------------------------------------------------------------------
-\lezione{fit non lineari}{04/05/2026}
-\subsection{Fit non lineare- metodo di Gauss-Newton}
-Consideriamo le variabili nella forma $(x_i,y_i)$, tale che vale la relazione $y=f(x, \theta)$. Introduciamo la variabile $r_i= y_i- f(x_i,\theta)$ e scriviamo il $\chi^2$ come: 
-\begin{equation*}
-    \chi^2= S(\theta)= \sum_{i}^{} \frac{r_i^{2}(\theta)}{\sigma_i^2}
-\end{equation*}
-Sviluppiamo ora gli errori attraverso Taylor: 
-\begin{equation*}
-    r_i(\theta+\Delta\theta) \simeq r_i(\theta) + \derivative{r_i}{\theta} \Delta\theta = r_i(\theta) - \derivative{f_i}{\theta} \Delta\theta = r_i(\theta) - \derivative{A_i}{\theta} \Delta\theta 
-\end{equation*}
-dove $A_i = \derivative{f(x_i, \theta)}{\theta}$ \\
-Partendo allora da una stima inziale $\theta_0$, calcolo il mio chi quadro a partire da questa prima stima (usando Taylor).
+
+
+\lezione{Fit non lineari e Test di Ipotesi}{04/05/2026}
+
+\subsection{Fit non lineare}
+\subsubsection{Metodo di Gauss-Newton}
+Il metodo di Gauss-Newton è utilizzato per risolvere problemi di minimizzazione del $\chi^2$ quando la funzione di fit $f(x, \theta)$ non è lineare rispetto ai parametri $\theta$. 
+Consideriamo un set di misurazioni fisiche date da variabili nella forma $(x_i, y_i)$, tali per cui vale la relazione teorica $y_i = f(x_i, \theta)$. Si procede definendo l'$i$-esimo residuo come:
 \begin{equation}
-    S^{0}(\Delta\theta)= \sum_{i}^{} \frac{{(r_i^{0}- A_i\Delta\theta)}^2(\theta)}{\sigma_i^2}
+    r_i(\theta) = y_i - f(x_i, \theta)
 \end{equation}
-Andando ora a cercare il minimo di questa espressione andando ad annullare la derivata, allora trovo che:
+Considerando le coordinate $(x_i, y_i)$ fissate dai dati, il problema da risolvere è trovare il minimo della somma dei residui pesati (il $\chi^2$):
+\begin{equation*}
+    \chi^2 = S(\theta) = \sum_{i} \frac{r_i^2(\theta)}{\sigma_{y_i}^2} = \sum_{i} w_i r_i^2(\theta)
+\end{equation*}
+dove si è indicato il peso $w_i = \frac{1}{\sigma_{y_i}^2}$.
+
+Per minimizzare $S(\theta)$, si cerca di rendere il problema lineare nel parametro $\theta$. Per farlo, si linearizzano i residui attorno a un valore iniziale $\theta$ sviluppando in \textbf{serie di Taylor troncata al primo ordine}:
+\begin{equation*}
+    r_i(\theta + \Delta\theta) \simeq r_i(\theta) + \derivative{r_i}{\theta}\Delta\theta 
+\end{equation*}
+Dalla definizione di $r_i(\theta)$ è chiaro che $\derivative{r_i}{\theta} = - \pderivative{f(x_i, \theta)}{\theta}$. Per semplicità di scrittura, indichiamo:
 \begin{equation}
-    \Delta\theta= \frac{\sum_{i}^{}w_i A_i r_i^{0}}{\sum_{i}^{}w_i {A_i}^2}
+    A_i = \pderivative{f(x_i, \theta)}{\theta} \implies r_i(\theta + \Delta\theta) \simeq r_i(\theta) - A_i \Delta\theta
 \end{equation}
-con $w_i= \frac{1}{{\sigma_i}^2}$. A questo punto vado a studiare la variabile $\theta^1= \theta^0 + \Delta\theta$, andando ad iterare fino a quando non trovo un $\Delta\theta \simeq 0$. 
+Supponiamo ora di partire da un \textit{guess} (stima) iniziale sul parametro $\theta$ che indichiamo con $\theta^{(0)}$. Avremo che:
+\begin{equation}
+    r_i(\theta^{(0)} + \Delta\theta) \simeq r_i^{(0)} - A_i \Delta\theta
+\end{equation}
+dove $r_i^{(0)} = y_i - f(x_i, \theta^{(0)})$. Sostituiamo questa espressione linearizzata all'interno della formula di $S$:
+\begin{equation}
+    S^{(0)}(\Delta\theta) = \sum_{i} w_i \left[ r_i^{(0)} - A_i \Delta\theta \right]^2
+\end{equation}
+Questa equazione ora è semplice. Per trovare il minimo si annulla la derivata rispetto a $\Delta\theta$:
+\begin{equation*}
+    \derivative{S^{(0)}}{\Delta\theta} = 0 \implies \sum_{i} w_i \cdot 2 \left[ r_i^{(0)} - A_i \Delta\theta \right](-A_i) = 0
+\end{equation*}
+Risolvendo rispetto a $\Delta\theta$ otteniamo l'aggiornamento per il parametro:
+\begin{equation}
+    \Delta\theta = \frac{\sum_{i} w_i A_i r_i^{(0)}}{\sum_{i} w_i A_i^2} = \frac{\sum_{i} w_i A_i [y_i - f(x_i, \theta^{(0)})]}{\sum_{i} w_i A_i^2}
+\end{equation}
+Trovato $\Delta\theta$, si calcola il nuovo valore $\theta^{(1)} = \theta^{(0)} + \Delta\theta$ e si reitera tutto il procedimento, calcolando un nuovo $\Delta\theta$ e continuando finché l'incremento diventa trascurabile ($\Delta\theta \simeq 0$) e il $\chi^2$ si stabilizza ($S^{(k+1)} \simeq S^{(k)}$). Da notare che per la convergenza è \textbf{fondamentale partire da valori ragionevoli} per il guess iniziale $\theta^{(0)}$.
+
 
 \subsection{Fit con errore su x}
-noi vedremmo due metodi principali: 
+Nel caso in cui il fit sia complicato dal fatto che non si possono ignorare gli errori sulle $x$ (perché, ad esempio, le incertezze su $x$ e $y$ sono simili, o la funzione non è facilmente invertibile per scambiare semplicemente i ruoli di $x$ e $y$), esistono metodi per continuare a utilizzare la minimizzazione del $\chi^2$. Vedremo in particolare due approcci:
 \begin{itemize}
-    \item \textbf{effective variance}
-    \item \textbf{orthogonal distance regression}
+    \item \textbf{Effective Variance} (Varianza Efficace)
+    \item \textbf{Orthogonal Distance Regression} (ODR)
 \end{itemize}
-\subsubsection{Effective variance o Varianza efficecie}
-Cosideriamo di avere una set di dati dati da: $x_i \sim \mathcal{N}(\hat{x}_i, \sigma_{x_i})$ e $y_i \sim \mathcal{N}(\hat{y}_i, \sigma_{y_i})$, con $y=f(x)$. 
-Allora adesso vado a calcolare il chi quadro considerando il mio $\theta$ come fissato e considerando solo un termine della sommatoria. 
+
+\subsubsection*{Effective Variance (Varianza Efficace)}
+In questo metodo l'errore su $x$ viene "proiettato" e incluso nell'errore su $y$ tramite la derivata prima della funzione $f$. 
+Supponiamo che le misure siano distribuite normalmente: $x_i \sim \mathcal{N}(\hat{x}_i, \sigma_{x_i}^2)$ e $y_i \sim \mathcal{N}(\hat{y}_i, \sigma_{y_i}^2)$, con $\hat{y}_i = f(\hat{x}_i)$.
+La quantità $y - f(x)$ si può riscrivere aggiungendo e sottraendo il valore vero $\hat{y} = f(\hat{x})$:
 \begin{equation*}
-    y- f(x)= (y- \hat{y})+ (f(\hat{x})- f(x)) \simeq y - \hat{y}- f'(x)(x- \hat{x})
+    y - f(x) = (y - \hat{y}) + (f(\hat{x}) - f(x))
 \end{equation*}
-Allora andano a calcolare la varianza di questa quantità, ricordando le formule di propagazione della varianza, ho che:
+Possiamo sviluppare in serie di Taylor $f(x)$ attorno al valore vero $\hat{x}$:
 \begin{equation*}
-    \var{y- f(x)}= \var{y- \hat{y}} + {f'(\hat{x})}^2 \var{ \hat{x}- x} = {\sigma_y}^2 + {f'(\hat{x})}^2 {\sigma_x}^2 = {\sigma_{\text{eff}}}^2
+    f(x) \simeq f(\hat{x}) + (x - \hat{x})f'(\hat{x}) \implies f(\hat{x}) - f(x) \simeq (\hat{x} - x)f'(\hat{x})
 \end{equation*}
-Allora essendo che quando $\sigma_x=0$, allora $\var{y- f(x)}= {\sigma_y}^2$. Trasformo la formula del mio chi quadro nel caso della varianza di x diversa da vero in:
+Sostituendo, otteniamo: $y - f(x) \simeq (y - \hat{y}) + (\hat{x} - x)f'(\hat{x})$.
+Calcoliamo ora la varianza di questa quantità, considerando che gli errori su $x$ e $y$ sono statisticamente indipendenti ($\mathrm{Cov}(x,y) = 0$):
+\begin{align*}
+    \var{y - f(x)} &= \var{(y - \hat{y}) + (\hat{x} - x)f'(\hat{x})} \\
+    &= \var{y - \hat{y}} + \var{(\hat{x} - x)} [f'(\hat{x})]^2 \\
+    &= \sigma_{y}^2 + \sigma_{x}^2 [f'(\hat{x})]^2 \simeq \sigma_{y}^2 + \sigma_{x}^2 [f'(x)]^2
+\end{align*}
+(nell'ultimo passaggio approssimiamo $f'(\hat{x})$ con la derivata valutata nel punto misurato, essendo $\sigma_x$ piccolo). Abbiamo così definito la \textbf{varianza efficace}:
 \begin{equation}
-    \chi^2= S(\theta)= \sum_{i}^{} \frac{{(y_i- f(x_i))}^{2}}{\sigma_{\text{eff},i}^2}
+    \sigma_{\text{eff}}^2 = \sigma_{y}^2 + \sigma_{x}^2[f'(x)]^2
 \end{equation}
-\subsubsection{ODR}
-Nel caso dei minimi quadrati io cerco di minimizzare la distanza verticale, ora invece voglio minimizzare la distanza del punto che ho trovato con la curva teorica che ho trovato. \\
-Allora vado a chiamare $D_y= y-f(x)$ e il mio punto sulla curva $(\tilde{x}_i, \tilde{y}_i)$; dunque la mia distanza al quadrato diviene: 
-\begin{equation*}
-    {D_i(\tilde{x}_i)}^2= \frac{{(x_i - \tilde{x}_i)}^2}{{\sigma_{x,i}}^2} + \frac{{(y_i - \tilde{y}_i)}^2}{{\sigma_{y,i}}^2} = \frac{{(x_i - \tilde{x}_i)}^2}{{\sigma_{x,i}}^2} + \frac{{(y_i - f(\tilde{x}_i))}^2}{{\sigma_{y,i}}^2}
-\end{equation*}
-Dunque ottengo che la quantità da minimizzare è $\chi^2= \sum_{i}^{}{D_{y,i}}^2$. Nella libreria \texttt{Scipy} questo è fatto dalla funzione \texttt{curve.fit.odr}. \\
-Consideriamo allora lo sviluppo di Taylor della mia funzione in due variabili:
-\begin{equation*}
-    f(x_i + \delta x_i, \theta+ \Delta\theta) \simeq f(x_i, \theta)+ \frac{\partial f}{\partial \theta} \Delta\theta+ frac{\partial f}{\partial x} \delta x_i
-\end{equation*}
-facendo allora un cambio di varibili e utilizzando $r$ come sopra definito e $ \epsilon_i = f(x_i + \delta x_i, \theta) - y_i$, ottengo che:
+La nuova formula del $\chi^2$ da minimizzare diviene quindi:
 \begin{equation}
-    -\epsilon_i = {r_i}^{(0)} - A_i \Delta \theta - B_i \delta x_i
+    \chi^2 = S(\theta) = \sum_{i} \frac{[y_i - f(x_i, \theta)]^2}{\sigma_{y_i}^2 + \sigma_{x_i}^2 [f'(x_i, \theta)]^2}
 \end{equation}
-Allora ottengo che il mio chi quadro in questo caso è dato da:
+\textit{Nota:} Se $\sigma_{x_i} = 0$, la formula torna ad essere l'espressione classica del $\chi^2$.
+
+\subsubsection*{Orthogonal Distance Regression (ODR)}
+Un altro modo di affrontare il problema è cercare di minimizzare le \textbf{distanze ortogonali} dei punti sperimentali dalla curva teorica di fit, invece che minimizzare la sola distanza verticale come si fa nel $\chi^2$ standard.
+
+\begin{center}
+\begin{tikzpicture}
+    % Assi
+    \draw[->, thick] (0,0) -- (6,0) node[right] {$x$};
+    \draw[->, thick] (0,0) -- (0,4) node[above] {$y$};
+    
+    % Curva f(x)
+    \draw[thick, domain=1:5, smooth, variable=\x] plot ({\x}, {3.5 - 0.4*\x});
+    \node at (5.2, 1.5) {$f(x)$};
+    
+    % Punto misurato
+    \filldraw[black] (3, 3) circle (2pt) node[above right] {$(x_i, y_i)$};
+    
+    % Distanza verticale
+    \draw[<->, red, thick] (3, 3) -- (3, 2.3) node[midway, right] {\small Verticale ($\Delta y$)};
+    
+    % Distanza ortogonale
+    \draw[<->, cyan, thick] (3, 3) -- (2.4, 2.54) node[midway, left] {\small ODR};
+\end{tikzpicture}
+\end{center}
+
+Se indichiamo con $(\tilde{x}_i, \tilde{y}_i)$ il punto sulla curva più vicino rispetto alle misurazioni $(x_i, y_i)$, la distanza quadratica pesata da minimizzare diviene:
 \begin{equation}
-    s^{0}(\Delta\theta, \delta x_i)= \sum_{i}^{} \frac{\delta x_i}{{\sigma_{x_i}}^2}+ \frac{{(r_i^{0} - A_i \Delta\theta - B_i \delta x_i)}^2}{{\sigma_{y_i}}^2}
+    D_i^2(\tilde{x}_i) = W_{x_i}(x_i - \tilde{x}_i)^2 + W_{y_i}[y_i - f(\tilde{x}_i)]^2
+\end{equation}
+dove i pesi sono inversamente proporzionali alle varianze: $W_{x_i} = 1/\sigma_{x_i}^2$ e $W_{y_i} = 1/\sigma_{y_i}^2$. La quantità totale da minimizzare è quindi $\chi^2 = \sum D_i^2$. Questo metodo è implementato in Python tramite librerie come \texttt{scipy.odr}.
+
+Dal punto di vista pratico, i software online minimizzano le correzioni da apportare, che indichiamo con $\delta x_i$ per le $x_i$ e con $\epsilon_i$ per le $y_i$. Il vincolo imposto alla curva è:
+\begin{equation*}
+    y_i + \epsilon_i = f(x_i + \delta x_i, \theta) \implies \epsilon_i = -y_i + f(x_i + \delta x_i, \theta)
+\end{equation*}
+E la quantità da minimizzare assume la forma:
+\begin{equation}
+    S = \sum_{i} \left( \frac{\delta x_i^2}{\sigma_{x_i}^2} + \frac{\epsilon_i^2}{\sigma_{y_i}^2} \right)
 \end{equation}
 
-\section{Test di ipotesi}
-Cosideriamo $H_{0}$ come l'ipotesi nulla. Altrimenti ho $H_1$ come l'ipotesi alternativa. 
-Gli errori sono di due tipi:
-\begin{enumerate}
-    \item [I]: falsi negativi. Da qui si arriva alla definizione della significatività del test
-    \item [II]: falsi positivi
-\end{enumerate}
-Nel caso degli errori di tipo I, allora a partire dai dati costrusico una funzione t, che mi resituisci $P_0(t)$ nel caso in cui sia vero $H_0$. Costruisco una soglia allora per cui se i miei dati $t>t_s$, allora rigetto questi dati. 
-Questa zona è detta zona critica, facendo l'integrale:
+Per applicare la minimizzazione riutilizziamo il \textbf{metodo di Gauss-Newton}. Sviluppiamo in serie di Taylor la funzione $f$ in \textbf{due variabili} (i residui e le dipendenze da $\theta$ e $x$):
+\begin{equation*}
+    f(x_i + \delta x_i, \theta + \Delta\theta) \simeq f(x_i, \theta) + \pderivative{f}{\theta}\Delta\theta + \pderivative{f}{x}\delta x_i
+\end{equation*}
+Se indichiamo come prima $r_i^{(0)} = y_i - f(x_i, \theta^{(0)})$ e definiamo le derivate valutate all'iterazione:
+\begin{equation*}
+    A_i = \pderivative{f}{\theta} \quad \text{e} \quad B_i = \pderivative{f}{x}
+\end{equation*}
+l'espressione al primo passaggio (per $\theta = \theta^{(0)}$) diventa per l'errore $\epsilon_i$:
+\begin{equation*}
+    \epsilon_i \simeq -y_i + f(x_i, \theta^{(0)}) + A_i \Delta\theta + B_i \delta x_i = -r_i^{(0)} + A_i \Delta\theta + B_i \delta x_i
+\end{equation*}
+Elevando al quadrato $\epsilon_i$ all'interno della funzione somma da minimizzare si ha:
 \begin{equation}
-    \alpha = \int_{t_s}^{\infty} P_0(t) dt \; \rightarrow \; \text{mi restituisce la significatività} 
+    S^{(0)}(\Delta\theta, \delta x_i) = \sum_{i} \left[ \frac{\delta x_i^2}{\sigma_{x_i}^2} + \frac{(-r_i^{(0)} + A_i \Delta\theta + B_i \delta x_i)^2}{\sigma_{y_i}^2} \right]
 \end{equation}
-Il valore sogli si stabilisce in base alla sovrapposizione con la $P_1$, che è la disitribuzione nel caso sia vera $H_1$. 
+
+Per togliere la dipendenza da $\delta x_i$ poniamo a zero la sua derivata parziale $\pderivative{S^{(0)}}{\delta x_i} = 0$:
+\begin{equation*}
+    \frac{2\delta x_i}{\sigma_{x_i}^2} + \frac{2 B_i}{\sigma_{y_i}^2}( -r_i^{(0)} + A_i \Delta\theta + B_i \delta x_i ) = 0
+\end{equation*}
+Risolvendo per $\delta x_i$ si trova analiticamente:
+\begin{equation*}
+    \delta x_i = \frac{B_i \sigma_{x_i}^2}{\sigma_{y_i}^2 + B_i^2 \sigma_{x_i}^2} (r_i^{(0)} - A_i \Delta\theta)
+\end{equation*}
+Sostituendo questo $\delta x_i$ all'interno di $S^{(0)}$ otteniamo una forma sorprendentemente nota:
+\begin{equation}
+    S^{(0)}(\Delta\theta) = \sum_{i} \frac{(r_i^{(0)} - A_i \Delta\theta)^2}{\sigma_{y_i}^2 + B_i^2 \sigma_{x_i}^2}
+\end{equation}
+Si nota immediatamente che il denominatore non è nient'altro che la \textbf{Varianza Efficace} trovata precedentemente ($\sigma_{\text{eff}, i}^2 = \sigma_{y_i}^2 + B_i^2 \sigma_{x_i}^2$). Minimizzando infine questa espressione rispetto a $\Delta\theta$ per trovare l'aggiornamento dei parametri:
+\begin{equation}
+    \Delta\theta = \frac{\sum_i W_{\text{eff}, i} A_i r_i^{(0)}}{\sum_i W_{\text{eff}, i} A_i^2} \quad \text{con} \quad W_{\text{eff}, i} = \frac{1}{\sigma_{\text{eff}, i}^2}
+\end{equation}
+La formula finale all'interno di ogni iterazione è \textbf{identica} a quella del fit in cui si minimizza verticalmente, a patto di sostituire $\sigma_{y_i}$ con $\sigma_{\text{eff}, i}$.
+
+
+\subsection{Test di Ipotesi}
+In molti casi, l'informazione che vogliamo dedurre dai dati non è una stima numerica di un parametro, bensì la risposta a una precisa domanda (Es: \textit{"Il segnale segue un andamento lineare?"}). La branca della statistica che formalizza queste domande sotto forma di test numerici per decidere se accettare o rifiutare una teoria è detta \textbf{Test di Ipotesi}.
+
+Il primo passaggio è formulare le ipotesi. Si definiscono generalmente:
+\begin{itemize}
+    \item \textbf{L'ipotesi nulla} ($H_0$): è l'ipotesi di "nessun effetto" o l'ipotesi base. Di norma è quello che si cerca di testare o confutare (ad esempio, l'ipotesi che i dati contengano solo rumore di fondo).
+    \item \textbf{L'ipotesi alternativa} ($H_1$): è l'ipotesi contrapposta ad $H_0$ (ad esempio, l'ipotesi che ci sia il segnale fisico che stiamo cercando).
+\end{itemize}
+
+Quando scegliamo se accettare o rigettare un'ipotesi, possiamo incorrere in due tipi di \textbf{errori}:
+\begin{enumerate}
+    \item \textbf{Errore di Tipo I (Falso positivo\footnotemark)}: Rigettare l'ipotesi $H_0$ quando in realtà essa era corretta.
+    \item \textbf{Errore di Tipo II (Falso negativo)}: Accettare l'ipotesi $H_0$ quando in realtà era sbagliata (cioè era vera l'alternativa $H_1$).
+\end{enumerate}
+
+
+Per quantificare matematicamente questi errori si utilizzano la \textbf{Significatività} e la \textbf{Potenza} del test.
+
+\subsubsection{Significatività del test ($\alpha$)}
+A partire dai dati costruiamo una \textit{variabile di test} $t$. Questa variabile avrà una certa densità di probabilità $P_0(t)$ supponendo che sia vera l'ipotesi nulla $H_0$. 
+Il metodo stabilisce una \textbf{soglia} $t_s$ (soglia critica). Se il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
+
+L'integrale della $P_0(t)$ nella regione critica ci fornisce il \textbf{livello di significatività} del test (indicato con $\alpha$), che stima la probabilità di commettere un Errore di Tipo I:
+\begin{equation}
+    \alpha = \int_{t_s}^{\infty} P_0(t) \, \mathrm{d}t
+\end{equation}
+
+\begin{center}
+\begin{tikzpicture}
+    % Asse
+    \draw[->, thick] (-3,0) -- (4,0) node[right] {$t$};
+    \draw[->, thick] (-2,0) -- (-2,3) node[above] {$P_0(t)$};
+    
+    % Curva P0(t)
+    \draw[thick, domain=-2:3, samples=100] plot ({\x}, {2.5*exp(-(\x)^2 / 1.5)});
+    
+    % Soglia ts
+    \draw[dashed, thick] (1.2, 0) -- (1.2, 2) node[above] {Soglia $t_s$};
+    
+    % Area alfa
+    \fill[pattern=north east lines, pattern color=blue, opacity=0.5, domain=1.2:3, variable=\x]
+      (1.2,0) -- plot ({\x}, {2.5*exp(-(\x)^2 / 1.5)}) -- (3,0) -- cycle;
+    
+    % Labels
+    \node[blue, font=\bfseries] at (1.8, 0.4) {$\alpha$};
+    \node at (-0.5, -0.5) {Accetto $H_0$};
+    \node at (2.2, -0.5) {Rigetto $H_0$};
+    \draw[->, thick] (1.3, 1.5) -- (2.5, 1.5) node[right] {\small Regione Critica};
+\end{tikzpicture}
+\end{center}
+Il parametro $\alpha$ indica quanto deve essere grande la discrepanza tra il modello teorico base e i dati per farsi rigettare $H_0$.
+
+\subsubsection{Potenza del test ($1-\beta$)}
+Mentre nel calcolo di $\alpha$ si teneva conto solo della distribuzione $H_0$, per valutare gli \textbf{Errori di Tipo II} si deve assumere di conoscere la densità di probabilità $P_1(t)$ nel caso in cui sia vera l'ipotesi alternativa $H_1$.
+Integrando $P_1(t)$ nella regione in cui il test ci direbbe di accettare $H_0$ (cioè da $-\infty$ a $t_s$), troviamo la probabilità $\beta$ di non accorgerci del segnale:
+\begin{equation}
+    \beta = \int_{-\infty}^{t_s} P_1(t) \, \mathrm{d}t
+\end{equation}
+La \textbf{Potenza del test} è definita come l'abilità del test di riconoscere correttamente l'ipotesi $H_1$ scartando $H_0$, e vale:
+\begin{equation*}
+    \text{Potenza} = 1 - \beta
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}
+    % Asse
+    \draw[->, thick] (-3,0) -- (5,0) node[right] {$t$};
+    
+    % Curve P0 e P1
+    \draw[thick, blue, domain=-2.5:2.5, samples=100] plot ({\x}, {2*exp(-(\x+0.5)^2 / 1.0)});
+    \draw[thick, red, domain=-1:4.5, samples=100] plot ({\x}, {1.5*exp(-(\x-2)^2 / 1.5)});
+    
+    \node[blue] at (-0.5, 2.3) {$P_0$};
+    \node[red] at (2, 1.8) {$P_1$};
+    
+    % Soglia ts
+    \draw[dashed, thick] (0.8, 0) -- (0.8, 2.5) node[above] {$t_s$};
+    
+    % Area alfa (Sotto P0, a dx di ts)
+    \fill[blue, opacity=0.3, domain=0.8:2.5, variable=\x]
+      (0.8,0) -- plot ({\x}, {2*exp(-(\x+0.5)^2 / 1.0)}) -- (2.5,0) -- cycle;
+    \node[blue] at (1.2, 0.2) {$\alpha$};
+    
+    % Area beta (Sotto P1, a sx di ts)
+    \fill[red, opacity=0.3, domain=-1:0.8, variable=\x]
+      (-1,0) -- plot ({\x}, {1.5*exp(-(\x-2)^2 / 1.5)}) -- (0.8,0) -- cycle;
+    \node[red] at (0.3, 0.15) {$\beta$};
+
+\end{tikzpicture}
+\end{center}
+
+L'ideale, ovviamente, sarebbe avere sia $\alpha$ che $\beta$ molto piccoli. Questo si verifica unicamente quando le due curve di distribuzione $P_0$ e $P_1$ sono ben distanti e separate. \\
+Nella pratica, essendo parzialmente sovrapposte, vi deve sempre essere un \textbf{compromesso}. Modificando la soglia critica $t_s$ è inevitabile che, per diminuire $\alpha$, si debba automaticamente causare un aumento di $\beta$ (e viceversa). La decisione su dove piazzare la soglia è dunque dettata da quale tipo di errore siamo più propensi ad accettare nel nostro esperimento fisico.
+
 
 
 

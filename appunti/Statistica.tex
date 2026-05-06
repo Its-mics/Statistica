@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[a4paper,12pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} 
@@ -25,7 +25,11 @@
 \usepackage{enumitem}
 \usepackage{array}
 \usepackage{tabularx}
-\usepackage[a4paper, left=1.5cm, right=1.5cm, top=2cm, bottom=2cm]{geometry} 
+\usepackage[a4paper, left=1.8cm, right=1.8cm, top=1.8cm, bottom=1.8cm]{geometry} 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
+\sectionfont{\Large\bfseries}
+\subsectionfont{\large\bfseries}
 
 % ---  Grafica, Colori e TikZ  ---
 \usepackage{graphicx}
@@ -59,7 +63,8 @@
   \end{tikzpicture}%
 }
 
-\tikzset{standard/.style={/pgfplots/standard}}\usepackage{tikz}
+\tikzset{standard/.style={/pgfplots/standard}}
+\usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{arrows.meta, angles, quotes, trees, patterns}
 \usepackage[most]{tcolorbox}
@@ -121,7 +126,6 @@
     columns=fullflexible, % <-- FONDAMENTALE PER LA COPIA
     keepspaces=true,
 }
-\usepackage{listings}
 \usepackage[colorlinks=true, linkcolor=black]{hyperref} 
 
 \newtcolorbox{nota}{
@@ -155,11 +159,15 @@
 
 % --- Configurazione Intestazioni  ---
 \usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small \nouppercase{\leftmark}}
-\fancyhead[R]{\small \thelezione}
-\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\fancyhead[L]{\small\nouppercase{\rightmark}}
+\fancyhead[R]{\small\thepage}
+\fancyfoot{}
 
 \newcommand{\thelezione}{}
 
@@ -189,10 +197,7 @@
 
 \maketitle
 
-
-\vspace{2.5em}
-
-\vspace{2.5em}
+\vspace{1.5em}
 \begin{center}
     % Minipage per la foto (a sinistra)
     \begin{minipage}{0.25\textwidth}
@@ -212,7 +217,7 @@
         \hfill \footnotesize \textit{(Sotto mentite spoglie di Henri Poincaré)}
     \end{minipage}
 \end{center}
-\vspace{2.5em}
+\vspace{1.5em}
 
 
 
@@ -3027,13 +3032,13 @@ plt.show()
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{immagini/funzione con accept reject.png}
+    \includegraphics[width=0.8\textwidth]{Immagini/funzione con accept reject.png}
     \caption{Visualizzazione del metodo Hit-or-Miss: i punti in verde sono accettati perché cadono sotto la curva, quelli in rosso sono rifiutati.}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{immagini/confronto distribuzione tra f(x) teorica e campioni.png}
+    \includegraphics[width=0.8\textwidth]{Immagini/confronto distribuzione tra f(x) teorica e campioni.png}
     \caption{Validazione del metodo: l'istogramma dei punti accettati segue fedelmente la curva teorica attesa (punti arancioni).}
 \end{figure}
 
@@ -3190,7 +3195,7 @@ Quest'ultima quantità si chiama \textbf{covarianza} ed è un parametro importan
 Per dimostrarlo è conveniente trovare un altro modo di scrivere la covarianza che si ricava più facilmente assumendo il caso discreto.
 Consideriamo il caso di 2 variabili discrete $X$ e $Y$; il valore di aspettazione di una determinata funzione è dato da: 
 \[
-\mathbb{E}[f(x,y] = \sum_{i,j} P_{X,Y}(x_i,y_i)f(x_i,y_i)
+\mathbb{E}[f(x,y)] = \sum_{i,j} P_{X,Y}(x_i,y_i)f(x_i,y_i)
 \]
 
 dunque la covarianza è descrivibile da:
@@ -4101,7 +4106,6 @@ Il metodo della massima verosimiglianza consiste nell'adottare come stima del pa
 
 \end{tikzpicture}
 \caption{Rappresentazione grafica della funzione di Likelihood $\mathscr{L}(\theta)$. Il metodo della massima verosimiglianza individua il valore stimato $\hat{\theta}$ in corrispondenza del picco della curva, dove la derivata prima si annulla.}
-\label{fig:likelihood_parabola}
 \end{figure}
 
  Questo certe volte consente di ottenere un'equazione che si può risolvere analiticamente per ottenere $\hat{\theta}$, a volte invece bisogna ricorrere a soluzioni numeriche.
@@ -4585,7 +4589,6 @@ Se graficamente si riesce a costruire la funzione $\ln \mathscr{L}(\theta)$ e a 
 
 \end{tikzpicture}
 \caption{Metodo grafico per determinare la stima e l'errore.}
-\label{fig:likelihood_parabola}
 \end{figure}
 
 \subsubsection*{Approfondimento dal Rotondi sull'equazione \ref{eq:appunto}}
@@ -4958,7 +4961,7 @@ Quindi $\sigma_{\hat{\theta}}$ si ricava cercando le intersezioni della parabola
     Dalla definizione, cerchiamo il modello teorico che si discosta meno dalle misurazioni. Se il modello descrive bene i dati ci aspettiamo che il numeratore del $\chi^2$ sia dell'ordine dell'errore al quadrato al denominatore. Un valore di $\chi^2$ "troppo grande" indica problemi nel modello o nei dati, mentre un valore "troppo piccolo" (cioè varianza dei dati molto minore dell'errore stimato) può significare che stiamo sovrastimando gli errori.
 \end{nota}
 
-\subsubsection{Approfondimento dal Cowan di $\eqref{eq:Chi}$}
+\subsubsection*{Approfondimento dal Cowan di $\eqref{eq:Chi}$}
 Per un modello lineare: $f=A\theta$, posso utilizzare la definizione di $\chi^2$ e ricavare:
 \begin{equation*}
 \chi^2(\theta) = (\mathbf{y} - A\theta)^T V^{-1} (\mathbf{y} - A\theta)

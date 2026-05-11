@@ -5425,7 +5425,7 @@ Si nota immediatamente che il denominatore non è nient'altro che la \textbf{Var
 La formula finale all'interno di ogni iterazione è \textbf{identica} a quella del fit in cui si minimizza verticalmente, a patto di sostituire $\sigma_{y_i}$ con $\sigma_{\text{eff}, i}$.
 
 
-\subsection{Test di Ipotesi}
+\lezione{Test di Ipotesi}{11/05/2026}
 In molti casi, l'informazione che vogliamo dedurre dai dati non è una stima numerica di un parametro, bensì la risposta a una precisa domanda (Es: \textit{"Il segnale segue un andamento lineare?"}). La branca della statistica che formalizza queste domande sotto forma di test numerici per decidere se accettare o rifiutare una teoria è detta \textbf{Test di Ipotesi}.
 
 Il primo passaggio è formulare le ipotesi. Si definiscono generalmente:
@@ -5443,9 +5443,12 @@ Quando scegliamo se accettare o rigettare un'ipotesi, possiamo incorrere in due 
 
 Per quantificare matematicamente questi errori si utilizzano la \textbf{Significatività} e la \textbf{Potenza} del test.
 
-\subsubsection{Significatività del test ($\alpha$)}
-A partire dai dati costruiamo una \textit{variabile di test} $t$. Questa variabile avrà una certa densità di probabilità $P_0(t)$ supponendo che sia vera l'ipotesi nulla $H_0$. 
-Il metodo stabilisce una \textbf{soglia} $t_s$ (soglia critica). Se il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
+\subsection{Statistica di test}
+Definiamo come \textit{statistica di test} l'insieme di dati $t_m$ che derivano dall'assunzione di una certa ipotesi $H$. Da questa scelta
+si ricava anche la distribuzione $P(t)$. A partire dai dati costruiamo una \textit{variabile di test} $t$. 
+
+\subsection{Significatività del test ($\alpha$)}
+Scegliamo una \textbf{soglia} $t_s$ (soglia critica) e poniamo che il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
 
 L'integrale della $P_0(t)$ nella regione critica ci fornisce il \textbf{livello di significatività} del test (indicato con $\alpha$), che stima la probabilità di commettere un Errore di Tipo I:
 \begin{equation}
@@ -5479,7 +5482,28 @@ L'integrale della $P_0(t)$ nella regione critica ci fornisce il \textbf{livello 
  nel $100\alpha \%$ degli esperimenti osserveremo per puro caso una discrepanza
   tale da portarci a rigettare l'ipotesi.
 
-\subsubsection{Potenza del test ($1-\beta$)}
+Nel nostro caso sceglieremo $t_s$ tale che $\alpha=0.05$.
+
+\subsubsection{Test a due code}
+Nel caso la nostra distribuzione non abbia un andamento espoenenziale, ma del tipo gaussiano, possiamo definire due valori di soglia $t_{s1}$ e $t_{s2}$, 
+in tal caso definiremo la significatività come:
+\[
+\frac{\alpha}{2} = \int_{t_{s1}}^{-\infty} P_0(t) \, \mathrm{d}t = \int_{t_{s2}}^{\infty} P_0(t) \, \mathrm{d}t
+\]
+
+\subsubsection{P-value}
+Dato un valore $t_m$ misurato, definiamo il \textbf{P-value} come: 
+\[
+p\text{-value} = \int_{t_m}^{\infty} P_0(t) \, \mathrm{d}t
+\] 
+abbiamo due eventualità:
+\begin{itemize}
+    \item Se $p\text{-value} < \alpha$, rigettiamo $H_0$.
+    \item Se $p\text{-value} \geq \alpha$, accettiamo $H_0$.
+\end{itemize}
+similmente possiamo confrontare $t_m$ con $t_s$ e agire di conseguenza.
+
+\subsection{Potenza del test ($1-\beta$)}
 Mentre nel calcolo di $\alpha$ si teneva conto solo della distribuzione $H_0$, per valutare gli \textbf{Errori di Tipo II} si deve assumere di conoscere la densità di probabilità $P_1(t)$ nel caso in cui sia vera l'ipotesi alternativa $H_1$.
 Integrando $P_1(t)$ nella regione in cui il test ci direbbe di accettare $H_0$ (cioè da $-\infty$ a $t_s$), troviamo la probabilità $\beta$ che il nostro dato possa soddisfare anche l'ipotesi alternativa:
 \begin{equation}
@@ -5521,12 +5545,23 @@ La \textbf{Potenza del test} è definita come l'abilità del test di riconoscere
 L'ideale, ovviamente, sarebbe avere sia $\alpha$ che $\beta$ molto piccoli. Questo si verifica unicamente quando le due curve di distribuzione $P_0$ e $P_1$ sono ben distanti e separate. \\
 Nella pratica, essendo parzialmente sovrapposte, vi deve sempre essere un \textbf{compromesso}. Modificando la soglia critica $t_s$ è inevitabile che, per diminuire $\alpha$, si debba automaticamente causare un aumento di $\beta$ (e viceversa). La decisione su dove piazzare la soglia è dunque dettata da quale tipo di errore siamo più propensi ad accettare nel nostro esperimento fisico.
 
+\subsection{Test del $\Chi^2$}
+Supponiamo di disporre di $N$ misure $(x_i, y_i)$ e l'esistenza di un modello $f : y = f(x)$. Abbiamo già visto che possiamo definire \textit{la distribuzione del $\Chi^2$} come:
+\begin{equation*}
+P(\Chi^2, n) = \frac{2^{-n/2}}{\Gamma(n/2)} (\Chi^2)^{(n/2)-1} e^{-\Chi^2/2}
+\end{equation*}
+in tal caso prendiamo $\Chi^2$ come statistica di test. In questo caso definiamo l'ipotesi: \textit{f descrive bene ipotesi} $= H_0$. 
+Se ciò è vero, allora $P(\Chi^2, n)$ è la distribuzione attesa per i nostri dati. 
 
-
-
-
-
-
+I passaggi da seguire sono:  
+\begin{enumerate}
+    \item decide $\alpha$
+    \item trovo $\Chi^2_s$ tale che $\alpha = \int_{\Chi^2_s}^{\infty} P(\Chi^2, n) \, d\Chi^2$ \footnote{valutare più volte $\Chi^2$, vuol dire ...}
+    \item se $\Chi^2_m > \Chi^2_s$, rigetto $H_0$; altrimenti, accetto $H_0$.
+    \item posso anche calcolare il p-value e confrontarlo con $\alpha$.
+\end{enumerate}
+\subsubsection{Test del $\Chi^2$ di Pearson}
+Nel caso degli istrogrammi: $\Chi^2 = \sum \frac{(n_i - \nu_i(\hat \theta))^2}{\nu_i(\hat \theta)}$, dove possiamo approsimare $\nu_i$ con $n_i$ se $n_i \leq 5$ 
 
 
 
@@ -5912,7 +5947,5 @@ Essa mi garantisce:
     \item Infine lo spazio delle fasi tiene conto della molteplicità del livello energetico, vale a dire in quanti ``modi'' è possibile ottenere una configurazione che abbia la stessa energia. Nel nostro caso questo corrisponde al volume di una corteccia di sfera di raggio interno \( v \) e spessore \( dv \). A tutti i punti di questo volume corrisponde la medesima energia \( K = \frac{mv^2}{2} \).
 \end{itemize}
 
-
 \end{itemize}
-
 \end{document}

@@ -5823,7 +5823,54 @@ Aumentando il grado del polinomio in un fit, il $\chi^2$ ridotto apparentemente 
 
 Per capire se il modello più complicato migliora abbastanza il fit da giustificare i parametri aggiuntivi, si usa il \textbf{Test F di Fisher-Snedecor}. Si applica ai \textit{modelli annidati}: consideriamo un modello semplice $M_1$ (con $p_1$ parametri e statistica $\chi^2_1$) e un modello più complesso $M_2$ (con $p_2 > p_1$ parametri e statistica $\chi^2_2$). Per costruzione $\chi^2_2 \leq \chi^2_1$.
 
-Costruiamo la statistica $F$:
+
+La variabile di Fisher nasce dal confronto tra due stime indipendenti della stessa varianza.
+
+Supponiamo di avere due campioni estratti da popolazioni gaussiane con la stessa varianza reale \(\sigma^2\). Le varianze stimate \footnote{indichiamo con V la varianza campionaria e con $\sigma^2$ quella reale, ignota} sono
+\[ 
+V_1 = \frac{1}{N_1-1} \sum_{i=1}^{N_1}(x_i-\bar x)^2, \qquad V_2 =\frac{1}{N_2-1}\sum_{i=1}^{N_2}(y_i-\bar y)^2.
+\]
+La statistica di Fisher è definita come
+\[
+F=\frac{V_1}{V_2}.
+\]
+Se le due popolazioni hanno davvero la stessa varianza, questo rapporto dovrebbe oscillare attorno a \(1\).
+
+Ora ricordiamo una proprietà fondamentale dei campioni gaussiani:
+\[
+\frac{(N-1)V}{\sigma^2} \sim \chi^2_{N-1}.
+\]
+Quindi
+\[
+\frac{(N_1-1)V_1}{\sigma^2} \sim \chi^2_{\nu_1},
+\qquad
+\frac{(N_2-1)V_2}{\sigma^2} \sim \chi^2_{\nu_2},
+\]
+dove $\nu_1=N_1-1,  \nu_2=N_2-1.$
+Facendo il rapporto otteniamo
+\[
+F =\frac{ \left(\chi_1^2/\nu_1\right)}{\left(\chi_2^2/\nu_2\right)}\sim F_{\nu_1,\nu_2}.
+\]
+Quindi la distribuzione di Fisher è, il rapporto tra due variabili \(\chi^2\) normalizzateper i rispettivi gradi di libertà.
+
+Nel confronto tra modelli la stessa idea compare in forma leggermente diversa.
+Riconsiderando i due modelli $M_1$ e $M_2$, con $\chi_1^2$ e $\chi_2^2$
+
+Il miglioramento del fit è misurato dalla differenza
+\[
+\Delta\chi^2 = \chi_1^2-\chi_2^2.
+\]
+Si può dimostrare che:
+\[
+\Delta\chi^2 \sim \chi^2_{p_2-p_1},
+\]
+dove \(p_2-p_1\) è il numero di parametri aggiunti.
+
+Mentre la stima della varianza residua del modello $M_2$ è
+\[
+\frac{\chi_2^2}{N-p_2}.
+\]
+La statistica di Fisher diventa allora:
 \begin{equation}
     F = \frac{\text{Quanto è migliorato il fit}}{\text{Quanto rumore resta nel modello migliore}} = \frac{(\chi^2_1 - \chi^2_2) / (p_2 - p_1)}{\chi^2_2 / (N - p_2)}
 \end{equation}
@@ -5905,7 +5952,11 @@ La statistica di test $D$ è definita come la \textbf{massima distanza assoluta}
 \end{tikzpicture}
 \end{center}
 
-
+Per calcolare i valori critici di $D$, dopo il quale l'ipotesi viene rigettata, si usa la distribuzione di Kolmogorov:
+\begin{equation}
+    P(D) = 1 - 2\sum_{k=1}^{\infty} (-1)^{k-1} e^{-2k^2 D^2 m}
+\end{equation}
+la quale viene spesso approssimata oppure calcolata con metodi numerici (per campioni piccoli).
 \begin{nota}
     Attenzione: le tabelle standard (e le funzioni scipy base come \texttt{kstest}) assumono che $F(x)$ sia nota a priori. Se i parametri di $F(x)$ vengono estratti (fittati) \textit{dai dati stessi}, la statistica $D$ non segue più la distribuzione attesa. In tal caso, si usa un \textbf{Toy Monte Carlo} per simulare la vera distribuzione nulla e trovare il p-value o il valore critico corretti.
 \end{nota}
@@ -5932,11 +5983,8 @@ La statistica di test $D$ è definita come la \textbf{massima distanza assoluta}
 \end{center}
 
 
-Inoltre, il KS test può essere usato per confrontare due campioni indipendenti. In tal caso $D = \max_x |\phi_1(x) - \phi_2(x)|$ e il numero di gradi di libertà equivalente si ottiene componendo i sample sizes:
-\begin{equation*}
-    m = \frac{m_1 \cdot m_2}{m_1 + m_2}
-\end{equation*}
-
+Inoltre, il KS test può essere usato per confrontare due campioni indipendenti. In tal caso $D = \max_x |\phi_1(x) - \phi_2(x)|$.
+In tal caso si agisce come precedentemente, calcolando i valori di soglia tramite una distribuzione di Kolmogorov simile a quella precedente.
 \subsection*{Implementazione Python del Test KS (con Monte Carlo)}
 
 \begin{lstlisting}[language=Python, caption=Script Python: KS Test e Toy Monte Carlo - Parte 1]

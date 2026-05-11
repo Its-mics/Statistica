@@ -66,6 +66,7 @@
 \tikzset{standard/.style={/pgfplots/standard}}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
+\usetikzlibrary{positioning}
 \usetikzlibrary{arrows.meta, angles, quotes, trees, patterns}
 \usepackage[most]{tcolorbox}
 
@@ -153,6 +154,7 @@
 \newtheorem*{example}{Esempio}
 \newtheorem{theorem}{Teorema}
 \newtheorem*{theorem*}{Teorema}
+\newtheorem{esempio}{Esempio}
 
 \theoremstyle{remark}
 \newtheorem{osservazione}{\textbf{\color{ForestGreen}Osservazione}}
@@ -220,7 +222,6 @@ Le sotto sezioni in Rosso sono quelle che riguardano il ripasso di Bressan, tutt
     % Minipage per la foto (a sinistra)
     \begin{minipage}{0.25\textwidth}
         \centering
-        % Inserisci qui la foto che avrai creato!
         \includegraphics[width=\textwidth]{Immagini/prof_poincare.png}
     \end{minipage}%
     \hspace{0.05\textwidth}% Spazio tra foto e testo
@@ -5439,7 +5440,8 @@ Si nota immediatamente che il denominatore non è nient'altro che la \textbf{Var
 La formula finale all'interno di ogni iterazione è \textbf{identica} a quella del fit in cui si minimizza verticalmente, a patto di sostituire $\sigma_{y_i}$ con $\sigma_{\text{eff}, i}$.
 
 
-\lezione{Test di Ipotesi}{11/05/2026}
+
+\lezione{Test di Ipotesi}{Lezione del 11/05/2026}
 
 In molti casi, l'informazione che vogliamo dedurre dai dati non è una stima numerica di un parametro, bensì la risposta a una precisa domanda (Es: \textit{"Il segnale segue un andamento lineare?"}). La branca della statistica che formalizza queste domande sotto forma di test numerici per decidere se accettare o rifiutare una teoria è detta \textbf{Test di Ipotesi}.
 
@@ -5457,13 +5459,13 @@ Quando scegliamo se accettare o rigettare un'ipotesi, possiamo incorrere in due 
 
 Per quantificare matematicamente questi errori si utilizzano la \textbf{Significatività} e la \textbf{Potenza} del test.
 
-\subsection{Statistica di test}
-Definiamo come \textit{statistica di test} un valore $t$ calcolato a partire dai dati campionari. Assumendo come vera una certa ipotesi $H$, la variabile $t$ seguirà una distribuzione di probabilità nota $P(t)$.
+\subsubsection*{Statistica di test}
+Operativamente il test di ipotesi prevede la definizione di una variabile $t$, chiamata \textit{statistica di test}, costruita a partire dai dati campionari. Fissati i dati, $t$ è un numero; ma in generale, essendo costruita su campioni aleatori, $t$ è una variabile aleatoria. Assumendo come vera $H_0$, $t$ seguirà una distribuzione di probabilità nota $P_0(t)$.
 
-\subsection{Significatività del test ($\alpha$)}
-Scegliamo una \textbf{soglia critica} $t_s$. Se il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
+\subsection{Significatività del test ($\alpha$) e Valore Critico}
+Fissato il livello di significatività del test $\alpha$, si determina una \textbf{soglia critica} $t_s$. Se il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
 
-L'integrale della $P_0(t)$ (distribuzione sotto $H_0$) nella regione critica fornisce il \textbf{livello di significatività} $\alpha$, ovvero la probabilità di commettere un Errore di Tipo I:
+L'integrale della $P_0(t)$ nella regione critica fornisce proprio $\alpha$, ovvero la probabilità di commettere un Errore di Tipo I:
 \begin{equation}
     \alpha = \int_{t_s}^{\infty} P_0(t) \, \mathrm{d}t
 \end{equation}
@@ -5490,31 +5492,92 @@ L'integrale della $P_0(t)$ (distribuzione sotto $H_0$) nella regione critica for
     \node at (2.2, -0.4) {Rigetto $H_0$};
 \end{tikzpicture}
 \end{center}
+Rigettando $t > t_s$ stiamo escludendo la coda della distribuzione per cui giudichiamo troppo improbabile che il $t$ misurato sia distribuito secondo $P_0$. Tipicamente si sceglie $\alpha = 0.05$ ($5\%$).
 
-Definire $\alpha$ significa accettare che, nel $100\alpha \%$ degli esperimenti, osserveremo per puro caso una discrepanza tale da portarci a rigettare $H_0$ anche se corretta. Tipicamente si sceglie $\alpha = 0.05$.
-
-\subsubsection{Test a due code}
-Se la distribuzione è simmetrica (es. Gaussiana) e siamo interessati a discrepanze in entrambe le direzioni, definiamo due soglie $t_{s1}$ e $t_{s2}$ tali che:
+\subsubsection*{Test a due code}
+Se la distribuzione $P_0(t)$ non ha una sola coda ma è simmetrica (es. Gaussiana) e siamo interessati a discrepanze in entrambe le direzioni, definiamo due soglie $t_{s1}$ e $t_{s2}$ tali che l'area rigettata sia ripartita:
 \begin{equation*}
 \frac{\alpha}{2} = \int_{-\infty}^{t_{s1}} P_0(t) \, \mathrm{d}t = \int_{t_{s2}}^{\infty} P_0(t) \, \mathrm{d}t
 \end{equation*}
 
-\subsubsection{P-value}
-Dato un valore misurato $t_m$, il \textbf{p-value} è la probabilità di ottenere un risultato uguale o più estremo di quello osservato, assumendo $H_0$ vera:
+\begin{center}
+\begin{tikzpicture}
+    \draw[->, thick] (-3.5,0) -- (3.5,0) node[right] {$t$};
+    \draw[->, thick] (0,0) -- (0,2.5) node[above] {$P_0(t)$};
+    \draw[thick, domain=-3:3, samples=100] plot ({\x}, {2*exp(-0.5*\x*\x)});
+    
+    % Coda Sinistra
+    \fill[pattern=north west lines, pattern color=blue, opacity=0.5] 
+        (-3,0) -- plot[domain=-3:-1.5] ({\x}, {2*exp(-0.5*\x*\x)}) -- (-1.5,0) -- cycle;
+    \draw[dashed, thick] (-1.5,0) node[below] {$t_1$} -- (-1.5, {2*exp(-0.5*1.5*1.5)});
+    \node[blue, font=\bfseries] at (-2.1, 0.4) {$\alpha/2$};
+    
+    % Coda Destra
+    \fill[pattern=north east lines, pattern color=blue, opacity=0.5] 
+        (1.5,0) -- plot[domain=1.5:3] ({\x}, {2*exp(-0.5*\x*\x)}) -- (3,0) -- cycle;
+    \draw[dashed, thick] (1.5,0) node[below] {$t_2$} -- (1.5, {2*exp(-0.5*1.5*1.5)});
+    \node[blue, font=\bfseries] at (2.1, 0.4) {$\alpha/2$};
+\end{tikzpicture}
+\end{center}
+
+Si rigetta $H_0$ se $t_m \leq t_{s1}$ oppure $t_m \geq t_{s2}$.
+
+\subsubsection*{Il p-value}
+Un'altra quantità strettamente collegata alla significatività è il \textbf{p-value}. Se $t_m$ è il risultato calcolato per i nostri dati, il p-value è l'integrale della coda da $t_m$ in poi:
 \begin{equation*}
 p\text{-value} = \int_{t_m}^{\infty} P_0(t) \, \mathrm{d}t
 \end{equation*} 
+È la probabilità di ottenere un risultato uguale o più estremo di quello osservato assumendo $H_0$ vera.
 \begin{itemize}
-    \item Se $p\text{-value} < \alpha$, rigettiamo $H_0$.
-    \item Se $p\text{-value} \geq \alpha$, non abbiamo prove sufficienti per rigettare $H_0$.
+    \item Se $p\text{-value} \leq \alpha \implies$ \textbf{rigetto} $H_0$ (equivale a $t_m \geq t_s$).
+    \item Se $p\text{-value} > \alpha \implies$ \textbf{non rigetto} $H_0$.
 \end{itemize}
 
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+    % Caso con alfa
+    \begin{scope}[shift={(0,0)}]
+        \draw[->, thick] (-0.5,0) -- (5,0) node[right] {$\chi^2$};
+        \draw[->, thick] (0,0) -- (0,3);
+        \draw[thick, domain=0:4.5, samples=100] plot ({\x}, {1.5*\x*exp(-0.6*\x)});
+        
+        \fill[pattern=north east lines, opacity=0.5] 
+            (3,0) -- plot[domain=3:4.5] ({\x}, {1.5*\x*exp(-0.6*\x)}) -- (4.5,0) -- cycle;
+        \draw[dashed, thick] (3,0) node[below] {$\chi^2_s$} -- (3, {1.5*3*exp(-0.6*3)});
+        \node at (3.5, 0.4) {$\alpha$};
+        
+        \draw[thick] (2,0) node[below] {$\chi^2_m$} -- (2, {1.5*2*exp(-0.6*2)});
+        \node at (2, 3) {\textbf{Caso con $\alpha$}};
+    \end{scope}
+    
+    % Caso con p-value
+    \begin{scope}[shift={(7,0)}]
+        \draw[->, thick] (-0.5,0) -- (5,0) node[right] {$\chi^2$};
+        \draw[->, thick] (0,0) -- (0,3);
+        \draw[thick, domain=0:4.5, samples=100] plot ({\x}, {1.5*\x*exp(-0.6*\x)});
+        
+        \fill[purple!30, opacity=0.6] 
+            (2,0) -- plot[domain=2:4.5] ({\x}, {1.5*\x*exp(-0.6*\x)}) -- (4.5,0) -- cycle;
+        \fill[pattern=north east lines, opacity=0.5] 
+            (3,0) -- plot[domain=3:4.5] ({\x}, {1.5*\x*exp(-0.6*\x)}) -- (4.5,0) -- cycle;
+            
+        \draw[dashed, thick] (3,0) node[below] {$\chi^2_s$} -- (3, {1.5*3*exp(-0.6*3)});
+        \draw[dashed, thick, purple] (2,0) node[below] {$\chi^2_m$} -- (2, {1.5*2*exp(-0.6*2)});
+        
+        \node at (3.8, 0.25) {$\alpha$};
+        \node[purple, font=\bfseries] at (2.5, 0.8) {p-value};
+        \node at (2, 3) {\textbf{Caso con p-value}};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
 \subsection{Potenza del test ($1-\beta$)}
-Per valutare l'**Errore di Tipo II**, assumiamo sia vera l'ipotesi alternativa $H_1$ con distribuzione $P_1(t)$. La probabilità $\beta$ di accettare erroneamente $H_0$ è:
+Per valutare l'Errore di Tipo II, assumiamo sia vera l'ipotesi alternativa $H_1$ con distribuzione $P_1(t)$. La probabilità $\beta$ di accettare erroneamente $H_0$ è data integrando $P_1$ nella regione di accettazione di $H_0$:
 \begin{equation}
     \beta = \int_{-\infty}^{t_s} P_1(t) \, \mathrm{d}t
 \end{equation}
-La \textbf{Potenza del test} ($1 - \beta$) rappresenta la capacità del test di rigettare correttamente $H_0$ quando $H_1$ è vera.
+La \textbf{Potenza del test} è la quantità $(1 - \beta)$ e rappresenta la capacità del test di rigettare correttamente $H_0$ quando $H_1$ è vera.
 
 \begin{center}
 \begin{tikzpicture}
@@ -5537,42 +5600,399 @@ La \textbf{Potenza del test} ($1 - \beta$) rappresenta la capacità del test di 
 \end{tikzpicture}
 \end{center}
 
-\subsection{Test del $\chi^2$}
-Prendiamo il valore di $\chi^2$ come statistica di test. L'ipotesi $H_0$ è che il modello $f(x)$ descriva correttamente i dati. Se $H_0$ è vera, la statistica segue la distribuzione:
-\begin{equation*}
-P(\chi^2, n) = \frac{2^{-n/2}}{\Gamma(n/2)} (\chi^2)^{(n/2)-1} e^{-\chi^2/2}
-\end{equation*}
-Si rigetta $H_0$ se $\chi^2_m > \chi^2_s$, dove $\chi^2_s$ è calcolato fissando $\alpha$.
+\section{Test del $\chi^2$}
+Il test del $\chi^2$ fa parte della categoria di test d'ipotesi in cui abbiamo effettuato un fit dei dati con una certa funzione $f(x, \theta)$ e ci chiediamo se l'ipotesi base (cioè che la funzione $f$ descriva adeguatamente i dati) sia corretta. 
 
-\subsection{Overfitting e Test F}
-Per decidere se aumentare il grado di un polinomio di fit senza incorrere in overfitting, usiamo il \textbf{Test F} confrontando due modelli $M_1$ (semplice) e $M_2$ (complesso, con $p_2 > p_1$):
+Sappiamo che il parametro $\theta$ si ricava minimizzando:
 \begin{equation*}
-    F = \frac{(\chi^2_1 - \chi^2_2) / (p_2 - p_1)}{\chi^2_2 / (N - p_2)}
+    \chi^2 = \sum_{i=1}^N \frac{[y_i - f(x_i, \theta)]^2}{\sigma_i^2}
 \end{equation*}
-Se $F \gg 1$, il miglioramento del fit è statisticamente significativo e non dovuto al semplice rumore.
+Sotto l'ipotesi $H_0$, la statistica $\chi^2$ segue la distribuzione di probabilità:
+\begin{equation}
+    P(\chi^2; m) = \frac{2^{-m/2}}{\Gamma(m/2)} (\chi^2)^{(m/2)-1} e^{-\chi^2/2}
+\end{equation}
+dove $m$ è il \textbf{numero di gradi di libertà}. In un processo di minimizzazione su $N$ dati, se stimo $p$ parametri e ho imposto $k$ vincoli aggiuntivi, i gradi di libertà sono:
+\begin{equation}
+    m = N - p - k
+\end{equation}
+\textit{Nota:} Nulla vieta di fare il test del $\chi^2$ a prescindere da una minimizzazione. Se sto solo confrontando i dati misurati con una teoria fissata a priori, il numero di gradi di libertà è semplicemente $N$.
 
+\subsection{Test del $\chi^2$ di Pearson (Dati Binned)}
+Il test può essere effettuato anche sugli istogrammi. In questo caso prende il nome di \textbf{Test del $\chi^2$ di Pearson}:
+\begin{equation}
+    \chi^2 = \sum_{j=1}^m \frac{[n_j - \nu_j(\theta)]^2}{\nu_j(\theta)}
+\end{equation}
+dove $n_j$ è il numero di conteggi osservati nel bin $j$-esimo e $\nu_j(\theta) \simeq N \cdot P(x_j; \theta)\Delta x$ è il valore di aspettazione teorico del bin. È fondamentale che i bin siano grandi a sufficienza da contenere almeno 5 conteggi per evitare fluttuazioni che invalidino la statistica, ma abbastanza piccoli da mostrare i dettagli della distribuzione.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+    % Istogramma
+    \begin{scope}[shift={(0,0)}]
+        \draw[->, thick] (-2.5,0) -- (2.5,0) node[right] {$r_i$};
+        \draw[->, thick] (-2,0) -- (-2,3);
+        \draw[fill=blue!20] (-1.5,0) rectangle (-1.0, 0.5);
+        \draw[fill=blue!20] (-1.0,0) rectangle (-0.5, 1.5);
+        \draw[fill=blue!20] (-0.5,0) rectangle (0, 2.2);
+        \draw[fill=blue!20] (0,0) rectangle (0.5, 1.8);
+        \draw[fill=blue!20] (0.5,0) rectangle (1.0, 1.0);
+        \draw[fill=blue!20] (1.0,0) rectangle (1.5, 0.3);
+        
+        \draw[thick, red, smooth, domain=-2:2] plot ({\x}, {2.3*exp(-\x*\x)});
+        \node at (0, -0.7) {\small Istogramma dei residui};
+        \draw[->, thick] (1.5, 2) node[above right, text width=2cm] {\small in teoria dovrebbe essere gaussiano} -- (0.8, 1.2);
+    \end{scope}
+    
+    % Scatter
+    \begin{scope}[shift={(7,0.5)}]
+        \draw[->, thick] (-0.5,0) -- (4,0) node[right] {$x$};
+        \draw[->, thick] (0,-1.5) -- (0,1.5) node[above] {$r = y - f(x)$};
+        
+        \foreach \x/\y in {0.5/0.2, 1.0/-0.3, 1.5/0.5, 2.0/0.1, 2.5/-0.6, 3.0/0.4, 3.5/-0.2} {
+            \filldraw (\x,\y) circle (1.5pt);
+            \draw (\x, -0.1) -- (\x, 0.1);
+        }
+        \node at (1.5, -1.2) {\small Scatter plot dei residui};
+        \node[text width=2.5cm, font=\small] at (3.5, 1) {in teoria dispersi attorno allo zero};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+
+\subsection*{Implementazione Python del Test $\chi^2$}
+In Python si usa `scipy.stats.chi2`. Le funzioni principali sono:
+\begin{itemize}
+    \item \texttt{chi2.isf(alpha, ndf)}: Inverse Survival Function. Restituisce la soglia critica $\chi^2_s$.
+    \item \texttt{chi2.sf(chi2\_m, ndf)}: Survival Function. Calcola direttamente il p-value a partire dal $\chi^2$ calcolato dai dati.
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption=Script Python: Test del Chi-Quadro - Parte 1]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import chi2
+
+# valori di gradi di liberta
+ndf_values = [2, 5, 10, 30, 50]
+alpha = 0.05
+
+plt.figure(figsize=(10, 6))
+for ndf in ndf_values:
+    # asse x adattivo per ogni curva
+    x_max = chi2.ppf(0.999, ndf)
+    x = np.linspace(0, x_max, 1000)
+
+    y = chi2.pdf(x, df=ndf)
+    plt.plot(x, y, label=f'$\chi^2$ (n={ndf})')
+    
+    # calcolo la soglia chi2_s per cui Prob(chi2_s)=0.05
+    chi2_s = chi2.isf(alpha, ndf)
+    plt.axvline(x=chi2_s, ls="--", label="$x = \chi^2_s$")
+
+    # area della coda destra
+    x_tail = np.linspace(chi2_s, x_max, 300)
+    y_tail = chi2.pdf(x_tail, df=ndf)
+    plt.fill_between(x_tail, y_tail, alpha=0.2)
+
+plt.title('Distribuzione $\chi^2$ per diversi gradi di liberta')
+plt.xlabel('$\chi^2$')
+plt.ylabel('Densita di probabilita')
+plt.legend()
+plt.grid()
+plt.show()
+\end{lstlisting}
+
+
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        image_node/.style={inner sep=0, outer sep=2pt},
+        label_node/.style={font=\small\sffamily, fill=white, opacity=0.8, text opacity=1, inner sep=2pt}
+    ]
+
+        % Prima riga: n=2 e n=5
+        \node[image_node] (n2) {\includegraphics[width=0.45\textwidth]{Immagini/chin2.png}};
+        \node[image_node, right=0.5cm of n2] (n5) {\includegraphics[width=0.45\textwidth]{Immagini/chin5.png}};
+
+        % Seconda riga: n=10 e n=30
+        \node[image_node, below=0.3cm of n2] (n10) {\includegraphics[width=0.45\textwidth]{Immagini/chin10.png}};
+        \node[image_node, below=0.3cm of n5] (n30) {\includegraphics[width=0.45\textwidth]{Immagini/chin30.png}};
+
+        % Terza riga: n=50 (centrata)
+        \node[image_node, below=0.3cm of $(n10.south)!0.5!(n30.south)$, anchor=north] (n50) {\includegraphics[width=0.45\textwidth]{Immagini/chin50.png}};
+
+        % Opzionale: Etichette descrittive sopra ogni immagine
+        \node[label_node, anchor=north west] at (n2.north west) {A: $n=2$};
+        \node[label_node, anchor=north west] at (n5.north west) {B: $n=5$};
+        \node[label_node, anchor=north west] at (n10.north west) {C: $n=10$};
+        \node[label_node, anchor=north west] at (n30.north west) {D: $n=30$};
+        \node[label_node, anchor=north west] at (n50.north west) {E: $n=50$};
+
+    \end{tikzpicture}
+    \caption{Distribuzioni del $\chi^2$ al variare dei gradi di libertà, con relative soglie critiche.}
+\end{figure}
+
+\begin{lstlisting}[language=Python, caption=Script Python: Test del Chi-Quadro - Parte 2]
+# suppongo di avere un chi2_m proveniente dal nostro calcolo di 47 
+# con 58 gradi di liberta
+chi2_m = 47
+ndf = 58
+alpha = 0.05
+
+chi2_s = chi2.isf(alpha, ndf)
+print(f"Chi2 misurato: {chi2_m}, Soglia: {chi2_s:.2f}")
+
+if chi2_m < chi2_s:
+    print("Non posso rigettare l'ipotesi!")
+else:
+    print("Devo rigettare l'ipotesi!")
+
+# controllo equivalente con il p-value
+p_value = chi2.sf(chi2_m, ndf)
+print(f"p-value: {p_value:.4f}")
+
+plt.figure(figsize=(10, 6))
+x_max = chi2.ppf(0.999, ndf)
+x = np.linspace(0, x_max, 1000)
+y = chi2.pdf(x, df=ndf)
+plt.plot(x, y, label=f'$\chi^2$ (n={ndf})')
+
+plt.axvline(x=chi2_s, ls="--", label="$x = \chi^2_s$ (Soglia)")
+plt.axvline(x=chi2_m, ls="-.", c="r", label="$x = \chi^2_m$ (Misurato)")
+
+x_tail = np.linspace(chi2_s, x_max, 300)
+y_tail = chi2.pdf(x_tail, df=ndf)
+plt.fill_between(x_tail, y_tail, alpha=0.2)
+
+plt.title('Risultato del Test')
+plt.xlabel('$\chi^2$')
+plt.ylabel('Densita di probabilita')
+plt.legend()
+plt.grid()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/chin50controllo.png}
+    \caption{Posizione del valore osservato di $\chi^2$ rispetto alla regione di rigetto.}
+\end{figure}
+
+\subsection{Overfitting e Test F (Modelli Annidati)}
+Aumentando il grado del polinomio in un fit, il $\chi^2$ ridotto apparentemente migliora. Tuttavia, avendo a disposizione più parametri, c'è il rischio che la funzione si adatti unicamente alle fluttuazioni casuali del campione (fenomeno dell'\textbf{overfitting}).
+
+Per capire se il modello più complicato migliora abbastanza il fit da giustificare i parametri aggiuntivi, si usa il \textbf{Test F di Fisher-Snedecor}. Si applica ai \textit{modelli annidati}: consideriamo un modello semplice $M_1$ (con $p_1$ parametri e statistica $\chi^2_1$) e un modello più complesso $M_2$ (con $p_2 > p_1$ parametri e statistica $\chi^2_2$). Per costruzione $\chi^2_2 \leq \chi^2_1$.
+
+Costruiamo la statistica $F$:
+\begin{equation}
+    F = \frac{\text{Quanto è migliorato il fit}}{\text{Quanto rumore resta nel modello migliore}} = \frac{(\chi^2_1 - \chi^2_2) / (p_2 - p_1)}{\chi^2_2 / (N - p_2)}
+\end{equation}
+\begin{itemize}
+    \item Al numeratore valutiamo il costo del miglioramento diviso per i gradi di libertà aggiunti.
+    \item Il denominatore è il $\chi^2$ ridotto del modello complesso, che agisce da stimatore della varianza del rumore.
+\end{itemize}
+
+\begin{itemize}
+    \item Se $F \simeq 1$, il miglioramento è dello stesso ordine di grandezza del rumore casuale (stiamo fittando il rumore).
+    \item Se $F \gg 1$, il miglioramento è statisticamente significativo.
+\end{itemize}
+In Python, si usa \texttt{scipy.stats.f}. Le chiamate sono equivalenti al $\chi^2$, ma richiedono \textbf{due} gradi di libertà: \texttt{dfn = $p_2 - p_1$} e \texttt{dfd = $N - p_2$}.
+
+
+\begin{center}
+\begin{tikzpicture}
+    \draw[->, thick] (0,0) -- (6,0) node[right] {$x$};
+    \draw[->, thick] (0,0) -- (0,3) node[above] {$y$};
+    
+    % True function
+    \draw[thick, red, smooth, domain=0.5:5.5] plot ({\x}, {1.5 - 0.2*\x + 0.04*\x*\x}) node[above] {$f_{\text{vera}}$};
+    
+    % Data points
+    \foreach \x/\y in {0.8/1.6, 1.5/1.1, 2.2/1.3, 2.8/0.8, 3.5/1.2, 4.2/1.4, 4.9/1.1} {
+        \filldraw (\x,\y) circle (1.5pt);
+        \draw (\x, \y-0.2) -- (\x, \y+0.2);
+    }
+    
+    % Overfitted function
+    \draw[thick, cyan, smooth, domain=0.6:5.2, samples=150] plot ({\x}, {1.2 + 0.3*sin(deg(\x*5)) + 0.05*(\x-2.5)^2});
+    \node[cyan] at (4.5, 2.2) {polinomio alto grado};
+\end{tikzpicture}
+\end{center}
 \subsection{Test di Kolmogorov-Smirnov}
-Utilizzato per confrontare un set di dati con una distribuzione teorica quando il campione è piccolo. Si basa sulla massima distanza tra la \textbf{funzione di ripartizione empirica} $\phi(x)$ e quella teorica $F(x)$.
+Il Test di Kolmogorov-Smirnov (KS) è un modo alternativo al test di Pearson per confrontare i dati con una distribuzione teorica. Si usa soprattutto quando il set di dati è talmente piccolo da non permettere un binning adeguato. Nel KS non si utilizzano istogrammi, evitando di perdere informazioni.
 
-\begin{example}
-    Dati: $\{7, 3, 1\}$.
+Invece degli istogrammi, si usano le \textbf{frequenze cumulative}. Si definisce la Funzione di Ripartizione Empirica (ECDF) ordinando i dati $x_1 \leq x_2 \leq \dots \leq x_N$:
+\begin{equation*}
+    \phi(x) = \frac{\#\{\text{dati} \leq x\}}{N}
+\end{equation*}
+
+\begin{esempio}
+    Sia il campione dati: $\{7, 3, 1\}$.
     \begin{enumerate}
         \item Riordino: $\{1, 3, 7\}$.
-        \item Funzione empirica $\phi(x) = \frac{\#\{\text{dati} \leq x\}}{N}$.
-        \item Per $x \in [1, 3)$, $\phi(x) = 1/3$; per $x \in [3, 7)$, $\phi(x) = 2/3$; per $x \geq 7$, $\phi(x) = 1$.
+        \item Per $x < 1$, $\phi(x) = 0$; per $1 \leq x < 3$, $\phi(x) = 1/3$; per $3 \leq x < 7$, $\phi(x) = 2/3$; per $x \geq 7$, $\phi(x) = 1$.
     \end{enumerate}
-\end{example}
+    Il grafico è una funzione a gradino crescente.
+\end{esempio}
 
-In questo caso la statistica di test è $D = \max_x |\phi(x) - F(x)|$. Cioè per ogni punto della distribuzione calcolo la distanza fra il gradino e la curva teorica.
+La statistica di test $D$ è definita come la \textbf{massima distanza assoluta} tra la cumulativa empirica $\phi(x)$ e la cumulativa teorica (funzione di ripartizione) $F(x) = \int_{-\infty}^{x} P(z) \mathrm{d}z$:
+\begin{equation}
+    D = \max_x |\phi(x) - F(x)|
+\end{equation}
 
-Allora avremo che se $H_0$ (= il modello descrive i dati) è vero allora avrò una certa distribuzione $P(D)$, e agisco come nei test precedenti.
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    \draw[->, thick] (0,0) -- (8,0) node[right] {$x$};
+    \draw[->, thick] (0,0) -- (0,4) node[above] {$\phi(x), F(x)$};
+    
+    \draw (-0.1, 1) node[left] {0.33} -- (0.1, 1);
+    \draw (-0.1, 2) node[left] {0.66} -- (0.1, 2);
+    \draw (-0.1, 3) node[left] {1.0} -- (0.1, 3);
+    
+    \foreach \x in {1,2,3,4,5,6,7} {
+        \draw (\x, -0.1) node[below] {\x} -- (\x, 0.1);
+    }
+    
+    % ECDF \phi(x)
+    \draw[thick] (0.5, 0) -- (1,0) -- (1,1) -- (3,1) -- (3,2) -- (7,2) -- (7,3) -- (7.5,3);
+    \node[right] at (7.5, 3) {$\phi(x)$};
+    
+    % F(x)
+    \draw[thick, gray, smooth, domain=0:7.5] plot ({\x}, {3*(1 - exp(-\x/2.5))}) node[above, text=gray] {$F(x)$};
+    
+    % Distance D
+    \draw[<->, green!60!black, thick] (6, 2) -- (6, 2.73) node[midway, right] {$D$};
+\end{tikzpicture}
+\end{center}
+
 
 \begin{nota}
-    Il suddetto metodo è valido se la distribuzione è stata ricavata senza utilizzare i dati, poichè vi sono delle ipotesi di indipendenza da rispettare per non cambiare la forma distribuzionale.
+    Attenzione: le tabelle standard (e le funzioni scipy base come \texttt{kstest}) assumono che $F(x)$ sia nota a priori. Se i parametri di $F(x)$ vengono estratti (fittati) \textit{dai dati stessi}, la statistica $D$ non segue più la distribuzione attesa. In tal caso, si usa un \textbf{Toy Monte Carlo} per simulare la vera distribuzione nulla e trovare il p-value o il valore critico corretti.
 \end{nota}
 
-Un altro utilizzo di questo test è rispondere alla domanda \textit{"Dati due set di dati raccolti indipendentemente, essi hanno una qualche correlazione?"}, in particolare, 
-possiamo anche scegliere solo un sottoinsieme di questi dati
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+    \draw[->, thick] (0,0) -- (5,0) node[right] {$D$};
+    \draw[->, thick] (0,0) -- (0,3) node[above] {counts/norm};
+    
+    % Histogram path
+    \draw[thick] (0.5,0) -- (0.5,0.5) -- (1.0,0.5) -- (1.0, 1.2) -- (1.5, 1.2) -- (1.5, 2.5) -- (2.0, 2.5) -- (2.0, 1.8) -- (2.5, 1.8) -- (2.5, 0.8) -- (3.0, 0.8) -- (3.0, 0.3) -- (3.5, 0.3) -- (3.5, 0);
+    
+    % Shaded region
+    \fill[pattern=north east lines, opacity=0.5] (2.5,0) -- (2.5, 0.8) -- (3.0, 0.8) -- (3.0, 0.3) -- (3.5, 0.3) -- (3.5, 0) -- cycle;
+    
+    % D_s and 95%
+    \draw[dashed, thick] (2.5, 0) node[below] {$D_s$} -- (2.5, 2);
+    \node[font=\small, align=left] at (4, 1.5) {quantile al $95\%$\\della distribuzione};
+    \draw[->] (3.5, 1.1) -- (2.8, 0.4);
+    
+    % D_oss
+    \draw[dashed, thick, red] (1.2, 0) node[below] {$D_{\text{oss}}$} -- (1.2, 1.5);
+\end{tikzpicture}
+\end{center}
+
+
+Inoltre, il KS test può essere usato per confrontare due campioni indipendenti. In tal caso $D = \max_x |\phi_1(x) - \phi_2(x)|$ e il numero di gradi di libertà equivalente si ottiene componendo i sample sizes:
+\begin{equation*}
+    m = \frac{m_1 \cdot m_2}{m_1 + m_2}
+\end{equation*}
+
+\subsection*{Implementazione Python del Test KS (con Monte Carlo)}
+
+\begin{lstlisting}[language=Python, caption=Script Python: KS Test e Toy Monte Carlo - Parte 1]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import kstest
+
+n = 100
+# Caricamento di un set di dati d'esempio
+dati = np.loadtxt("../Esercitazione_4/dati/conteggi_geiger_amb.txt", max_rows=n)
+dati = dati * 1e-3
+
+# Calcolo frequenze cumulative empiriche
+dati_ordinati = np.sort(dati)
+y_fc = np.arange(1, n + 1) / n
+
+plt.figure(figsize=(10, 6))
+plt.step(dati_ordinati, y_fc, label='Frequenza cumulativa empirica', where='post')
+plt.xlabel("Tempo (s)")
+plt.ylabel("Probabilita Cumulata")
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/test1 prob cum.png}
+    \caption{Funzione di Ripartizione Empirica (ECDF) costruita dai dati.}
+\end{figure}
+
+\begin{lstlisting}[language=Python, caption=Script Python: KS Test e Toy Monte Carlo - Parte 2]
+# Calcolo della cumulativa teorica esponenziale
+def cdf_esponenziale(t, tau):
+    return 1 - np.exp(-t / tau)
+
+tau_hat = np.mean(dati) # Parametro stimato dai dati!
+y_teorica = cdf_esponenziale(dati_ordinati, tau_hat)
+
+D, pvalue = kstest(dati, cdf_esponenziale, args=(tau_hat,))
+print(f"D: {D:.4f}, p-value base: {pvalue:.4f} (Inaffidabile per via della stima!)")
+
+plt.figure(figsize=(10, 6))
+plt.step(dati_ordinati, y_fc, label='Frequenza cumulativa empirica', where='post')
+plt.plot(dati_ordinati, y_teorica, 'r--', label='Frequenza cumulativa teorica')
+plt.xlabel("Tempo (s)")
+plt.ylabel("Probabilita Cumulata")
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/test2 cum teor.png}
+    \caption{Confronto visivo per la ricerca della distanza massima $D$.}
+\end{figure}
+
+\begin{lstlisting}[language=Python, caption=Script Python: KS Test e Toy Monte Carlo - Parte 3]
+# ------------------------------------------------------------
+# Toy Monte Carlo per correggere il p-value
+# ------------------------------------------------------------
+Ntoys = 10000
+D_toys = np.zeros(Ntoys)
+
+for i in range(Ntoys):
+    # genero un fake dataset sotto H0
+    u = np.random.uniform(0, 1, n)
+    e = - tau_hat * np.log(1 - u)
+
+    # ristimo tau sul fake dataset (cruciale!)
+    tau_fake = np.mean(e)
+
+    # ricalcolo KS usando il tau del singolo toy model
+    D_fake, _ = kstest(e, cdf_esponenziale, args=(tau_fake,))
+    D_toys[i] = D_fake
+
+D_crit_5 = np.quantile(D_toys, 0.95)
+print(f"Valore critico KS al 5% corretto = {D_crit_5:.5f}")
+
+if D > D_crit_5:
+    print("Rigetto H0 al 5%")
+else:
+    print("NON rigetto H0 al 5%")
+
+plt.figure(figsize=(10, 6))
+plt.hist(D_toys, bins=50, alpha=0.6, label="Monte Carlo")
+plt.axvline(D, color='r', linestyle='--', label='D osservato')
+plt.axvline(D_crit_5, color='k', linestyle=':', label='Soglia 5% (MC)')
+plt.xlabel("Statistica KS (D)")
+plt.ylabel("Conteggi")
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/test 3 distrib carlo.png}
+    \caption{Distribuzione vera della statistica $D$ ricavata tramite Toy Monte Carlo.}
+\end{figure}
 
 
 

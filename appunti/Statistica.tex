@@ -5426,11 +5426,12 @@ La formula finale all'interno di ogni iterazione è \textbf{identica} a quella d
 
 
 \lezione{Test di Ipotesi}{11/05/2026}
+
 In molti casi, l'informazione che vogliamo dedurre dai dati non è una stima numerica di un parametro, bensì la risposta a una precisa domanda (Es: \textit{"Il segnale segue un andamento lineare?"}). La branca della statistica che formalizza queste domande sotto forma di test numerici per decidere se accettare o rifiutare una teoria è detta \textbf{Test di Ipotesi}.
 
 Il primo passaggio è formulare le ipotesi. Si definiscono generalmente:
 \begin{itemize}
-    \item \textbf{L'ipotesi nulla} ($H_0$): è l'ipotesi di "nessun effetto" o l'ipotesi base. Di norma è quello che si cerca di testare o confutare (ad esempio, l'ipotesi che i dati contengano solo rumore di fondo).
+    \item \textbf{L'ipotesi nulla} ($H_0$): è l'ipotesi di "nessun effetto" o l'ipotesi base. Di norma è quello che si cerca di confutare (ad esempio, l'ipotesi che i dati contengano solo rumore di fondo).
     \item \textbf{L'ipotesi alternativa} ($H_1$): è l'ipotesi contrapposta ad $H_0$ (ad esempio, l'ipotesi che ci sia il segnale fisico che stiamo cercando).
 \end{itemize}
 
@@ -5440,17 +5441,15 @@ Quando scegliamo se accettare o rigettare un'ipotesi, possiamo incorrere in due 
     \item \textbf{Errore di Tipo II (Falso negativo)}: Accettare l'ipotesi $H_0$ quando in realtà era sbagliata (cioè era vera l'alternativa $H_1$).
 \end{enumerate}
 
-
 Per quantificare matematicamente questi errori si utilizzano la \textbf{Significatività} e la \textbf{Potenza} del test.
 
 \subsection{Statistica di test}
-Definiamo come \textit{statistica di test} l'insieme di dati $t_m$ che derivano dall'assunzione di una certa ipotesi $H$. Da questa scelta
-si ricava anche la distribuzione $P(t)$. A partire dai dati costruiamo una \textit{variabile di test} $t$. 
+Definiamo come \textit{statistica di test} un valore $t$ calcolato a partire dai dati campionari. Assumendo come vera una certa ipotesi $H$, la variabile $t$ seguirà una distribuzione di probabilità nota $P(t)$.
 
 \subsection{Significatività del test ($\alpha$)}
-Scegliamo una \textbf{soglia} $t_s$ (soglia critica) e poniamo che il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
+Scegliamo una \textbf{soglia critica} $t_s$. Se il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
 
-L'integrale della $P_0(t)$ nella regione critica ci fornisce il \textbf{livello di significatività} del test (indicato con $\alpha$), che stima la probabilità di commettere un Errore di Tipo I:
+L'integrale della $P_0(t)$ (distribuzione sotto $H_0$) nella regione critica fornisce il \textbf{livello di significatività} $\alpha$, ovvero la probabilità di commettere un Errore di Tipo I:
 \begin{equation}
     \alpha = \int_{t_s}^{\infty} P_0(t) \, \mathrm{d}t
 \end{equation}
@@ -5462,7 +5461,7 @@ L'integrale della $P_0(t)$ nella regione critica ci fornisce il \textbf{livello 
     \draw[->, thick] (-2,0) -- (-2,3) node[above] {$P_0(t)$};
     
     % Curva P0(t)
-    \draw[thick, domain=-2:3, samples=100] plot ({\x}, {2.5*exp(-(\x)^2 / 1.5)});
+    \draw[thick, blue, domain=-2:3, samples=100] plot ({\x}, {2.5*exp(-(\x)^2 / 1.5)});
     
     % Soglia ts
     \draw[dashed, thick] (1.2, 0) -- (1.2, 2) node[above] {Soglia $t_s$};
@@ -5473,46 +5472,35 @@ L'integrale della $P_0(t)$ nella regione critica ci fornisce il \textbf{livello 
     
     % Labels
     \node[blue, font=\bfseries] at (1.8, 0.4) {$\alpha$};
-    \node at (-0.5, -0.5) {Accetto $H_0$};
-    \node at (2.2, -0.5) {Rigetto $H_0$};
-    \draw[->, thick] (1.3, 1.5) -- (2.5, 1.5) node[right] {\small Regione Critica};
+    \node at (-0.5, -0.4) {Accetto $H_0$};
+    \node at (2.2, -0.4) {Rigetto $H_0$};
 \end{tikzpicture}
 \end{center}
- Definire $\alpha$ significa accettare che, anche se il modello fosse perfetto, 
- nel $100\alpha \%$ degli esperimenti osserveremo per puro caso una discrepanza
-  tale da portarci a rigettare l'ipotesi.
 
-Nel nostro caso sceglieremo $t_s$ tale che $\alpha=0.05$.
+Definire $\alpha$ significa accettare che, nel $100\alpha \%$ degli esperimenti, osserveremo per puro caso una discrepanza tale da portarci a rigettare $H_0$ anche se corretta. Tipicamente si sceglie $\alpha = 0.05$.
 
 \subsubsection{Test a due code}
-Nel caso la nostra distribuzione non abbia un andamento espoenenziale, ma del tipo gaussiano, possiamo definire due valori di soglia $t_{s1}$ e $t_{s2}$, 
-in tal caso definiremo la significatività come:
-\[
-\frac{\alpha}{2} = \int_{t_{s1}}^{-\infty} P_0(t) \, \mathrm{d}t = \int_{t_{s2}}^{\infty} P_0(t) \, \mathrm{d}t
-\]
+Se la distribuzione è simmetrica (es. Gaussiana) e siamo interessati a discrepanze in entrambe le direzioni, definiamo due soglie $t_{s1}$ e $t_{s2}$ tali che:
+\begin{equation*}
+\frac{\alpha}{2} = \int_{-\infty}^{t_{s1}} P_0(t) \, \mathrm{d}t = \int_{t_{s2}}^{\infty} P_0(t) \, \mathrm{d}t
+\end{equation*}
 
 \subsubsection{P-value}
-Dato un valore $t_m$ misurato, definiamo il \textbf{P-value} come: 
-\[
+Dato un valore misurato $t_m$, il \textbf{p-value} è la probabilità di ottenere un risultato uguale o più estremo di quello osservato, assumendo $H_0$ vera:
+\begin{equation*}
 p\text{-value} = \int_{t_m}^{\infty} P_0(t) \, \mathrm{d}t
-\] 
-abbiamo due eventualità:
+\end{equation*} 
 \begin{itemize}
     \item Se $p\text{-value} < \alpha$, rigettiamo $H_0$.
-    \item Se $p\text{-value} \geq \alpha$, accettiamo $H_0$.
+    \item Se $p\text{-value} \geq \alpha$, non abbiamo prove sufficienti per rigettare $H_0$.
 \end{itemize}
-similmente possiamo confrontare $t_m$ con $t_s$ e agire di conseguenza.
 
 \subsection{Potenza del test ($1-\beta$)}
-Mentre nel calcolo di $\alpha$ si teneva conto solo della distribuzione $H_0$, per valutare gli \textbf{Errori di Tipo II} si deve assumere di conoscere la densità di probabilità $P_1(t)$ nel caso in cui sia vera l'ipotesi alternativa $H_1$.
-Integrando $P_1(t)$ nella regione in cui il test ci direbbe di accettare $H_0$ (cioè da $-\infty$ a $t_s$), troviamo la probabilità $\beta$ che il nostro dato possa soddisfare anche l'ipotesi alternativa:
+Per valutare l'**Errore di Tipo II**, assumiamo sia vera l'ipotesi alternativa $H_1$ con distribuzione $P_1(t)$. La probabilità $\beta$ di accettare erroneamente $H_0$ è:
 \begin{equation}
     \beta = \int_{-\infty}^{t_s} P_1(t) \, \mathrm{d}t
 \end{equation}
-La \textbf{Potenza del test} è definita come l'abilità del test di riconoscere correttamente l'ipotesi $H_1$ scartando $H_0$, e vale:
-\begin{equation*}
-    \text{Potenza} = 1 - \beta
-\end{equation*}
+La \textbf{Potenza del test} ($1 - \beta$) rappresenta la capacità del test di rigettare correttamente $H_0$ quando $H_1$ è vera.
 
 \begin{center}
 \begin{tikzpicture}
@@ -5523,55 +5511,54 @@ La \textbf{Potenza del test} è definita come l'abilità del test di riconoscere
     \draw[thick, blue, domain=-2.5:2.5, samples=100] plot ({\x}, {2*exp(-(\x+0.5)^2 / 1.0)});
     \draw[thick, red, domain=-1:4.5, samples=100] plot ({\x}, {1.5*exp(-(\x-2)^2 / 1.5)});
     
-    \node[blue] at (-0.5, 2.3) {$P_0$};
-    \node[red] at (2, 1.8) {$P_1$};
+    \node[blue] at (-0.5, 2.2) {$P_0$};
+    \node[red] at (2.5, 1.7) {$P_1$};
     
     % Soglia ts
     \draw[dashed, thick] (0.8, 0) -- (0.8, 2.5) node[above] {$t_s$};
     
-    % Area alfa (Sotto P0, a dx di ts)
-    \fill[blue, opacity=0.3, domain=0.8:2.5, variable=\x]
-      (0.8,0) -- plot ({\x}, {2*exp(-(\x+0.5)^2 / 1.0)}) -- (2.5,0) -- cycle;
-    \node[blue] at (1.2, 0.2) {$\alpha$};
-    
     % Area beta (Sotto P1, a sx di ts)
-    \fill[red, opacity=0.3, domain=-1:0.8, variable=\x]
-      (-1,0) -- plot ({\x}, {1.5*exp(-(\x-2)^2 / 1.5)}) -- (0.8,0) -- cycle;
-    \node[red] at (0.3, 0.15) {$\beta$};
-
+    \fill[red, opacity=0.3] (-0.5,0) -- plot[domain=-0.5:0.8, samples=50] ({\x}, {1.5*exp(-(\x-2)^2 / 1.5)}) -- (0.8,0) -- cycle;
+    \node[red, font=\bfseries] at (0.3, 0.3) {$\beta$};
 \end{tikzpicture}
 \end{center}
 
-L'ideale, ovviamente, sarebbe avere sia $\alpha$ che $\beta$ molto piccoli. Questo si verifica unicamente quando le due curve di distribuzione $P_0$ e $P_1$ sono ben distanti e separate. \\
-Nella pratica, essendo parzialmente sovrapposte, vi deve sempre essere un \textbf{compromesso}. Modificando la soglia critica $t_s$ è inevitabile che, per diminuire $\alpha$, si debba automaticamente causare un aumento di $\beta$ (e viceversa). La decisione su dove piazzare la soglia è dunque dettata da quale tipo di errore siamo più propensi ad accettare nel nostro esperimento fisico.
-
-\subsection{Test del $\Chi^2$}
-Supponiamo di disporre di $N$ misure $(x_i, y_i)$ e l'esistenza di un modello $f : y = f(x)$. Abbiamo già visto che possiamo definire \textit{la distribuzione del $\Chi^2$} come:
+\subsection{Test del $\chi^2$}
+Prendiamo il valore di $\chi^2$ come statistica di test. L'ipotesi $H_0$ è che il modello $f(x)$ descriva correttamente i dati. Se $H_0$ è vera, la statistica segue la distribuzione:
 \begin{equation*}
-P(\Chi^2, n) = \frac{2^{-n/2}}{\Gamma(n/2)} (\Chi^2)^{(n/2)-1} e^{-\Chi^2/2}
+P(\chi^2, n) = \frac{2^{-n/2}}{\Gamma(n/2)} (\chi^2)^{(n/2)-1} e^{-\chi^2/2}
 \end{equation*}
-in tal caso prendiamo $\Chi^2$ come statistica di test. In questo caso definiamo l'ipotesi: \textit{f descrive bene ipotesi} $= H_0$. 
-Se ciò è vero, allora $P(\Chi^2, n)$ è la distribuzione attesa per i nostri dati. 
+Si rigetta $H_0$ se $\chi^2_m > \chi^2_s$, dove $\chi^2_s$ è calcolato fissando $\alpha$.
 
-I passaggi da seguire sono:  
-\begin{enumerate}
-    \item decide $\alpha$
-    \item trovo $\Chi^2_s$ tale che $\alpha = \int_{\Chi^2_s}^{\infty} P(\Chi^2, n) \, d\Chi^2$ \footnote{valutare più volte $\Chi^2$, vuol dire ...}
-    \item se $\Chi^2_m > \Chi^2_s$, rigetto $H_0$; altrimenti, accetto $H_0$.
-    \item posso anche calcolare il p-value e confrontarlo con $\alpha$.
-\end{enumerate}
-\subsubsection{Test del $\Chi^2$ di Pearson}
-Nel caso degli istrogrammi: $\Chi^2 = \sum \frac{(n_i - \nu_i(\hat \theta))^2}{\nu_i(\hat \theta)}$, dove possiamo approsimare $\nu_i$ con $n_i$ se $n_i \leq 5$ 
+\subsection{Overfitting e Test F}
+Per decidere se aumentare il grado di un polinomio di fit senza incorrere in overfitting, usiamo il \textbf{Test F} confrontando due modelli $M_1$ (semplice) e $M_2$ (complesso, con $p_2 > p_1$):
+\begin{equation*}
+    F = \frac{(\chi^2_1 - \chi^2_2) / (p_2 - p_1)}{\chi^2_2 / (N - p_2)}
+\end{equation*}
+Se $F \gg 1$, il miglioramento del fit è statisticamente significativo e non dovuto al semplice rumore.
 
+\subsection{Test di Kolmogorov-Smirnov}
+Utilizzato per confrontare un set di dati con una distribuzione teorica quando il campione è piccolo. Si basa sulla massima distanza tra la \textbf{funzione di ripartizione empirica} $\phi(x)$ e quella teorica $F(x)$.
 
+\begin{example}
+    Dati: $\{7, 3, 1\}$.
+    \begin{enumerate}
+        \item Riordino: $\{1, 3, 7\}$.
+        \item Funzione empirica $\phi(x) = \frac{\#\{\text{dati} \leq x\}}{N}$.
+        \item Per $x \in [1, 3)$, $\phi(x) = 1/3$; per $x \in [3, 7)$, $\phi(x) = 2/3$; per $x \geq 7$, $\phi(x) = 1$.
+    \end{enumerate}
+\end{example}
 
+In questo caso la statistica di test è $D = \max_x |\phi(x) - F(x)|$. Cioè per ogni punto della distribuzione calcolo la distanza fra il gradino e la curva teorica.
 
+Allora avremo che se $H_0$ (= il modello descrive i dati) è vero allora avrò una certa distribuzione $P(D)$, e agisco come nei test precedenti.
 
+\begin{nota}
+    Il suddetto metodo è valido se la distribuzione è stata ricavata senza utilizzare i dati, poichè vi sono delle ipotesi di indipendenza da rispettare per non cambiare la forma distribuzionale.
+\end{nota}
 
-
-
-
-
+Un altro utilizzo di questo test è rispondere alla domanda \textit{"Dati due set di dati raccolti indipendentemente, essi hanno una qualche correlazione?"}, in particolare, 
+possiamo anche scegliere solo un sottoinsieme di questi dati
 
 
 

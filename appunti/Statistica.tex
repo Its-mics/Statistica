@@ -5600,6 +5600,40 @@ La \textbf{Potenza del test} è la quantità $(1 - \beta)$ e rappresenta la capa
 \end{tikzpicture}
 \end{center}
 
+
+\begin{example}{Test di Ipotesi (Binomiale) su 15 lanci di una moneta}
+
+Sia $X$ la variabile casuale che rappresenta il numero di successi (teste) in $n = 15$ lanci indipendenti. Sotto l'ipotesi nulla $H_0$ (moneta equa), assumiamo che la probabilità di successo sia $p = 0.5$, dunque:
+\[ X \sim B(n=15, p=0.5) \]
+
+Le probabilità puntuali per i risultati estremi, calcolate tramite la formula binomiale, sono:
+\begin{itemize}
+    \item $P(15) = 0.003\%$
+    \item $P(14) = 0.05\%$
+    \item $P(13) = 0.3\%$
+    \item $P(12) = 1.4\%$
+    \item $P(11) = 4.2\%$
+\end{itemize}
+
+Vogliamo determinare il valore critico per un test bilaterale con un livello di significatività desiderato $\alpha = 0.10$
+(cioè: se i lanci sono tali che rappresentano meno del $10\%$ delle code, affermo che la moneta sia truccata)
+
+Calcoliamo la probabilità per la coda destra ($X \ge 12$):
+\[ P(X \ge 12) = P(15) + P(14) + P(13) + P(12) = 1.8\% \]
+Per un test bilaterale (considerando anche la simmetria della coda sinistra $X \le 3$ (ottengo croce)):
+\[ \alpha_{\text{effettivo}} = 1.8\% \times 2 = 3.6\% \]
+Questo valore è conservativo poiché $3.6\% < 10\%$.
+
+Proviamo a includere il valore 11 per aumentare la potenza del test:
+\[ P(X \ge 11) = P(X \ge 12) + P(11) = 1.8\% + 4.2\% = 6.0\% \]
+Il livello di significatività totale per il test bilaterale diventerebbe:
+\[ \alpha_{\text{effettivo}} = 6.0\% \times 2 = 12.0\% \]
+
+\begin{quote}
+    Siccome $12.0\% > 10\%$, la soglia $X=11$ non è accettabile. 
+\end{quote}
+\end{example}
+
 \section{Test del $\chi^2$}
 Il test del $\chi^2$ fa parte della categoria di test d'ipotesi in cui abbiamo effettuato un fit dei dati con una certa funzione $f(x, \theta)$ e ci chiediamo se l'ipotesi base (cioè che la funzione $f$ descriva adeguatamente i dati) sia corretta. 
 
@@ -5607,7 +5641,7 @@ Sappiamo che il parametro $\theta$ si ricava minimizzando:
 \begin{equation*}
     \chi^2 = \sum_{i=1}^N \frac{[y_i - f(x_i, \theta)]^2}{\sigma_i^2}
 \end{equation*}
-Sotto l'ipotesi $H_0$, la statistica $\chi^2$ segue la distribuzione di probabilità:
+La statistica $\chi^2$ segue la distribuzione di probabilità:
 \begin{equation}
     P(\chi^2; m) = \frac{2^{-m/2}}{\Gamma(m/2)} (\chi^2)^{(m/2)-1} e^{-\chi^2/2}
 \end{equation}
@@ -5615,7 +5649,14 @@ dove $m$ è il \textbf{numero di gradi di libertà}. In un processo di minimizza
 \begin{equation}
     m = N - p - k
 \end{equation}
-\textit{Nota:} Nulla vieta di fare il test del $\chi^2$ a prescindere da una minimizzazione. Se sto solo confrontando i dati misurati con una teoria fissata a priori, il numero di gradi di libertà è semplicemente $N$.
+\textit{Nota:} Se non ho bisogno di stimare i parametri, poichè sono già noti, allora $m=N$.
+
+Dunque, la significatività del test del $\chi^2$ è data da:
+\begin{equation}
+    \alpha = \int_{\chi^2_s}^{\infty} P(\chi^2; m) \, \mathrm{d}\chi^2
+\end{equation}
+e rappresenta \textit{la probabilità che una funzione f che descriva bene i dati produca un $\chi^2$ maggiore di quello osservato}. Questo fa capire perchè spesso 
+la significatività è riportata come un risultato, e non scelta a priori. 
 
 \subsection{Test del $\chi^2$ di Pearson (Dati Binned)}
 Il test può essere effettuato anche sugli istogrammi. In questo caso prende il nome di \textbf{Test del $\chi^2$ di Pearson}:

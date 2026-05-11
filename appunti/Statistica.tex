@@ -6004,369 +6004,356 @@ plt.show()
 \newpage
 \section{da integrare dopo}
 
+
 \ripasso{Proprietà generali e Propagazione degli Errori}
 
-In questa sezione richiamiamo alcuni concetti generali sulle funzioni di distribuzione a più variabili e sulla propagazione degli errori, utili per il prosieguo.
+In questa sezione richiamiamo alcuni concetti generali sulle funzioni di distribuzione a più variabili e sulla propagazione degli errori, che risulteranno fondamentali per le prossime trattazioni.
 
 \subsubsection*{Funzione di distribuzione per variabili casuali n-dimensionali}
-Se la funzione di densità di probabilità $f(\vec{x})$ dipende da $n$ variabili, indicate con il vettore $\vec{x}=(x_1, \ldots, x_n)$, il \textbf{valore di aspettazione} è dato da:
+Se la funzione di densità di probabilità $f(\vec{x})$ dipende da $n$ variabili, descritte dal vettore $\vec{x}=(x_1, \ldots, x_n)$, il \textbf{valore di aspettazione} (o valore atteso) del vettore è dato da:
 \begin{equation}
     \mathbb{E}[\vec{x}] = \int \vec{x} f(\vec{x}) \, d\vec{x}
 \end{equation}
-
-Per un singolo valore $x_i$ si ha:
+Considerando una singola componente $x_i$, il suo valore di aspettazione si calcola come:
 \begin{equation}
     \mathbb{E}[x_i] = \int x_i f(\vec{x}) \, d\vec{x}
 \end{equation}
 
-Si definisce allora il generico elemento $ij$ della \textbf{matrice della covarianza} $V$ come:
+Si definisce l'elemento generico $V_{ij}$ della \textbf{matrice di covarianza} $V$ come:
 \begin{equation}
     V_{ij} = \mathbb{E}[(x_i-\mu_i)(x_j-\mu_j)] = \int (x_i-\mu_i)(x_j-\mu_j) f(\vec{x}) \, d\vec{x}
 \end{equation}
-da cui deduciamo che:
+Dalla definizione deduciamo immediatamente che:
 \begin{itemize}
-    \item Gli elementi sulla diagonale ($i = j$) sono le varianze: $V_{ii} = \sigma_i^2$
-    \item Gli elementi fuori dalla diagonale ($i \neq j$) rappresentano le covarianze tra le diverse variabili.
+    \item Gli elementi sulla diagonale principale ($i = j$) rappresentano le varianze delle singole variabili: $V_{ii} = \sigma_i^2$.
+    \item Gli elementi fuori dalla diagonale ($i \neq j$) rappresentano le covarianze tra coppie di variabili diverse.
 \end{itemize}
 
-È utile definire il \textbf{coefficiente di correlazione}:
+Risulta inoltre utile definire il \textbf{coefficiente di correlazione} lineare:
 \begin{equation}
     \rho(x_i,x_j) = \frac{\text{Cov}(x_i,x_j)}{\sigma_i \sigma_j}
 \end{equation}
 
 \subsubsection*{Indipendenza e funzione marginale}
-La funzione di distribuzione congiunta rappresenta la probabilità che le $n$ variabili casuali cadano contemporaneamente all'interno di certi intervalli. Essa gode delle stesse proprietà della funzione di distribuzione usuale. 
+La funzione di distribuzione congiunta descrive la probabilità che $n$ variabili casuali assumano contemporaneamente valori all'interno di specifici intervalli. Essa gode delle stesse proprietà matematiche delle funzioni di distribuzione unidimensionali. 
 
-È possibile definire la \textbf{funzione di distribuzione marginale} per una singola variabile $x_i$, ottenuta integrando la funzione congiunta su tutti i domini delle restanti variabili $x_j$ (con $j \neq i$).
+È possibile definire la \textbf{funzione di distribuzione marginale} per una singola variabile $x_i$, integrandola funzione congiunta su tutto il dominio di tutte le restanti variabili $x_j$ (con $j \neq i$).
 
-Si ha così una definizione rigorosa per variabili \textbf{indipendenti}:
+Si ottiene così una definizione rigorosa per variabili \textbf{statisticamente indipendenti}:
 \begin{itemize}
-    \item La distribuzione congiunta fattorizza: $f(\vec{x}) = f_1(x_1)f_2(x_2)\cdots f_n(x_n)$
-    \item I valori di aspettazione si separano: $\mathbb{E}[x_i x_j] = \mathbb{E}[x_i]\mathbb{E}[x_j]$
-    \item Di conseguenza: $\text{Cov}(x_i,x_j) = 0$ e $\rho(x_i,x_j) = 0$.
+    \item La distribuzione congiunta fattorizza nel prodotto delle marginali: $f(\vec{x}) = f_1(x_1)f_2(x_2)\cdots f_n(x_n)$.
+    \item I valori di aspettazione si separano: $\mathbb{E}[x_i x_j] = \mathbb{E}[x_i]\mathbb{E}[x_j]$.
+    \item Di conseguenza, la covarianza è nulla ($\text{Cov}(x_i,x_j) = 0$) e il coefficiente di correlazione si annulla ($\rho(x_i,x_j) = 0$).
 \end{itemize}
 
-A livello campionario (misurazioni sperimentali), la covarianza tra due variabili $X$ e $Y$ si stima come:
+A livello campionario (sui dati sperimentali), la covarianza tra due variabili $X$ e $Y$ si stima tramite la formula:
 \begin{equation}
     \text{Cov}(X, Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
 \end{equation}
 
 \subsubsection*{La distribuzione normale multivariata}
-Se le variabili sono \textit{indipendenti}, la funzione di distribuzione di Gauss per la singola variabile è:
+Nel caso in cui le variabili siano \textit{indipendenti}, la funzione di densità di Gauss per la singola variabile è:
 \begin{equation}
     f(x_i) = \frac{1}{\sqrt{2\pi}\sigma_i} \exp\left[-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}\right]
 \end{equation}
-La distribuzione congiunta diventa quindi il prodotto delle singole marginali:
+Essendo indipendenti, la distribuzione congiunta è semplicemente il prodotto delle singole distribuzioni marginali:
 \begin{equation}
     f(x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^n \sigma_i} \exp\left[ -\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2} \right]
 \end{equation}
 
 \subsection{Trasformazione di variabili casuali}
+Supponiamo di avere una variabile casuale $Y = y(X)$ che dipende funzionalmente da un'altra variabile $X$. Vogliamo ricavare la densità di probabilità $g(y)$ conoscendo la distribuzione originaria $f(x)$.
 
-Data una variabile casuale $Y = y(X)$ dipendente da un'altra variabile casuale $X$, vogliamo ricavare la densità di probabilità $g(y)$ conoscendo $f(x)$.
-
-Nel caso di \textbf{corrispondenza biunivoca} (es. $y = ax + b$), la conservazione della probabilità impone che $f(x)dx = g(y)dy$. Se esiste la funzione inversa $x = x(y)$, la determinazione di $g(y)$ si riduce ad una trasformazione di variabile:
+Nel caso di una \textbf{corrispondenza biunivoca} (ad esempio $y = ax + b$), la conservazione della probabilità impone che $f(x)dx = g(y)dy$. Se ammettiamo l'esistenza della funzione inversa $x = x(y)$, la determinazione di $g(y)$ si riduce al calcolo:
 \begin{equation}
     g(y) = f(x(y))\left|\frac{dx(y)}{dy}\right|
 \end{equation}
 
-Nel caso di funzioni \textbf{non biunivoche}, cioè in cui esistono $m$ rami invertibili per cui $y = y(x_i)$ (es. $y = ax^2$), allora si "sommano le diverse componenti biunivoche":
+Nel caso di funzioni \textbf{non biunivoche} (dove cioè a un valore di $y$ corrispondono più valori di $x$, es. $y = ax^2$), esistono $m$ rami invertibili per i quali $y = y(x_i)$. In questo caso è necessario sommare i contributi delle singole componenti biunivoche:
 \begin{equation}
     g(y) = \sum_{i=1}^{m} f(x_i(y))\left|\frac{dx_i(y)}{dy}\right|
 \end{equation}
 
 \subsection{Legge di propagazione degli errori}
-Se risulta difficile calcolare analiticamente $g(y)$, ci si accontenta di calcolare il \textbf{valore di aspettazione} e la \textbf{varianza} della nuova variabile:
+Qualora il calcolo analitico di $g(y)$ risulti troppo complesso, ci si accontenta di stimare il \textbf{valore di aspettazione} e la \textbf{varianza} della nuova variabile $y$:
 \begin{align*}
     \mu_y &= \mathbb{E}[y] = \int y \, g(y) \, dy = \int y(x) f(x) \, dx \\
     \sigma_y^2 &= \mathbb{E}[(y - \mu_y)^2] = \int (y(x) - \mu_y)^2 f(x) \, dx
 \end{align*}
 
-Se l'andamento è \textbf{lineare} ($y(x) = ax + b$), si ha banalmente:
+Se la relazione funzionale è \textbf{lineare} ($y(x) = ax + b$), si ottiene banalmente:
 \begin{equation}
     \mathbb{E}[y(x)] = a\mathbb{E}[x] + b \quad \implies \quad \sigma_y^2 = \mathbb{E}[y^2] - \mu_y^2 = a^2\sigma_x^2
 \end{equation}
 
-Se $y(x)$ \textbf{non è lineare}, si utilizza lo sviluppo di Taylor centrato in $\mu_x$. Troncando lo sviluppo per il valore di aspettazione al secondo ordine:
+Se $y(x)$ \textbf{non è lineare}, si ricorre allo sviluppo in serie di Taylor centrato nel valore atteso $\mu_x$. Troncando lo sviluppo per il valore di aspettazione al secondo ordine:
 \begin{align*}
     \mu_y = \mathbb{E}[y] &= \mathbb{E} \left[ y(\mu_x) + \left. \frac{dy}{dx} \right|_{\mu_x} (x - \mu_x) + \frac{1}{2} \left. \frac{d^2y}{dx^2} \right|_{\mu_x} (x - \mu_x)^2 + \cdots \right] \\
     &= y(\mu_x) + \left. \frac{dy}{dx} \right|_{\mu_x} \mathbb{E}[x - \mu_x] + \frac{1}{2} \left. \frac{d^2y}{dx^2} \right|_{\mu_x} \mathbb{E}[(x - \mu_x)^2] + \cdots \\
     &\approx y(\mu_x) + \frac{1}{2} \left. \frac{d^2y}{dx^2} \right|_{\mu_x} \sigma_x^2
 \end{align*}
-(Il termine del primo ordine scompare perché $\mathbb{E}[x - \mu_x] = \mu_x - \mu_x = 0$).
+(Notiamo che il termine del primo ordine si annulla identicamente in quanto $\mathbb{E}[x - \mu_x] = \mu_x - \mu_x = 0$).
 
-Per la varianza, approssimando al primo ordine, otteniamo la nota \textbf{legge di propagazione della varianza}:
+Per il calcolo della varianza, fermandoci all'approssimazione del primo ordine, riotteniamo la nota \textbf{legge di propagazione della varianza}:
 \begin{align*}
     \sigma_y^2 &= \mathbb{E}[(y - \mu_y)^2] \approx \mathbb{E} \left[ \left( y(\mu_x) + \left. \frac{dy}{dx} \right|_{\mu_x} (x - \mu_x) - y(\mu_x) \right)^2 \right] \\
     &= \mathbb{E} \left[ \left( \left. \frac{dy}{dx} \right|_{\mu_x} \right)^2 (x - \mu_x)^2 \right] = \left( \left. \frac{dy}{dx} \right|_{\mu_x} \right)^2 \sigma_x^2
 \end{align*}
 
 \subsubsection{Generalizzazione a più variabili}
-Per funzioni a più variabili $y(x_1, \ldots, x_n)$, lo sviluppo in serie di Taylor nell'intorno del punto medio $\vec{\mu}_x$ genera termini con le derivate parziali. La varianza finale, assumendo variabili \textit{indipendenti} (per cui i termini incrociati $\text{Cov}(x_i, x_j)=0$), risulta essere:
+Per funzioni a più variabili $y(x_1, \ldots, x_n)$, lo sviluppo in serie di Taylor nell'intorno del punto medio $\vec{\mu}_x$ genera termini incrociati corrispondenti alle derivate parziali. Assumendo che le variabili siano \textit{indipendenti} (ovvero ponendo $\text{Cov}(x_i, x_j)=0$), la formula della varianza finale diventa:
 \begin{equation}
     \sigma_y^2 = \sum_{i=1}^n \left( \frac{\partial y}{\partial x_i} \right)^2_{\vec{\mu}_x} \sigma_{x_i}^2
 \end{equation}
 
 \begin{nota}
-Ricordiamo inoltre un caso notevole: se la funzione è un \textbf{prodotto} del tipo $y = \prod_{i=1}^n x_i^{\alpha_i}$, applicando la formula precedente si ottiene la relazione per la \textit{propagazione dell'errore relativo}:
+\textbf{Propagazione dell'errore relativo.} Un caso notevole si ha quando la funzione è un \textbf{prodotto} del tipo $y = \prod_{i=1}^n x_i^{\alpha_i}$. Applicando la formula generale precedente, è possibile dividere tutto per $y^2$, ottenendo la relazione esatta per la propagazione degli errori relativi:
 \begin{equation}
     \frac{\sigma_y^2}{y^2} = \sum_{i=1}^n \alpha_i^2 \left( \frac{\sigma_{x_i}}{x_i} \right)^2
 \end{equation}
-da cui si può dedurre rapidamente quali incertezze sono dominanti e quali trascurabili.
+Questa espressione è estremamente utile per dedurre rapidamente quali incertezze sperimentali risultino dominanti e quali siano invece trascurabili.
 \end{nota}
 
 \subsection{Varianza della media e Compatibilità}
-
-Vediamo il caso di una variabile che è la media di $n$ misure indipendenti:
+Consideriamo il caso in cui la variabile di interesse sia la media aritmetica di $n$ misurazioni indipendenti:
 \begin{equation}
     \overline{x} = \frac{1}{n}\sum_{i=1}^n x_i
 \end{equation}
-Applicando la propagazione degli errori, la varianza della media è:
+Applicando la propagazione degli errori, la varianza della media vale:
 \begin{equation}
     \sigma_{\overline{x}}^2 = \sum_{i=1}^n \left(\frac{\partial \overline{x}}{\partial x_i}\right)^2 \sigma_{x_i}^2
 \end{equation}
-Essendo che questa derivata vale sempre $1/n$, se assumiamo che tutte le misure provengano dalla stessa distribuzione (e abbiano quindi la stessa varianza $\sigma_i^2 = \sigma^2$), si ottiene il celebre risultato dell'\textbf{errore della media}:
+Poiché la derivata parziale $\frac{\partial \overline{x}}{\partial x_i}$ è sempre pari a $1/n$, se assumiamo che tutte le misure provengano dalla stessa distribuzione (quindi che abbiano la stessa varianza $\sigma_i^2 = \sigma^2$), ricaviamo il celebre risultato dell'\textbf{errore della media}:
 \begin{equation}
     \sigma_{\overline{x}}^2 = \frac{1}{n^2} \sum_{i=1}^n \sigma^2 = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n} \quad \implies \quad \sigma_{\overline{x}} = \frac{\sigma}{\sqrt{n}}
 \end{equation}
 
 \paragraph{Compatibilità tra due misure.} 
-Se ho compiuto 2 misure e mi chiedo se esse siano \textbf{compatibili}, costruisco una nuova variabile casuale come $y = x_1 - x_2$ (differenza fra le misure). Supponiamo $\sigma_1 \neq \sigma_2$ e $\mathbb{E}[x_1] = \mathbb{E}[x_2] = \mu$.
+Supponiamo di aver effettuato due misurazioni $x_1$ e $x_2$ (aventi $\sigma_1 \neq \sigma_2$ e stesso valore atteso $\mathbb{E}[x_1] = \mathbb{E}[x_2] = \mu$) e di voler testare se esse siano \textbf{statisticamente compatibili}. Costruiamo la variabile differenza $y = x_1 - x_2$.
 
-Il valore atteso della differenza è:
+Il valore atteso della differenza è nullo:
 \begin{equation}
     \mathbb{E}[y] = \mathbb{E}[x_1 - x_2] = 0
 \end{equation}   
-Mentre la varianza della differenza (sempre per la propagazione degli errori) è:
+La varianza della differenza si calcola con la solita propagazione degli errori:
 \begin{equation}
     \sigma_y^2 = \left(\frac{\partial y}{\partial x_1}\right)^2 \sigma_1^2 + \left(\frac{\partial y}{\partial x_2}\right)^2 \sigma_2^2 = (1)^2\sigma_1^2 + (-1)^2\sigma_2^2 = \sigma_1^2 + \sigma_2^2
 \end{equation}
-La funzione di distribuzione gaussiana associata a $y$ sarà:
+La funzione di densità gaussiana per la variabile $y$ sarà:
 \begin{equation}
     f(y) = \frac{1}{\sqrt{2\pi \sigma_y^2}}\exp\left[-\frac{y^2}{2\sigma_y^2}\right]
 \end{equation}
-Si ha statistica \textbf{compatibilità} (entro 3 deviazioni standard) quando:
+Convenzionalmente, si definisce la \textbf{compatibilità} tra le due misure (entro 3 deviazioni standard) quando lo scarto assoluto soddisfa:
 \begin{equation}
     \left| x_1 - x_2 \right| \leq 3\sqrt{\sigma_1^2 + \sigma_2^2}
 \end{equation}
 
 
-\subsection{\color{red} Funzione di distribuzione congiunta}
-Da un set di misure indipendenti posso costruire la "funzione di distribuzione congiunta" (prodotto fra le funzioni gaussiane delle n variabili):
+\subsection{\color{red} Funzione di distribuzione congiunta e Stima dei Parametri}
+Dato un set di $n$ misurazioni indipendenti, la "funzione di distribuzione congiunta" si ottiene come il prodotto delle funzioni gaussiane delle singole variabili:
 \begin{equation*}
-    f(x_1, x_2, \ldots, x_n) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^{N}\sigma_i} e^{-\sum_{i=1}^n \frac{(x_i - \mu_i)^2}{2\sigma_i^2}} \: per \; \mu \; e \; \sigma=cost. \rightarrow \frac{1}{(2\pi)^{n/2} \sigma^n} e^{\frac{-\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^{2n}}}
-    \end{equation*}
+    f(x_1, x_2, \ldots, x_n) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^{N}\sigma_i} e^{-\sum_{i=1}^n \frac{(x_i - \mu_i)^2}{2\sigma_i^2}} 
+\end{equation*}
+Nel caso in cui $\mu$ e $\sigma$ siano costanti, la formula si semplifica in:
+\begin{equation*}
+    \rightarrow \frac{1}{(2\pi)^{n/2} \sigma^n} e^{\frac{-\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^{2}}}
+\end{equation*}
 
-    \begin{equation*}
-        P(x_1^m - \Delta x \leq x_1 \leq x_1^m + \Delta x, \ldots, x_n^m - \Delta x \leq x_n \leq x_n^m + \Delta x) = \frac{(\Delta x)^n}{(2\pi)^{n/2} \sigma^n} e^{-\frac{\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^2}}
-        \end{equation*}
+La probabilità che le misurazioni cadano entro un intervallo $\Delta x$ è data da:
+\begin{equation*}
+    P(x_1^m - \Delta x \leq x_1 \leq x_1^m + \Delta x, \ldots, x_n^m - \Delta x \leq x_n \leq x_n^m + \Delta x) = \frac{(\Delta x)^n}{(2\pi)^{n/2} \sigma^n} e^{-\frac{\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^2}}
+\end{equation*}
 
-\subsubsection{\color{red} Stima dei parametri}
-Posso ottenere una stima dei parametri della funzione di distribuzione, voglio che sia a minima varianza (rispetto ai dati sperimentali che ho raccolto) e che il valore sia centrato nel valore vero, posso usare:
+\subsubsection*{\color{red} Stima dei parametri (Likelihood)}
+Per ottenere una stima ottimale dei parametri di una distribuzione, richiediamo che tale stima abbia \textbf{minima varianza} (rispetto ai dati raccolti) e che sia non distorta (cioè \textbf{centrata sul valore vero}). I metodi principali per conseguire questo risultato sono:
 \begin{itemize}
-    \item \textbf{Metodo della massima verosimiglianza} (o Likelihood)
-    \item \textbf{Metodo dei minimi quadrati}, meno preciso rispetto al primo
+    \item \textbf{Metodo della Massima Verosimiglianza} (Maximum Likelihood), che risulta essere il più preciso e generale.
+    \item \textbf{Metodo dei Minimi Quadrati}.
 \end{itemize}
 
-Dato un set di misure ho che la funzione di distribuzione cumuluativa (o congiunta) 
-$f(x_1, \dots, x_n, \lambda_1, \dots \lambda_n)$, dove $\lambda_i$ sono i parametri da stimare.
-Voglio trovare i valori $\lambda_1,\dots \lambda_m$ che minimizzano il valore di $\mathfrak{L}=f(x_1^m, \dots, x_n^m, \lambda_1, \dots \lambda_m)$, dove $x_i^m$ sono i valori misurati.
+Dato un set di misurazioni $x_i^m$, supponiamo che la distribuzione congiunta dipenda da alcuni parametri incogniti: $f(x_1, \dots, x_n, \lambda_1, \dots \lambda_m)$. L'obiettivo è trovare i valori dei parametri $\lambda$ che \textit{massimizzano} la probabilità di aver ottenuto proprio le misure osservate (la funzione $\mathfrak{L}$).
 
-Questo perchè voglio massimizzare la probabilità di trovare i miei valori misurati all'interno di $x_i \pm \Delta x$
-
-In realtà però si punta a massimizzare il logaritmo di $\mathfrak{L}$, per esempio per delle misure con distribuzione gaussiana
-\[
-\ln(\mathfrak{L})= \ln\frac{1}{2\pi\sigma^n} - \frac{\sum_{i=1}^n (x_i - \mu_x)^2}{2\sigma_x^2}
-\]
-
-Le equazioni di Likelihood sono:
-
-\[
-\frac{\partial \mathfrak{L}}{\partial \mu}=0 \quad  \frac{\partial^2 \mathfrak{L}}{\partial \sigma^2}<0
-\]
-Da cui si ottengono: 
-\[ \mu=\frac{1}{n} \sum_{i=1}^n x_i \hspace{1cm} e \hspace{1cm} \sigma^2=\sum_{i=1}^n \frac{(x_i-\mu)^2}{n} 
-\]
-
-ma facendo qualche calcolo
-\[
-(x-\mu)^2=(x-\overline{x}+\overline{x}-\mu)^2=(x-\overline{x})^2+-2(\overline{x}-\mu)(x-\overline{x})+(\overline{x}-\mu)^2
-\]
-da cui:
-\[
-E\left[(x-\mu)^2\right]=E\left[(x-\overline{x})^2\right]+E\left[2(\overline{x}-\mu)(x-\overline{x})\right]+\left[(\overline{x}-\mu)^2\right]
-\]
-\[\sigma^2=E\left[(x-\overline{x})^2\right]+\frac{\sigma^2}{n}                     
-\]
-e raccogliendo \[\sigma^2=\frac{1}{n-1}\sum {(x_i-\overline{x})^2}\]
-
-Supponiamo di avere più misure con $\sigma$ differenti, in questo caso allora la misura $x_1$ avrà una funzione di distribuzione gaussiana e la distribuzione congiunta sarà una produttoria di queste funzioni.
-In questo caso la funzione di distribuzione manterrà la sommatoria anche per i $\sigma_i$:
+Per comodità di calcolo, si punta quasi sempre a massimizzare il \textbf{logaritmo naturale} di $\mathfrak{L}$. Ad esempio, per misure estratte da una distribuzione gaussiana:
 \begin{equation*}
-    f(x_1, x_2, \cdots, x_n) = \frac{1}{(2\pi)^{n/2} \sigma_x^n} e^{-\sum_{i=1}^n \frac{(x_i - \mu_x)^2}{2\sigma_{x_{i}}^2}}
-    \end{equation*}
-Utilizzando le equazioni di Likelihood si ottengono:
-\[
-\mu=\frac{\sum_{i=1}^n \frac{x_i^m}{\sigma_i^2} }{\frac{1}{\sum_{j=1}^{n}\sigma_i^2}}
-\]
-Ovvero una media pesata delle misure per le loro varianze dal termine, in cui la sommatoria del fattore di peso è uguale a 1, le misure più precise hanno peso maggiore.
-\[
-\sigma_\mu=\frac{1}{\sum_{i=1}^{n}\frac{1}{\sigma_i^2}}
-\]
+    \ln(\mathfrak{L}) = \ln\left(\frac{1}{2\pi\sigma^n}\right) - \frac{\sum_{i=1}^n (x_i - \mu_x)^2}{2\sigma_x^2}
+\end{equation*}
+I parametri ottimali si trovano imponendo le \textbf{equazioni di Likelihood}:
+\begin{equation*}
+    \frac{\partial \mathfrak{L}}{\partial \mu} = 0 \quad \text{e} \quad \frac{\partial^2 \mathfrak{L}}{\partial \sigma^2} < 0
+\end{equation*}
+Svolgendo le derivate, si ottengono gli stimatori per la media e per la varianza:
+\begin{equation*} 
+    \mu = \frac{1}{n} \sum_{i=1}^n x_i \qquad \text{e} \qquad \sigma^2 = \sum_{i=1}^n \frac{(x_i-\mu)^2}{n} 
+\end{equation*}
 
+Ricordiamo tuttavia che lo stimatore di $\sigma^2$ appena trovato è \textit{distorto} (biased). Si può dimostrare manipolando lo scarto quadratico:
+\begin{equation*}
+    (x-\mu)^2 = (x - \overline{x} + \overline{x} - \mu)^2 = (x-\overline{x})^2 - 2(\overline{x}-\mu)(x-\overline{x}) + (\overline{x}-\mu)^2
+\end{equation*}
+Passando ai valori attesi:
+\begin{equation*}
+    \mathbb{E}\left[(x-\mu)^2\right] = \mathbb{E}\left[(x-\overline{x})^2\right] + \mathbb{E}\left[2(\overline{x}-\mu)(x-\overline{x})\right] + \mathbb{E}\left[(\overline{x}-\mu)^2\right]
+\end{equation*}
+\begin{equation*}
+    \sigma^2 = \mathbb{E}\left[(x-\overline{x})^2\right] + \frac{\sigma^2}{n}                     
+\end{equation*}
+Raccogliendo i termini in $\sigma^2$, si ottiene la formula corretta (\textbf{Correzione di Bessel}):
+\begin{equation*}
+    \sigma^2 = \frac{1}{n-1}\sum_{i=1}^n {(x_i-\overline{x})^2}
+\end{equation*}
+
+\paragraph{Misure con errori differenti.}
+Se le misure provengono da gaussiane con deviazioni standard differenti ($\sigma_i$), la funzione di Likelihood mantiene la sommatoria anche a denominatore per i $\sigma_i$:
+\begin{equation*}
+    f(x_1, \cdots, x_n) = \frac{1}{(2\pi)^{n/2} \prod \sigma_{i}} e^{-\sum_{i=1}^n \frac{(x_i - \mu_x)^2}{2\sigma_{i}^2}}
+\end{equation*}
+In questo caso, applicando le equazioni di Likelihood si ottiene:
+\begin{equation*}
+    \mu = \frac{\sum_{i=1}^n \frac{x_i}{\sigma_i^2} }{\sum_{i=1}^{n}\frac{1}{\sigma_i^2}}
+\end{equation*}
+Questo risultato è noto come \textbf{media pesata}: le misure più precise (con $\sigma_i$ minore) hanno un peso maggiore. La varianza della media pesata risulta essere:
+\begin{equation*}
+    \sigma_\mu = \frac{1}{\sum_{i=1}^{n}\frac{1}{\sigma_i^2}}
+\end{equation*}
 
 
 \subsection{Distribuzione di Maxwell-Boltzmann}
+Consideriamo un gas perfetto con peso molare $M = N_A m$ in equilibrio termodinamico a temperatura $T$. La costante universale dei gas è $R = N_A k \approx 8.31 \, \text{J} \, \text{K}^{-1} \text{mol}^{-1}$.
 
-Si considera un gas con peso molare \( M = N_A m \) in equilibrio termodinamico a temperatura \( T \). La costante dei gas è \( R = N_A k \approx 8.31 \, \text{J} \, \text{K}^{-1} \text{mol}^{-1} \).
-
-La velocità quadratica media delle molecole del gas è legata alla temperatura dalla relazione:
-    \[
+La velocità quadratica media delle molecole del gas è strettamente legata alla temperatura:
+\begin{equation}
     v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\frac{3RT}{M}}
-    \]
-    Tuttavia, le singole molecole hanno velocità che si discostano da questo valore medio.
-
-Maxwell nel 1859 derivò la distribuzione di probabilità delle velocità \( f(v) \):
-    \[
+\end{equation}
+Tuttavia, all'interno del gas le singole molecole possiedono velocità che si discostano da questo valore medio. Nel 1859, Maxwell derivò analiticamente la distribuzione di probabilità delle velocità $f(v)$:
+\begin{equation}
     f(v) = 4\pi \left( \frac{M}{2\pi RT} \right)^{3/2} v^2 \exp \left[ -\frac{Mv^2}{2RT} \right] = 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right]
-    \]
+\end{equation}
+Fisicamente, all'aumentare della temperatura, il picco della distribuzione (la velocità più probabile) si allarga e si sposta verso valori più elevati. Tutte le curve sono ovviamente normalizzate in modo che l'integrale della probabilità totale sia 1.
 
-    All'aumentare della temperatura, il picco della distribuzione (velocità più probabile) si sposta verso valori più elevati.
-
-Le curve sono normalizzate in modo che l'integrale della probabilità sia sempre uguale a 1.
-
-La distribuzione fu ottenuta da Maxwell attraverso un ragionamento particolarmente ingegnoso:
+La deduzione di Maxwell si sviluppa attraverso un ragionamento molto elegante:
 \begin{itemize}
-    \item introduciamo prima alcune definizioni:
+    \item Definiamo innanzitutto alcune densità fisiche:
     \begin{align*}
         \rho(\vec{r}) &= \frac{dm}{dV} \quad \text{densità del gas}, \\[6pt]
-        \eta(\vec{r}) &= \frac{\rho(\vec{r})}{m} \quad \text{densità di particelle}, \\[6pt]
-        dn &= \eta(\vec{r}) \, dV \quad \text{numero di particelle in } dV.
+        \eta(\vec{r}) &= \frac{\rho(\vec{r})}{m} \quad \text{densità numerica di particelle}, \\[6pt]
+        dn &= \eta(\vec{r}) \, dV \quad \text{numero di particelle nel volume } dV.
     \end{align*}
-    Introduciamo una densità di particelle nello spazio delle velocità, in modo analogo a quello tridimensionale: \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
-\begin{itemize}
-    \item introduciamo ora la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T}\]
-    \item se la distribuzione della velocità è isotropa, allora la funzione di distribuzione dipende solo dal modulo e non solo dal verso;
-    \item Il numero di particelle \( dn \) comprese nell'elemento \( \dd{\vec{v}} = \dd[3]{v} \) dello spazio delle velocità vale:
-    %
-   \[
-        dn(v) = n_T \, p(K) \, \dd{v_x} \dd{v_y} \dd{v_z}
-    \]
-    %
-    che in coordinate e angoli polari si può scrivere:
-    %
+    
+    \item In analogia allo spazio tridimensionale geometrico, introduciamo una densità di particelle nello \textit{spazio delle velocità}: 
+    \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
+    
+    \item Definiamo la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: 
+    \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T} \]
+    
+    \item Se assumiamo che la distribuzione della velocità del gas sia \textbf{isotropa}, la funzione di distribuzione dipenderà unicamente dal modulo della velocità e non dal suo verso.
+    
+    \item Il numero di particelle $dn$ comprese nell'elemento infinitesimo $d\vec{v} = d^3v$ dello spazio delle velocità vale:
     \[
-        dn(v) = n_T \, p(K) \, v^2 \dd{v} \dd{\Omega} = n_T \, p(K) \, v^2 \dd{v} \sin\theta \, \dd{\theta} \dd{\phi}
+        dn(v) = n_T \, p(K) \, dv_x \, dv_y \, dv_z
     \]
-    \item dato che ho dei valori che non dipendono dagli angoli posso trovare che:
+    che, passando in coordinate polari sferiche per le velocità, si scrive come:
     \[
-    dn(v)+c=4 \pi n_T p(K) v^2 dv 
+        dn(v) = n_T \, p(K) \, v^2 \, dv \, d\Omega = n_T \, p(K) \, v^2 \, dv \sin\theta \, d\theta \, d\phi
+    \]
+    
+    \item Integrando sulle variabili angolari (da cui la probabilità non dipende data l'isotropia), otteniamo il fattore $4\pi$:
+    \[
+        dn(v) \propto 4 \pi n_T p(K) v^2 dv 
+    \]
+
+    \begin{nota}
+        \textbf{Approfondimento geometrico sugli urti.}\\
+        Vogliamo ricavare quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v}+d\vec{v}$. Passando alle coordinate sferiche ($r, \theta, \psi$), l'area infinitesima identificata è:
+        \[
+        dA = (r d\theta)(r \sin\theta d\psi)
+        \]
+        Da cui l'angolo solido risulta:
+        \[
+        d\omega = \frac{dA}{r^2} = \sin\theta \, d\theta \, d\psi
+        \]
+        Il numero di particelle aventi velocità compresa tra $\vec{v}$ e $\vec{v}+d\vec{v}$ sarà proporzionale a $dn(v)\frac{d\omega}{4\pi}$. Essendo $4\pi$ l'angolo solido massimo dell'intera sfera, tale espressione conferma l'assenza di una direzione preferenziale.
+        
+        Per valutare la probabilità di urto contro un'area $A$, dobbiamo limitarci al volume di un cilindro di lunghezza $v d\tau$ (con $\tau$ sufficientemente piccolo da evitare urti secondari). Tale volume è $dV = v d\tau \cos\theta \, dA$. Il numero di molecole che urteranno l'area $dA$ sarà quindi $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
+    \end{nota}
+
+    \item Di conseguenza, la probabilità che l'urto accada è il prodotto delle singole probabilità: 
+    \[P=C \cdot p(K_1)p(K_2)\] 
+    ovvero è proporzionale alla probabilità di avere due particelle con energia cinetica $K_1$ e $K_2$ prima dell'urto. Dopo l'urto le energie saranno $K'_1$ e $K'_2$, e la probabilità sarà proporzionale a $C \cdot p(K'_1)p(K'_2)$.
+    
+    \item Poiché il gas si trova in equilibrio termodinamico, le probabilità prima e dopo l'urto devono equivalersi e l'energia cinetica totale deve conservarsi ($K_1 + K_2 = K'_1 + K'_2$). Segue che:
+    \[
+        p(K_1)p(K_2) = p(K'_1)p(K'_2) = p(K_1+x)p(K_2-x)
+    \]
+    dove $x$ rappresenta il trasferimento netto di energia durante la collisione.
+    
+    \item La forma funzionale che soddisfa questa proprietà è necessariamente un'esponenziale decrescente:
+    \[
+        p(K) = A e^{-\beta \frac{mv^2}{2}}
+    \]
+    dove $\beta > 0$ è una costante necessaria per rendere l'esponente adimensionale. Di conseguenza:
+    \[ 
+        dn(v) \propto 4 \pi n_T A e^{-\beta \frac{mv^2}{2}} v^2 dv
+    \] 
+
+    \begin{nota}
+        \textbf{Determinazione delle costanti $A$ e $\beta$.}\\
+        Per ricavare la costante $A$, integriamo su tutte le velocità possibili (da $0$ a $\infty$) imponendo la normalizzazione. Il risultato per $A$ è:
+        \[
+            A = \left( \frac{\frac{1}{2}m\beta}{\pi}\right)^\frac{1}{2}
+        \]
+        Per determinare $\beta$, calcoliamo esplicitamente la velocità quadratica media della distribuzione:
+        \begin{equation*}
+            \langle v^2 \rangle = \frac{1}{N} \int_0^\infty v^2 \, dn(v) = 4\pi A^3 \int_0^\infty v^4 \exp \left[ -\beta \left( \frac{1}{2} mv^2 \right) \right] dv
+        \end{equation*}
+        Risolvendo l'integrale notevole, si trova che $\langle v^2 \rangle = \frac{3}{m\beta}$.
+        D'altra parte, per il Teorema di Equipartizione dell'Energia, sapendo che il gas possiede 3 gradi di libertà traslazionali, l'energia cinetica media è:
+        \[
+            \frac{1}{2} m \langle v^2 \rangle = \frac{3}{2} k T \quad \implies \quad \frac{1}{2} m \left(\frac{3}{m\beta}\right) = \frac{3}{2} k T
+        \]
+        Confrontando i termini, si identifica immediatamente il significato fisico di $\beta$:
+        \[
+            \beta = \frac{1}{k T}
+        \]
+    \end{nota} 
+    
+    \item Imponendo infine le condizioni di contorno per normalizzare in densità ($\int_{V} dn_v = n_T$) e in energia ($\int_{V}K dn_v=\frac{3}{2}n_T k T$), la distribuzione completa di Maxwell-Boltzmann diviene:
+    \[
+        p(v) \, dv = 4\pi \left( \frac{m}{2\pi k T} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right] dv
+    \]
+    
+    \item Annullando la derivata prima della distribuzione per trovarne il massimo, si ricava la \textbf{velocità più probabile} $v_M$:
+    \[
+        v_M = \sqrt{\frac{2kT}{m}} \quad \implies \quad kT = \frac{1}{2}m v_M^2
+    \]
+    
+    \item Integrando la distribuzione di probabilità si ricava la \textbf{velocità media} (in modulo) delle molecole:
+    \[
+        \mu_v = \mathbb{E}[v] = \frac{4}{\sqrt{\pi}} \frac{1}{v_M^3} \int_0^\infty v^3 \exp\left[-\frac{v^2}{v_M^2}\right] dv = \frac{2}{\sqrt{\pi}} v_M = \sqrt{\frac{8kT}{\pi m}}
+    \]
+    La velocità quadratica media (Root Mean Square - RMS) invece è:
+    \[
+        v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\int_0^\infty v^2 p(v) \, dv} = \sqrt{\frac{3kT}{m}}
     \]
 \end{itemize}
-\begin{nota}
-    Ricordiamo la definizione di angolo solido:
 
-    Vogliamo sapere quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v}+d\vec{v}$. Passiamo alle coordinate polari sferiche (r, $\theta$, $\psi$), l'area A identificata dal vettore $\vec{v}$
-    sarà l'intersezione della superficie sferica di due cerchi la cui latitudine differisce per $d\theta$ e due la cui longitudine differisce per $d\psi$. Di conseguenza si ha:
-    \[
-    dA=(rd\theta)(r\sin(\theta)d\psi)
-    \]
-    L'angolo solido sarà definito da:
-    \[
-    d\omega=\frac{dA}{r^2}=\sin(\theta)d\theta d\psi
-    \]
-    Il numero di particelle con velocità $\vec{v}+d\vec{v}$ sarà: $dn(v)\frac{d\omega}{4\pi}$ essendo $4\pi$ l'angolo solido massimo. Questa espressione ci dice
-    che non c'è una direzione preferenziale per le velocità.
+\vspace{1em}
+Riassumendo, la formula finale può essere concettualmente spacchettata nei suoi 3 fattori fisici principali:
 
-    Se consideriamo inoltre che le molecole possono scontrarsi fra di loro prima di colpire l'area $A$, dobbiamo limitarci a considerare un cilindro di lunghezza $vd\tau$
-    dove $\tau$ è talmente piccolo che non avvengono urti fra le molecole, esso vale $dV=v d\tau \cos(\theta)dA$. 
-    
-    Il numero di molecole che urterà l'area $dA$ sarà $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
-\end{nota}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ccc}
+        \toprule
+        Costante di Normalizzazione & Probabilità (Fattore di Boltzmann) & Spazio delle Fasi \\
+        \midrule
+        $p(v) dv = \displaystyle \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\}$ & $\displaystyle \cdot \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\}$ & $\displaystyle \cdot \left\{ v^2 dv \right\}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-    \item da cui ricaviamo che la distribuzione delle particelle nello spazio è:
-    \[ p(\vec{r})=\frac{\eta (\vec{r})}{n_T}\]
-    \item La probabilità che l'urto accada è \[P=Cp(K_1)p(K_2)\] ovvero è proporzionale alla probabiità di avere le due particelle con $K_1$ e $K_2$ e dopo $K'_1$ e $K'_2$
-    
-    Posso ora considerare due particelle che hanno energia cinetica inziale \[P=Cp(K'_1)p(K'_2)\]e, e che dopo urto abbiamo $K_1$ e $K_2$.
-
-    Il processo può essere visto da ambo le parti, $C=C'$
-    \item il gas è essendo in equilibrio termodinamico deve essere che l'energie cinetiche si equivalgono e si conservano, dunque:
-    \[P=p(K_1)p(K_2)P=p(K'_1)p(K'_2)=p(K_1+x)p(K_2-x)\]
-    dove x rappresenta un incremento ($\pm$) dell'energia
-    
-    \item dunque l'unica funzione che soddisfi questi requisiti è:
-    \[
-    p(K)=A e^{-\beta \frac{mv^2}{2}}
-    \]
-dove $\beta$ ($>0$) è una costante che mi serve per rendere il mio esponente adimensionale.
-Quindi:
-\[ dn(v)+c=4 \pi n_T A e^{-\beta \frac{mv^2}{2}} v^2 dv\] 
-
-\begin{nota}
-
-le costanti $A$ e $\beta$ sono da determinare, per la prima integriamo da 0 a $\infty$ (tutte le velocità), arriviamo a $A=\left( \frac{\frac{1}{2}m\beta}{\pi}\right)^\frac{1}{2}$
-
-quindi per $\beta$ utilizzamo la definizone della media quadratica di tutte le velocità
-\begin{align*}
-    \langle v^2 \rangle &= \frac{1}{N} \int_0^\infty v^2 \, dn(v).
-\end{align*}
-
-Sostituendo l'espressione di \( dn(v) \), si ha
-
-\begin{align*}
-    \langle v^2 \rangle &= 4\pi A^3 \int_0^\infty v^4 \exp \left[ -\beta \left( \tfrac{1}{2} mv^2 \right) \right] dv
-\end{align*}
-
-Il cui valorè è:
-$\frac{3}{m\beta}$
-
-Dalle supposizioni abbiamo che l'unica energia è quella cinetica, dal teorema di equipartizione dell'energia, essendoci 3 gradi di libertà:
-
-\[
-    \tfrac{1}{2} m \langle w^2 \rangle = \tfrac{3}{2} k \theta \rightarrow \frac{1}{2} m \frac{3}{m\beta} = \frac{3}{2} k \theta,
-\]
-cioè
-
-\begin{align*}
-    \beta = \frac{1}{k \theta}.
-\end{align*}
-\end{nota} 
-\item imponendo le condizioni di contorno, ovvero $\displaystyle \int_{V} dn_v=n_T$ e $\displaystyle \int_{V}K dn_v=\frac{3}{2}n_T K T$ ottengo che:
-\[
-p(v) \, dv = 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right] dv
-\]
-\item la funzione presenta un massimo in $v_M=\sqrt{\frac{2kT}{m}} \rightarrow kT= \frac{1}{2}m {v_M}^2$, la velocità più probabile!!
-    \item Usando la funzione di distribuzione di Maxwell-Boltzmann, posso ricavare la velocità media (in modulo) delle molecole:
-
-\[
-\mu_v = E[v] = \frac{4}{\sqrt{\pi}} \frac{1}{v_M^3} \int_0^\infty v^3 \exp\left[-\frac{v^2}{v_M^2}\right] dv = \frac{2}{\sqrt{\pi}} v_M = \sqrt{\frac{8kT}{m}}
-\]
-
-Mentre la velocità quadratica media introdotta in precedenza vale:
-
-\[
-v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\int_0^\infty v^2 p(v) \, dv} = \sqrt{\frac{3kT}{m}}
-\]
-
-\begin{tabular}{lll}
-    \toprule
-    Costante di normalizzazione & Probabilità di occupazione del livello energetico & Spazio delle fasi \\
-    \midrule
-\end{tabular}
-
-\[
-p(v) dv = \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\} \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\} \left\{ v^2 dv \right\}
-\]
-
-Essa mi garantisce:
+Questa scomposizione garantisce che:
 \begin{itemize}
-    \item La costante di normalizzazione assicura che l'integrale della \( p(v) \) esteso a tutte le velocità possibili sia uguale a 1.
-    
-    \item La statistica di Boltzmann tiene conto della probabilità di occupazione di uno stato avente una data energia in funzione della temperatura del sistema.
-    
-    \item Infine lo spazio delle fasi tiene conto della molteplicità del livello energetico, vale a dire in quanti ``modi'' è possibile ottenere una configurazione che abbia la stessa energia. Nel nostro caso questo corrisponde al volume di una corteccia di sfera di raggio interno \( v \) e spessore \( dv \). A tutti i punti di questo volume corrisponde la medesima energia \( K = \frac{mv^2}{2} \).
-\end{itemize}
-
+    \item \textbf{La costante di normalizzazione} assicura che l'integrale della probabilità $p(v)$ esteso a tutte le velocità possibili sia pari all'unità.
+    \item \textbf{La statistica di Boltzmann} (il termine esponenziale) tiene conto della probabilità di occupazione termodinamica di uno stato avente una data energia cinetica in funzione della temperatura assoluta $T$ del sistema.
+    \item \textbf{Lo spazio delle fasi} (il fattore $v^2 dv$) descrive la molteplicità del livello energetico, ovvero il numero di "modi" o stati microscopici con cui è possibile ottenere la stessa energia macroscopica. Nel nostro sistema isotropo in 3D, questo corrisponde al volume geometrico di un guscio sferico di raggio $v$ e spessore $dv$ all'interno dello spazio delle velocità. Tutti i punti di questo guscio possiedono esattamente la medesima energia $K = \frac{1}{2}mv^2$.
 \end{itemize}
 \end{document}

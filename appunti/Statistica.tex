@@ -192,6 +192,12 @@
 \noindent\textbf{\color{RoyalBlue}Lezione del #2}\par\vspace{0.5em}\hrule\vspace{1em}
 }
 
+\newcommand{\lezioneSenzaIndice}[2]{
+\newpage
+\renewcommand{\thelezione}{#2} 
+\section*{#1} % L'asterisco rimuove la sezione dall'indice e dalla numerazione
+\noindent\textbf{\color{RoyalBlue}Lezione del #2}\par\vspace{0.5em}\hrule\vspace{1em}
+}
 
 
 % --- PACCHETTI NECESSARI ---
@@ -219,6 +225,24 @@
 
 
 
+\newtcolorbox{bressan}[1]{
+  breakable,
+  enhanced,
+  frame hidden,                 
+  boxrule=0pt,                  
+  colback=white,                % SFONDO BIANCO (nessun appesantimento)
+  borderline west={2pt}{0pt}{red!75!black}, % Linea rossa più sottile ed elegante
+  coltitle=black,               
+  colbacktitle=white,           % Niente sfondo rosato dietro al titolo
+  fonttitle=\LARGE\bfseries,    
+  top=2mm, bottom=2mm, left=4mm, right=0mm, % Rientro solo a sinistra
+  toptitle=2mm, bottomtitle=2mm,
+  title={\textcolor{red!75!black}{\normalsize\sffamily PARTE DI BRESSAN}\\[1mm] #1}
+}
+
+
+
+
 \title{\textbf{\Huge Appunti di Statistica}}
 \author{\textsc{Mirolo Manuele / Alessio Brusini / Michele Tedeschini}}
 \date{a.a. 2025/26}
@@ -233,8 +257,7 @@
 
 \begin{center}
 \section*{Premessa}
-saranno presenti delle sezioni "ripasso di Bressan" (non numerate) che riguarderanno il programma dell'anno scorso e che verrano presentate prima degli argomenti che riguardano l'anno attuale (in sezioni nere numerate) saranno quelle .    
-\end{center}
+All'interno di queste dispense sono presenti dei richiami agli argomenti del programma dell'anno scorso (Corso del prof. Bressan). Invece di relegare questi richiami unicamente ad un capitolo iniziale, abbiamo scelto anche di integrarli direttamente all'interno dei nuovi capitoli nel momento in cui si rendono necessari. Questi richiami sono facilmente riconoscibili perché racchiusi in appositi riquadri evidenziati in rosso (denominati 'PARTE DI BRESSAN'). Le parti con "Approfondimento" sono facoltative (non trattatte a lezione)\end{center}
 
 
 \vspace{1.5em}
@@ -268,7 +291,8 @@ saranno presenti delle sezioni "ripasso di Bressan" (non numerate) che riguarder
 \setcounter{page}{1}
 \pagestyle{fancy}
 
-\lezione{\color{red} Ripasso di Bressan}{2025}
+
+\lezioneSenzaIndice{Ripasso di Bressan}{2025}
 La probabilità è la misura del grado della credenza che un certo evento avvenga.
 
 L'oggetto della teoria è un certo \textit{esperimento causale}, la cui esecuzione è detta \textit{prova}, il risultato è indicato con \textit{$\omega$}, l'insieme di
@@ -437,8 +461,8 @@ Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\
 
 
 
-\lezione{Introduzione e Statistica}{6 Ottobre 2025} 
-\subsection{Rappresentazione grafica dei dati}
+\lezione{Rappresentazione grafica e Grandezze Statistiche}{6 Ottobre 2025} 
+\subsection*{Rappresentazione grafica dei dati}
 Le nostre misure saranno del tipo ${x_1, x_2, ..., x_N}$, il nostro obiettivo è quello di rappresentare questi dati per capire il fenomeno fisico
 che stiamo studiando.\\
 Per quanto riguarda la parte grafica, la rappresentazione dipende dai dati a disposizione:
@@ -483,7 +507,7 @@ Gli errori da associare dipendono dalla situazione pratica:
 
 
 
-\ripasso{Valore di Aspettazione}
+\begin{bressan}{Valore di Aspettazione}
 
 Le caratteristiche principali delle distribuzioni di probabilità sono descritte attraverso specifici parametri: gli \textit{indici di posizione}, che indicano attorno a quali valori è centrata la distribuzione, e gli \textit{indici di dispersione}, che ne quantificano la "larghezza" o variabilità.
 Tra gli indici di posizione, riveste particolare importanza il \textbf{valore di aspettazione}.
@@ -512,8 +536,9 @@ E[\mu_x] = \mu_x
 \]
 Esso rappresenta un "indice di posizione" fondamentale all'interno del dominio della variabile.
 
+\end{bressan}
 
-\ripasso{Varianza e Deviazione Standard}
+\begin{bressan}{Varianza e Deviazione Standard}
 
 Oltre alla media, esistono altri indici di posizione:
 \begin{description}
@@ -547,10 +572,10 @@ La \textbf{deviazione standard} è definita come $\sigma_x = \sqrt{var(x)}$. Tut
 \[
 \sigma_x = \sqrt{\frac{1}{N-1} \sum (x_i - \bar{x})^2}
 \]
+\end{bressan}
 
 
-
-\subsection{Grandezze Statistiche: Media e Varianza}
+\subsection*{Grandezze Statistiche: Media e Varianza}
 \subsubsection{Media Aritmetica}
 
 Consideriamo il caso ottimistico in cui si riesce a misurare tante volte la stessa grandezza nelle stesse condizioni. In questo caso, se si vuole usare un solo numero per descrivere le misure, il migliore è senz'altro la \textbf{media aritmetica}:
@@ -609,7 +634,8 @@ plt.show()
     \caption{Istogramma comparativo delle due serie di misure simulate.}
 \end{figure}
 
-\ripasso{Errore di sensibilità e distribuzione uniforme}
+
+\begin{bressan}{Errore di sensibilità e distribuzione uniforme}
 
 Si definisce l'errore di sensibilità come la semiampiezza dell'intervallo di risoluzione: $\displaystyle \Delta x = \frac{X_{\max} - X_{\min}}{N}$. Il risultato della misura sarà espresso come $x \pm \Delta x$.
 
@@ -638,7 +664,7 @@ Imponendo la condizione di normalizzazione ($\int P(x)dx = 1$), si ricavano i pa
     \item La deviazione standard risulta essere:
     $\displaystyle \sigma = \sqrt{\int_{-\Delta}^{+\Delta} (x - 0)^2 \frac{1}{2 \Delta } dx} = \sqrt{\frac{\Delta^2}{3}} = \frac{\Delta}{\sqrt{3}}$.
 \end{itemize}
-
+\end{bressan}
 
 \subsection{Errore di sensibilità e Propagazione}
 \subsubsection{Propagazione degli Errori}
@@ -682,7 +708,7 @@ Quindi, se si vuole convertire un errore massimo $\Delta$ in una deviazione stan
     \sigma = \frac{\Delta}{\sqrt{3}}
 \end{equation}
 
-\ripasso{Metodo dei Minimi Quadrati}
+\begin{bressan}{Metodo dei Minimi Quadrati}
 
 Un metodo fondamentale per stimare i parametri di un modello è quello dei \textbf{minimi quadrati}. 
 Consideriamo un set di misure $\vec{x}=(x_1, \dots, x_n)$ e i corrispondenti valori osservati $\vec{y}=(y_1, \dots, y_n)$. Si assume che esista una relazione funzionale $f(x; \lambda)$ che lega le variabili, dove $\vec{\lambda} = (\lambda_1, \dots, \lambda_k)$ sono i parametri ignoti da stimare.
@@ -706,8 +732,8 @@ Se il modello è una costante $y = \lambda$ (cioè cerchiamo il miglior valore u
     \item Con errori differenti ($\sigma_i$): Media pesata
     \[ \hat{\lambda} = \frac{\sum_{i=1}^n \frac{y_i}{\sigma_i^2}}{\sum_{j=1}^{n}\frac{1}{\sigma_j^2}} \]
 \end{itemize}
-
-\section{Metodo dei Minimi Quadrati}
+\end{bressan}
+\subsection{Metodo dei Minimi Quadrati}
 
 L'obiettivo è dedurre informazioni fisiche dai dati (fit). Partiamo dalle ipotesi:
 \begin{enumerate}
@@ -724,7 +750,7 @@ Il metodo consiste nel minimizzare la somma degli scarti quadratici pesati, dett
 Minimizzare significa porre le derivate rispetto ai parametri uguali a zero: $\frac{\partial \chi^2}{\partial p} = 0$.
 
 
-\ripasso{Fit di una retta (Regressione Lineare)}
+\begin{bressan}{Fit di una retta (Regressione Lineare)}
 
 Vogliamo determinare la retta che meglio descrive un set di dati $(x_i, y_i \pm \sigma_i)$.
 Utilizziamo la parametrizzazione $f(x) = mx + q$ (oppure $\theta_2 x + \theta_1$), dove i parametri da stimare sono la pendenza $m$ e l'intercetta $q$.
@@ -774,9 +800,9 @@ Le varianze dei parametri, ottenute tramite la propagazione degli errori, sono:
 \sigma_m^2 = \frac{S}{\Delta}
 \]
 Il valore minimo del $\chi^2$ può essere utilizzato per il \textit{test delle ipotesi} (goodness of fit), per verificare se i dati sono compatibili con l'ipotesi lineare.
+\end{bressan}
 
-
-\subsection{Fit Lineare ($y = mx + q$)}
+\subsection*{Fit Lineare ($y = mx + q$)}
 Nel caso di funzione lineare $f(x) = mx + q$ e $\sigma_i = \sigma$ costanti, risolvendo il sistema delle derivate parziali $\frac{\partial \chi^2}{\partial m} = 0$ e $\frac{\partial \chi^2}{\partial q} = 0$, si ottengono le stime analitiche:
 
 Definiamo le somme:
@@ -827,7 +853,7 @@ plt.legend(); plt.show()
     \caption{Fit Lineare}
 \end{figure}
 
-\ripasso{Caso non lineare}
+\begin{bressan}{Caso non lineare}
 Se la relazione tra le grandezze non è lineare, spesso è possibile "linearizzare" il problema con un cambio di variabile.
 
 \begin{example}
@@ -846,9 +872,9 @@ Se la relazione tra le grandezze non è lineare, spesso è possibile "linearizza
 \end{example}
 
 Nei casi in cui la linearizzazione non è possibile, si ricorre all'espansione di Taylor del modello attorno a valori iniziali dei parametri o a metodi numerici iterativi.
+\end{bressan}
 
-
-\subsection{Caso Non Lineare e Linearizzazione}
+\subsection*{Caso Non Lineare e Linearizzazione}
 se $f(x; p)$ non è lineare spesso si cerca un'espressione linearizzata cambiando variabili.
 \\
 \\
@@ -889,13 +915,13 @@ print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
 
 \lezione{Momenti e Distribuzioni}{23 Febbraio 2026}
 
-\ripasso{Variabili casuali e funzione di ripartizione}
+\begin{bressan}{Variabili casuali e funzione di ripartizione}
 Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
 dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
 
 Essa può essere discreta (numerabile) oppure continua, se almeno idealmente posso considerare $\Omega$ continuo.
-
-\ripasso{Funzione di ripartizione}
+\end{bressan}
+\begin{bressan}{Funzione di ripartizione}
 Data una variabile casuale $X$, la funzione $F$ che fa corrispondere a un valore x la probabilità cumulativa $P(X \geq x)$ viene detta funzione di ripartizione
 
 \[
@@ -922,8 +948,8 @@ Proprietà delle funzioni di ripartizioni:
 \end{enumerate}
 
 In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in cui la funzione di probabilità è costante (ex nel caso dei dadi la funz. di ripartizione è a gradini)
-
-\ripasso{Densità di probabiità}
+\end{bressan}
+\begin{bressan}{Densità di probabiità}
 
  Data la variabile casuale continua \( X: \Omega \to \mathbf{R} \) che associa valori dallo spazio campionario all'intervallo 
  \((a, b)\), con \( -\infty \leq a < b \leq +\infty \), la funzione di densità di probabilità (PDF) o funzione di distribuzione di probabilità è 
@@ -974,6 +1000,7 @@ In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in
 \end{tikzpicture}
 \end{center}
 
+
 \subsubsection*{Proprietà della funzione densità di probabilità}
 \begin{itemize}
     \item non può essere mai negativa (altrimenti avremmo una probabiità negativa per qualche $X$)
@@ -981,7 +1008,7 @@ In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in
     dunque si deve avere che: $\lim_{x \rightarrow \pm \infty} f_X(x)=0$
     \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
 \end{itemize}
-
+\end{bressan}
 
 \subsection{Momenti della funzione di distribuzione}
 
@@ -1073,8 +1100,8 @@ Nello specifico, definiamo:
 
 \end{itemize}
 
-
-\subsection{Distribuzione uniforme discreta}
+\subsection{Distribuzioni Uniformi e Funzione Generatrice e Caratteristica}
+\subsubsection*{Distribuzione uniforme discreta}
 Consideriamo una variabile $X$ che può assumere $n$ valori discreti. Se tutti i valori sono equiprobabili, imponendo la condizione di normalizzazione si ottiene che la probabilità per ogni valore è $p=1/n$.
 Di conseguenza, il valore medio è:
 \[
@@ -1087,7 +1114,7 @@ La varianza è data da:
 \]
 
 
-\subsection{Distribuzione uniforme continua}
+\subsubsection*{Distribuzione uniforme continua}
 Una variabile casuale continua definita nell'intervallo $(a,b)$ possiede una distribuzione uniforme se la sua densità di probabilità è costante, ovvero $f_X(x) = \text{cost}$.
 Affinché sia soddisfatta la condizione di normalizzazione (l'area sotto la curva deve essere 1), la funzione deve essere:
 \[
@@ -1131,7 +1158,7 @@ Per la varianza, sfruttando la proprietà $E[x^2]-{E[x]}^2$, si ottiene:
 
 
 \vspace{1 cm}
-\subsection{Funzioni Generatrici e Funzione Caratteristica}
+\subsubsection*{Funzioni Generatrici e Funzione Caratteristica}
 L'introduzione dei momenti risulta utile per diversi motivi. Un risultato fondamentale è il seguente: se due variabili casuali $X$ e $Y$ possiedono gli stessi momenti, allora le loro funzioni di distribuzione di probabilità ($f_X$ e $f_Y$) sono identiche.
 
 \begin{definizione}
@@ -1231,7 +1258,7 @@ f_X(x) = \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{-itx} \phi(t) dt
 \]
 Dunque due distribuzioni di probabilità che hanno gli stessi momenti (dunque la stessa funzione caratteristica), sono la stessa distribuzione di probabilità. 
 Questo è dovuto al fatto che la $\mathcal{F}$-trasformata in $L^2[\mathbb{R}]$ rappresenta una biezione tra due spazi.
-\subsection{Distribuzione binomiale o di Bernoulli}
+\subsection{Distribuzione Binomiale e Approssimazioni}
 \emph{Questa parte è stata integrata con gli appunti di Bressan}
 \vspace{0.4 cm}
 
@@ -1413,7 +1440,7 @@ print(f"Su 100 esperimenti, ho ottenuto 6 teste {risultato} volte")
 
 
 
-\ripasso{Distribuzione di Poisson}
+\begin{bressan}{Distribuzione di Poisson}
 La distribuzione di Poisson è un caso limite fondamentale, spesso utilizzato in fisica nucleare, e serve per indicare la probabilità di osservare $k$ eventi in un determinato intervallo di tempo $t$, basandosi su tre ipotesi principali:
 \begin{itemize}
     \item \textbf{Indipendenza:} la presenza o assenza di un evento non dipende da ciò che è accaduto prima del tempo $t$ (processo senza memoria).
@@ -1476,8 +1503,8 @@ E la varianza coincide con la media:
 {\sigma^2}=E[k^2]-{E[k]}^2=m
 \]
 Si nota dunque che la distribuzione di Poisson non è altro che il limite per $n \rightarrow \infty$ della distribuzione di Bernoulli (Binomiale).
-
-\subsection{Dalla Binomiale alla Poissoniana}
+\end{bressan}
+\subsection*{Dalla Binomiale alla Poissoniana}
 La distribuzione \textbf{Binomiale} descrive casi in cui un risultato particolare si ottiene in un numero preciso e finito di tentativi ($n$).
 
 La distribuzione di \textbf{Poisson}, invece, si usa per descrivere casi in cui si contano eventi rari in un continuo (tempo o spazio), dove non si ha un'idea precisa del numero di tentativi totali, né ha senso parlare di casi "sfavorevoli" nel senso classico.
@@ -1543,7 +1570,7 @@ La probabilità di ottenere $k$ eventi, dato un numero medio di eventi attesi $\
 Un esempio classico è il \textbf{decadimento radioattivo}, in quanto il numero di decadimenti nucleari in un intervallo di tempo è discreto e casuale, ma con un tasso medio ben definito.
 
 
-\subsection{Calcolo dei Momenti tramite la Funzione Generatrice dei Momenti}
+\subsection*{Calcolo dei Momenti tramite la Funzione Generatrice dei Momenti}
 Per calcolare valore atteso e varianza in modo elegante, utilizziamo la \textbf{Funzione Generatrice dei Momenti}, definita come il valore atteso di $e^{tk}$:
 \[
 M_k(t) = E[e^{tk}] = \sum_{k=0}^{+\infty} e^{tk} P(k; \lambda) = \sum_{k=0}^{+\infty} e^{tk} \frac{e^{-\lambda} \lambda^k}{k!}
@@ -1602,7 +1629,7 @@ Ora calcoliamo la varianza sottraendo il quadrato della media:
 \boxed{\mu = \lambda, \quad \sigma^2 = \lambda}
 \end{equation}
 
-\subsection{Relazione con la Binomiale e Somma di Variabili}
+\subsection*{Relazione con la Binomiale e Somma di Variabili}
 
 \subsubsection{Limite della Funzione Generatrice dei Momenti Binomiale}
 Si può dimostrare formalmente che la Funzione Generatrice della Binomiale tende a quella della Poissoniana.
@@ -1798,7 +1825,7 @@ confronto_binom_poiss(p=0.01, n_list=[100, 1000, 5000, 10000])
 \end{figure}
 
 
-\subsection{Rappresentazione grafica dei dati (Istogrammi)}
+\subsection*{Rappresentazione grafica dei dati (Istogrammi)}
 
 Consideriamo un esperimento volto a misurare una grandezza fisica continua $X$. Il modello teorico che descrive il fenomeno fornisce una densità di probabilità $P(x)$, tale che:
 
@@ -1847,9 +1874,9 @@ Se $P_i$ fosse nota a priori, per un confronto visivo con l'istogramma si potreb
 \end{example}
 
 
-\lezione{La Distribuzione Normale (Gaussiana)}{02 Marzo 2026}
+\lezione{La Distribuzione Normale}{02 Marzo 2026}
 
-\ripasso{Distribuzione Normale}
+\begin{bressan}{Distribuzione Normale}
 
 Data una variabile casuale $x$, la funzione di densità di probabilità normale è definita come:
 \[
@@ -1991,8 +2018,8 @@ y(u)=\frac{1}{\sqrt{2\pi} \sigma}e^{-\frac{u^2}{2 \sigma^2}}
     \item Valori di aspettazione come indici di posizione (media) e dispersione (varianza).
     \item Esempi di funzioni di distribuzione (Binomiale, Poisson, Gaussiana).
 \end{itemize}
-
-\subsection{Definizione di distribuzione normale}
+\end{bressan}
+\subsection*{Definizione di distribuzione normale}
 
 La funzione di distribuzione di Gauss, o distribuzione normale, è descritta dalla seguente funzione (Gauss la utilizzò per descrivere gli errori di misura, notando che molti fenomeni naturali tendono a distribuirsi attorno a un valore medio):
 
@@ -2044,7 +2071,7 @@ P_z(z) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} \cdot 
 che conferma il passaggio alla forma standard.
 \end{nota}
 
-\subsection{Calcolo del Valore di Aspettazione e della Varianza}
+\subsection*{Calcolo del Valore di Aspettazione e della Varianza}
 
 Come per le altre distribuzioni, possiamo utilizzare la funzione generatrice dei momenti per calcolare il valore di aspettazione e la varianza. A differenza delle distribuzioni discrete viste in precedenza, notiamo che in questo caso $x$ è una variabile continua.
 
@@ -2129,7 +2156,7 @@ In particolare, per la normale standard $N(0,1)$, si ha:
 M_x(t) = \bar{M}_x(t) = e^{\frac{t^2}{2}}
 \end{equation}
 
-\ripasso{Confronto istogramma/gaussiana}
+\begin{bressan}{Confronto istogramma/gaussiana}
 Date 100 misure che cadono in $k$ intervalli di valore centrale $x^k$ e larghezza $\Delta x$, ci chiediamo quale sia la funzione di distribuzione che mi definisca la probabilità che un certo dato cada in un
 certo intervallo (successo), questa è la \textbf{funzione di distribuzione binomiale}:
 
@@ -2150,8 +2177,8 @@ dove $m$ sta per eventi misurati ed $s$ per eventi attesi, avremo quindi un graf
 \item il 5\% si trova a 3 $\sigma$
 \end{itemize}
 La deviazione standard della binomiale è circa $\sqrt{n_k^m}$ se $n_{tot}>>>n_k^c$, che in realtà è un approssimazione che va bene quando $n_k^c > 5$
-
-\subsection{Variabili Aleatorie e Combinazioni Lineari}
+\end{bressan}
+\subsection*{Variabili Aleatorie e Combinazioni Lineari}
 
 Si può dimostrare un importante teorema: una combinazione lineare di variabili casuali normali e statisticamente indipendenti è anch'essa distribuita secondo una legge normale.
 Per la dimostrazione utilizziamo la funzione generatrice dei momenti. Supponiamo di avere $X_1, X_2, \dots, X_M$ variabili aleatorie indipendenti, ognuna descritta da una gaussiana $N_i(\mu_i, \sigma_i^2)$. Una loro combinazione lineare può essere scritta come:
@@ -2241,7 +2268,7 @@ Nella pratica, l'approssimazione è spesso già accettabile per $n \ge 10$.
 Z_n = \frac{S - \sum_{i=1}^{n} \mu_i}{\sqrt{\sum_{i=1}^{n} \sigma_i^2}} \overset{n \to \infty}{\sim} \mathcal{N}(0,1)
 \]
 
-\subsection{Caso Particolare: Variabili I.I.D.}
+\subsection*{Caso Particolare: Variabili I.I.D.}
 Un caso molto comune è quello in cui le variabili $x_i$ sono \textbf{indipendenti e identicamente distribuite} (I.I.D.). In questo scenario, le ipotesi si semplificano:
 \begin{itemize}
     \item Tutte le variabili hanno la stessa distribuzione: $P_i(x) = P(x)$;
@@ -2279,7 +2306,7 @@ Per tornare alla variabile non standardizzata, invertiamo la relazione:
 z = \frac{\bar{x}-\mu}{\sigma/\sqrt{n}} \implies \bar{x} = \mu + z \frac{\sigma}{\sqrt{n}}
 \]
 
-\subsection{Dimostrazione (tramite Funzione Generatrice dei Momenti)}
+\subsection*{Dimostrazione (tramite Funzione Generatrice dei Momenti)}
 Dimostriamo il teorema nel caso I.I.D., ovvero proviamo che:
 \[
 \lim_{n \to \infty} \frac{S - n\mu}{\sigma \sqrt{n}} \sim \mathcal{N}(0,1)
@@ -2333,7 +2360,7 @@ Calcoliamo il limite per $n \to \infty$ sfruttando il limite notevole $(1 + \fra
 La funzione $e^{t^2/2}$ è esattamente la funzione generatrice dei momenti della normale standard $\mathcal{N}(0,1)$. Per il teorema di unicità delle funzioni generatrici, concludiamo che $Z$ converge in distribuzione alla normale standard.
 
 
-\ripasso{Varianza della media e Compatibilità}
+\begin{bressan}{Varianza della media e Compatibilità}
 Consideriamo il caso in cui la variabile di interesse sia la media aritmetica di $n$ misurazioni indipendenti:
 \begin{equation}
     \overline{x} = \frac{1}{n}\sum_{i=1}^n x_i
@@ -2366,10 +2393,11 @@ Convenzionalmente, si definisce la \textbf{compatibilità} tra le due misure (en
 \begin{equation}
     \left| x_1 - x_2 \right| \leq 3\sqrt{\sigma_1^2 + \sigma_2^2}
 \end{equation}
+\end{bressan}
 
 
 
-\subsection{Implicazioni del Teorema nell'Analisi Dati}
+\subsection*{Implicazioni del Teorema nell'Analisi Dati}
 
 Il teorema ha implicazioni cruciali: ci assicura che l'effetto cumulativo di molte piccole perturbazioni indipendenti produce una distribuzione gaussiana, indipendentemente dalla forma della distribuzione di partenza.
 
@@ -2420,7 +2448,7 @@ Z \approx \sum_{i=1}^{12} u_i - 6
 Quindi: si sommano 12 numeri uniformi e si sottrae 6.
 \textit{Nota:} Questo metodo è veloce ma approssimato; le "code" della distribuzione (oltre $6\sigma$) sono troncate, poiché la somma di variabili limitate è comunque limitata.
 
-\ripasso{Trasformazione di variabili casuali}
+\begin{bressan}{Trasformazione di variabili casuali}
 Supponiamo di avere una variabile casuale $Y = y(X)$ che dipende funzionalmente da un'altra variabile $X$. Vogliamo ricavare la densità di probabilità $g(y)$ conoscendo la distribuzione originaria $f(x)$.
 
 Nel caso di una \textbf{corrispondenza biunivoca} (ad esempio $y = ax + b$), la conservazione della probabilità impone che $f(x)dx = g(y)dy$. Se ammettiamo l'esistenza della funzione inversa $x = x(y)$, la determinazione di $g(y)$ si riduce al calcolo:
@@ -2432,7 +2460,7 @@ Nel caso di funzioni \textbf{non biunivoche} (dove cioè a un valore di $y$ corr
 \begin{equation}
     g(y) = \sum_{i=1}^{m} f(x_i(y))\left|\frac{dx_i(y)}{dy}\right|
 \end{equation}
-
+\end{bressan}
 \subsection{La Trasformazione di Box-Muller}
 Un metodo matematicamente esatto per generare numeri normali da numeri uniformi è la \textbf{trasformazione di Box-Muller}.
 
@@ -2848,7 +2876,7 @@ Al limite per $n \to \infty$, $\frac{1}{n} \to 0$ per cui questo dimostra che
 \noindent $\star \quad \text{Prob}(|X - \mu| \ge K\sigma) = 1 - \text{Prob}(|X - \mu| < K\sigma) \le \frac{1}{K^2}$ \\
 $\implies \text{Prob}(|X - \mu| < K\sigma) \ge 1 - \frac{1}{K^2}$
 
-\subsection{Cenni di Distribuzione Esponenziale}
+\subsection*{Cenni di Distribuzione Esponenziale}
 
 \[
 P_{\text{exp}}(x; \tau) = \frac{1}{\tau} e^{-x/\tau} \quad \quad 0 \le x \le +\infty
@@ -2882,7 +2910,7 @@ Ora calcolo la varianza come
 
 
 \lezione{Processi di Poisson, Esponenziale ed Erlang}{19 Marzo 2026}
-
+\subsection{Distribuzione Esponenziale}
 La distribuzione esponenziale descrive il tempo che intercorre tra due eventi consecutivi in un processo di Poisson.
 
 Ricaviamola dalla \textbf{Distribuzione di Poisson}.
@@ -2905,7 +2933,7 @@ Pertanto, la probabilità che $T > t$ coincide con la probabilità di osservare 
 \end{equation}
 
 
-\subsection{Proprietà dell'Esponenziale}
+\subsubsection*{Proprietà dell'Esponenziale}
 La \textbf{funzione di ripartizione} (o distribuzione cumulativa $F_X(x)$) indica la probabilità che una variabile $x'$ assuma un valore minore o uguale a $x$:
 \begin{equation}
     F_X(x) = \text{Prob}(x' \le x) = \int_{-\infty}^{x} P_X(z) \, dz
@@ -3014,7 +3042,7 @@ Continuando ricorsivamente, si ottiene la densità di probabilità di Erlang:
     \item Varianza: $Var(t) = \frac{k}{\lambda^2}$
 \end{itemize}
 
-\subsubsection{Distribuzione Gamma}
+\subsubsection{Distribuzione Gamma (approfondimento)}
 Cosideriamo $\alpha$ e $\beta$ due costati maggiori di zero, allora la \textit{Gamma distribution} è definita come:
 \begin{equation}
     f(x;\alpha,\beta)= \frac{1}{\Gamma(\alpha)\beta^\alpha}x^{\alpha-1}e^{-\frac{x}{\beta}} \label{eq: pdf Gamma}
@@ -3199,7 +3227,7 @@ plt.show()
 \lezione{Variabili Casuali bidimensionali}{23/03/2026}
 
 
-\ripasso{Funzione di distribuzione per variabili casuali n-dimensionali}
+\begin{bressan}{Funzione di distribuzione per variabili casuali n-dimensionali}
 Se la funzione di densità di probabilità $f(\vec{x})$ dipende da $n$ variabili, descritte dal vettore $\vec{x}=(x_1, \ldots, x_n)$, il \textbf{valore di aspettazione} (o valore atteso) del vettore è dato da:
 \begin{equation}
     \mathbb{E}[\vec{x}] = \int \vec{x} f(\vec{x}) \, d\vec{x}
@@ -3223,8 +3251,8 @@ Risulta inoltre utile definire il \textbf{coefficiente di correlazione} lineare:
 \begin{equation}
     \rho(x_i,x_j) = \frac{\text{Cov}(x_i,x_j)}{\sigma_i \sigma_j}
 \end{equation}
-
-\ripasso{Indipendenza e funzione marginale}
+\end{bressan}
+\begin{bressan}{Indipendenza e funzione marginale}
 La funzione di distribuzione congiunta descrive la probabilità che $n$ variabili casuali assumano contemporaneamente valori all'interno di specifici intervalli. Essa gode delle stesse proprietà matematiche delle funzioni di distribuzione unidimensionali. 
 
 È possibile definire la \textbf{funzione di distribuzione marginale} per una singola variabile $x_i$, integrandola funzione congiunta su tutto il dominio di tutte le restanti variabili $x_j$ (con $j \neq i$).
@@ -3240,6 +3268,7 @@ A livello campionario (sui dati sperimentali), la covarianza tra due variabili $
 \begin{equation}
     \text{Cov}(X, Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
 \end{equation}
+\end{bressan}
 
 \subsection{Distribuzioni congiunte, marginali e condizionate}
 
@@ -3613,7 +3642,7 @@ Facendo riferimento alla tabella, si può notare come il numero di dati $N$ infl
 In sintesi, un coefficiente di correlazione non ha significato pratico se non viene contestualizzato rispetto al numero di misurazioni effettuate.
 \end{example}
 
-\ripasso{La distribuzione normale multivariata}
+\begin{bressan}{La distribuzione normale multivariata}
 Nel caso in cui le variabili siano \textit{indipendenti}, la funzione di densità di Gauss per la singola variabile è:
 \begin{equation}
     f(x_i) = \frac{1}{\sqrt{2\pi}\sigma_i} \exp\left[-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}\right]
@@ -3622,11 +3651,11 @@ Essendo indipendenti, la distribuzione congiunta è semplicemente il prodotto de
 \begin{equation}
     f(x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^n \sigma_i} \exp\left[ -\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2} \right]
 \end{equation}
-
+\end{bressan}
 
 
 \section{Distribuzione normale in più dimensioni (o multinormale)}
-\subsection{Caso di variabili indipendenti}
+\subsection*{Caso di variabili indipendenti}
 La distribuzione gaussiana che abbiamo visto in una dimensione si può estendere al caso di due o più dimensioni partendo dal caso più semplice in cui le variabili sono indipendenti. Supponiamo quindi che $X$ abbia densità di probabilità:
 \begin{equation}
     P_X(x) = \frac{1}{\sigma_X \sqrt{2\pi}} \exp\left[ -\frac{(x-\mu_X)^2}{2\sigma_X^2} \right]
@@ -3809,7 +3838,7 @@ E la gaussiana in 2D diventa:
 P(x,y) = \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}} \exp\left(-\frac{Q^2}{2}\right)
 \end{equation}
 
-\subsection{Interpretazione geometrica: L'ellisse}
+\subsection*{Interpretazione geometrica: L'ellisse}
 La cosa interessante è che ponendo $Q^2 = c$ si ottiene ancora un'ellisse, ma stavolta è \emph{inclinata}, cioè non ha gli assi paralleli agli assi cartesiani $x$ ed $y$.
 
 Data la geometria del problema, dalla forma dell'ellisse si potrebbe riuscire a ricavare $\rho$. Infatti:
@@ -3892,7 +3921,7 @@ Anche in questo caso, la probabilità che una misurazione $(x,y)$ cada dentro l'
 \end{figure}
 
 
-\subsection{Distribuzioni Marginali e Condizionate per la Multinormale}
+\subsection*{Distribuzioni Marginali e Condizionate per la Multinormale}
 
 Per definizione, le distribuzioni marginali sono date da:
 \begin{equation}
@@ -3974,7 +4003,7 @@ che, a partire da esse, ci permetta di ricavare il valore di $\theta_v$. Le funz
 
 Ovviamente si possono immaginare molte stime possibili, ma si cerca di preferire quelle che hanno tre proprietà fondamentali: \textbf{consistenza}, \textbf{imparzialità} ed \textbf{efficienza}.
 
-\subsection{Proprietà degli Stimatori (Consistenza, Imparzialità)}
+\subsection*{Proprietà degli Stimatori (Consistenza, Imparzialità)}
 \subsubsection*{Consistenza}
 \begin{definizione} \textbf{Stimatore Consistente}:
 Una stima si dice \emph{consistente} quando tende al valore vero del parametro al tendere all'infinito del numero di campioni, cioè se:
@@ -4020,7 +4049,7 @@ Se la varianza è più piccola, il suo valore è più prossimo a $\mathbb{E}[\ha
 La scelta della migliore stima da usare non è sempre banale e richiede lo studio del singolo caso. Per esempio, l'efficienza di una stima può dipendere dal particolare problema considerato, oppure confrontando due stime si può trovare che la più efficiente è anche \emph{distorta}; in tal caso bisogna decidere (in base al problema) se è più accettabile la distorsione o la bassa efficienza.
 
 Per esempio si può dimostrare che sia la media che la mediana diano un risultato consistente e imparizali per quanto riguarda la posizione di una popolazione di variabili normali con varianza nota. La media però presenta una minore varianza rispetto alla mediana, dunque è da preferirsi per quanto riguarda l'efficienza.
-\subsection{La media aritmetica come stima ottimale}
+\subsection*{La media aritmetica come stima ottimale}
 Consideriamo lo stimatore della media aritmetica: $\hat{\mu} = \bar{x}$.
 Abbiamo già notato che la media è una buona stima di $\mu$ perché è \textbf{consistente} e \textbf{imparziale}.
 
@@ -4034,7 +4063,7 @@ In generale si vede che questa stima è la \textbf{più efficiente}, o almeno lo
 
 \lezione{Stime, Propagazione e Likelihood}{30 Marzo 2026}
 
-\subsection{Stima della Varianza e Correzione di Bessel}
+\subsection*{Stima della Varianza e Correzione di Bessel}
 
 Si è visto nelle prime lezioni che il modo più naturale per misurare la dispersione rispetto alla media del campione è lo scarto quadratico medio, che indichiamo qui per comodità come $s^2$:
 \begin{equation}
@@ -4088,7 +4117,7 @@ Questa espressione prende il nome di \emph{correzione di Bessel} e fornisce uno 
 
 \emph{Nota: si usa il pedice $m$ per ricordare che questa è la stima della varianza a partire dalle misure.}
 
-\subsection{Stima della Covarianza}
+\subsection*{Stima della Covarianza}
 Abbiamo visto che, date due variabili aleatorie $x$ e $y$, la loro covarianza si calcola come:
 \begin{equation}
 \text{cov}(x,y) = \mathbb{E}\left[ (x - \mathbb{E}[x])(y - \mathbb{E}[y]) \right]
@@ -4154,7 +4183,7 @@ Quindi $\hat{S}$ si può stimare togliendo da $m$ la media delle misure vere che
 Si ottiene quindi una sovrastima di $S$ (spesso per gli errori sistematici si ha una sovrastima).
 
 
-\ripasso{Legge di propagazione degli errori}
+\begin{bressan}{Legge di propagazione degli errori}
 Qualora il calcolo analitico di $g(y)$ risulti troppo complesso, ci si accontenta di stimare il \textbf{valore di aspettazione} e la \textbf{varianza} della nuova variabile $y$:
 \begin{align*}
     \mu_y &= \mathbb{E}[y] = \int y \, g(y) \, dy = \int y(x) f(x) \, dx \\
@@ -4179,7 +4208,7 @@ Per il calcolo della varianza, fermandoci all'approssimazione del primo ordine, 
     \sigma_y^2 &= \mathbb{E}[(y - \mu_y)^2] \approx \mathbb{E} \left[ \left( y(\mu_x) + \left. \frac{dy}{dx} \right|_{\mu_x} (x - \mu_x) - y(\mu_x) \right)^2 \right] \\
     &= \mathbb{E} \left[ \left( \left. \frac{dy}{dx} \right|_{\mu_x} \right)^2 (x - \mu_x)^2 \right] = \left( \left. \frac{dy}{dx} \right|_{\mu_x} \right)^2 \sigma_x^2
 \end{align*}
-
+\end{bressan}
 
 \subsection{Dimostrazione della Propagazione degli Errori}
 
@@ -4200,7 +4229,7 @@ Applicando ora le formule precedenti (notando che $f(x_0) \to b$ e $\left.\frac{
 \end{equation}
 La formula ha senso per errori piccoli e la derivata va calcolata in $x_0$, che di solito si assume essere il valore misurato.
 
-\subsubsection{Caso Multivariato}
+\subsubsection*{Caso Multivariato}
 Nel caso di più variabili si procede in modo analogo. Per esempio nel caso di due variabili:
 \begin{equation*}
 f(x,y) \simeq f(x_0, y_0) + (x - x_0)\left.\frac{\partial f}{\partial x}\right|_{x=x_0} + (y - y_0)\left.\frac{\partial f}{\partial y}\right|_{y=y_0}
@@ -4223,7 +4252,7 @@ Nel caso più generale in cui $f$ sia funzione di $n$ variabili $f(x_1, x_2, \do
 
 
 
-\ripasso{Funzione di distribuzione congiunta e Stima dei Parametri}
+\begin{bressan}{Funzione di distribuzione congiunta e Stima dei Parametri}
 Dato un set di $n$ misurazioni indipendenti, la "funzione di distribuzione congiunta" si ottiene come il prodotto delle funzioni gaussiane delle singole variabili:
 \begin{equation*}
     f(x_1, x_2, \ldots, x_n) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^{N}\sigma_i} e^{-\sum_{i=1}^n \frac{(x_i - \mu_i)^2}{2\sigma_i^2}} 
@@ -4237,8 +4266,8 @@ La probabilità che le misurazioni cadano entro un intervallo $\Delta x$ è data
 \begin{equation*}
     P(x_1^m - \Delta x \leq x_1 \leq x_1^m + \Delta x, \ldots, x_n^m - \Delta x \leq x_n \leq x_n^m + \Delta x) = \frac{(\Delta x)^n}{(2\pi)^{n/2} \sigma^n} e^{-\frac{\sum_{i=1}^n (x_i - \mu)^2}{2\sigma^2}}
 \end{equation*}
-
-\ripasso{Stima dei parametri (Likelihood)}
+\end{bressan}
+\begin{bressan}{Stima dei parametri (Likelihood)}
 Per ottenere una stima ottimale dei parametri di una distribuzione, richiediamo che tale stima abbia \textbf{minima varianza} (rispetto ai dati raccolti) e che sia non distorta (cioè \textbf{centrata sul valore vero}). I metodi principali per conseguire questo risultato sono:
 \begin{itemize}
     \item \textbf{Metodo della Massima Verosimiglianza} (Maximum Likelihood), che risulta essere il più preciso e generale.
@@ -4289,7 +4318,7 @@ Questo risultato è noto come \textbf{media pesata}: le misure più precise (con
 \begin{equation*}
     \sigma_\mu = \frac{1}{\sum_{i=1}^{n}\frac{1}{\sigma_i^2}}
 \end{equation*}
-
+\end{bressan}
 
 
 \subsection{Metodo della Massima Verosimiglianza (MLE), (Maximum Likelihood)}
@@ -4341,14 +4370,14 @@ Il metodo della massima verosimiglianza consiste nell'adottare come stima del pa
 
  Questo certe volte consente di ottenere un'equazione che si può risolvere analiticamente per ottenere $\hat{\theta}$, a volte invece bisogna ricorrere a soluzioni numeriche.
 
-\subsection{La Log-Likelihood}
+\subsection*{La Log-Likelihood}
 Spesso risulta scomodo lavorare con $\mathscr{L}$ e si preferisce utilizzare il suo logaritmo, di solito in base $e$. Essendo $\ln(\mathscr{L})$ una funzione monotona crescente con il suo argomento, il massimo di $\ln(\mathscr{L})$ si trova per i valori dei parametri che rendono massima la $\mathscr{L}$.
 Quindi di solito il problema diventa trovare i valori di $\theta$ per cui:
 \begin{equation}
 \frac{d(\ln \mathscr{L})}{d\theta} = 0
 \end{equation}
 
-\subsection{Esempio: Funzione Esponenziale}
+\subsection*{Esempio: Funzione Esponenziale}
 Un esempio semplice di applicazione del metodo del Maximum Likelihood è il caso di un processo la cui densità di probabilità è data da:
 \begin{equation}
 P(t ; \tau) = \frac{1}{\tau} e^{-t/\tau}
@@ -4394,7 +4423,7 @@ Quindi la stima del valore atteso medio $\tau$ è data semplicemente dalla media
 
 \lezione{PDF Gaussiane e Limite di Cramér-Rao}{02 Aprile 2026}
 
-\subsection{Proprietà della Massima Verosimiglianza}
+\subsection*{Proprietà della Massima Verosimiglianza}
 
 \subsubsection*{Chiarimenti sulla stima ML}
 
@@ -4570,7 +4599,7 @@ e avendo visto prima che $\mathrm{Var}(\hat{\tau}) = \frac{\tau^2}{N}$, di nuovo
 \textit{Nota:} si è visto che in generale $\mathbb{E}[\hat{\theta}] = \theta_{vero}$, ma qui l'approccio è: $\theta_{vero}$ è fissato ma io non lo conosco. Quindi uso $\theta$ invece di $\theta_{vero}$ e considero come cambia $\mathbb{E}[\hat{\theta}]$ al variare di $\theta$, e per semplificare uso $\mathbb{E}[\hat{\theta}] = \theta$. (In generale dovrei scrivere $\mathbb{E}[\hat{\theta}] = f(\theta)$ e fare il conto da lì).
 
 
-\subsection{Dimostrazione della Disuguaglianza di Cramér-Rao}
+\subsection*{Dimostrazione della Disuguaglianza di Cramér-Rao}
 
 La dimostrazione della disuguaglianza procede attraverso vari passaggi.
 
@@ -4666,7 +4695,7 @@ Si noti che il primo passaggio della dimostrazione sfrutta il fatto che la stima
     \left( 1 + \frac{\partial b}{\partial \theta} \right)^2
 \end{equation}
  
-\subsection{Approfondimento sulla disuguagliaza di Cramér-Rao}
+\subsection*{Approfondimento sulla disuguagliaza di Cramér-Rao}
 Consideriamo la funzione $\mathscr{L}(\vec{x}; \theta) \in {\mathbb(C)}^2$ e lo stimatore t di una funzione $\tau(\theta)$. Possiamo definire il suo valore di aspettazione come:
 \begin{equation}
     \int_{-\infty}^{+\infty} dx_1 \int_{-\infty}^{+\infty} dx_2 \dots \int_{-\infty}^{+\infty} dx_N t(\vec{x}) \mathscr{L}(x_1, x_2, \dots, x_N; \theta) = \tau(\theta) + b(\theta)
@@ -4700,7 +4729,7 @@ In questo caso vado ad ottenere una soluzione del tipo:
     \end{equation*}
 \end{definizione}
 
-\lezione{Rilevatore Geiger, Radioattività e Studio dei Dati}{09 Aprile 2026}
+\lezione{Stime, Binned Ml ed EML}{09 Aprile 2026}
 
 \subsection*{Note su radioattività ambientale}
 In generale, tutti i nuclei atomici tendono a raggiungere una condizione di stabilità e, per farlo, si frantumano dando luogo al \textit{decadimento radioattivo}. Le tipologie più comuni di decadimento sono:
@@ -4731,7 +4760,7 @@ Per il loro rilevamento si è usato un tubo Geiger, che è un cilindro di metall
     \end{enumerate}
 \end{enumerate}
 
-\section{Varianza della stima e Disuguaglianza di Cramer-Rao}
+\subsection{Varianza della stima e Disuguaglianza di Cramer-Rao}
 Abbiamo visto che la disuguaglianza di Cramer-Rao ci dice che, in generale, per la varianza di uno stimatore $\hat{\theta}$ vale:
 \begin{equation}
     Var(\hat{\theta}) \ge \frac{-1}{\mathbb{E}\left[ \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right]} = \frac{1}{\mathbb{E}\left[ \left( \frac{d \ln \mathscr{L}}{d\theta} \right)^2 \right]}
@@ -4751,7 +4780,7 @@ e quindi, per il valore di aspettazione:
 \end{equation*}
 visto che tutte le funzioni $P(x_i; \theta)$ sono uguali. Ne segue quindi che \textbf{la varianza minima è inversamente proporzionale alla dimensione del campione ($1/N$)}.
 
-\subsection{Stima di \texorpdfstring{$\hat{\theta}$}{} e \texorpdfstring{$Var(\hat{\theta})$}{} per \texorpdfstring{$N \to \infty$}{}}
+\subsubsection*{Stima di \texorpdfstring{$\hat{\theta}$}{} e \texorpdfstring{$Var(\hat{\theta})$}{} per \texorpdfstring{$N \to \infty$}{}}
 Al limite per $N \to \infty$ si può vedere che l'uguaglianza regge e si ha:
 \begin{equation*}
     Var(\hat{\theta}) = \frac{-1}{\left. \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right|_{\theta = \theta_0}} = \frac{-1}{\mathbb{E}\left[ \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right]}
@@ -4833,7 +4862,7 @@ Poiché per $N$ grande $\hat{\nu} \sim \mathcal{N}(\nu, 1)$, allora ho l'interva
      \ln \mathscr{L}(\hat{\nu}) - \ln \mathscr{L}(\nu) = 0.5 \implies \ln \mathscr{L}(\nu) = \ln \mathscr{L}_{max} - \frac{1}{2}
 \end{equation*}
 
-\section{Likelihood di più parametri}
+\subsection*{Likelihood di più parametri}
 Nel caso in cui, invece di avere un solo parametro $\theta$, si debba determinare la stima di $m$ parametri $\theta_1, \theta_2, \dots, \theta_m$, tutto quello che abbiamo visto sin qui semplicemente si generalizza.
 Per ottenere le stime dei parametri si risolve il sistema di $m$ equazioni del tipo:
 \begin{equation}
@@ -4879,7 +4908,7 @@ Stavolta la $\ln \mathscr{L}$ è più difficile da disegnare, ma per esempio nel
 \caption{Determinazione grafica degli errori nel caso a 2 parametri ($m=2$).}
 \end{figure}
 
-\section{Binned Maximum Likelihood}
+\subsection{Binned Maximum Likelihood}
 Una variante del metodo ML comunemente usata nel caso in cui il nostro set di dati è molto ampio, e risulta complicato calcolare la somma di tutti i $\ln P(x_i; \theta)$, è il metodo \textbf{Binned}.
 
 In questo caso si assume di avere molte misure $x_i$ della stessa grandezza fisica che seguono la stessa legge di distribuzione $P(x; \theta)$. L'idea è di formare un \textbf{istogramma} con le nostre $x_i$. 
@@ -4909,7 +4938,7 @@ Passando al logaritmo e prendendo solo i termini che dipendono da $\theta$, otte
 \end{equation}
 dove i termini costanti non dipendono da $\theta$ e quindi non influenzano la ricerca del massimo. Si procede quindi massimizzando numericamente questa likelihood per trovare $\hat{\theta}$ e con i metodi grafici si può stimare $\sigma_{\hat{\theta}}$.
 
-\section{Extended Maximum Likelihood (EML)}
+\subsection{Extended Maximum Likelihood (EML)}
 Il metodo ML classico permette di stimare i parametri $\theta$ e si concentra sulla \textit{forma} della distribuzione. Il metodo EML estende questa stima considerando \textbf{anche il numero di eventi come una incognita}. 
 
 Questo ha senso in esperimenti in cui si prendono dati per un certo periodo di tempo fissato, in cui si osservano $N$ eventi. Il valore di $N$ sarà solo una stima del numero medio $\nu$ di eventi attesi per il processo considerato. Per cui si può moltiplicare la $\mathscr{L}$ vista prima per la probabilità (Poissoniana) di ottenere $N$ eventi in un processo aleatorio per cui la media di eventi attesi è $\nu$:
@@ -4933,15 +4962,15 @@ Nel caso in cui $\nu$ e $\theta$ siano \textbf{indipendenti}, derivando l'equazi
 \end{equation}
 e la stima $\hat{\theta}$ è esattamente la stessa di quella che si otterrebbe con il metodo ML standard.
 
-\subsection{Applicazione: Segnale e Fondo}
+\subsection*{Applicazione: Segnale e Fondo}
 L'utilità del metodo EML traspare pienamente quando i dati hanno \textbf{due componenti: segnale e fondo}. Si vogliono stimare i parametri fisici $\theta_s$ (del segnale) e $\theta_b$ (del fondo) oltre che il numero di eventi attesi di segnale ($\nu_s$) e di fondo ($\nu_b$). In questo caso la funzione di densità di probabilità totale diventa una mistura pesata, e la Extended Likelihood dipende da 4 parametri trovando numericamente il massimo di qualcosa del tipo:
 \begin{equation}
    \ln \mathscr{L}^{E}(\nu_s, \nu_b, \theta_s, \theta_b) = -(\nu_s + \nu_b) + \sum_{i=1}^N \ln \Big( \nu_s P_s(x_i; \theta_s) + \nu_b P_b(x_i; \theta_b) \Big)
 \end{equation}
 essendo $P_s$ e $P_b$ le densità di probabilità normalizzate del segnale e del fondo.
 
+\lezione{Dal Metodo di Maximum Likelihood ai Minimi Quadrati}{16 Aprile 2026}
 
-\section{Dal Metodo di Maximum Likelihood ai Minimi Quadrati}
 
 
 Supponiamo che i nostri dati consistano in un set di coppie di valori $(x_i, y_i)$ in cui supponiamo che le $x_i$ siano note con esattezza (senza errore), mentre le $y_i$ vengano misurate con una certa incertezza $\sigma_i$. 
@@ -5037,7 +5066,7 @@ E il denominatore comune $D = N S_{xx} - (S_x)^2$. Le stime si riscrivono come:
 \end{equation}
 \textit{Nota:} $\hat{m}$ e $\hat{q}$ non dipendono da $\sigma$. Quindi le stime dei parametri si possono calcolare anche se non si conosce a priori l'errore sperimentale, purché si assuma che sia lo stesso per tutti i punti.
 
-\subsection{Errori associati alle stime}
+\subsection*{Errori associati alle stime}
 Per calcolare gli errori su $\hat{m}$ e $\hat{q}$ applichiamo la legge di propagazione degli errori. Poiché le uniche variabili aleatorie con errore sono le $y_i$, la varianza su una generica funzione $f(y_1 \dots y_N)$ è: $\sigma_f^2 = \sum_i \left( \frac{\partial f}{\partial y_i} \right)^2 \sigma_{y_i}^2$.
 
 Riscriviamo $\hat{m}$ mettendo in evidenza $y_i$:
@@ -5058,7 +5087,7 @@ Con una procedura analoga per l'intercetta si ottiene:
     \sigma_{\hat{q}}^2 = \frac{\sigma^2 S_{xx}}{D}
 \end{equation}
 
-\subsection{Estrapolazione e Covarianza}
+\subsection*{Estrapolazione e Covarianza}
 Una volta trovata la retta di best fit $y = \hat{m}x + \hat{q}$, potremmo voler calcolare il valore previsto $y$ e il suo errore associato per una nuova coordinata $x$.
 Le variabili aleatorie in questa equazione sono i parametri stimati $\hat{m}$ e $\hat{q}$ (la $x$ è uno scalare da noi fissato). Per la propagazione degli errori su una somma $z = a\tilde{x} + b\tilde{y}$:
 \begin{equation}
@@ -5077,7 +5106,7 @@ Esplicitando si ottiene:
 Per questo motivo, in alcuni casi è conveniente operare una traslazione, definendo $x' = x - \bar{x}$ (che ha per costruzione media nulla) ed eseguendo un nuovo fit $y = mx' + q'$. La pendenza della retta non cambia, ma cambia l'intercetta. Con le nuove coordinate si avrà semplicemente:
 $Var(y) = (x')^2 Var(\hat{m}) + Var(\hat{q}')$.
 
-\section{Caso \texorpdfstring{$y = mx + q$}{} con errori \texorpdfstring{$\sigma_i$}{} differenti}
+\subsection{Caso \texorpdfstring{$y = mx + q$}{} con errori \texorpdfstring{$\sigma_i$}{} differenti}
 Se gli errori $\sigma_i$ non sono tutti uguali, la quantità da minimizzare non può espellere il $\sigma_i$ dalla sommatoria:
 \begin{equation}
     \chi^2 = \sum_i \frac{(y_i - m x_i - q)^2}{\sigma_i^2}
@@ -5104,7 +5133,7 @@ Il nuovo denominatore diventa $D_W = W \cdot W_{xx} - (W_x)^2$. Le nuove stime e
 \end{equation}
 In questo caso, \textbf{le stime di $m$ e $q$ dipendono dai $\sigma_i$}. Pertanto, se non conosco gli errori non posso calcolare il fit in maniera matematicamente rigorosa per i pesi sbilanciati.
 
-\section{Metodo dei minimi quadrati con istogrammi}
+\subsection*{Metodo dei minimi quadrati con istogrammi}
 Il metodo dei minimi quadrati si può applicare anche nel caso in cui abbiamo dati raccolti sotto forma di \textbf{istogramma} (misure di 1 sola grandezza).
 In tal caso, utilizziamo l'indice $j$ per indicare i bin dell'istogramma ($j=1, \dots, m$ bin) rispetto all'indice $i$ usato prima per gli $N$ dati.
 Sostituiamo:
@@ -5130,7 +5159,7 @@ Molto spesso, per semplificare i conti, si usa l'approssimazione che la varianza
 \end{equation}
 Questa ultima formula \textbf{funziona bene solo se i bin hanno molti conteggi} e se $m_j$ non discosta molto da $\nu_j(\theta)$. In ogni caso bisogna prestare molta attenzione ai bin per cui $m_j = 0$ oppure $\nu_j(\theta)=0$ (bisogna eventualmente escluderli dal calcolo per evitare divisioni per zero).
 
-\section{Metodo dei minimi quadrati non lineare}
+\subsection*{Metodo dei minimi quadrati non lineare}
 Nel caso in cui il modello non riesca a essere ricondotto ad una forma lineare per cui si hanno soluzioni esatte esplicite, si usano \textbf{procedure iterative numeriche}.
 Si parte da un valore iniziale $\theta_0$, si calcola il $\chi^2$, e si procede iterativamente aggiornando i parametri ($\theta_1 = \theta_0 + \Delta \theta$) seguendo il gradiente fino a quando non si trova il minimo di $\chi^2$.
 
@@ -5230,7 +5259,7 @@ Sostituendo questo valore nell'espansione:
 \chi^2(\theta) = \chi^2(\hat{\theta}) + 1 = \chi^2_{\text{min}} + 1
 \end{equation}
 
-\section{Distribuzione del $\chi^2$}
+\subsection{Distribuzione del $\chi^2$}
 
 Per avere un riferimento quantitativo con cui confrontare il risultato della minimizzazione, bisogna conoscere la distribuzione di probabilità $P(\chi^2)$. Seguiamo un ragionamento intuitivo.
 Se $y_i = f(x_i) + \varepsilon_i$, con errore di misura $\varepsilon_i \sim \mathcal{N}(0, \sigma_i^2)$, allora la variabile standardizzata:
@@ -5268,14 +5297,14 @@ Valore atteso e varianza della distribuzione sono:
     \caption{Distribuzione $\chi^2$ per diversi gradi di libertà ($\nu$). Si nota come all'aumentare di $\nu$ la distribuzione si sposti verso destra.}
 \end{figure}
 
-\subsection{Comportamento Asintotico e $\chi^2$ ridotto}
+\subsection*{Comportamento Asintotico e $\chi^2$ ridotto}
 Questo ci dà un riferimento importante: il valore atteso del minimo del $\chi^2$ è $\approx \nu$. Si definisce quindi il \textbf{$\chi^2$ ridotto}:
 \begin{equation}
     \chi^2_{\text{rid}} = \frac{\chi^2}{\nu}
 \end{equation}
 che in teoria dovrebbe essere $\approx 1$. 
 
-\subsubsection{Caso $\nu$ grande ($\nu \gtrsim 30$)}
+\subsubsection*{Caso $\nu$ grande ($\nu \gtrsim 30$)}
 Il controllo sul $\chi^2$ ridotto ha senso quando $\nu$ è grande. Per il Teorema del Limite Centrale, la distribuzione tende a una Normale:
 \begin{equation}
     P(\chi^2; \nu) \xrightarrow{\nu \gg 1} \mathcal{N}(\nu, 2\nu)
@@ -5301,7 +5330,7 @@ Quindi $\chi^2 / \nu \sim \mathcal{N}(1, \frac{2}{\nu})$. È una gaussiana centr
     \caption{Distribuzione del $\chi^2$ ridotto. Per $\nu=50$ si nota la perfetta sovrapposizione con la normale $\mathcal{N}(1, 2/\nu)$.}
 \end{figure}
 
-\subsubsection{Caso $\nu$ piccolo}
+\subsubsection*{Caso $\nu$ piccolo}
 Per $\nu$ piccoli la distribuzione del $\chi^2$ è fortemente asimmetrica con lunghe code a destra. Qui la probabilità di fluttuazioni grandi è molto alta, e usare la regola $\chi^2/\nu \approx 1$ non è più un criterio affidabile (grande dispersione).
 
 % --- INSERIRE QUI FIGURA 3 ---
@@ -5328,150 +5357,11 @@ Si dimostra che questa variabile si può ben approssimare (anche per $\nu$ picco
 \end{figure}
 
 
-\ripasso{Distribuzione di Maxwell-Boltzmann}
-Consideriamo un gas perfetto con peso molare $M = N_A m$ in equilibrio termodinamico a temperatura $T$. La costante universale dei gas è $R = N_A k \approx 8.31 \, \text{J} \, \text{K}^{-1} \text{mol}^{-1}$.
 
-La velocità quadratica media delle molecole del gas è strettamente legata alla temperatura:
-\begin{equation}
-    v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\frac{3RT}{M}}
-\end{equation}
-Tuttavia, all'interno del gas le singole molecole possiedono velocità che si discostano da questo valore medio. Nel 1859, Maxwell derivò analiticamente la distribuzione di probabilità delle velocità $f(v)$:
-\begin{equation}
-    f(v) = 4\pi \left( \frac{M}{2\pi RT} \right)^{3/2} v^2 \exp \left[ -\frac{Mv^2}{2RT} \right] = 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right]
-\end{equation}
-Fisicamente, all'aumentare della temperatura, il picco della distribuzione (la velocità più probabile) si allarga e si sposta verso valori più elevati. Tutte le curve sono ovviamente normalizzate in modo che l'integrale della probabilità totale sia 1.
-
-La deduzione di Maxwell si sviluppa attraverso un ragionamento molto elegante:
-\begin{itemize}
-    \item Definiamo innanzitutto alcune densità fisiche:
-    \begin{align*}
-        \rho(\vec{r}) &= \frac{dm}{dV} \quad \text{densità del gas}, \\[6pt]
-        \eta(\vec{r}) &= \frac{\rho(\vec{r})}{m} \quad \text{densità numerica di particelle}, \\[6pt]
-        dn &= \eta(\vec{r}) \, dV \quad \text{numero di particelle nel volume } dV.
-    \end{align*}
-    
-    \item In analogia allo spazio tridimensionale geometrico, introduciamo una densità di particelle nello \textit{spazio delle velocità}: 
-    \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
-    
-    \item Definiamo la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: 
-    \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T} \]
-    
-    \item Se assumiamo che la distribuzione della velocità del gas sia \textbf{isotropa}, la funzione di distribuzione dipenderà unicamente dal modulo della velocità e non dal suo verso.
-    
-    \item Il numero di particelle $dn$ comprese nell'elemento infinitesimo $d\vec{v} = d^3v$ dello spazio delle velocità vale:
-    \[
-        dn(v) = n_T \, p(K) \, dv_x \, dv_y \, dv_z
-    \]
-    che, passando in coordinate polari sferiche per le velocità, si scrive come:
-    \[
-        dn(v) = n_T \, p(K) \, v^2 \, dv \, d\Omega = n_T \, p(K) \, v^2 \, dv \sin\theta \, d\theta \, d\phi
-    \]
-    
-    \item Integrando sulle variabili angolari (da cui la probabilità non dipende data l'isotropia), otteniamo il fattore $4\pi$:
-    \[
-        dn(v) \propto 4 \pi n_T p(K) v^2 dv 
-    \]
-
-    \begin{nota}
-        \textbf{Approfondimento geometrico sugli urti.}\\
-        Vogliamo ricavare quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v}+d\vec{v}$. Passando alle coordinate sferiche ($r, \theta, \psi$), l'area infinitesima identificata è:
-        \[
-        dA = (r d\theta)(r \sin\theta d\psi)
-        \]
-        Da cui l'angolo solido risulta:
-        \[
-        d\omega = \frac{dA}{r^2} = \sin\theta \, d\theta \, d\psi
-        \]
-        Il numero di particelle aventi velocità compresa tra $\vec{v}$ e $\vec{v}+d\vec{v}$ sarà proporzionale a $dn(v)\frac{d\omega}{4\pi}$. Essendo $4\pi$ l'angolo solido massimo dell'intera sfera, tale espressione conferma l'assenza di una direzione preferenziale.
-        
-        Per valutare la probabilità di urto contro un'area $A$, dobbiamo limitarci al volume di un cilindro di lunghezza $v d\tau$ (con $\tau$ sufficientemente piccolo da evitare urti secondari). Tale volume è $dV = v d\tau \cos\theta \, dA$. Il numero di molecole che urteranno l'area $dA$ sarà quindi $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
-    \end{nota}
-
-    \item Di conseguenza, la probabilità che l'urto accada è il prodotto delle singole probabilità: 
-    \[P=C \cdot p(K_1)p(K_2)\] 
-    ovvero è proporzionale alla probabilità di avere due particelle con energia cinetica $K_1$ e $K_2$ prima dell'urto. Dopo l'urto le energie saranno $K'_1$ e $K'_2$, e la probabilità sarà proporzionale a $C \cdot p(K'_1)p(K'_2)$.
-    
-    \item Poiché il gas si trova in equilibrio termodinamico, le probabilità prima e dopo l'urto devono equivalersi e l'energia cinetica totale deve conservarsi ($K_1 + K_2 = K'_1 + K'_2$). Segue che:
-    \[
-        p(K_1)p(K_2) = p(K'_1)p(K'_2) = p(K_1+x)p(K_2-x)
-    \]
-    dove $x$ rappresenta il trasferimento netto di energia durante la collisione.
-    
-    \item La forma funzionale che soddisfa questa proprietà è necessariamente un'esponenziale decrescente:
-    \[
-        p(K) = A e^{-\beta \frac{mv^2}{2}}
-    \]
-    dove $\beta > 0$ è una costante necessaria per rendere l'esponente adimensionale. Di conseguenza:
-    \[ 
-        dn(v) \propto 4 \pi n_T A e^{-\beta \frac{mv^2}{2}} v^2 dv
-    \] 
-
-    \begin{nota}
-        \textbf{Determinazione delle costanti $A$ e $\beta$.}\\
-        Per ricavare la costante $A$, integriamo su tutte le velocità possibili (da $0$ a $\infty$) imponendo la normalizzazione. Il risultato per $A$ è:
-        \[
-            A = \left( \frac{\frac{1}{2}m\beta}{\pi}\right)^\frac{1}{2}
-        \]
-        Per determinare $\beta$, calcoliamo esplicitamente la velocità quadratica media della distribuzione:
-        \begin{equation*}
-            \langle v^2 \rangle = \frac{1}{N} \int_0^\infty v^2 \, dn(v) = 4\pi A^3 \int_0^\infty v^4 \exp \left[ -\beta \left( \frac{1}{2} mv^2 \right) \right] dv
-        \end{equation*}
-        Risolvendo l'integrale notevole, si trova che $\langle v^2 \rangle = \frac{3}{m\beta}$.
-        D'altra parte, per il Teorema di Equipartizione dell'Energia, sapendo che il gas possiede 3 gradi di libertà traslazionali, l'energia cinetica media è:
-        \[
-            \frac{1}{2} m \langle v^2 \rangle = \frac{3}{2} k T \quad \implies \quad \frac{1}{2} m \left(\frac{3}{m\beta}\right) = \frac{3}{2} k T
-        \]
-        Confrontando i termini, si identifica immediatamente il significato fisico di $\beta$:
-        \[
-            \beta = \frac{1}{k T}
-        \]
-    \end{nota} 
-    
-    \item Imponendo infine le condizioni di contorno per normalizzare in densità ($\int_{V} dn_v = n_T$) e in energia ($\int_{V}K dn_v=\frac{3}{2}n_T k T$), la distribuzione completa di Maxwell-Boltzmann diviene:
-    \[
-        p(v) \, dv = 4\pi \left( \frac{m}{2\pi k T} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right] dv
-    \]
-    
-    \item Annullando la derivata prima della distribuzione per trovarne il massimo, si ricava la \textbf{velocità più probabile} $v_M$:
-    \[
-        v_M = \sqrt{\frac{2kT}{m}} \quad \implies \quad kT = \frac{1}{2}m v_M^2
-    \]
-    
-    \item Integrando la distribuzione di probabilità si ricava la \textbf{velocità media} (in modulo) delle molecole:
-    \[
-        \mu_v = \mathbb{E}[v] = \frac{4}{\sqrt{\pi}} \frac{1}{v_M^3} \int_0^\infty v^3 \exp\left[-\frac{v^2}{v_M^2}\right] dv = \frac{2}{\sqrt{\pi}} v_M = \sqrt{\frac{8kT}{\pi m}}
-    \]
-    La velocità quadratica media (Root Mean Square - RMS) invece è:
-    \[
-        v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\int_0^\infty v^2 p(v) \, dv} = \sqrt{\frac{3kT}{m}}
-    \]
-\end{itemize}
-
-\vspace{1em}
-Riassumendo, la formula finale può essere concettualmente spacchettata nei suoi 3 fattori fisici principali:
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{ccc}
-        \toprule
-        Costante di Normalizzazione & Probabilità (Fattore di Boltzmann) & Spazio delle Fasi \\
-        \midrule
-        $p(v) dv = \displaystyle \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\}$ & $\displaystyle \cdot \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\}$ & $\displaystyle \cdot \left\{ v^2 dv \right\}$ \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-Questa scomposizione garantisce che:
-\begin{itemize}
-    \item \textbf{La costante di normalizzazione} assicura che l'integrale della probabilità $p(v)$ esteso a tutte le velocità possibili sia pari all'unità.
-    \item \textbf{La statistica di Boltzmann} (il termine esponenziale) tiene conto della probabilità di occupazione termodinamica di uno stato avente una data energia cinetica in funzione della temperatura assoluta $T$ del sistema.
-    \item \textbf{Lo spazio delle fasi} (il fattore $v^2 dv$) descrive la molteplicità del livello energetico, ovvero il numero di "modi" o stati microscopici con cui è possibile ottenere la stessa energia macroscopica. Nel nostro sistema isotropo in 3D, questo corrisponde al volume geometrico di un guscio sferico di raggio $v$ e spessore $dv$ all'interno dello spazio delle velocità. Tutti i punti di questo guscio possiedono esattamente la medesima energia $K = \frac{1}{2}mv^2$.
-\end{itemize}
-
-\section*{Esercitazione 5}
+\subsection*{Esercitazione 5}
 L'esercitazione pratica si compone di diverse parti applicative.
 
-\subsection*{Parte 1: Distribuzioni di Erlang e Poisson}
+\subsubsection*{Parte 1: Distribuzioni di Erlang e Poisson}
 Utilizziamo i dati dell'esercitazione precedente:
 \begin{enumerate}
     \item \textbf{Erlang ($k=2$):} Sommiamo i tempi tra eventi consecutivi a coppie (tempo tra evento $i$ ed $i+2$) e costruiamo un istogramma. Aggiungiamo gli errori ($\sqrt{m_i}$) e facciamo il fit con la distribuzione di Erlang per ricavare la stima di $\tau$.
@@ -5482,7 +5372,7 @@ Utilizziamo i dati dell'esercitazione precedente:
     \item \textbf{Poisson:} Contiamo il numero di eventi in prefissati intervalli $\Delta t$ (consigliato $\Delta t = 30$ s). Si tracci l'istogramma dei conteggi e si sovrapponga la distribuzione di Poisson teorica (per sovrapporla correttamente ai dati occorre utilizzare come parametro $\mu = \lambda \Delta t$).
 \end{enumerate}
 
-\subsection*{Parte 2: Decadimento Radioattivo e Fit Lineare}
+\subsubsection*{Parte 2: Decadimento Radioattivo e Fit Lineare}
 Vogliamo eseguire un fit pesato con i conteggi di un contatore Geiger. Se $\lambda$ è la probabilità di decadimento per unità di tempo, e $N(t)$ è il numero di nuclei non decaduti, la variazione di $N$ nel tempo $dt$ è:
 \begin{equation}
     dN = -\lambda N(t) dt \implies \frac{dN}{N} = -\lambda dt
@@ -5517,7 +5407,7 @@ Faremo un fit lineare pesato utilizzando pesi $w_i = 1/\sigma_{y_i}^2 = m_i$.
 \end{nota}
 
 
-\section*{Codice Python: Generazione Distribuzioni $\chi^2$}
+\subsection*{Codice Python: Generazione Distribuzioni $\chi^2$}
 
 Di seguito il codice Python utilizzato per esplorare la forma analitica della distribuzione del $\chi^2$, i suoi limiti per grandi gradi di libertà ($\nu \geq 30$) e la linearizzazione per $\nu$ piccolo tramite la variabile ausiliaria $\sqrt{2\chi^2}$.
 
@@ -5636,10 +5526,10 @@ plt.show()
 
 
 
-\lezione{Fit non lineari e Test di Ipotesi}{04/05/2026}
+\lezione{Fit non lineari}{04/05/2026}
 
 \subsection{Fit non lineare}
-\subsubsection{Metodo di Gauss-Newton}
+\subsubsection*{Metodo di Gauss-Newton}
 Il metodo di Gauss-Newton è utilizzato per risolvere problemi di minimizzazione del $\chi^2$ quando la funzione di fit $f(x, \theta)$ non è lineare rispetto ai parametri $\theta$. 
 Consideriamo un set di misurazioni fisiche date da variabili nella forma $(x_i, y_i)$, tali per cui vale la relazione teorica $y_i = f(x_i, \theta)$. Si procede definendo l'$i$-esimo residuo come:
 \begin{equation}
@@ -5678,7 +5568,7 @@ Risolvendo rispetto a $\Delta\theta$ otteniamo l'aggiornamento per il parametro:
 Trovato $\Delta\theta$, si calcola il nuovo valore $\theta^{(1)} = \theta^{(0)} + \Delta\theta$ e si reitera tutto il procedimento, calcolando un nuovo $\Delta\theta$ e continuando finché l'incremento diventa trascurabile ($\Delta\theta \simeq 0$) e il $\chi^2$ si stabilizza ($S^{(k+1)} \simeq S^{(k)}$). Da notare che per la convergenza è \textbf{fondamentale partire da valori ragionevoli} per il guess iniziale $\theta^{(0)}$.
 
 
-\subsection{Fit con errore su x}
+\subsection*{Fit con errore su x}
 Nel caso in cui il fit sia complicato dal fatto che non si possono ignorare gli errori sulle $x$ (perché, ad esempio, le incertezze su $x$ e $y$ sono simili, o la funzione non è facilmente invertibile per scambiare semplicemente i ruoli di $x$ e $y$), esistono metodi per continuare a utilizzare la minimizzazione del $\chi^2$. Vedremo in particolare due approcci:
 \begin{itemize}
     \item \textbf{Effective Variance} (Varianza Efficace)
@@ -5819,7 +5709,7 @@ Per quantificare matematicamente questi errori si utilizzano la \textbf{Signific
 \subsubsection*{Statistica di test}
 Operativamente il test di ipotesi prevede la definizione di una variabile $t$, chiamata \textit{statistica di test}, costruita a partire dai dati campionari. Fissati i dati, $t$ è un numero; ma in generale, essendo costruita su campioni aleatori, $t$ è una variabile aleatoria. Assumendo come vera $H_0$, $t$ seguirà una distribuzione di probabilità nota $P_0(t)$.
 
-\subsection{Significatività del test ($\alpha$) e Valore Critico}
+\subsection*{Significatività del test ($\alpha$) e Valore Critico}
 Fissato il livello di significatività del test $\alpha$, si determina una \textbf{soglia critica} $t_s$. Se il nostro valore misurato $t$ è maggiore di $t_s$, \textbf{rigettiamo} $H_0$ in quanto troppo incompatibile con la distribuzione attesa. La regione $t > t_s$ prende il nome di \textit{regione critica}.
 
 L'integrale della $P_0(t)$ nella regione critica fornisce proprio $\alpha$, ovvero la probabilità di commettere un Errore di Tipo I:
@@ -5929,7 +5819,7 @@ p\text{-value} = \int_{t_m}^{\infty} P_0(t) \, \mathrm{d}t
 \end{tikzpicture}
 \end{center}
 
-\subsection{Potenza del test ($1-\beta$)}
+\subsection*{Potenza del test ($1-\beta$)}
 Per valutare l'Errore di Tipo II, assumiamo sia vera l'ipotesi alternativa $H_1$ con distribuzione $P_1(t)$. La probabilità $\beta$ di accettare erroneamente $H_0$ è data integrando $P_1$ nella regione di accettazione di $H_0$:
 \begin{equation}
     \beta = \int_{-\infty}^{t_s} P_1(t) \, \mathrm{d}t
@@ -5991,7 +5881,7 @@ Il livello di significatività totale per il test bilaterale diventerebbe:
 \end{quote}
 \end{example}
 
-\section{Test del $\chi^2$}
+\subsection{Test del $\chi^2$}
 Il test del $\chi^2$ fa parte della categoria di test d'ipotesi in cui abbiamo effettuato un fit dei dati con una certa funzione $f(x, \theta)$ e ci chiediamo se l'ipotesi base (cioè che la funzione $f$ descriva adeguatamente i dati) sia corretta. 
 
 Sappiamo che il parametro $\theta$ si ricava minimizzando:
@@ -6015,7 +5905,7 @@ Dunque, la significatività del test del $\chi^2$ è data da:
 e rappresenta \textit{la probabilità che una funzione f che descriva bene i dati produca un $\chi^2$ maggiore di quello osservato}. Questo fa capire perchè spesso 
 la significatività è riportata come un risultato, e non scelta a priori. 
 
-\subsection{Test del $\chi^2$ di Pearson (Dati Binned)}
+\subsection*{Test del $\chi^2$ di Pearson (Dati Binned)}
 Il test può essere effettuato anche sugli istogrammi. In questo caso prende il nome di \textbf{Test del $\chi^2$ di Pearson}:
 \begin{equation}
     \chi^2 = \sum_{j=1}^m \frac{[n_j - \nu_j(\theta)]^2}{\nu_j(\theta)}
@@ -6445,6 +6335,177 @@ plt.show()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{bressan}{Distribuzione di Maxwell-Boltzmann}
+Consideriamo un gas perfetto con peso molare $M = N_A m$ in equilibrio termodinamico a temperatura $T$. La costante universale dei gas è $R = N_A k \approx 8.31 \, \text{J} \, \text{K}^{-1} \text{mol}^{-1}$.
+
+La velocità quadratica media delle molecole del gas è strettamente legata alla temperatura:
+\begin{equation}
+    v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\frac{3RT}{M}}
+\end{equation}
+Tuttavia, all'interno del gas le singole molecole possiedono velocità che si discostano da questo valore medio. Nel 1859, Maxwell derivò analiticamente la distribuzione di probabilità delle velocità $f(v)$:
+\begin{equation}
+    f(v) = 4\pi \left( \frac{M}{2\pi RT} \right)^{3/2} v^2 \exp \left[ -\frac{Mv^2}{2RT} \right] = 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right]
+\end{equation}
+Fisicamente, all'aumentare della temperatura, il picco della distribuzione (la velocità più probabile) si allarga e si sposta verso valori più elevati. Tutte le curve sono ovviamente normalizzate in modo che l'integrale della probabilità totale sia 1.
+
+La deduzione di Maxwell si sviluppa attraverso un ragionamento molto elegante:
+\begin{itemize}
+    \item Definiamo innanzitutto alcune densità fisiche:
+    \begin{align*}
+        \rho(\vec{r}) &= \frac{dm}{dV} \quad \text{densità del gas}, \\[6pt]
+        \eta(\vec{r}) &= \frac{\rho(\vec{r})}{m} \quad \text{densità numerica di particelle}, \\[6pt]
+        dn &= \eta(\vec{r}) \, dV \quad \text{numero di particelle nel volume } dV.
+    \end{align*}
+    
+    \item In analogia allo spazio tridimensionale geometrico, introduciamo una densità di particelle nello \textit{spazio delle velocità}: 
+    \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
+    
+    \item Definiamo la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: 
+    \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T} \]
+    
+    \item Se assumiamo che la distribuzione della velocità del gas sia \textbf{isotropa}, la funzione di distribuzione dipenderà unicamente dal modulo della velocità e non dal suo verso.
+    
+    \item Il numero di particelle $dn$ comprese nell'elemento infinitesimo $d\vec{v} = d^3v$ dello spazio delle velocità vale:
+    \[
+        dn(v) = n_T \, p(K) \, dv_x \, dv_y \, dv_z
+    \]
+    che, passando in coordinate polari sferiche per le velocità, si scrive come:
+    \[
+        dn(v) = n_T \, p(K) \, v^2 \, dv \, d\Omega = n_T \, p(K) \, v^2 \, dv \sin\theta \, d\theta \, d\phi
+    \]
+    
+    \item Integrando sulle variabili angolari (da cui la probabilità non dipende data l'isotropia), otteniamo il fattore $4\pi$:
+    \[
+        dn(v) \propto 4 \pi n_T p(K) v^2 dv 
+    \]
+
+    \begin{nota}
+        \textbf{Approfondimento geometrico sugli urti.}\\
+        Vogliamo ricavare quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v}+d\vec{v}$. Passando alle coordinate sferiche ($r, \theta, \psi$), l'area infinitesima identificata è:
+        \[
+        dA = (r d\theta)(r \sin\theta d\psi)
+        \]
+        Da cui l'angolo solido risulta:
+        \[
+        d\omega = \frac{dA}{r^2} = \sin\theta \, d\theta \, d\psi
+        \]
+        Il numero di particelle aventi velocità compresa tra $\vec{v}$ e $\vec{v}+d\vec{v}$ sarà proporzionale a $dn(v)\frac{d\omega}{4\pi}$. Essendo $4\pi$ l'angolo solido massimo dell'intera sfera, tale espressione conferma l'assenza di una direzione preferenziale.
+        
+        Per valutare la probabilità di urto contro un'area $A$, dobbiamo limitarci al volume di un cilindro di lunghezza $v d\tau$ (con $\tau$ sufficientemente piccolo da evitare urti secondari). Tale volume è $dV = v d\tau \cos\theta \, dA$. Il numero di molecole che urteranno l'area $dA$ sarà quindi $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
+    \end{nota}
+
+    \item Di conseguenza, la probabilità che l'urto accada è il prodotto delle singole probabilità: 
+    \[P=C \cdot p(K_1)p(K_2)\] 
+    ovvero è proporzionale alla probabilità di avere due particelle con energia cinetica $K_1$ e $K_2$ prima dell'urto. Dopo l'urto le energie saranno $K'_1$ e $K'_2$, e la probabilità sarà proporzionale a $C \cdot p(K'_1)p(K'_2)$.
+    
+    \item Poiché il gas si trova in equilibrio termodinamico, le probabilità prima e dopo l'urto devono equivalersi e l'energia cinetica totale deve conservarsi ($K_1 + K_2 = K'_1 + K'_2$). Segue che:
+    \[
+        p(K_1)p(K_2) = p(K'_1)p(K'_2) = p(K_1+x)p(K_2-x)
+    \]
+    dove $x$ rappresenta il trasferimento netto di energia durante la collisione.
+    
+    \item La forma funzionale che soddisfa questa proprietà è necessariamente un'esponenziale decrescente:
+    \[
+        p(K) = A e^{-\beta \frac{mv^2}{2}}
+    \]
+    dove $\beta > 0$ è una costante necessaria per rendere l'esponente adimensionale. Di conseguenza:
+    \[ 
+        dn(v) \propto 4 \pi n_T A e^{-\beta \frac{mv^2}{2}} v^2 dv
+    \] 
+
+    \begin{nota}
+        \textbf{Determinazione delle costanti $A$ e $\beta$.}\\
+        Per ricavare la costante $A$, integriamo su tutte le velocità possibili (da $0$ a $\infty$) imponendo la normalizzazione. Il risultato per $A$ è:
+        \[
+            A = \left( \frac{\frac{1}{2}m\beta}{\pi}\right)^\frac{1}{2}
+        \]
+        Per determinare $\beta$, calcoliamo esplicitamente la velocità quadratica media della distribuzione:
+        \begin{equation*}
+            \langle v^2 \rangle = \frac{1}{N} \int_0^\infty v^2 \, dn(v) = 4\pi A^3 \int_0^\infty v^4 \exp \left[ -\beta \left( \frac{1}{2} mv^2 \right) \right] dv
+        \end{equation*}
+        Risolvendo l'integrale notevole, si trova che $\langle v^2 \rangle = \frac{3}{m\beta}$.
+        D'altra parte, per il Teorema di Equipartizione dell'Energia, sapendo che il gas possiede 3 gradi di libertà traslazionali, l'energia cinetica media è:
+        \[
+            \frac{1}{2} m \langle v^2 \rangle = \frac{3}{2} k T \quad \implies \quad \frac{1}{2} m \left(\frac{3}{m\beta}\right) = \frac{3}{2} k T
+        \]
+        Confrontando i termini, si identifica immediatamente il significato fisico di $\beta$:
+        \[
+            \beta = \frac{1}{k T}
+        \]
+    \end{nota} 
+    
+    \item Imponendo infine le condizioni di contorno per normalizzare in densità ($\int_{V} dn_v = n_T$) e in energia ($\int_{V}K dn_v=\frac{3}{2}n_T k T$), la distribuzione completa di Maxwell-Boltzmann diviene:
+    \[
+        p(v) \, dv = 4\pi \left( \frac{m}{2\pi k T} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right] dv
+    \]
+    
+    \item Annullando la derivata prima della distribuzione per trovarne il massimo, si ricava la \textbf{velocità più probabile} $v_M$:
+    \[
+        v_M = \sqrt{\frac{2kT}{m}} \quad \implies \quad kT = \frac{1}{2}m v_M^2
+    \]
+    
+    \item Integrando la distribuzione di probabilità si ricava la \textbf{velocità media} (in modulo) delle molecole:
+    \[
+        \mu_v = \mathbb{E}[v] = \frac{4}{\sqrt{\pi}} \frac{1}{v_M^3} \int_0^\infty v^3 \exp\left[-\frac{v^2}{v_M^2}\right] dv = \frac{2}{\sqrt{\pi}} v_M = \sqrt{\frac{8kT}{\pi m}}
+    \]
+    La velocità quadratica media (Root Mean Square - RMS) invece è:
+    \[
+        v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\int_0^\infty v^2 p(v) \, dv} = \sqrt{\frac{3kT}{m}}
+    \]
+\end{itemize}
+
+\vspace{1em}
+Riassumendo, la formula finale può essere concettualmente spacchettata nei suoi 3 fattori fisici principali:
+
+\begin{center}
+    \centering
+    \begin{tabular}{ccc}
+        \toprule
+        Costante di Normalizzazione & Probabilità (Fattore di Boltzmann) & Spazio delle Fasi \\
+        \midrule
+        $p(v) dv = \displaystyle \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\}$ & $\displaystyle \cdot \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\}$ & $\displaystyle \cdot \left\{ v^2 dv \right\}$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+Questa scomposizione garantisce che:
+\begin{itemize}
+    \item \textbf{La costante di normalizzazione} assicura che l'integrale della probabilità $p(v)$ esteso a tutte le velocità possibili sia pari all'unità.
+    \item \textbf{La statistica di Boltzmann} (il termine esponenziale) tiene conto della probabilità di occupazione termodinamica di uno stato avente una data energia cinetica in funzione della temperatura assoluta $T$ del sistema.
+    \item \textbf{Lo spazio delle fasi} (il fattore $v^2 dv$) descrive la molteplicità del livello energetico, ovvero il numero di "modi" o stati microscopici con cui è possibile ottenere la stessa energia macroscopica. Nel nostro sistema isotropo in 3D, questo corrisponde al volume geometrico di un guscio sferico di raggio $v$ e spessore $dv$ all'interno dello spazio delle velocità. Tutti i punti di questo guscio possiedono esattamente la medesima energia $K = \frac{1}{2}mv^2$.
+\end{itemize}
+\end{bressan}
 
 
 

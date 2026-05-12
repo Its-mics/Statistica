@@ -233,7 +233,7 @@
 
 \begin{center}
 \section*{Premessa}
-saranno presenti delle sezioni "ripasso di Bressan" (non numerate) che riguarderanno il programma dell'anno scorso, mentre le altre sezioni (in nero numerate) saranno quelle che riguardano il programma dell'anno attuale.    
+saranno presenti delle sezioni "ripasso di Bressan" (non numerate) che riguarderanno il programma dell'anno scorso e che verrano presentate prima degli argomenti che riguardano l'anno attuale (in sezioni nere numerate) saranno quelle .    
 \end{center}
 
 
@@ -481,7 +481,6 @@ Gli errori da associare dipendono dalla situazione pratica:
 \end{center}
 
 
-\subsection{Grandezze Statistiche: Media e Varianza}
 
 
 \ripasso{Valore di Aspettazione}
@@ -513,13 +512,6 @@ E[\mu_x] = \mu_x
 \]
 Esso rappresenta un "indice di posizione" fondamentale all'interno del dominio della variabile.
 
-
-\subsubsection{Media Aritmetica}
-
-Consideriamo il caso ottimistico in cui si riesce a misurare tante volte la stessa grandezza nelle stesse condizioni. In questo caso, se si vuole usare un solo numero per descrivere le misure, il migliore è senz'altro la \textbf{media aritmetica}:
-\begin{equation}
-    \bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i
-\end{equation}
 
 \ripasso{Varianza e Deviazione Standard}
 
@@ -557,6 +549,15 @@ La \textbf{deviazione standard} è definita come $\sigma_x = \sqrt{var(x)}$. Tut
 \]
 
 
+
+\subsection{Grandezze Statistiche: Media e Varianza}
+\subsubsection{Media Aritmetica}
+
+Consideriamo il caso ottimistico in cui si riesce a misurare tante volte la stessa grandezza nelle stesse condizioni. In questo caso, se si vuole usare un solo numero per descrivere le misure, il migliore è senz'altro la \textbf{media aritmetica}:
+\begin{equation}
+    \bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i
+\end{equation}
+
 \subsubsection{Deviazione Standard e correzione di Bessel}
 La varianza ha però la scomodità di avere un'unità di misura al quadrato rispetto a $x$. Si preferisce quindi la \textbf{deviazione standard}:
 \[ \sigma_N = \sqrt{\text{Var}(x)} \]
@@ -568,7 +569,6 @@ La formula sopra è corretta se le misure rappresentano tutta la popolazione. Ne
 \end{equation}
 \end{osservazione}
 Questa correzione diventa trascurabile per $N$ grande, ma è fondamentale per piccoli set di dati.
-
 
 \subsubsection*{Esempio (Python)}
 Di seguito mostriamo come calcolare media e deviazione standard (con e senza correzione) simulando delle misure gaussiane, simuliamo $N=100$ misure con due strumenti diversi ($\sigma_1=1$ e $\sigma_2=0.2$).
@@ -609,26 +609,6 @@ plt.show()
     \caption{Istogramma comparativo delle due serie di misure simulate.}
 \end{figure}
 
-\subsection{Errore di sensibilità e Propagazione}
-\subsubsection{Propagazione degli Errori}
-Data una funzione $f(x,y)$ di variabili casuali indipendenti, la varianza si propaga come:
-\begin{equation}
-    \sigma_f^2 = \left( \frac{\partial f}{\partial x} \right)^2 \sigma_x^2 + \left( \frac{\partial f}{\partial y} \right)^2 \sigma_y^2
-\end{equation}
-
-\begin{example}
-\textbf{Esempio numerico:} Calcolo dello spazio percorso in un moto uniformemente accelerato \\
-Dati: $v = 200 \pm 10 \, m/s$, \quad $a = 12 \pm 2 \, m/s^2$, \quad $t = 6 \, s$ (errore trascurabile).
-\[ s =  vt + \frac{1}{2}at^2 = (200 \cdot 6) + \frac{1}{2} \cdot 12 \cdot 6^2 = 1200 + 216 = 1416 \, m \]
-
-Errore associato $\sigma_s$:
-\[ \sigma_s^2 = \left( \frac{\partial s}{\partial v} \right)^2 \sigma_v^2 + \left( \frac{\partial s}{\partial a} \right)^2 \sigma_a^2 = (t)^2 \sigma_v^2 + \left(\frac{1}{2}t^2\right)^2 \sigma_a^2 \]
-\[ \sigma_s = \sqrt{ 6^2 \cdot 10^2 + (18)^2 \cdot 2^2 } = \sqrt{3600 + 1296} = \sqrt{4896} \approx 70 \, m \]
-Risultato: $s = 1416 \pm 70 \, m$.
-
-\end{example}
-
-
 \ripasso{Errore di sensibilità e distribuzione uniforme}
 
 Si definisce l'errore di sensibilità come la semiampiezza dell'intervallo di risoluzione: $\displaystyle \Delta x = \frac{X_{\max} - X_{\min}}{N}$. Il risultato della misura sarà espresso come $x \pm \Delta x$.
@@ -659,6 +639,29 @@ Imponendo la condizione di normalizzazione ($\int P(x)dx = 1$), si ricavano i pa
     $\displaystyle \sigma = \sqrt{\int_{-\Delta}^{+\Delta} (x - 0)^2 \frac{1}{2 \Delta } dx} = \sqrt{\frac{\Delta^2}{3}} = \frac{\Delta}{\sqrt{3}}$.
 \end{itemize}
 
+
+\subsection{Errore di sensibilità e Propagazione}
+\subsubsection{Propagazione degli Errori}
+Data una funzione $f(x,y)$ di variabili casuali indipendenti, la varianza si propaga come:
+\begin{equation}
+    \sigma_f^2 = \left( \frac{\partial f}{\partial x} \right)^2 \sigma_x^2 + \left( \frac{\partial f}{\partial y} \right)^2 \sigma_y^2
+\end{equation}
+
+\begin{example}
+\textbf{Esempio numerico:} Calcolo dello spazio percorso in un moto uniformemente accelerato \\
+Dati: $v = 200 \pm 10 \, m/s$, \quad $a = 12 \pm 2 \, m/s^2$, \quad $t = 6 \, s$ (errore trascurabile).
+\[ s =  vt + \frac{1}{2}at^2 = (200 \cdot 6) + \frac{1}{2} \cdot 12 \cdot 6^2 = 1200 + 216 = 1416 \, m \]
+
+Errore associato $\sigma_s$:
+\[ \sigma_s^2 = \left( \frac{\partial s}{\partial v} \right)^2 \sigma_v^2 + \left( \frac{\partial s}{\partial a} \right)^2 \sigma_a^2 = (t)^2 \sigma_v^2 + \left(\frac{1}{2}t^2\right)^2 \sigma_a^2 \]
+\[ \sigma_s = \sqrt{ 6^2 \cdot 10^2 + (18)^2 \cdot 2^2 } = \sqrt{3600 + 1296} = \sqrt{4896} \approx 70 \, m \]
+Risultato: $s = 1416 \pm 70 \, m$.
+
+\end{example}
+
+
+
+
 \subsubsection{Errore di Sensibilità}
 Quando non è possibile ripetere molte volte la misura, associamo alle misure l'errore dovuto alla sensibilità dello strumento. Questo errore si ottiene leggendo il minimo scarto della variabile consentito dallo strumento (risoluzione):
 \[ \Delta x = \frac{x_{max} - x_{min}}{2} \]
@@ -678,23 +681,6 @@ Quindi, se si vuole convertire un errore massimo $\Delta$ in una deviazione stan
 \begin{equation}
     \sigma = \frac{\Delta}{\sqrt{3}}
 \end{equation}
-
-\section{Metodo dei Minimi Quadrati}
-\subsection{Il Principio}
-
-L'obiettivo è dedurre informazioni fisiche dai dati (fit). Partiamo dalle ipotesi:
-\begin{enumerate}
-    \item Ho effettuato misure $(x_i, y_i)$ dove l'errore su $x$ è trascurabile.
-    \item Per ogni $x$ fisso, ho misurato $y$ con incertezza $\sigma_i$.
-    \item Esiste una legge $y = f(x; p)$ (dove $p$ sono i parametri).
-\end{enumerate}
-
-Il metodo consiste nel minimizzare la somma degli scarti quadratici pesati, detta \textbf{Chi Quadro} $\chi^2$:
-\begin{equation}
-    \chi^2 = \sum_{i=1}^{N} \left[ \frac{y_i - f(x_i; p)}{\sigma_i} \right]^2
-\end{equation}
-
-Minimizzare significa porre le derivate rispetto ai parametri uguali a zero: $\frac{\partial \chi^2}{\partial p} = 0$.
 
 \ripasso{Metodo dei Minimi Quadrati}
 
@@ -721,56 +707,22 @@ Se il modello è una costante $y = \lambda$ (cioè cerchiamo il miglior valore u
     \[ \hat{\lambda} = \frac{\sum_{i=1}^n \frac{y_i}{\sigma_i^2}}{\sum_{j=1}^{n}\frac{1}{\sigma_j^2}} \]
 \end{itemize}
 
-\subsection{Fit Lineare ($y = mx + q$)}
-Nel caso di funzione lineare $f(x) = mx + q$ e $\sigma_i = \sigma$ costanti, risolvendo il sistema delle derivate parziali $\frac{\partial \chi^2}{\partial m} = 0$ e $\frac{\partial \chi^2}{\partial q} = 0$, si ottengono le stime analitiche:
+\section{Metodo dei Minimi Quadrati}
 
-Definiamo le somme:
-\[ S_x = \sum x_i, \quad S_y = \sum y_i, \quad S_{xx} = \sum x_i^2, \quad S_{xy} = \sum x_i y_i \]
-\[ D = N S_{xx} - (S_x)^2 \]
+L'obiettivo è dedurre informazioni fisiche dai dati (fit). Partiamo dalle ipotesi:
+\begin{enumerate}
+    \item Ho effettuato misure $(x_i, y_i)$ dove l'errore su $x$ è trascurabile.
+    \item Per ogni $x$ fisso, ho misurato $y$ con incertezza $\sigma_i$.
+    \item Esiste una legge $y = f(x; p)$ (dove $p$ sono i parametri).
+\end{enumerate}
 
-Le stime dei parametri sono:
+Il metodo consiste nel minimizzare la somma degli scarti quadratici pesati, detta \textbf{Chi Quadro} $\chi^2$:
 \begin{equation}
-    m = \frac{N S_{xy} - S_x S_y}{D}, \qquad q = \frac{S_{xx} S_y - S_x S_{xy}}{D}
+    \chi^2 = \sum_{i=1}^{N} \left[ \frac{y_i - f(x_i; p)}{\sigma_i} \right]^2
 \end{equation}
 
-E gli errori associati (tramite propagazione):
-\begin{equation}
-    \sigma_m = \sqrt{\frac{N \sigma^2}{D}}, \qquad \sigma_q = \sqrt{\frac{\sigma^2 S_{xx}}{D}}
-\end{equation}
+Minimizzare significa porre le derivate rispetto ai parametri uguali a zero: $\frac{\partial \chi^2}{\partial p} = 0$.
 
-\subsubsection*{Esempio (Fit Lineare)}
-\begin{lstlisting}[caption={Fit Lineare dei Minimi Quadrati}]
-# Dati simulati: Moto uniforme s = v*t + s0
-t = np.array([0, 1, 2, 3, 4, 5])       # Tempo [s]
-s = np.array([2, 17, 27, 37, 47, 63])  # Spazio [mm]
-sigma_s = 2                            # Incertezza [mm]
-N = len(t)
-
-# Calcolo Somme
-Sx = np.sum(t); Sy = np.sum(s)
-Sxx = np.sum(t**2); Sxy = np.sum(t * s)
-
-# Calcolo Parametri
-D = N * Sxx - Sx**2
-m = (N * Sxy - Sx * Sy) / D
-q = (Sxx * Sy - Sx * Sxy) / D
-
-print(f"Velocita' (m): {m:.2f} mm/s")
-print(f"Posizione init (q): {q:.2f} mm")
-
-# Plot
-plt.errorbar(t, s, yerr=sigma_s, fmt='o', label='Dati')
-plt.plot(t, m*t + q, label='Fit Lineare')
-plt.xlabel('Tempo [s]'); plt.ylabel('Spazio [mm]')
-plt.legend(); plt.show()
-\end{lstlisting}
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Immagini/Fit Lineare.png}
-    \caption{Fit Lineare}
-\end{figure}
 
 \ripasso{Fit di una retta (Regressione Lineare)}
 
@@ -824,6 +776,78 @@ Le varianze dei parametri, ottenute tramite la propagazione degli errori, sono:
 Il valore minimo del $\chi^2$ può essere utilizzato per il \textit{test delle ipotesi} (goodness of fit), per verificare se i dati sono compatibili con l'ipotesi lineare.
 
 
+\subsection{Fit Lineare ($y = mx + q$)}
+Nel caso di funzione lineare $f(x) = mx + q$ e $\sigma_i = \sigma$ costanti, risolvendo il sistema delle derivate parziali $\frac{\partial \chi^2}{\partial m} = 0$ e $\frac{\partial \chi^2}{\partial q} = 0$, si ottengono le stime analitiche:
+
+Definiamo le somme:
+\[ S_x = \sum x_i, \quad S_y = \sum y_i, \quad S_{xx} = \sum x_i^2, \quad S_{xy} = \sum x_i y_i \]
+\[ D = N S_{xx} - (S_x)^2 \]
+
+Le stime dei parametri sono:
+\begin{equation}
+    m = \frac{N S_{xy} - S_x S_y}{D}, \qquad q = \frac{S_{xx} S_y - S_x S_{xy}}{D}
+\end{equation}
+
+E gli errori associati (tramite propagazione):
+\begin{equation}
+    \sigma_m = \sqrt{\frac{N \sigma^2}{D}}, \qquad \sigma_q = \sqrt{\frac{\sigma^2 S_{xx}}{D}}
+\end{equation}
+
+\subsubsection*{Esempio (Fit Lineare)}
+\begin{lstlisting}[caption={Fit Lineare dei Minimi Quadrati}]
+# Dati simulati: Moto uniforme s = v*t + s0
+t = np.array([0, 1, 2, 3, 4, 5])       # Tempo [s]
+s = np.array([2, 17, 27, 37, 47, 63])  # Spazio [mm]
+sigma_s = 2                            # Incertezza [mm]
+N = len(t)
+
+# Calcolo Somme
+Sx = np.sum(t); Sy = np.sum(s)
+Sxx = np.sum(t**2); Sxy = np.sum(t * s)
+
+# Calcolo Parametri
+D = N * Sxx - Sx**2
+m = (N * Sxy - Sx * Sy) / D
+q = (Sxx * Sy - Sx * Sxy) / D
+
+print(f"Velocita' (m): {m:.2f} mm/s")
+print(f"Posizione init (q): {q:.2f} mm")
+
+# Plot
+plt.errorbar(t, s, yerr=sigma_s, fmt='o', label='Dati')
+plt.plot(t, m*t + q, label='Fit Lineare')
+plt.xlabel('Tempo [s]'); plt.ylabel('Spazio [mm]')
+plt.legend(); plt.show()
+\end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Immagini/Fit Lineare.png}
+    \caption{Fit Lineare}
+\end{figure}
+
+\ripasso{Caso non lineare}
+Se la relazione tra le grandezze non è lineare, spesso è possibile "linearizzare" il problema con un cambio di variabile.
+
+\begin{example}
+    Consideriamo la legge del moto: $s = \frac{1}{2} g t^2$. 
+    Supponiamo di voler misurare $g$ trascurando l'incertezza su $s$ e considerando solo l'errore su $t$.
+    Possiamo riscrivere l'equazione come:
+    \[ t = \sqrt{\frac{2}{g}} \sqrt{s} \]
+    Ponendo $y = t$, $x = \sqrt{s}$ e il parametro $m = \sqrt{\frac{2}{g}}$, otteniamo una relazione lineare $y = mx$ (con intercetta nulla).
+    
+    Una volta stimato $m$ e la sua varianza $\sigma_m^2$ con il metodo dei minimi quadrati, ricaviamo $g$ invertendo la relazione: $g = \frac{2}{m^2}$.
+    L'errore su $g$ si ottiene con la propagazione:
+    \[
+    \sigma_g = \left| \frac{\partial g}{\partial m} \right| \sigma_m = \left| -\frac{4}{m^3} \right| \sigma_m
+    \]
+    Questo esempio evidenzia l'importanza della scelta delle variabili dipendenti e indipendenti.
+\end{example}
+
+Nei casi in cui la linearizzazione non è possibile, si ricorre all'espansione di Taylor del modello attorno a valori iniziali dei parametri o a metodi numerici iterativi.
+
+
 \subsection{Caso Non Lineare e Linearizzazione}
 se $f(x; p)$ non è lineare spesso si cerca un'espressione linearizzata cambiando variabili.
 \\
@@ -860,30 +884,103 @@ print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
 
 
 
-\ripasso{Caso non lineare}
-Se la relazione tra le grandezze non è lineare, spesso è possibile "linearizzare" il problema con un cambio di variabile.
-
-\begin{example}
-    Consideriamo la legge del moto: $s = \frac{1}{2} g t^2$. 
-    Supponiamo di voler misurare $g$ trascurando l'incertezza su $s$ e considerando solo l'errore su $t$.
-    Possiamo riscrivere l'equazione come:
-    \[ t = \sqrt{\frac{2}{g}} \sqrt{s} \]
-    Ponendo $y = t$, $x = \sqrt{s}$ e il parametro $m = \sqrt{\frac{2}{g}}$, otteniamo una relazione lineare $y = mx$ (con intercetta nulla).
-    
-    Una volta stimato $m$ e la sua varianza $\sigma_m^2$ con il metodo dei minimi quadrati, ricaviamo $g$ invertendo la relazione: $g = \frac{2}{m^2}$.
-    L'errore su $g$ si ottiene con la propagazione:
-    \[
-    \sigma_g = \left| \frac{\partial g}{\partial m} \right| \sigma_m = \left| -\frac{4}{m^3} \right| \sigma_m
-    \]
-    Questo esempio evidenzia l'importanza della scelta delle variabili dipendenti e indipendenti.
-\end{example}
-
-Nei casi in cui la linearizzazione non è possibile, si ricorre all'espansione di Taylor del modello attorno a valori iniziali dei parametri o a metodi numerici iterativi.
 
 
 
 \lezione{Momenti e Distribuzioni}{23 Febbraio 2026}
 
+\ripasso{Variabili casuali e funzione di ripartizione}
+Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
+dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
+
+Essa può essere discreta (numerabile) oppure continua, se almeno idealmente posso considerare $\Omega$ continuo.
+
+\ripasso{Funzione di ripartizione}
+Data una variabile casuale $X$, la funzione $F$ che fa corrispondere a un valore x la probabilità cumulativa $P(X \geq x)$ viene detta funzione di ripartizione
+
+\[
+F_X:\mathbf{R} \rightarrow [0,1] \; F_X(x)=P(X \leq x)
+\]
+
+La funzione di ripartizione è definita sia per le variabili casuali discrete che per le variabili casuali
+continue.
+
+Proprietà delle funzioni di ripartizioni:
+\begin{enumerate}
+    \item $0 \geq F_X(x) \geq 1$
+    \item nel caso che il dominio sia \textbf{R}, allora $\displaystyle \lim_{x \rightarrow -\infty} F_X(x)=0 \; e \; \lim_{x \rightarrow \infty}F_X(x)=1$
+    \item È una funzione monotona crescente;
+    \item \( P(x_1 < X \leq x_2) = F_X(x_2) - F_X(x_1) \) dunque la funzione di ripartizione consente di stabilire la probabilità che la variabile casuale semplice \( X \) 
+    assuma valori compresi in intervalli di tipo \((x_1, x_2]\) dove \( x_1, x_2 \in \mathbf{R} \), con \( x_1 < x_2 \). A partire da questo posso calcolare anche le altre probabilità, ad esempio:  
+    \[ P(x_1 \leq X < x_2) = F_X(x_2) - F_X(x_1) + P(X = x_1) - P(X = x_2)\]
+ 
+    \item Nel caso di una variabile casuale discreta, la funzione di ripartizione è continua a destra:  
+    \[ \lim_{x \to x_0^+} F_X(x) = F_X(x_0).\]  
+    mentre a sinistra abbiamo una discontinuità di 1° specie (o salto):  
+    \[ \lim_{x \to x_0^-} F_X(x) \neq F_X(x_0)\]  
+    Questo è dovuto al fatto che la probabilità di un evento elementare è diversa da zero, quindi la funzione di ripartizione ha un salto in corrispondenza di ogni valore che può assumere la variabile casuale discreta (pensa lancio dei dati dove cambia la probabilità)
+\end{enumerate}
+
+In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in cui la funzione di probabilità è costante (ex nel caso dei dadi la funz. di ripartizione è a gradini)
+
+\ripasso{Densità di probabiità}
+
+ Data la variabile casuale continua \( X: \Omega \to \mathbf{R} \) che associa valori dallo spazio campionario all'intervallo 
+ \((a, b)\), con \( -\infty \leq a < b \leq +\infty \), la funzione di densità di probabilità (PDF) o funzione di distribuzione di probabilità è 
+ la funzione \( f_X: \mathbf{R} \to \mathbf{R}^+ \) che ad ogni \( x \) associa il limite per \( dx \rightarrow 0\), del rapporto tra la probabilità 
+ che la variabile casuale assuma valori nell'intervallo \((x, x + dx]\) e l'ampiezza \( dx \), ovverosia possiamo supporre la probabiità che un certo 
+ evento cada in un intervallo.
+
+ In simboli:
+ 
+ \[ f_X: \mathbf{R} \to \mathbf{R}^+ : x \mapsto \lim_{dx \to 0} \left[ \frac{P(x < X \leq x + dx)}{dx} \right] = \lim_{dx \to 0} \frac{F_X(x+dx)- F_X(x)}{dx}\]
+
+ Ogni evento deve essere ricondotto all'unione, negazione o intersezione di intervalli del tipo $( -\infty, x] $
+
+ \textbf{Attenzione} a non confondere la funzione di densità con una probabilità.
+ Essa mi determina la densità di probabilità che la variabile casuale sia nell'intervallo $dx$.
+
+ Definimamo la \textbf{Funzione di distribuzione cumulativa}:
+ \[
+ F(x)=\int_{x_{min}}^x f_X(t)dt
+ \]
+
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    
+    % Asse x
+    \draw[->] (-0.5,0) -- (4,0) node[right]{$x$};
+    % Asse y
+    \draw[->] (0,-0.5) -- (0,3) node[above]{$y$};
+    
+    % Etichette
+    \node at (1.5,-0.2) {$a$};
+    \node at (3,-0.2) {$b$};
+    \node at (0.7,2.5) {$y = f_X(x)$};
+    
+    % Curva della PDF
+    \draw[domain=0.5:3.5, smooth, variable=\x, blue] plot ({\x}, {2.5*exp(-0.5*(\x-2)^2)});
+    
+    % Area evidenziata
+    \fill[blue!20] (1.5,0) -- plot[domain=1.5:3, smooth, variable=\x] ({\x}, {2.5*exp(-0.5*(\x-2)^2)}) -- (3,0) -- cycle;
+    
+    % Linee verticali
+    \draw[dashed] (1.5,0) -- (1.5,{2.5*exp(-0.5*(1.5-2)^2)});
+    \draw[dashed] (3,0) -- (3,{2.5*exp(-0.5*(3-2)^2)});
+    
+    % Etichetta probabilità
+    \node at (2.25,0.7) {$P(a \leq X \leq b)=\int_{a}^{b}f_X(x)dx$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Proprietà della funzione densità di probabilità}
+\begin{itemize}
+    \item non può essere mai negativa (altrimenti avremmo una probabiità negativa per qualche $X$)
+    \item condizione di normalizzazione: \[ \int_{- \infty}^{\infty} f(x)=1\]
+    dunque si deve avere che: $\lim_{x \rightarrow \pm \infty} f_X(x)=0$
+    \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
+\end{itemize}
 
 
 \subsection{Momenti della funzione di distribuzione}
@@ -1315,7 +1412,6 @@ print(f"Su 100 esperimenti, ho ottenuto 6 teste {risultato} volte")
 
 
 
-\subsection{Dalla Binomiale alla Poissoniana}
 
 \ripasso{Distribuzione di Poisson}
 La distribuzione di Poisson è un caso limite fondamentale, spesso utilizzato in fisica nucleare, e serve per indicare la probabilità di osservare $k$ eventi in un determinato intervallo di tempo $t$, basandosi su tre ipotesi principali:
@@ -1381,7 +1477,7 @@ E la varianza coincide con la media:
 \]
 Si nota dunque che la distribuzione di Poisson non è altro che il limite per $n \rightarrow \infty$ della distribuzione di Bernoulli (Binomiale).
 
-\subsubsection{Confronto: Poisson vs Binomiale}
+\subsection{Dalla Binomiale alla Poissoniana}
 La distribuzione \textbf{Binomiale} descrive casi in cui un risultato particolare si ottiene in un numero preciso e finito di tentativi ($n$).
 
 La distribuzione di \textbf{Poisson}, invece, si usa per descrivere casi in cui si contano eventi rari in un continuo (tempo o spazio), dove non si ha un'idea precisa del numero di tentativi totali, né ha senso parlare di casi "sfavorevoli" nel senso classico.
@@ -1753,7 +1849,6 @@ Se $P_i$ fosse nota a priori, per un confronto visivo con l'istogramma si potreb
 
 \lezione{La Distribuzione Normale (Gaussiana)}{02 Marzo 2026}
 
-\subsection{Definizione e Proprietà Fondamentali}
 \ripasso{Distribuzione Normale}
 
 Data una variabile casuale $x$, la funzione di densità di probabilità normale è definita come:
@@ -2809,99 +2904,6 @@ Pertanto, la probabilità che $T > t$ coincide con la probabilità di osservare 
     \text{Prob}(T > t) = P(0; \lambda t) = \frac{e^{-\lambda t} (\lambda t)^0}{0!} = e^{-\lambda t}
 \end{equation}
 
-\subsection{Richiami di Variabili casuali e CDF/PDF}
-\ripasso{Variabili casuali e funzione di ripartizione}
-Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
-dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
-
-Essa può essere discreta (numerabile) oppure continua, se almeno idealmente posso considerare $\Omega$ continuo.
-
-\subsubsection{\color{red} Funzione di ripartizione}
-Data una variabile casuale $X$, la funzione $F$ che fa corrispondere a un valore x la probabilità cumulativa $P(X \geq x)$ viene detta funzione di ripartizione
-
-\[
-F_X:\mathbf{R} \rightarrow [0,1] \; F_X(x)=P(X \leq x)
-\]
-
-La funzione di ripartizione è definita sia per le variabili casuali discrete che per le variabili casuali
-continue.
-
-Proprietà delle funzioni di ripartizioni:
-\begin{enumerate}
-    \item $0 \geq F_X(x) \geq 1$
-    \item nel caso che il dominio sia \textbf{R}, allora $\displaystyle \lim_{x \rightarrow -\infty} F_X(x)=0 \; e \; \lim_{x \rightarrow \infty}F_X(x)=1$
-    \item È una funzione monotona crescente;
-    \item \( P(x_1 < X \leq x_2) = F_X(x_2) - F_X(x_1) \) dunque la funzione di ripartizione consente di stabilire la probabilità che la variabile casuale semplice \( X \) 
-    assuma valori compresi in intervalli di tipo \((x_1, x_2]\) dove \( x_1, x_2 \in \mathbf{R} \), con \( x_1 < x_2 \). A partire da questo posso calcolare anche le altre probabilità, ad esempio:  
-    \[ P(x_1 \leq X < x_2) = F_X(x_2) - F_X(x_1) + P(X = x_1) - P(X = x_2)\]
- 
-    \item Nel caso di una variabile casuale discreta, la funzione di ripartizione è continua a destra:  
-    \[ \lim_{x \to x_0^+} F_X(x) = F_X(x_0).\]  
-    mentre a sinistra abbiamo una discontinuità di 1° specie (o salto):  
-    \[ \lim_{x \to x_0^-} F_X(x) \neq F_X(x_0)\]  
-    Questo è dovuto al fatto che la probabilità di un evento elementare è diversa da zero, quindi la funzione di ripartizione ha un salto in corrispondenza di ogni valore che può assumere la variabile casuale discreta (pensa lancio dei dati dove cambia la probabilità)
-\end{enumerate}
-
-In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in cui la funzione di probabilità è costante (ex nel caso dei dadi la funz. di ripartizione è a gradini)
-
-\subsubsection{ \color{red} Densità di probabiità}
-
- Data la variabile casuale continua \( X: \Omega \to \mathbf{R} \) che associa valori dallo spazio campionario all'intervallo 
- \((a, b)\), con \( -\infty \leq a < b \leq +\infty \), la funzione di densità di probabilità (PDF) o funzione di distribuzione di probabilità è 
- la funzione \( f_X: \mathbf{R} \to \mathbf{R}^+ \) che ad ogni \( x \) associa il limite per \( dx \rightarrow 0\), del rapporto tra la probabilità 
- che la variabile casuale assuma valori nell'intervallo \((x, x + dx]\) e l'ampiezza \( dx \), ovverosia possiamo supporre la probabiità che un certo 
- evento cada in un intervallo.
-
- In simboli:
- 
- \[ f_X: \mathbf{R} \to \mathbf{R}^+ : x \mapsto \lim_{dx \to 0} \left[ \frac{P(x < X \leq x + dx)}{dx} \right] = \lim_{dx \to 0} \frac{F_X(x+dx)- F_X(x)}{dx}\]
-
- Ogni evento deve essere ricondotto all'unione, negazione o intersezione di intervalli del tipo $( -\infty, x] $
-
- \textbf{Attenzione} a non confondere la funzione di densità con una probabilità.
- Essa mi determina la densità di probabilità che la variabile casuale sia nell'intervallo $dx$.
-
- Definimamo la \textbf{Funzione di distribuzione cumulativa}:
- \[
- F(x)=\int_{x_{min}}^x f_X(t)dt
- \]
-
-
-\begin{center}
-\begin{tikzpicture}[scale=1.5]
-    
-    % Asse x
-    \draw[->] (-0.5,0) -- (4,0) node[right]{$x$};
-    % Asse y
-    \draw[->] (0,-0.5) -- (0,3) node[above]{$y$};
-    
-    % Etichette
-    \node at (1.5,-0.2) {$a$};
-    \node at (3,-0.2) {$b$};
-    \node at (0.7,2.5) {$y = f_X(x)$};
-    
-    % Curva della PDF
-    \draw[domain=0.5:3.5, smooth, variable=\x, blue] plot ({\x}, {2.5*exp(-0.5*(\x-2)^2)});
-    
-    % Area evidenziata
-    \fill[blue!20] (1.5,0) -- plot[domain=1.5:3, smooth, variable=\x] ({\x}, {2.5*exp(-0.5*(\x-2)^2)}) -- (3,0) -- cycle;
-    
-    % Linee verticali
-    \draw[dashed] (1.5,0) -- (1.5,{2.5*exp(-0.5*(1.5-2)^2)});
-    \draw[dashed] (3,0) -- (3,{2.5*exp(-0.5*(3-2)^2)});
-    
-    % Etichetta probabilità
-    \node at (2.25,0.7) {$P(a \leq X \leq b)=\int_{a}^{b}f_X(x)dx$};
-\end{tikzpicture}
-\end{center}
-
-\subsubsection*{Proprietà della funzione densità di probabilità}
-\begin{itemize}
-    \item non può essere mai negativa (altrimenti avremmo una probabiità negativa per qualche $X$)
-    \item condizione di normalizzazione: \[ \int_{- \infty}^{\infty} f(x)=1\]
-    dunque si deve avere che: $\lim_{x \rightarrow \pm \infty} f_X(x)=0$
-    \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
-\end{itemize}
 
 \subsection{Proprietà dell'Esponenziale}
 La \textbf{funzione di ripartizione} (o distribuzione cumulativa $F_X(x)$) indica la probabilità che una variabile $x'$ assuma un valore minore o uguale a $x$:
@@ -3191,17 +3193,13 @@ plt.show()
     \label{fig:gauss_plot}
 \end{figure}
 
-\pagebreak  
 
 %--------------------------------------------------------------------------------------------------------------------------
 
 \lezione{Variabili Casuali bidimensionali}{23/03/2026}
 
-\ripasso{Proprietà generali e Propagazione degli Errori}
 
-In questa sezione richiamiamo alcuni concetti generali sulle funzioni di distribuzione a più variabili e sulla propagazione degli errori, che risulteranno fondamentali per le prossime trattazioni.
-
-\subsubsection*{Funzione di distribuzione per variabili casuali n-dimensionali}
+\ripasso{Funzione di distribuzione per variabili casuali n-dimensionali}
 Se la funzione di densità di probabilità $f(\vec{x})$ dipende da $n$ variabili, descritte dal vettore $\vec{x}=(x_1, \ldots, x_n)$, il \textbf{valore di aspettazione} (o valore atteso) del vettore è dato da:
 \begin{equation}
     \mathbb{E}[\vec{x}] = \int \vec{x} f(\vec{x}) \, d\vec{x}
@@ -3226,7 +3224,7 @@ Risulta inoltre utile definire il \textbf{coefficiente di correlazione} lineare:
     \rho(x_i,x_j) = \frac{\text{Cov}(x_i,x_j)}{\sigma_i \sigma_j}
 \end{equation}
 
-\subsubsection*{Indipendenza e funzione marginale}
+\ripasso{Indipendenza e funzione marginale}
 La funzione di distribuzione congiunta descrive la probabilità che $n$ variabili casuali assumano contemporaneamente valori all'interno di specifici intervalli. Essa gode delle stesse proprietà matematiche delle funzioni di distribuzione unidimensionali. 
 
 È possibile definire la \textbf{funzione di distribuzione marginale} per una singola variabile $x_i$, integrandola funzione congiunta su tutto il dominio di tutte le restanti variabili $x_j$ (con $j \neq i$).
@@ -3241,16 +3239,6 @@ Si ottiene così una definizione rigorosa per variabili \textbf{statisticamente 
 A livello campionario (sui dati sperimentali), la covarianza tra due variabili $X$ e $Y$ si stima tramite la formula:
 \begin{equation}
     \text{Cov}(X, Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
-\end{equation}
-
-\subsubsection*{La distribuzione normale multivariata}
-Nel caso in cui le variabili siano \textit{indipendenti}, la funzione di densità di Gauss per la singola variabile è:
-\begin{equation}
-    f(x_i) = \frac{1}{\sqrt{2\pi}\sigma_i} \exp\left[-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}\right]
-\end{equation}
-Essendo indipendenti, la distribuzione congiunta è semplicemente il prodotto delle singole distribuzioni marginali:
-\begin{equation}
-    f(x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^n \sigma_i} \exp\left[ -\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2} \right]
 \end{equation}
 
 \subsection{Distribuzioni congiunte, marginali e condizionate}
@@ -3625,6 +3613,18 @@ Facendo riferimento alla tabella, si può notare come il numero di dati $N$ infl
 In sintesi, un coefficiente di correlazione non ha significato pratico se non viene contestualizzato rispetto al numero di misurazioni effettuate.
 \end{example}
 
+\ripasso{La distribuzione normale multivariata}
+Nel caso in cui le variabili siano \textit{indipendenti}, la funzione di densità di Gauss per la singola variabile è:
+\begin{equation}
+    f(x_i) = \frac{1}{\sqrt{2\pi}\sigma_i} \exp\left[-\frac{(x_i-\mu_i)^2}{2\sigma_i^2}\right]
+\end{equation}
+Essendo indipendenti, la distribuzione congiunta è semplicemente il prodotto delle singole distribuzioni marginali:
+\begin{equation}
+    f(x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i) = \frac{1}{(2\pi)^{n/2} \prod_{i=1}^n \sigma_i} \exp\left[ -\frac{1}{2} \sum_{i=1}^{n} \frac{(x_i-\mu_i)^2}{\sigma_i^2} \right]
+\end{equation}
+
+
+
 \section{Distribuzione normale in più dimensioni (o multinormale)}
 \subsection{Caso di variabili indipendenti}
 La distribuzione gaussiana che abbiamo visto in una dimensione si può estendere al caso di due o più dimensioni partendo dal caso più semplice in cui le variabili sono indipendenti. Supponiamo quindi che $X$ abbia densità di probabilità:
@@ -3953,14 +3953,12 @@ Tornando alle variabili originarie $x$ e $y$:
 \begin{equation}
 Q^2 - Q_1^2 = \frac{1}{(1-\rho^2)\sigma_x^2} \left\{ \left(x-\mu_x\right) - \rho\frac{\sigma_x}{\sigma_y}(y-\mu_y) \right\}^2
 \end{equation}
-
 Da qui si evince che l'espressione di $\pi(x|y)$ è ancora una gaussiana con deviazione standard $\sigma_{x|y} = \sigma_x\sqrt{1-\rho^2}$ (come visto prima) e con valore atteso:
 \begin{equation}
 \mu_{x|y} = \mu_x + \rho\frac{\sigma_x}{\sigma_y}(y-\mu_y)
 \end{equation}
 Anche in questo caso, se $\rho = 0$ si ha $\mu_{x|y} = \mu_x$, mentre se $\rho \neq 0$, il valore atteso è spostato rispetto al valore $\mu_x$ originale in base al valore di $y$.
 
-\pagebreak
 
 \section{Teoria della Stima dei Parametri}
 
@@ -5800,7 +5798,7 @@ La formula finale all'interno di ogni iterazione è \textbf{identica} a quella d
 
 
 
-\lezione{Test di Ipotesi}{Lezione del 11/05/2026}
+\lezione{Test di Ipotesi}{11/05/2026}
 
 In molti casi, l'informazione che vogliamo dedurre dai dati non è una stima numerica di un parametro, bensì la risposta a una precisa domanda (Es: \textit{"Il segnale segue un andamento lineare?"}). La branca della statistica che formalizza queste domande sotto forma di test numerici per decidere se accettare o rifiutare una teoria è detta \textbf{Test di Ipotesi}.
 

@@ -6330,7 +6330,9 @@ plt.show()
     \caption{Distribuzione vera della statistica $D$ ricavata tramite Toy Monte Carlo.}
 \end{figure}
 
-
+Nel nostro caso possiamo vedere che nel test di ipotesi si basa sul fatto che in $3 \sigma \simeq 0.003$ è un evidenza, mentre su $5\sigma \simeq 3 \times 10^{-7}$ è una scoperta. Come $H_0$ si usano le ipotesi nulle (ex. non c'è nuova fisica oppore è solo fondo).
+Nel caso che la mia funzione test ha una forma gaussiana, devo considerare $\alpha$ sia e dx. che a sx. della coda. 
+Per questo posso fare in modo di avere vari valori da considerare 
 
 
 
@@ -6507,6 +6509,92 @@ Questa scomposizione garantisce che:
 \end{itemize}
 \end{bressan}
 
+\lezione{Compatibilità tra due misure}{14/05/2026}
+Consideriamo due variabili alleatorie $(x,y) \sim \mathcal{N}$, con $\sigma_x, \sigma_y$ indipendenti. 
+Allora nel caso in cui siano note le $\sigma$, posso cercare la compatibilità vedendo che la quanità $x-y$ sono compatibili con zero, con $\text{var} (x-y)= {\sigma_x}^2 + {\sigma_y}^2$. Posso allora dire che $x-y \sim \mathcal{N}(0, \sigma_{x-y})$.\\
+Le mie misure risultano non compatibili se vale che $ | x-y | > 2 \sigma_{x-y}$; posso anche cercare la quantità $\frac{s- \mathbb{E}(s)}{\sigma_s} \sim \mathcal{N}(0,1)$, dunque cerco di quante sigma si allontana il mio valore cercato. 
+\begin{esempio}
+    Consideriamo due misure di temperature di fusione di due materiali, m1 e m2. Trovo che $\frac{m1-m2}{\sigma_{m1-m2}} = 1.4 < 2$, dunque non posso rigettare l'ipotesi
+\end{esempio}
+Consideriamo ora il caso che io conosco i valori: $ \bar{x}, \bar{y}, \sigma_x, \sigma_y$. Le varianze delle medie mi danno: $\sigma_{\bar{x}}= \frac{\sigma_x}{\sqrt{N_x}} \: e \: \sigma_{\bar{y}}= \frac{\sigma_y}{\sqrt{N_y}}$
+Allora uso come ipotesi di test: 
+\begin{equation*}
+    t = \frac{\bar{x}- \bar{y}}{\sqrt{\frac{{\sigma_x}^2}{N_x}- \frac{{\sigma_y}^2}{N_y}}}
+\end{equation*}
+\begin{esempio}
+    aggiungere esempio
+\end{esempio}
+Se sono nel caso di avere i dati e dovo ricavare la comatibilità le formule sono diverse, infatti per ogni variabile la varianza me la ricavo da: $\hat{\sigma}_x = s_x = \sqrt{\frac{\sum_{i}^{} {(x_i - \bar{x})}^2}{N_x - 1}}$. 
+\subsection{t-Student}
+Consideriamo il caso di avere $x \sim \mathcal{N}(\mu, \sigma^2)$, allora se costruisco $z = \frac{x- \mu}{\sigma} \sim \mathcal{N}(0,1)$. 
+Se io invece non conosco $\sigma$ e devo stimarla, che distribuzione segue la quantità: $t= \frac{x- \mu}{\hat{\sigma}}$. Posso distinguere due casi:
+\begin{itemize}
+    \item consocendo $\mu$, allora ho che:
+    \begin{equation*}
+        \hat{\sigma}^2= \frac{1}{N} \sum_{i}^{} {(x_i - \mu)}^2
+    \end{equation*}
+    \item non conoscendo $\mu$:
+    \begin{equation*}
+        \hat{\sigma}^2= \frac{1}{N - 1} \sum_{i}^{} {(x_i - \mu)}^2
+    \end{equation*}
+\end{itemize}
+Allora se chiamo $n$ i miei gradi di libertà, posso dire che la mia variabile $c \equiv \frac{x \hat{\sigma}^2}{\sigma^2} \sim \chi^2_n$. Se ora riscrivo il valore di t ho che: $ t = \frac{x- \mu}{\hat{\sigma}}= \frac{(x-\mu) / \sigma}{\sqrt{\hat{\sigma}^2 \ \sigma^2}}$.
+\begin{equation}
+    t = \frac{z}{\sqrt{c/n}}
+\end{equation}
+
+Per calcolare la p.d.f uso la formula della probabilità congiunta:
+\begin{equation*}
+    P(t, c ; n)= P(z, c; n) \left\lvert \frac{\partial z}{\partial t}\right\rvert 
+\end{equation*}
+Allora dato che presuppongo che $z$ e $c$ siano indipendenti, posso scrivere:
+\begin{equation}
+    P(z, c, n )= P(z) P(c;n) = \frac{\exp(-z^2 / s)}{\sqrt{2 \pi}} \frac{2^{-n/2}}{\Gamma(n/2)} c^{n/2 - 1 } \exp(-c/2)
+\end{equation}
+usando inolte il fatto che vale: $ \frac{\partial z}{\partial t}= \sqrt{\frac{c}{n}}$, posso scrivere che:
+\begin{equation}
+    P(t,c; n) = \frac{1}{\sqrt{\pi n } \: \Gamma(n/2) s^{(n+1)/2}} c^{(n-1)/2} \exp(-c(t^2/n +1)/2)
+\end{equation}
+Ora utilizzando un integrale notevole per eliminare il fattore che è un chi quadro, così da calcolarmi la p.d.f cumulativa della sola t:
+\begin{equation*}
+    \int_{0}^{\infty} x^m e^{-ax}= \frac{\Gamma(m+1)}{a^{m+1}}
+\end{equation*}
+Allora posso riscrivere che:
+\begin{equation}
+    P_t(t)= \int_{0}^{\infty} P(t,c; n) dc = \frac{\Gamma(\frac{n+1}{2})}{\sqrt{\pi n} \: \Gamma(\frac{n}{2}) {(\frac{t^2}{n} + 1)}^{(n+1)/2}} \label{eq: t-Student}
+\end{equation}
+Allora posso dire che la mia variabile $ t = \frac{x-\mu}{\hat{\sigma}} \sim \text{t-Student}(n)$. 
+
+Nel caso della media di due variabili ho che:
+\begin{itemize}
+    \item se ho noto $\sigma$
+    \item se devo stimare $\sigma$
+    \begin{equation}
+        t = \frac{\bar{x}- \bar{y}}{S \sqrt{\frac{1}{N_x}- \frac{1}{N_y}}}
+    \end{equation}
+    dove il valore $S$ è pari a:
+    \begin{equation*}
+        S= \frac{(N_x-1){s_x}^2 + (N_y-1){s_y}^2}{N_x + N_y -2}
+    \end{equation*}
+\end{itemize}
+Nel secondo caso allora posso vedere che:
+\begin{equation*}
+    {\hat{\sigma}}^2= {s_x}^2= \frac{1}{N_x-1}\sum_{i}^{}{(x_i - \bar{x})}^2
+\end{equation*}
+\begin{equation*}
+    (N_x-1) \frac{{s_x}^2}{\sigma^2} \sim \chi^2_{N_x-1} \vspace{1cm} (N_y-1) \frac{{s_y}^2}{\sigma^2} \sim \chi^2_{N_y-1}
+\end{equation*}
+Cosa succede nel caso in cui i miei campioni siano dipendenti:
+\begin{itemize}
+    \item $x,y$ sono dipendenti
+    \begin{equation*}
+        \text{var} (x-y)= \text{var (x)}+ \text{var (y)} - 2 \rho \sigma_x \sigma_y \simeq {(\sigma_x - \sigma_y)}^2
+    \end{equation*}
+    \item non conoscendo le varianze:
+    \begin{equation*}
+        \delta_i = (x_i-y_i) \rightarrow \frac{\bar{\delta}}{\hat{\sigma_{\delta}} \sqrt{N}} \sim \text{t-Student}
+    \end{equation*}
+\end{itemize}
 
 
 \end{document}

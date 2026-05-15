@@ -37,6 +37,8 @@
 \usepackage{xcolor}
 \usepackage{circuitikz}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{mdframed}
 % Needed for subfigure environments used later
 \usepackage{subcaption}
 \pgfplotsset{
@@ -457,6 +459,151 @@ Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\
 
 
 
+\begin{bressan}{Distribuzione di Maxwell-Boltzmann}
+
+\begin{nota}
+Questa parte non è stata trattata a lezione
+\end{nota}
+
+    Consideriamo un gas perfetto con peso molare $M = N_A m$ in equilibrio termodinamico a temperatura $T$. La costante universale dei gas è $R = N_A k \approx 8.31 \, \text{J} \, \text{K}^{-1} \text{mol}^{-1}$.
+
+La velocità quadratica media delle molecole del gas è strettamente legata alla temperatura:
+\begin{equation}
+    v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\frac{3RT}{M}}
+\end{equation}
+Tuttavia, all'interno del gas le singole molecole possiedono velocità che si discostano da questo valore medio. Nel 1859, Maxwell derivò analiticamente la distribuzione di probabilità delle velocità $f(v)$:
+\begin{equation}
+    f(v) = 4\pi \left( \frac{M}{2\pi RT} \right)^{3/2} v^2 \exp \left[ -\frac{Mv^2}{2RT} \right] = 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right]
+\end{equation}
+Fisicamente, all'aumentare della temperatura, il picco della distribuzione (la velocità più probabile) si allarga e si sposta verso valori più elevati. Tutte le curve sono ovviamente normalizzate in modo che l'integrale della probabilità totale sia 1.
+
+La deduzione di Maxwell si sviluppa attraverso un ragionamento molto elegante:
+\begin{itemize}
+    \item Definiamo innanzitutto alcune densità fisiche:
+    \begin{align*}
+        \rho(\vec{r}) &= \frac{dm}{dV} \quad \text{densità del gas}, \\[6pt]
+        \eta(\vec{r}) &= \frac{\rho(\vec{r})}{m} \quad \text{densità numerica di particelle}, \\[6pt]
+        dn &= \eta(\vec{r}) \, dV \quad \text{numero di particelle nel volume } dV.
+    \end{align*}
+    
+    \item In analogia allo spazio tridimensionale geometrico, introduciamo una densità di particelle nello \textit{spazio delle velocità}: 
+    \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
+    
+    \item Definiamo la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: 
+    \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T} \]
+    
+    \item Se assumiamo che la distribuzione della velocità del gas sia \textbf{isotropa}, la funzione di distribuzione dipenderà unicamente dal modulo della velocità e non dal suo verso.
+    
+    \item Il numero di particelle $dn$ comprese nell'elemento infinitesimo $d\vec{v} = d^3v$ dello spazio delle velocità vale:
+    \[
+        dn(v) = n_T \, p(K) \, dv_x \, dv_y \, dv_z
+    \]
+    che, passando in coordinate polari sferiche per le velocità, si scrive come:
+    \[
+        dn(v) = n_T \, p(K) \, v^2 \, dv \, d\Omega = n_T \, p(K) \, v^2 \, dv \sin\theta \, d\theta \, d\phi
+    \]
+    
+    \item Integrando sulle variabili angolari (da cui la probabilità non dipende data l'isotropia), otteniamo il fattore $4\pi$:
+    \[
+        dn(v) \propto 4 \pi n_T p(K) v^2 dv 
+    \]
+
+    \begin{nota}
+        \textbf{Approfondimento geometrico sugli urti.}\\
+        Vogliamo ricavare quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v}+d\vec{v}$. Passando alle coordinate sferiche ($r, \theta, \psi$), l'area infinitesima identificata è:
+        \[
+        dA = (r d\theta)(r \sin\theta d\psi)
+        \]
+        Da cui l'angolo solido risulta:
+        \[
+        d\omega = \frac{dA}{r^2} = \sin\theta \, d\theta \, d\psi
+        \]
+        Il numero di particelle aventi velocità compresa tra $\vec{v}$ e $\vec{v}+d\vec{v}$ sarà proporzionale a $dn(v)\frac{d\omega}{4\pi}$. Essendo $4\pi$ l'angolo solido massimo dell'intera sfera, tale espressione conferma l'assenza di una direzione preferenziale.
+        
+        Per valutare la probabilità di urto contro un'area $A$, dobbiamo limitarci al volume di un cilindro di lunghezza $v d\tau$ (con $\tau$ sufficientemente piccolo da evitare urti secondari). Tale volume è $dV = v d\tau \cos\theta \, dA$. Il numero di molecole che urteranno l'area $dA$ sarà quindi $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
+    \end{nota}
+
+    \item Di conseguenza, la probabilità che l'urto accada è il prodotto delle singole probabilità: 
+    \[P=C \cdot p(K_1)p(K_2)\] 
+    ovvero è proporzionale alla probabilità di avere due particelle con energia cinetica $K_1$ e $K_2$ prima dell'urto. Dopo l'urto le energie saranno $K'_1$ e $K'_2$, e la probabilità sarà proporzionale a $C \cdot p(K'_1)p(K'_2)$.
+    
+    \item Poiché il gas si trova in equilibrio termodinamico, le probabilità prima e dopo l'urto devono equivalersi e l'energia cinetica totale deve conservarsi ($K_1 + K_2 = K'_1 + K'_2$). Segue che:
+    \[
+        p(K_1)p(K_2) = p(K'_1)p(K'_2) = p(K_1+x)p(K_2-x)
+    \]
+    dove $x$ rappresenta il trasferimento netto di energia durante la collisione.
+    
+    \item La forma funzionale che soddisfa questa proprietà è necessariamente un'esponenziale decrescente:
+    \[
+        p(K) = A e^{-\beta \frac{mv^2}{2}}
+    \]
+    dove $\beta > 0$ è una costante necessaria per rendere l'esponente adimensionale. Di conseguenza:
+    \[ 
+        dn(v) \propto 4 \pi n_T A e^{-\beta \frac{mv^2}{2}} v^2 dv
+    \] 
+
+    \begin{nota}
+        \textbf{Determinazione delle costanti $A$ e $\beta$.}\\
+        Per ricavare la costante $A$, integriamo su tutte le velocità possibili (da $0$ a $\infty$) imponendo la normalizzazione. Il risultato per $A$ è:
+        \[
+            A = \left( \frac{\frac{1}{2}m\beta}{\pi}\right)^\frac{1}{2}
+        \]
+        Per determinare $\beta$, calcoliamo esplicitamente la velocità quadratica media della distribuzione:
+        \begin{equation*}
+            \langle v^2 \rangle = \frac{1}{N} \int_0^\infty v^2 \, dn(v) = 4\pi A^3 \int_0^\infty v^4 \exp \left[ -\beta \left( \frac{1}{2} mv^2 \right) \right] dv
+        \end{equation*}
+        Risolvendo l'integrale notevole, si trova che $\langle v^2 \rangle = \frac{3}{m\beta}$.
+        D'altra parte, per il Teorema di Equipartizione dell'Energia, sapendo che il gas possiede 3 gradi di libertà traslazionali, l'energia cinetica media è:
+        \[
+            \frac{1}{2} m \langle v^2 \rangle = \frac{3}{2} k T \quad \implies \quad \frac{1}{2} m \left(\frac{3}{m\beta}\right) = \frac{3}{2} k T
+        \]
+        Confrontando i termini, si identifica immediatamente il significato fisico di $\beta$:
+        \[
+            \beta = \frac{1}{k T}
+        \]
+    \end{nota} 
+    
+    \item Imponendo infine le condizioni di contorno per normalizzare in densità ($\int_{V} dn_v = n_T$) e in energia ($\int_{V}K dn_v=\frac{3}{2}n_T k T$), la distribuzione completa di Maxwell-Boltzmann diviene:
+    \[
+        p(v) \, dv = 4\pi \left( \frac{m}{2\pi k T} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right] dv
+    \]
+    
+    \item Annullando la derivata prima della distribuzione per trovarne il massimo, si ricava la \textbf{velocità più probabile} $v_M$:
+    \[
+        v_M = \sqrt{\frac{2kT}{m}} \quad \implies \quad kT = \frac{1}{2}m v_M^2
+    \]
+    
+    \item Integrando la distribuzione di probabilità si ricava la \textbf{velocità media} (in modulo) delle molecole:
+    \[
+        \mu_v = \mathbb{E}[v] = \frac{4}{\sqrt{\pi}} \frac{1}{v_M^3} \int_0^\infty v^3 \exp\left[-\frac{v^2}{v_M^2}\right] dv = \frac{2}{\sqrt{\pi}} v_M = \sqrt{\frac{8kT}{\pi m}}
+    \]
+    La velocità quadratica media (Root Mean Square - RMS) invece è:
+    \[
+        v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\int_0^\infty v^2 p(v) \, dv} = \sqrt{\frac{3kT}{m}}
+    \]
+\end{itemize}
+
+\vspace{1em}
+Riassumendo, la formula finale può essere concettualmente spacchettata nei suoi 3 fattori fisici principali:
+
+\begin{center}
+    \centering
+    \begin{tabular}{ccc}
+        \toprule
+        Costante di Normalizzazione & Probabilità (Fattore di Boltzmann) & Spazio delle Fasi \\
+        \midrule
+        $p(v) dv = \displaystyle \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\}$ & $\displaystyle \cdot \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\}$ & $\displaystyle \cdot \left\{ v^2 dv \right\}$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+Questa scomposizione garantisce che:
+\begin{itemize}
+    \item \textbf{La costante di normalizzazione} assicura che l'integrale della probabilità $p(v)$ esteso a tutte le velocità possibili sia pari all'unità.
+    \item \textbf{La statistica di Boltzmann} (il termine esponenziale) tiene conto della probabilità di occupazione termodinamica di uno stato avente una data energia cinetica in funzione della temperatura assoluta $T$ del sistema.
+    \item \textbf{Lo spazio delle fasi} (il fattore $v^2 dv$) descrive la molteplicità del livello energetico, ovvero il numero di "modi" o stati microscopici con cui è possibile ottenere la stessa energia macroscopica. Nel nostro sistema isotropo in 3D, questo corrisponde al volume geometrico di un guscio sferico di raggio $v$ e spessore $dv$ all'interno dello spazio delle velocità. Tutti i punti di questo guscio possiedono esattamente la medesima energia $K = \frac{1}{2}mv^2$.
+\end{itemize}
+\end{bressan}
 
 
 
@@ -3224,7 +3371,7 @@ plt.show()
 
 %--------------------------------------------------------------------------------------------------------------------------
 
-\lezione{Variabili Casuali bidimensionali}{23/03/2026}
+\lezione{Variabili Casuali bidimensionali}{23 Marzo 2026}
 
 
 \begin{bressan}{Funzione di distribuzione per variabili casuali n-dimensionali}
@@ -5526,7 +5673,7 @@ plt.show()
 
 
 
-\lezione{Fit non lineari}{04/05/2026}
+\lezione{Fit non lineari}{04 Maggio 2026}
 
 \subsection{Fit non lineare}
 \subsubsection*{Metodo di Gauss-Newton}
@@ -5688,7 +5835,7 @@ La formula finale all'interno di ogni iterazione è \textbf{identica} a quella d
 
 
 
-\lezione{Test di Ipotesi}{11/05/2026}
+\lezione{Test di Ipotesi}{11 Maggio 2026}
 
 In molti casi, l'informazione che vogliamo dedurre dai dati non è una stima numerica di un parametro, bensì la risposta a una precisa domanda (Es: \textit{"Il segnale segue un andamento lineare?"}). La branca della statistica che formalizza queste domande sotto forma di test numerici per decidere se accettare o rifiutare una teoria è detta \textbf{Test di Ipotesi}.
 
@@ -6153,6 +6300,8 @@ In Python, si usa \texttt{scipy.stats.f}. Le chiamate sono equivalenti al $\chi^
 \end{tikzpicture}
 \end{center}
 \subsection{Test di Kolmogorov-Smirnov}
+
+
 Il Test di Kolmogorov-Smirnov (KS) è un modo alternativo al test di Pearson per confrontare i dati con una distribuzione teorica. Si usa soprattutto quando il set di dati è talmente piccolo da non permettere un binning adeguato. Nel KS non si utilizzano istogrammi, evitando di perdere informazioni.
 
 Invece degli istogrammi, si usano le \textbf{frequenze cumulative}. Si definisce la Funzione di Ripartizione Empirica (ECDF) ordinando i dati $x_1 \leq x_2 \leq \dots \leq x_N$:
@@ -6232,6 +6381,14 @@ la quale viene spesso approssimata oppure calcolata con metodi numerici (per cam
 
 Inoltre, il KS test può essere usato per confrontare due campioni indipendenti. In tal caso $D = \max_x |\phi_1(x) - \phi_2(x)|$.
 In tal caso si agisce come precedentemente, calcolando i valori di soglia tramite una distribuzione di Kolmogorov simile a quella precedente.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{"immagini/bressan smirnoff"}
+    \label{fig:bressan_smirnoff}
+\end{figure}
+
+
 \subsection*{Implementazione Python del Test KS (con Monte Carlo)}
 
 \begin{lstlisting}[language=Python, caption=Script Python: KS Test e Toy Monte Carlo - Parte 1]
@@ -6330,271 +6487,308 @@ plt.show()
     \caption{Distribuzione vera della statistica $D$ ricavata tramite Toy Monte Carlo.}
 \end{figure}
 
-Nel nostro caso possiamo vedere che nel test di ipotesi si basa sul fatto che in $3 \sigma \simeq 0.003$ è un evidenza, mentre su $5\sigma \simeq 3 \times 10^{-7}$ è una scoperta. Come $H_0$ si usano le ipotesi nulle (ex. non c'è nuova fisica oppore è solo fondo).
-Nel caso che la mia funzione test ha una forma gaussiana, devo considerare $\alpha$ sia e dx. che a sx. della coda. 
-Per questo posso fare in modo di avere vari valori da considerare 
+Quanto detto in generale per la significatività del test ci aiuta a capire in che senso, quando si annuncia la scoperta di un nuovo fenomeno, si richiede una significatività di $5\sigma$ e di $3\sigma$ per l'evidenza. 
+Il primo punto importante da chiarire è che in questo caso $H_0$ è l'ipotesi in cui i dati sono spiegati solo da rumore senza nessun segnale fisico in aggiunta; quindi è l'ipotesi in cui non c'è segnale nuovo nei dati (es. non c'è nuova fisica oppure è solo fondo).
 
+A causa della complessità degli esperimenti (per esempio nel caso dei tipici esperimenti di fisica delle particelle) e delle fluttuazioni statistiche di vario genere nei dati, se si usasse $\alpha = 5\%$ come soglia per decidere se rigettare $H_0$, si avrebbero troppi falsi positivi. Invece di $\alpha$ in percentuale si preferisce riportare il risultato in termini di $\sigma$ di una gaussiana, quindi in termini dell'integrale delle code della normale standard.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{bressan}{Distribuzione di Maxwell-Boltzmann}
-Consideriamo un gas perfetto con peso molare $M = N_A m$ in equilibrio termodinamico a temperatura $T$. La costante universale dei gas è $R = N_A k \approx 8.31 \, \text{J} \, \text{K}^{-1} \text{mol}^{-1}$.
-
-La velocità quadratica media delle molecole del gas è strettamente legata alla temperatura:
-\begin{equation}
-    v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\frac{3RT}{M}}
-\end{equation}
-Tuttavia, all'interno del gas le singole molecole possiedono velocità che si discostano da questo valore medio. Nel 1859, Maxwell derivò analiticamente la distribuzione di probabilità delle velocità $f(v)$:
-\begin{equation}
-    f(v) = 4\pi \left( \frac{M}{2\pi RT} \right)^{3/2} v^2 \exp \left[ -\frac{Mv^2}{2RT} \right] = 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right]
-\end{equation}
-Fisicamente, all'aumentare della temperatura, il picco della distribuzione (la velocità più probabile) si allarga e si sposta verso valori più elevati. Tutte le curve sono ovviamente normalizzate in modo che l'integrale della probabilità totale sia 1.
-
-La deduzione di Maxwell si sviluppa attraverso un ragionamento molto elegante:
+Nel nostro caso possiamo vedere che nel test di ipotesi, in termini di p-value questo equivale a:
 \begin{itemize}
-    \item Definiamo innanzitutto alcune densità fisiche:
-    \begin{align*}
-        \rho(\vec{r}) &= \frac{dm}{dV} \quad \text{densità del gas}, \\[6pt]
-        \eta(\vec{r}) &= \frac{\rho(\vec{r})}{m} \quad \text{densità numerica di particelle}, \\[6pt]
-        dn &= \eta(\vec{r}) \, dV \quad \text{numero di particelle nel volume } dV.
-    \end{align*}
-    
-    \item In analogia allo spazio tridimensionale geometrico, introduciamo una densità di particelle nello \textit{spazio delle velocità}: 
-    \[ dn(\vec{v})=\eta (\vec{v}) d^3 v \]
-    
-    \item Definiamo la funzione di distribuzione normalizzata della velocità $f(\vec{v})$: 
-    \[ f(\vec{v})=\frac{\eta (\vec{v})}{n_T} \]
-    
-    \item Se assumiamo che la distribuzione della velocità del gas sia \textbf{isotropa}, la funzione di distribuzione dipenderà unicamente dal modulo della velocità e non dal suo verso.
-    
-    \item Il numero di particelle $dn$ comprese nell'elemento infinitesimo $d\vec{v} = d^3v$ dello spazio delle velocità vale:
-    \[
-        dn(v) = n_T \, p(K) \, dv_x \, dv_y \, dv_z
-    \]
-    che, passando in coordinate polari sferiche per le velocità, si scrive come:
-    \[
-        dn(v) = n_T \, p(K) \, v^2 \, dv \, d\Omega = n_T \, p(K) \, v^2 \, dv \sin\theta \, d\theta \, d\phi
-    \]
-    
-    \item Integrando sulle variabili angolari (da cui la probabilità non dipende data l'isotropia), otteniamo il fattore $4\pi$:
-    \[
-        dn(v) \propto 4 \pi n_T p(K) v^2 dv 
-    \]
-
-    \begin{nota}
-        \textbf{Approfondimento geometrico sugli urti.}\\
-        Vogliamo ricavare quante molecole hanno il vettore velocità compreso fra $\vec{v}$ e $\vec{v}+d\vec{v}$. Passando alle coordinate sferiche ($r, \theta, \psi$), l'area infinitesima identificata è:
-        \[
-        dA = (r d\theta)(r \sin\theta d\psi)
-        \]
-        Da cui l'angolo solido risulta:
-        \[
-        d\omega = \frac{dA}{r^2} = \sin\theta \, d\theta \, d\psi
-        \]
-        Il numero di particelle aventi velocità compresa tra $\vec{v}$ e $\vec{v}+d\vec{v}$ sarà proporzionale a $dn(v)\frac{d\omega}{4\pi}$. Essendo $4\pi$ l'angolo solido massimo dell'intera sfera, tale espressione conferma l'assenza di una direzione preferenziale.
-        
-        Per valutare la probabilità di urto contro un'area $A$, dobbiamo limitarci al volume di un cilindro di lunghezza $v d\tau$ (con $\tau$ sufficientemente piccolo da evitare urti secondari). Tale volume è $dV = v d\tau \cos\theta \, dA$. Il numero di molecole che urteranno l'area $dA$ sarà quindi $dn(v)\frac{d\omega}{4\pi}\frac{dV}{v}$.
-    \end{nota}
-
-    \item Di conseguenza, la probabilità che l'urto accada è il prodotto delle singole probabilità: 
-    \[P=C \cdot p(K_1)p(K_2)\] 
-    ovvero è proporzionale alla probabilità di avere due particelle con energia cinetica $K_1$ e $K_2$ prima dell'urto. Dopo l'urto le energie saranno $K'_1$ e $K'_2$, e la probabilità sarà proporzionale a $C \cdot p(K'_1)p(K'_2)$.
-    
-    \item Poiché il gas si trova in equilibrio termodinamico, le probabilità prima e dopo l'urto devono equivalersi e l'energia cinetica totale deve conservarsi ($K_1 + K_2 = K'_1 + K'_2$). Segue che:
-    \[
-        p(K_1)p(K_2) = p(K'_1)p(K'_2) = p(K_1+x)p(K_2-x)
-    \]
-    dove $x$ rappresenta il trasferimento netto di energia durante la collisione.
-    
-    \item La forma funzionale che soddisfa questa proprietà è necessariamente un'esponenziale decrescente:
-    \[
-        p(K) = A e^{-\beta \frac{mv^2}{2}}
-    \]
-    dove $\beta > 0$ è una costante necessaria per rendere l'esponente adimensionale. Di conseguenza:
-    \[ 
-        dn(v) \propto 4 \pi n_T A e^{-\beta \frac{mv^2}{2}} v^2 dv
-    \] 
-
-    \begin{nota}
-        \textbf{Determinazione delle costanti $A$ e $\beta$.}\\
-        Per ricavare la costante $A$, integriamo su tutte le velocità possibili (da $0$ a $\infty$) imponendo la normalizzazione. Il risultato per $A$ è:
-        \[
-            A = \left( \frac{\frac{1}{2}m\beta}{\pi}\right)^\frac{1}{2}
-        \]
-        Per determinare $\beta$, calcoliamo esplicitamente la velocità quadratica media della distribuzione:
-        \begin{equation*}
-            \langle v^2 \rangle = \frac{1}{N} \int_0^\infty v^2 \, dn(v) = 4\pi A^3 \int_0^\infty v^4 \exp \left[ -\beta \left( \frac{1}{2} mv^2 \right) \right] dv
-        \end{equation*}
-        Risolvendo l'integrale notevole, si trova che $\langle v^2 \rangle = \frac{3}{m\beta}$.
-        D'altra parte, per il Teorema di Equipartizione dell'Energia, sapendo che il gas possiede 3 gradi di libertà traslazionali, l'energia cinetica media è:
-        \[
-            \frac{1}{2} m \langle v^2 \rangle = \frac{3}{2} k T \quad \implies \quad \frac{1}{2} m \left(\frac{3}{m\beta}\right) = \frac{3}{2} k T
-        \]
-        Confrontando i termini, si identifica immediatamente il significato fisico di $\beta$:
-        \[
-            \beta = \frac{1}{k T}
-        \]
-    \end{nota} 
-    
-    \item Imponendo infine le condizioni di contorno per normalizzare in densità ($\int_{V} dn_v = n_T$) e in energia ($\int_{V}K dn_v=\frac{3}{2}n_T k T$), la distribuzione completa di Maxwell-Boltzmann diviene:
-    \[
-        p(v) \, dv = 4\pi \left( \frac{m}{2\pi k T} \right)^{3/2} v^2 \exp \left[ -\frac{mv^2}{2kT} \right] dv
-    \]
-    
-    \item Annullando la derivata prima della distribuzione per trovarne il massimo, si ricava la \textbf{velocità più probabile} $v_M$:
-    \[
-        v_M = \sqrt{\frac{2kT}{m}} \quad \implies \quad kT = \frac{1}{2}m v_M^2
-    \]
-    
-    \item Integrando la distribuzione di probabilità si ricava la \textbf{velocità media} (in modulo) delle molecole:
-    \[
-        \mu_v = \mathbb{E}[v] = \frac{4}{\sqrt{\pi}} \frac{1}{v_M^3} \int_0^\infty v^3 \exp\left[-\frac{v^2}{v_M^2}\right] dv = \frac{2}{\sqrt{\pi}} v_M = \sqrt{\frac{8kT}{\pi m}}
-    \]
-    La velocità quadratica media (Root Mean Square - RMS) invece è:
-    \[
-        v_{\text{qm}} = \sqrt{\langle v^2 \rangle} = \sqrt{\int_0^\infty v^2 p(v) \, dv} = \sqrt{\frac{3kT}{m}}
-    \]
+    \item $2\sigma \simeq 0.05$
+    \item $3\sigma \simeq 0.003 \longrightarrow$ \textbf{Evidenza}
+    \item $5\sigma \simeq 3 \times 10^{-7} \longrightarrow$ \textbf{Scoperta}
 \end{itemize}
+Quindi nel caso dell'evidenza potrei avere circa 3 falsi allarmi su 1000 esperimenti, mentre nel caso di $5\sigma$ ho 3 falsi allarmi su 10 milioni di esperimenti. 
+Nel caso in cui la mia statistica di test ha una forma gaussiana, devo considerare $\alpha$ sia a destra che a sinistra della coda (test a due code), per questo posso fare in modo di avere vari valori da considerare.
 
-\vspace{1em}
-Riassumendo, la formula finale può essere concettualmente spacchettata nei suoi 3 fattori fisici principali:
+
+
+
+\lezione{Compatibilità tra due misure}{14 Maggio 2026}
+
+Uno dei casi più comuni di test di ipotesi è verificare se il risultato tra due misure è \textbf{compatibile}, cioè se le due misure $x \pm \sigma_x$ e $y \pm \sigma_y$ sono imputabili alla stessa popolazione (vengono dallo stesso fenomeno fisico). 
+La complicazione in questo caso è che, anche se le misure fossero dovute allo stesso fenomeno fisico, avrebbero comunque delle differenze dovute alle fluttuazioni statistiche. Bisogna quindi decidere se le differenze fra i due risultati sono imputabili a questi effetti casuali oppure indicano una vera differenza fra i due set di dati analizzati. 
+Il problema somiglia al test del $\chi^2$, ma invece di confrontare i punti sperimentali con una distribuzione, si confrontano due punti sperimentali fra loro.
+
+Partiamo dall'ipotesi che $x$ e $y$ siano due variabili aleatorie, ciascuna distribuita secondo una gaussiana con deviazione standard $\sigma_x$ e $\sigma_y$ rispettivamente, e supponiamole \textbf{indipendenti}. Analizziamo i vari casi in base alla complessità.
+
+\subsection*{Caso 1: Misure singole con $\sigma$ note}
+Il caso più semplice da considerare è quello in cui $x$ e $y$ sono due \textit{singole misure} fatte con due apparati sperimentali di risoluzione nota data dal costruttore ($\sigma_x$ e $\sigma_y$). 
+Dire che $x$ e $y$ sono compatibili equivale a dire che la quantità $x-y$ è compatibile con zero.
+La variabile $x-y$ è una variabile aleatoria la cui varianza è:
+\begin{equation}
+    \text{var}(x-y) = \text{var}(x) + \text{var}(y) = \sigma_x^2 + \sigma_y^2 \implies \sigma_{x-y} = \sqrt{\sigma_x^2 + \sigma_y^2}
+\end{equation}
+
+In questo caso utilizziamo $x-y$ come statistica di test, assumendo una distribuzione gaussiana $x-y \sim \mathcal{N}(0, \sigma_{x-y})$. Ha senso definire $\alpha$ in termini di $\sigma$: possiamo \textit{rigettare} l'ipotesi che le due misure siano dovute allo stesso fenomeno se $|x-y| > 2\sigma_{x-y}$ (che equivale circa ad $\alpha=5\%$ di prima; più precisamente per avere $\alpha=5\%$ si dovrebbe usare $|x-y| > 1.96\sigma_{x-y}$).
 
 \begin{center}
-    \centering
-    \begin{tabular}{ccc}
-        \toprule
-        Costante di Normalizzazione & Probabilità (Fattore di Boltzmann) & Spazio delle Fasi \\
-        \midrule
-        $p(v) dv = \displaystyle \left\{ 4\pi \left( \frac{m}{2\pi kT} \right)^{3/2} \right\}$ & $\displaystyle \cdot \left\{ \exp \left[ -\frac{mv^2}{2kT} \right] \right\}$ & $\displaystyle \cdot \left\{ v^2 dv \right\}$ \\
-        \bottomrule
-    \end{tabular}
+\begin{tikzpicture}
+    \begin{axis}[
+        no markers, domain=-4:4, samples=100,
+        axis lines=middle, axis line style={-},
+        xlabel=$x-y$, ylabel={},
+        every axis y label/.style={at=(current axis.above origin),anchor=south},
+        every axis x label/.style={at=(current axis.right of origin),anchor=west},
+        height=5cm, width=10cm,
+        xtick={-2, -1, 0, 1, 2},
+        xticklabels={$-2\sigma_{x-y}$, $-\sigma_{x-y}$, $0$, $\sigma_{x-y}$, $2\sigma_{x-y}$},
+        ytick=\empty,
+        enlargelimits=false, clip=false, axis on top
+      ]
+      \addplot [fill=cyan!20, draw=none, domain=-4:-2] {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+      \addplot [fill=cyan!20, draw=none, domain=2:4] {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+      \addplot [thick] {exp(-x^2/2)/sqrt(2*pi)};
+      
+      \node at (axis cs:-3, 0.08) {rigetto};
+      \node at (axis cs:3, 0.08) {rigetto};
+      \node[above] at (axis cs:2.5, 0.2) {test a 2 code};
+      \draw[->, thick] (axis cs:2.5, 0.18) -- (axis cs:2.5, 0.05);
+    \end{axis}
+\end{tikzpicture}
 \end{center}
 
-Questa scomposizione garantisce che:
-\begin{itemize}
-    \item \textbf{La costante di normalizzazione} assicura che l'integrale della probabilità $p(v)$ esteso a tutte le velocità possibili sia pari all'unità.
-    \item \textbf{La statistica di Boltzmann} (il termine esponenziale) tiene conto della probabilità di occupazione termodinamica di uno stato avente una data energia cinetica in funzione della temperatura assoluta $T$ del sistema.
-    \item \textbf{Lo spazio delle fasi} (il fattore $v^2 dv$) descrive la molteplicità del livello energetico, ovvero il numero di "modi" o stati microscopici con cui è possibile ottenere la stessa energia macroscopica. Nel nostro sistema isotropo in 3D, questo corrisponde al volume geometrico di un guscio sferico di raggio $v$ e spessore $dv$ all'interno dello spazio delle velocità. Tutti i punti di questo guscio possiedono esattamente la medesima energia $K = \frac{1}{2}mv^2$.
-\end{itemize}
-\end{bressan}
+Un altro modo di vedere la stessa cosa è definire $\delta = x-y$. La mia $H_0$ è che le misure siano compatibili, quindi $\mathbb{E}[x] = \mathbb{E}[y] \implies \mathbb{E}[x-y] = \mathbb{E}[\delta] = 0$. 
+Cerco di quante sigma si allontana il mio valore cercato con la quantità:
+\begin{equation}
+    \frac{\delta - \mathbb{E}[\delta]}{\sigma_\delta} \sim \mathcal{N}(0,1)
+\end{equation}
 
-\lezione{Compatibilità tra due misure}{14/05/2026}
-Consideriamo due variabili alleatorie $(x,y) \sim \mathcal{N}$, con $\sigma_x, \sigma_y$ indipendenti. 
-Allora nel caso in cui siano note le $\sigma$, posso cercare la compatibilità vedendo che la quanità $x-y$ sono compatibili con zero, con $\text{var} (x-y)= {\sigma_x}^2 + {\sigma_y}^2$. Posso allora dire che $x-y \sim \mathcal{N}(0, \sigma_{x-y})$.\\
-Le mie misure risultano non compatibili se vale che $ | x-y | > 2 \sigma_{x-y}$; posso anche cercare la quantità $\frac{s- \mathbb{E}(s)}{\sigma_s} \sim \mathcal{N}(0,1)$, dunque cerco di quante sigma si allontana il mio valore cercato. 
 \begin{esempio}
-    Consideriamo due misure di temperature di fusione di due materiali, m1 e m2. Trovo che $\frac{m1-m2}{\sigma_{m1-m2}} = 1.4 < 2$, dunque non posso rigettare l'ipotesi
+Misuro con due apparati indipendenti il punto di fusione di due campioni di un certo materiale e le misure sono $m_1 = 202 \pm 3$ K e $m_2 = 209 \pm 4$ K. Ci chiediamo se effettivamente i due campioni sono della stessa sostanza. \\
+\textbf{Svolgimento:} Calcolo $|m_1 - m_2| = |202 - 209| = 7$ K. \\
+Mentre $\sigma_{m_1-m_2} = \sqrt{3^2 + 4^2} = \sqrt{25} = 5$ K.
+$$ \frac{|m_1-m_2|}{\sigma_{m_1-m_2}} = \frac{7}{5} = 1.4 < 1.96 $$
+Quindi non posso rigettare la mia $H_0$ con una significatività del 5\%. Posso considerare le misure compatibili, per cui i due campioni saranno probabilmente della stessa sostanza.
 \end{esempio}
-Consideriamo ora il caso che io conosco i valori: $ \bar{x}, \bar{y}, \sigma_x, \sigma_y$. Le varianze delle medie mi danno: $\sigma_{\bar{x}}= \frac{\sigma_x}{\sqrt{N_x}} \: e \: \sigma_{\bar{y}}= \frac{\sigma_y}{\sqrt{N_y}}$
-Allora uso come ipotesi di test: 
-\begin{equation*}
-    t = \frac{\bar{x}- \bar{y}}{\sqrt{\frac{{\sigma_x}^2}{N_x}- \frac{{\sigma_y}^2}{N_y}}}
-\end{equation*}
+
+\subsection*{Caso 2: Medie di due set di dati con $\sigma$ nota}
+Aumentando la complessità di calcolo, l'altro caso in cui ci si può imbattere è: $x$ e $y$ non sono singole misure ma \textit{medie di due set di dati}. Quindi devo confrontare $\bar{x}$ e $\bar{y}$ e suppongo di \textit{conoscere le deviazioni standard delle due popolazioni} $\sigma_x$ e $\sigma_y$ (caso molto raro in fisica). 
+In tal caso posso calcolare le deviazioni standard delle medie come:
+$$ \sigma_{\bar{x}} = \frac{\sigma_x}{\sqrt{N_x}} \quad \text{e} \quad \sigma_{\bar{y}} = \frac{\sigma_y}{\sqrt{N_y}} $$
+Si può quindi ripetere lo stesso ragionamento di prima: posso considerare $\bar{x}$ e $\bar{y}$ come due variabili aleatorie con distribuzione gaussiana e quindi confronto $\bar{x}-\bar{y}$ con la sua deviazione standard:
+$$ \sigma_{\bar{x}-\bar{y}} = \sqrt{\sigma_{\bar{x}}^2 + \sigma_{\bar{y}}^2} = \sqrt{\frac{\sigma_x^2}{N_x} + \frac{\sigma_y^2}{N_y}} $$
+e rigetto l'ipotesi che le due misure vengano dallo stesso fenomeno con una significatività del 5\% se $|\bar{x}-\bar{y}| > 1.96 \sigma_{\bar{x}-\bar{y}}$.
+
 \begin{esempio}
-    aggiungere esempio
+So a priori che la $\sigma$ della distribuzione dei voti degli studenti in un certo esame è $\sigma = 2$. In un certo anno la media dei voti è $26.2$ su $109$ studenti; l'anno successivo la media è $26.4$ su $123$ studenti. Posso dire che il secondo gruppo di studenti è più bravo del primo? \\
+\textbf{Svolgimento:} Ho $\sigma_x = \sigma_y = 2$. Le sigma delle medie sono:
+$$ \sigma_{\bar{x}} = \frac{2}{\sqrt{109}} \simeq 0.19 \quad \text{e} \quad \sigma_{\bar{y}} = \frac{2}{\sqrt{123}} \simeq 0.18 $$
+$$ \sigma_{\bar{x}-\bar{y}} = \sqrt{(0.19)^2 + (0.18)^2} = 0.26 $$
+Calcolo la differenza: $|\bar{x}-\bar{y}| = |26.2 - 26.4| = 0.2$. \\
+La mia statistica di test vale:
+$$ \frac{|\bar{x}-\bar{y}|}{\sigma_{\bar{x}-\bar{y}}} = \frac{0.2}{0.26} = 0.76 < 1.96 $$
+In questo caso $|\bar{x}-\bar{y}|$ è lontano meno di una $\sigma_{\bar{x}-\bar{y}}$ da zero, quindi non devo rigettare l'ipotesi: ovvero non c'è nessun miglioramento significativo.
 \end{esempio}
-Se sono nel caso di avere i dati e dovo ricavare la comatibilità le formule sono diverse, infatti per ogni variabile la varianza me la ricavo da: $\hat{\sigma}_x = s_x = \sqrt{\frac{\sum_{i}^{} {(x_i - \bar{x})}^2}{N_x - 1}}$. 
-\subsection{t-Student}
-Consideriamo il caso di avere $x \sim \mathcal{N}(\mu, \sigma^2)$, allora se costruisco $z = \frac{x- \mu}{\sigma} \sim \mathcal{N}(0,1)$. 
-Se io invece non conosco $\sigma$ e devo stimarla, che distribuzione segue la quantità: $t= \frac{x- \mu}{\hat{\sigma}}$. Posso distinguere due casi:
+
+\subsection*{Caso 3: Medie di due set di dati con $\sigma$ ignota (Introduzione t-Student)}
+Consideriamo ora il caso più realistico: ho due misure ottenute come medie di un set di dati, $\bar{x}$ e $\bar{y}$, ma le $\sigma_x$ e $\sigma_y$ della popolazione \textit{non sono note}. Devo quindi stimarle dagli scarti. Ricordiamo che:
+$$ \hat{\sigma}_x = s_x = \sqrt{\frac{\sum_{i} (x_i - \bar{x})^2}{N_x - 1}} \quad \text{e} \quad \hat{\sigma}_y = s_y = \sqrt{\frac{\sum_{i} (y_i - \bar{y})^2}{N_y - 1}} $$
+Il fatto che le $\sigma$ sono una \textit{stima} invece del valore vero fa sì che non possiamo utilizzare le procedure descritte nel Caso 2, perché lì abbiamo assunto che $\frac{\bar{x}-\bar{y}}{\sigma_{\text{tot}}} \sim \mathcal{N}(0,1)$.
+L'equivalente quantità ottenuta sostituendo $\sigma_x$ e $\sigma_y$ con le rispettive stime \textbf{non è più una gaussiana} a causa dell'incertezza aggiunta dalla stima delle $\sigma$.
+In questo caso si usa un'altra distribuzione che si chiama \textbf{t-Student}.
+
+\subsection{Derivazione della Distribuzione t-Student}
+Per capire questa distribuzione bisogna considerare un caso più semplice. Supponiamo che $x \sim \mathcal{N}(\mu, \sigma^2)$, allora abbiamo visto che la quantità $z = \frac{x-\mu}{\sigma} \sim \mathcal{N}(0,1)$.
+Ora supponiamo di avere molte misure $\{x_1, \dots, x_N\}$ (variabili indipendenti distribuite gaussianamente). Allora:
+$$ \frac{\bar{x} - \mathbb{E}[\bar{x}]}{\sigma_{\bar{x}}} \sim \mathcal{N}(0,1) \implies z = \frac{\bar{x}-\mu}{\sigma/\sqrt{N}} \sim \mathcal{N}(0,1) $$
+Se non conosciamo $\sigma$ ma solo la sua stima $\hat{\sigma}$, come è distribuita la variabile $t = \frac{\bar{x}-\mu}{\hat{\sigma}/\sqrt{N}}$?
+Ricordiamoci che la varianza campionaria può essere calcolata in due modi:
 \begin{itemize}
-    \item consocendo $\mu$, allora ho che:
-    \begin{equation*}
-        \hat{\sigma}^2= \frac{1}{N} \sum_{i}^{} {(x_i - \mu)}^2
-    \end{equation*}
-    \item non conoscendo $\mu$:
-    \begin{equation*}
-        \hat{\sigma}^2= \frac{1}{N - 1} \sum_{i}^{} {(x_i - \mu)}^2
-    \end{equation*}
+    \item conoscendo $\mu$: $\hat{\sigma}^2 = \frac{1}{N} \sum_{i} (x_i - \mu)^2$
+    \item non conoscendo $\mu$: $\hat{\sigma}^2 = \frac{1}{N-1} \sum_{i} (x_i - \bar{x})^2$
 \end{itemize}
-Allora se chiamo $n$ i miei gradi di libertà, posso dire che la mia variabile $c \equiv \frac{x \hat{\sigma}^2}{\sigma^2} \sim \chi^2_n$. Se ora riscrivo il valore di t ho che: $ t = \frac{x- \mu}{\hat{\sigma}}= \frac{(x-\mu) / \sigma}{\sqrt{\hat{\sigma}^2 \ \sigma^2}}$.
+Se indico con $n$ i gradi di libertà (che vale $N$ nel primo caso e $N-1$ nel secondo), la quantità $c \equiv \frac{n \hat{\sigma}^2}{\sigma^2}$ è distribuita come un $\chi^2$ con $n$ gradi di libertà: $c \sim \chi^2_n$. 
+
+Nell'espressione di $t$ posso moltiplicare e dividere per $\sigma$ e ottengo:
+$$ t = \frac{\bar{x}-\mu}{\hat{\sigma}/\sqrt{N}} \cdot \frac{\sigma}{\sigma} = \frac{\bar{x}-\mu}{\sigma/\sqrt{N}} \cdot \frac{\sigma}{\hat{\sigma}} = z \sqrt{\frac{\sigma^2}{\hat{\sigma}^2}} = z \sqrt{\frac{n}{c}} $$
+Quindi la possiamo scrivere come:
 \begin{equation}
-    t = \frac{z}{\sqrt{c/n}}
+    t = \frac{z}{\sqrt{c/n}} \label{eq:t_def}
 \end{equation}
 
-Per calcolare la p.d.f uso la formula della probabilità congiunta:
-\begin{equation*}
-    P(t, c ; n)= P(z, c; n) \left\lvert \frac{\partial z}{\partial t}\right\rvert 
-\end{equation*}
-Allora dato che presuppongo che $z$ e $c$ siano indipendenti, posso scrivere:
+Sapendo le p.d.f. di $z$ e di $c$:
+$$ P_z(z) = \frac{e^{-z^2/2}}{\sqrt{2\pi}}, \quad P_c(c) = \frac{2^{-n/2}}{\Gamma(n/2)} c^{\frac{n}{2}-1} e^{-c/2} $$
+Possiamo usare le regole del cambiamento di variabili per ricavare $P(t)$. Partiamo dalla distribuzione congiunta $P(t,c; n) = P(z,c;n) \left| \frac{\partial z}{\partial t} \right|$. Dalla \eqref{eq:t_def} ricaviamo $z = t\sqrt{\frac{c}{n}} \implies \frac{\partial z}{\partial t} = \sqrt{\frac{c}{n}}$.
+Assumendo che $z$ e $c$ siano indipendenti (la media campionaria e la varianza campionaria lo sono per campioni gaussiani), si ha $P(z,c;n) = P_z(z)P_c(c)$:
+$$ P(t,c;n) = \frac{e^{-t^2 c / (2n)}}{\sqrt{2\pi}} \cdot \frac{2^{-n/2}}{\Gamma(n/2)} c^{\frac{n}{2}-1} e^{-c/2} \sqrt{\frac{c}{n}} $$
+Riordinando i termini in $c$:
+$$ P(t,c;n) = \frac{1}{\sqrt{\pi n} \, 2^{(n+1)/2} \Gamma(n/2)} \cdot c^{\frac{n-1}{2}} e^{-\frac{c}{2} \left( \frac{t^2}{n} + 1 \right)} $$
+Resta ora da integrare rispetto a $c$ tra $0$ e $+\infty$ per trovare la p.d.f marginale $P(t)$. Possiamo usare l'integrale notevole per la funzione Gamma:
+$$ \int_0^{+\infty} x^m e^{-ax} dx = \frac{\Gamma(m+1)}{a^{m+1}} $$
+con $m = \frac{n-1}{2}$ e $a = \frac{1}{2} \left( \frac{t^2}{n} + 1 \right)$. Pertanto $m+1 = \frac{n+1}{2}$.
+Sostituendo si ha:
 \begin{equation}
-    P(z, c, n )= P(z) P(c;n) = \frac{\exp(-z^2 / s)}{\sqrt{2 \pi}} \frac{2^{-n/2}}{\Gamma(n/2)} c^{n/2 - 1 } \exp(-c/2)
+    P(t) = \frac{\Gamma\left(\frac{n+1}{2}\right)}{\sqrt{\pi n} \, \Gamma\left(\frac{n}{2}\right)} \left( 1 + \frac{t^2}{n} \right)^{-\frac{n+1}{2}}
 \end{equation}
-usando inolte il fatto che vale: $ \frac{\partial z}{\partial t}= \sqrt{\frac{c}{n}}$, posso scrivere che:
-\begin{equation}
-    P(t,c; n) = \frac{1}{\sqrt{\pi n } \: \Gamma(n/2) s^{(n+1)/2}} c^{(n-1)/2} \exp(-c(t^2/n +1)/2)
-\end{equation}
-Ora utilizzando un integrale notevole per eliminare il fattore che è un chi quadro, così da calcolarmi la p.d.f cumulativa della sola t:
-\begin{equation*}
-    \int_{0}^{\infty} x^m e^{-ax}= \frac{\Gamma(m+1)}{a^{m+1}}
-\end{equation*}
-Allora posso riscrivere che:
-\begin{equation}
-    P_t(t)= \int_{0}^{\infty} P(t,c; n) dc = \frac{\Gamma(\frac{n+1}{2})}{\sqrt{\pi n} \: \Gamma(\frac{n}{2}) {(\frac{t^2}{n} + 1)}^{(n+1)/2}} \label{eq: t-Student}
-\end{equation}
-Allora posso dire che la mia variabile $ t = \frac{x-\mu}{\hat{\sigma}} \sim \text{t-Student}(n)$. 
+Questa è la distribuzione nota come \textbf{t-Student}. Essa somiglia molto ad una normale standard per $n$ molto grandi, mentre per $n$ piccoli le code tendono ad essere più lunghe.
 
-Nel caso della media di due variabili ho che:
-\begin{itemize}
-    \item se ho noto $\sigma$
-    \item se devo stimare $\sigma$
-    \begin{equation}
-        t = \frac{\bar{x}- \bar{y}}{S \sqrt{\frac{1}{N_x}- \frac{1}{N_y}}}
-    \end{equation}
-    dove il valore $S$ è pari a:
-    \begin{equation*}
-        S= \frac{(N_x-1){s_x}^2 + (N_y-1){s_y}^2}{N_x + N_y -2}
-    \end{equation*}
-\end{itemize}
-Nel secondo caso allora posso vedere che:
-\begin{equation*}
-    {\hat{\sigma}}^2= {s_x}^2= \frac{1}{N_x-1}\sum_{i}^{}{(x_i - \bar{x})}^2
-\end{equation*}
-\begin{equation*}
-    (N_x-1) \frac{{s_x}^2}{\sigma^2} \sim \chi^2_{N_x-1} \vspace{1cm} (N_y-1) \frac{{s_y}^2}{\sigma^2} \sim \chi^2_{N_y-1}
-\end{equation*}
-Cosa succede nel caso in cui i miei campioni siano dipendenti:
-\begin{itemize}
-    \item $x,y$ sono dipendenti
-    \begin{equation*}
-        \text{var} (x-y)= \text{var (x)}+ \text{var (y)} - 2 \rho \sigma_x \sigma_y \simeq {(\sigma_x - \sigma_y)}^2
-    \end{equation*}
-    \item non conoscendo le varianze:
-    \begin{equation*}
-        \delta_i = (x_i-y_i) \rightarrow \frac{\bar{\delta}}{\hat{\sigma_{\delta}} \sqrt{N}} \sim \text{t-Student}
-    \end{equation*}
-\end{itemize}
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}[
+        no markers, domain=-5:5, samples=100,
+        axis lines=middle, axis line style={-},
+        xlabel=$x$, ylabel={},
+        every axis x label/.style={at=(current axis.right of origin),anchor=west},
+        height=5cm, width=8cm,
+        xtick=\empty, ytick=\empty,
+        enlargelimits=false, clip=false
+      ]
+      % Gaussiana
+      \addplot [thick, black] {exp(-x^2/2)/sqrt(2*pi)} node[pos=0.55, above] {Gaussiana};
+      % t-Student (n=2 for exaggeration)
+      \addplot [thick, blue] {(1/(2*sqrt(2))) * (1+x^2/2)^(-1.5)} node[pos=0.7, right, xshift=2mm] {t-Student};
+    \end{axis}
+\end{tikzpicture}
+\end{center}
 
+Abbiamo quindi trovato che forma ha la p.d.f. della quantità:
+$$ t = \frac{\bar{x}-\mu}{\hat{\sigma}/\sqrt{N}} $$
+e quindi si può usare con le stesse regole di qualunque altra statistica di test. Consente di verificare se la media $\bar{x}$ è compatibile con il valore di aspettazione della popolazione, note le stime della deviazione standard.
+
+\subsection*{Ritorno al Caso 3: Medie con Varianze Ignote}
+Ora torniamo al problema da cui siamo partiti: voglio confrontare $\bar{x}$ e $\bar{y}$ (medie di due campioni) e consideriamo il caso semplice in cui si assume che le popolazioni di origine abbiano la stessa varianza vera $\sigma_x = \sigma_y = \sigma$.
+Abbiamo visto che se conoscessimo $\sigma$, la quantità $\frac{\bar{x}-\bar{y}}{\sigma \sqrt{1/N_x + 1/N_y}}$ sarebbe una normale standard.
+
+Se non conosco $\sigma$, devo trovare una stima. Si dimostra che la quantità che sostituisce $\sigma^2$ in questo caso è la \textbf{varianza globale} (o *pooled variance*) $S^2$, definita come la media pesata delle varianze campionarie:
+\begin{equation}
+    S^2 = \frac{(N_x-1)s_x^2 + (N_y-1)s_y^2}{N_x + N_y - 2}
+\end{equation}
+E la statistica di test diventa:
+\begin{equation}
+    t = \frac{\bar{x}-\bar{y}}{S \sqrt{\frac{1}{N_x} + \frac{1}{N_y}}}
+\end{equation}
+Questa variabile segue una distribuzione \textbf{t-Student con $n = N_x + N_y - 2$ gradi di libertà}.
+
+\textbf{Dimostrazione intuitiva:}
+Sappiamo che:
+$$ (N_x-1)\frac{s_x^2}{\sigma^2} \sim \chi^2_{N_x-1} \quad \text{e} \quad (N_y-1)\frac{s_y^2}{\sigma^2} \sim \chi^2_{N_y-1} $$
+Se sommo queste due quantità, per le proprietà del $\chi^2$ ho ancora una distribuzione $\chi^2$ con gradi di libertà pari alla somma $n = (N_x-1) + (N_y-1) = N_x + N_y - 2$.
+La somma vale:
+$$ \frac{(N_x-1)s_x^2 + (N_y-1)s_y^2}{\sigma^2} = (N_x + N_y - 2)\frac{S^2}{\sigma^2} = n \frac{S^2}{\sigma^2} \equiv c' \sim \chi^2_n $$
+Se prendiamo la relazione iniziale (con $\sigma$ nota), la moltiplichiamo e dividiamo per $\sigma$:
+$$ t = \frac{\bar{x}-\bar{y}}{S \sqrt{\frac{1}{N_x}+\frac{1}{N_y}}} = \frac{\frac{\bar{x}-\bar{y}}{\sigma \sqrt{\frac{1}{N_x}+\frac{1}{N_y}}}}{\sqrt{\frac{S^2}{\sigma^2}}} = \frac{z'}{\sqrt{c'/n}} $$
+dove il numeratore è distribuito come $\mathcal{N}(0,1)$. Questa espressione ricalca esattamente la forma \eqref{eq:t_def}, quindi $t$ segue una t-Student.
+
+\subsubsection*{Set di dati dipendenti}
+Cosa succede nel caso in cui i miei campioni non siano indipendenti? Se $x$ e $y$ sono correlati (es. misure prese dalle stesse persone prima e dopo una cura):
+$$ \text{var}(x-y) = \text{var}(x) + \text{var}(y) - 2\rho \sigma_x \sigma_y = \sigma_x^2 + \sigma_y^2 - 2\rho \sigma_x \sigma_y $$
+Spesso si assume $\rho \approx 1$ (massima correlazione), per cui $\text{var}(x-y) \simeq (\sigma_x - \sigma_y)^2$. Questa varianza si può usare per il Caso 1.
+
+Tuttavia, il modo più pulito di procedere in questi casi (Caso 3 con dati appaiati) è, invece di calcolare le medie $\bar{x}$ e $\bar{y}$ separatamente, calcolare \textit{direttamente} la differenza per ogni coppia di misure:
+$$ \delta_i = x_i - y_i $$
+Poi si calcola la media di queste quantità $\bar{\delta}$ e la loro deviazione standard campionaria $\hat{\sigma}_\delta$. A questo punto si lavora direttamente con la variabile $\delta$ applicando un test t-Student a un campione (sulla differenza da 0):
+$$ t = \frac{\bar{\delta}}{\hat{\sigma}_\delta / \sqrt{N}} \sim \text{t-Student}(N-1) $$
+
+\section*{Intervalli di confidenza}
+Nei test di ipotesi abbiamo parlato di significatività riferendoci all'integrale della p.d.f. \textit{al di sopra} (le code) di un certo valore di soglia.
+Il \textbf{livello di confidenza} è un po' l'opposto: rappresenta l'area \textit{centrale} della distribuzione.
+
+\begin{center}
+\begin{tikzpicture}
+    % Significatività
+    \begin{scope}[shift={(0,0)}]
+        \begin{axis}[
+            no markers, domain=-3:3, samples=100,
+            axis lines=middle, axis line style={-},
+            xlabel={}, ylabel={}, height=4cm, width=5cm,
+            xtick=\empty, ytick=\empty, enlargelimits=false, clip=false,
+            title={Significatività (es. 5\%)}
+          ]
+          \addplot [fill=black!20, draw=none, domain=-3:-1.96] {exp(-x^2/2)} \closedcycle;
+          \addplot [fill=black!20, draw=none, domain=1.96:3] {exp(-x^2/2)} \closedcycle;
+          \addplot [thick] {exp(-x^2/2)};
+        \end{axis}
+    \end{scope}
+
+    % Confidenza
+    \begin{scope}[shift={(6,0)}]
+        \begin{axis}[
+            no markers, domain=-3:3, samples=100,
+            axis lines=middle, axis line style={-},
+            xlabel={}, ylabel={}, height=4cm, width=5cm,
+            xtick=\empty, ytick=\empty, enlargelimits=false, clip=false,
+            title={Livello di confidenza (es. 95\%)}
+          ]
+          \addplot [fill=black!10, draw=none, domain=-1.96:1.96] {exp(-x^2/2)} \closedcycle;
+          \addplot [thick] {exp(-x^2/2)};
+        \end{axis}
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{esempio}
+Se so che una fabbrica che costruisce scatole di cereali le produce secondo una distribuzione gaussiana con media $\mu = 520$ g e $\sigma = 10$ g, allora mi aspetto che il 68\% dei pacchetti prodotti avrà peso compreso tra 510 g e 530 g; oppure possiamo dire che il peso è tra 510 g e 530 g \textit{con un livello di confidenza del 68\%}.
+\end{esempio}
+
+In certi casi può essere utile condensare l'informazione in termini di livelli di confidenza in un diagramma chiamato \textbf{diagramma di confidenza} (o *confidence belt*), che mostra come cambiano gli intervalli di confidenza al variare di un parametro della distribuzione (ad esempio per una gaussiana può essere la media $\mu$).
+
+Per costruirlo si stabilisce il livello di confidenza scelto (per esempio il 90\%) e, \textit{per ogni valore del parametro vero $\mu$}, si possono determinare i bordi misurabili $x_-$ e $x_+$ tali che:
+$$ \int_{x_-}^{x_+} \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} dx = 0.90 $$
+
+Viceversa, una volta fatta l'osservazione e ottenuto un valore sperimentale $x$ (fissato), posso intersecare il diagramma in verticale per trovare i due valori $\mu_-$ e $\mu_+$ che "shiftano" la gaussiana in modo che l'integrale a destra o a sinistra di $x$ contenga rispettivamente una frazione di probabilità corrispondente ai rigetti (es. il 5\% di code per lato nel caso di CL al 90\%):
+$$ \int_x^{\infty} \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x'-\mu_-)^2}{2\sigma^2}} dx' = 0.05 \quad \text{e} \quad \int_{-\infty}^x \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x'-\mu_+)^2}{2\sigma^2}} dx' = 0.05 $$
+Questi valori $\mu_-$ e $\mu_+$ formano l'intervallo di confidenza per il parametro vero dato il valore misurato.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+    % ==========================================
+    % DIAGRAMMA DI CONFIDENZA (A SINISTRA)
+    % ==========================================
+    % Assi 
+    \draw[->, thick] (0,0) -- (6.5,0) node[below] {$x$};
+    \draw[->, thick] (0,0) -- (0,5.5) node[left] {$\mu$};
+    
+    % Curve della belt (rappresentate come rette per simularne il tratto)
+    % Curva di SINISTRA (bordo x_-)
+    \draw[thick] (1.5, 0.5) -- (4.5, 5) node[right] {$x_-$};
+    % Curva di DESTRA (bordo x_+)
+    \draw[thick] (3.16, 0.5) -- (6.16, 5) node[right] {$x_+$};
+
+    % --- FASE 1: COSTRUZIONE (Fisso \mu) - AZZURRO ---
+    \node[cyan, left] at (0,1.0) {fisso $\mu$};
+    \draw[->, cyan, thick] (-0.5, 1.2) .. controls (-0.3,1.5) .. (-0.1,1.5);
+    \draw[dashed, cyan, thick] (0, 1.5) -- (3.82, 1.5); 
+    
+    % Intersezione sinistra (x_-)
+    \fill[cyan] (2.16, 1.5) circle (2pt);
+    \draw[dashed, cyan, thick] (2.16, 1.5) -- (2.16, 0) node[below] {$x_-$};
+    
+    % Intersezione destra (x_+)
+    \fill[cyan] (3.82, 1.5) circle (2pt);
+    \draw[dashed, cyan, thick] (3.82, 1.5) -- (3.82, 0) node[below] {$x_+$};
+
+    % --- FASE 2: LETTURA (Misura x) - BLU SCURO ---
+    \draw[dashed, blue, thick] (4, -0.5) node[below, text=black] {misura $x$} -- (4, 4.5);
+    
+    % Intersezione INFERIORE (sulla curva di destra x_+) -> mi dà \mu_+
+    \fill[blue] (4, 1.75) circle (2pt);
+    \draw[dashed, blue, thick] (4, 1.75) -- (0, 1.75) node[left, text=black] {$\mu_+$};
+    
+    % Intersezione SUPERIORE (sulla curva di sinistra x_-) -> mi dà \mu_-
+    \fill[blue] (4, 4.25) circle (2pt);
+    \draw[dashed, blue, thick] (4, 4.25) -- (0, 4.25) node[left, text=black] {$\mu_-$};
+
+    % ==========================================
+    % GAUSSIANA AFFIANCATA (A DESTRA)
+    % ==========================================
+    \begin{scope}[shift={(8.5, 1.5)}]
+        % Asse A (Azzurro scentrato) e asse X (nero)
+        \draw[->, thick, cyan] (-2.2, 0) -- (-2.2, 2.5) node[right] {$A$};
+        \draw[->, thick] (-1.8, 0) -- (2.2, 0) node[below] {$x$};
+        
+        % Curva Gaussiana nera
+        \draw[thick, domain=-1.6:1.6, samples=50] plot (\x, {2*exp(-(\x*\x)/0.4)});
+        
+        % Curva ricalcata in azzurro (leggermente traslata per simulare la penna del prof)
+        \draw[thick, cyan, domain=-1.6:1.6, samples=50] plot (\x+0.05, {2.05*exp(-(\x*\x)/0.4)});
+        
+        % Tratteggi interni
+        \draw[dashed] (-0.7, 0) node[below] {$x_-$} -- (-0.7, {2*exp(-(0.7*0.7)/0.4)});
+        \draw[dashed] (0.7, 0) node[below] {$x_+$} -- (0.7, {2*exp(-(0.7*0.7)/0.4)});
+        \draw[dashed] (0, 0) node[below] {$\mu$} -- (0, 2);
+    \end{scope}
+\end{tikzpicture}
+\end{center}
 
 \end{document}

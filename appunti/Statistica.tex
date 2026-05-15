@@ -6520,7 +6520,9 @@ La variabile $x-y$ è una variabile aleatoria la cui varianza è:
     \text{var}(x-y) = \text{var}(x) + \text{var}(y) = \sigma_x^2 + \sigma_y^2 \implies \sigma_{x-y} = \sqrt{\sigma_x^2 + \sigma_y^2}
 \end{equation}
 
-In questo caso utilizziamo $x-y$ come statistica di test, assumendo una distribuzione gaussiana $x-y \sim \mathcal{N}(0, \sigma_{x-y})$. Ha senso definire $\alpha$ in termini di $\sigma$: possiamo \textit{rigettare} l'ipotesi che le due misure siano dovute allo stesso fenomeno se $|x-y| > 2\sigma_{x-y}$ (che equivale circa ad $\alpha=5\%$ di prima; più precisamente per avere $\alpha=5\%$ si dovrebbe usare $|x-y| > 1.96\sigma_{x-y}$).
+In questo caso utilizziamo $x-y$ come statistica di test, dalle ipotesi segue che $x-y \sim \mathcal{N}(0, \sigma_{x-y})$ 
+\footnote{si è gia imposta l'ipotesi $H_0$: x e y sono compatibili, dunque è naturale che $x-y$ abbia una distribuzione centrata in 0}.ù
+Ha senso definire $\alpha$ in termini di $\sigma$: possiamo \textit{rigettare} l'ipotesi che le due misure siano dovute allo stesso fenomeno se $|x-y| > 2\sigma_{x-y}$ (che equivale circa ad $\alpha=5\%$ di prima; più precisamente per avere $\alpha=5\%$ si dovrebbe usare $|x-y| > 1.96\sigma_{x-y}$).
 
 \begin{center}
 \begin{tikzpicture}
@@ -6552,7 +6554,7 @@ Un altro modo di vedere la stessa cosa è definire $\delta = x-y$. La mia $H_0$ 
 Cerco di quante sigma si allontana il mio valore cercato con la quantità:
 \begin{equation}
     \frac{\delta - \mathbb{E}[\delta]}{\sigma_\delta} \sim \mathcal{N}(0,1)
-\end{equation}
+\end{equation}\footnote{$\delta$ restituisce direttamente lo spostamento in unità di $\sigma$.}
 
 \begin{esempio}
 Misuro con due apparati indipendenti il punto di fusione di due campioni di un certo materiale e le misure sono $m_1 = 202 \pm 3$ K e $m_2 = 209 \pm 4$ K. Ci chiediamo se effettivamente i due campioni sono della stessa sostanza. \\
@@ -6610,7 +6612,7 @@ Quindi la possiamo scrivere come:
 Sapendo le p.d.f. di $z$ e di $c$:
 $$ P_z(z) = \frac{e^{-z^2/2}}{\sqrt{2\pi}}, \quad P_c(c) = \frac{2^{-n/2}}{\Gamma(n/2)} c^{\frac{n}{2}-1} e^{-c/2} $$
 Possiamo usare le regole del cambiamento di variabili per ricavare $P(t)$. Partiamo dalla distribuzione congiunta $P(t,c; n) = P(z,c;n) \left| \frac{\partial z}{\partial t} \right|$. Dalla \eqref{eq:t_def} ricaviamo $z = t\sqrt{\frac{c}{n}} \implies \frac{\partial z}{\partial t} = \sqrt{\frac{c}{n}}$.
-Assumendo che $z$ e $c$ siano indipendenti (la media campionaria e la varianza campionaria lo sono per campioni gaussiani), si ha $P(z,c;n) = P_z(z)P_c(c)$:
+Assumendo che $z$ e $c$ siano indipendenti (la media campionaria, da cui dipende $z$, e la varianza campionaria, da cui dipende $c$, lo sono per campioni gaussiani), si ha $P(z,c;n) = P_z(z)P_c(c)$:
 $$ P(t,c;n) = \frac{e^{-t^2 c / (2n)}}{\sqrt{2\pi}} \cdot \frac{2^{-n/2}}{\Gamma(n/2)} c^{\frac{n}{2}-1} e^{-c/2} \sqrt{\frac{c}{n}} $$
 Riordinando i termini in $c$:
 $$ P(t,c;n) = \frac{1}{\sqrt{\pi n} \, 2^{(n+1)/2} \Gamma(n/2)} \cdot c^{\frac{n-1}{2}} e^{-\frac{c}{2} \left( \frac{t^2}{n} + 1 \right)} $$
@@ -6650,7 +6652,7 @@ e quindi si può usare con le stesse regole di qualunque altra statistica di tes
 Ora torniamo al problema da cui siamo partiti: voglio confrontare $\bar{x}$ e $\bar{y}$ (medie di due campioni) e consideriamo il caso semplice in cui si assume che le popolazioni di origine abbiano la stessa varianza vera $\sigma_x = \sigma_y = \sigma$.
 Abbiamo visto che se conoscessimo $\sigma$, la quantità $\frac{\bar{x}-\bar{y}}{\sigma \sqrt{1/N_x + 1/N_y}}$ sarebbe una normale standard.
 
-Se non conosco $\sigma$, devo trovare una stima. Si dimostra che la quantità che sostituisce $\sigma^2$ in questo caso è la \textbf{varianza globale} (o *pooled variance*) $S^2$, definita come la media pesata delle varianze campionarie:
+Se non conosco $\sigma$, devo trovare una stima. Si dimostra che la quantità che sostituisce $\sigma^2$ in questo caso è la \textbf{varianza globale} (o "pooled variance") $S^2$, definita come la media pesata delle varianze campionarie:
 \begin{equation}
     S^2 = \frac{(N_x-1)s_x^2 + (N_y-1)s_y^2}{N_x + N_y - 2}
 \end{equation}
@@ -6684,38 +6686,6 @@ $$ t = \frac{\bar{\delta}}{\hat{\sigma}_\delta / \sqrt{N}} \sim \text{t-Student}
 Nei test di ipotesi abbiamo parlato di significatività riferendoci all'integrale della p.d.f. \textit{al di sopra} (le code) di un certo valore di soglia.
 Il \textbf{livello di confidenza} è un po' l'opposto: rappresenta l'area \textit{centrale} della distribuzione.
 
-\begin{center}
-\begin{tikzpicture}
-    % Significatività
-    \begin{scope}[shift={(0,0)}]
-        \begin{axis}[
-            no markers, domain=-3:3, samples=100,
-            axis lines=middle, axis line style={-},
-            xlabel={}, ylabel={}, height=4cm, width=5cm,
-            xtick=\empty, ytick=\empty, enlargelimits=false, clip=false,
-            title={Significatività (es. 5\%)}
-          ]
-          \addplot [fill=black!20, draw=none, domain=-3:-1.96] {exp(-x^2/2)} \closedcycle;
-          \addplot [fill=black!20, draw=none, domain=1.96:3] {exp(-x^2/2)} \closedcycle;
-          \addplot [thick] {exp(-x^2/2)};
-        \end{axis}
-    \end{scope}
-
-    % Confidenza
-    \begin{scope}[shift={(6,0)}]
-        \begin{axis}[
-            no markers, domain=-3:3, samples=100,
-            axis lines=middle, axis line style={-},
-            xlabel={}, ylabel={}, height=4cm, width=5cm,
-            xtick=\empty, ytick=\empty, enlargelimits=false, clip=false,
-            title={Livello di confidenza (es. 95\%)}
-          ]
-          \addplot [fill=black!10, draw=none, domain=-1.96:1.96] {exp(-x^2/2)} \closedcycle;
-          \addplot [thick] {exp(-x^2/2)};
-        \end{axis}
-    \end{scope}
-\end{tikzpicture}
-\end{center}
 
 \begin{esempio}
 Se so che una fabbrica che costruisce scatole di cereali le produce secondo una distribuzione gaussiana con media $\mu = 520$ g e $\sigma = 10$ g, allora mi aspetto che il 68\% dei pacchetti prodotti avrà peso compreso tra 510 g e 530 g; oppure possiamo dire che il peso è tra 510 g e 530 g \textit{con un livello di confidenza del 68\%}.
@@ -6731,47 +6701,45 @@ $$ \int_x^{\infty} \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x'-\mu_-)^2}{2\sigma^2
 Questi valori $\mu_-$ e $\mu_+$ formano l'intervallo di confidenza per il parametro vero dato il valore misurato.
 
 \begin{center}
-\begin{tikzpicture}[scale=1.1]
-    % ==========================================
-    % DIAGRAMMA DI CONFIDENZA (A SINISTRA)
-    % ==========================================
-    % Assi 
-    \draw[->, thick] (0,0) -- (6.5,0) node[below] {$x$};
-    \draw[->, thick] (0,0) -- (0,5.5) node[left] {$\mu$};
-    
-    % Curve della belt (rappresentate come rette per simularne il tratto)
-    % Curva di SINISTRA (bordo x_-)
-    \draw[thick] (1.5, 0.5) -- (4.5, 5) node[right] {$x_-$};
-    % Curva di DESTRA (bordo x_+)
-    \draw[thick] (3.16, 0.5) -- (6.16, 5) node[right] {$x_+$};
+\begin{tikzpicture}[>=stealth, scale=1.2]
 
-    % --- FASE 1: COSTRUZIONE (Fisso \mu) - AZZURRO ---
-    \node[cyan, left] at (0,1.0) {fisso $\mu$};
-    \draw[->, cyan, thick] (-0.5, 1.2) .. controls (-0.3,1.5) .. (-0.1,1.5);
-    \draw[dashed, cyan, thick] (0, 1.5) -- (3.82, 1.5); 
-    
-    % Intersezione sinistra (x_-)
-    \fill[cyan] (2.16, 1.5) circle (2pt);
-    \draw[dashed, cyan, thick] (2.16, 1.5) -- (2.16, 0) node[below] {$x_-$};
-    
-    % Intersezione destra (x_+)
-    \fill[cyan] (3.82, 1.5) circle (2pt);
-    \draw[dashed, cyan, thick] (3.82, 1.5) -- (3.82, 0) node[below] {$x_+$};
+    % Assi
+    \draw[->, thick] (0,0) -- (6,0) node[below] {Misura $x$};
+    \draw[->, thick] (0,0) -- (0,6) node[left] {Parametro vero $\mu$};
 
-    % --- FASE 2: LETTURA (Misura x) - BLU SCURO ---
-    \draw[dashed, blue, thick] (4, -0.5) node[below, text=black] {misura $x$} -- (4, 4.5);
-    
-    % Intersezione INFERIORE (sulla curva di destra x_+) -> mi dà \mu_+
-    \fill[blue] (4, 1.75) circle (2pt);
-    \draw[dashed, blue, thick] (4, 1.75) -- (0, 1.75) node[left, text=black] {$\mu_+$};
-    
-    % Intersezione SUPERIORE (sulla curva di sinistra x_-) -> mi dà \mu_-
-    \fill[blue] (4, 4.25) circle (2pt);
-    \draw[dashed, blue, thick] (4, 4.25) -- (0, 4.25) node[left, text=black] {$\mu_-$};
+    % Cintura di confidenza (le due rette diagonali)
+    % Usiamo due rette con pendenza simile ma traslate
+    \draw[thick, blue] (0.5, 1.5) -- (4.5, 5.5) node[above, black] {$x_+$ (limite sup)};
+    \draw[thick, blue] (1.5, 0.5) -- (5.5, 4.5) node[right, black] {$x_-$ (limite inf)};
 
-    % ==========================================
-    % GAUSSIANA AFFIANCATA (A DESTRA)
-    % ==========================================
+    % Valore misurato fisso x0
+    \coordinate (x0) at (3.5, 0);
+    \filldraw[red] (x0) circle (1.5pt) node[below] {$x_{mis}$};
+    
+    % Intersezioni e proiezioni
+    % Punto sulla retta inferiore (dà il valore di mu superiore)
+    \draw[dashed, red] (3.5, 0) -- (3.5, 2.5);
+    \draw[dashed, red] (3.5, 2.5) -- (0, 2.5) node[left] {$\mu_{inf}$};
+    \filldraw[black] (3.5, 2.5) circle (1.5pt);
+
+    % Punto sulla retta superiore (dà il valore di mu inferiore)
+    \draw[dashed, red] (3.5, 2.5) -- (3.5, 4.5);
+    \draw[dashed, red] (3.5, 4.5) -- (0, 4.5) node[left] {$\mu_{sup}$};
+    \filldraw[black] (3.5, 4.5) circle (1.5pt);
+
+    % Intervallo di confidenza sull'asse mu
+    \draw[ultra thick, red] (0, 2.5) -- (0, 4.5);
+    \node[red, rotate=90] at (-0.8, 3.5) {Intervallo di Confidenza};
+
+    % Nota esplicativa
+    \node[anchor=north west, draw, fill=yellow!10, font=\small] at (0.5, 5.5) {
+        \begin{tabular}{l}
+        1. Fissi la misura $x_{mis}$ \\
+        2. Sali in verticale \\
+        3. Leggi $\mu$ sulle ordinate
+        \end{tabular}
+    };
+
     \begin{scope}[shift={(8.5, 1.5)}]
         % Asse A (Azzurro scentrato) e asse X (nero)
         \draw[->, thick, cyan] (-2.2, 0) -- (-2.2, 2.5) node[right] {$A$};

@@ -259,7 +259,7 @@
 
 \begin{center}
 \section*{Premessa}
-All'interno di queste dispense sono presenti dei richiami agli argomenti del programma dell'anno scorso (Corso del prof. Bressan). Invece di relegare questi richiami unicamente ad un capitolo iniziale, abbiamo scelto anche di integrarli direttamente all'interno dei nuovi capitoli nel momento in cui si rendono necessari. Questi richiami sono facilmente riconoscibili perché racchiusi in appositi riquadri evidenziati in rosso (denominati 'PARTE DI BRESSAN'). Le parti con "Approfondimento" sono facoltative (non trattatte a lezione)\end{center}
+All'interno di queste dispense sono presenti dei richiami agli argomenti del programma dell'anno scorso (Corso del prof. Bressan). Invece di relegare questi richiami unicamente ad un capitolo iniziale, abbiamo scelto anche di integrarli direttamente all'interno dei nuovi capitoli nel momento in cui si rendono necessari. Questi richiami sono facilmente riconoscibili perché racchiusi in appositi riquadri evidenziati in rosso (denominati 'PARTE DI BRESSAN'). Queste parti sono da considerarsi facoltative, poiché alcuni argomenti affrontati con il prof. Bressan vengono dati per scontati nel corso. Le parti con "Approfondimento" sono facoltative (non trattate a lezione)\end{center}
 
 
 \vspace{1.5em}
@@ -297,7 +297,7 @@ All'interno di queste dispense sono presenti dei richiami agli argomenti del pro
 \lezioneSenzaIndice{Ripasso di Bressan}{2025}
 La probabilità è la misura del grado della credenza che un certo evento avvenga.
 
-L'oggetto della teoria è un certo \textit{esperimento causale}, la cui esecuzione è detta \textit{prova}, il risultato è indicato con \textit{$\omega$}, l'insieme di
+L'oggetto della teoria è un certo \textit{esperimento casuale}, la cui esecuzione è detta \textit{prova}, il risultato è indicato con \textit{$\omega$}, l'insieme di
 tutti gli $\omega$ possibili è detto \textit{spazio campione $\Omega$}. Un \textit{Evento A} è un sottoinsieme di $\Omega$, se $\omega$ $\in$ A allora esso realizza l'Evento.
 Se esso è l'unico elemento costituente di A allora esso è l'\textit{evento elementare}, altrimenti A è un \textit{evento composto}.
 Altre nomenclature sono legate alla teoria insiemistica (per esempio due eventi A e B sono disgiunti se l'insieme A non interseca l'insieme B).
@@ -311,11 +311,11 @@ Si possono dare due definizioni di probabilità:
 P(E)= \frac{\text{casi favorevoli}}{\text{casi possibili}}
 \]
 
-Questa funzione è utile quando i casi risultano essere \textbf{ugumente possibili}.
+Questa funzione è utile quando i casi risultano essere \textbf{ugualmente possibili}.
 
 \vspace{0.5cm}
 
-\item[FREQUENTISTICA]: emerge dal ragioanamento fondato sui risultati di un esperimento:
+\item[FREQUENTISTICA]: emerge dal ragionamento fondato sui risultati di un esperimento:
 \[
 P(E)=\lim_{N \rightarrow \infty} \frac{n}{N}
 \]
@@ -361,7 +361,7 @@ La probabilità che si verifichi $A$ se si verifica $B$:
 P(A|B)=\frac{P(A \bigcap B)}{P(B)}
 \]
 
-Il \textbf{Teorema delle probabilità totale} mi enuncia che se ho che se ho n eventi e si ha che 
+Il \textbf{Teorema delle probabilità totale} mi enuncia che se ho n eventi e si ha che 
 \[ \displaystyle P(M_i \cap M_j)=0 \hspace{0.3cm}\forall i \neq j \hspace{0.5cm} \& \hspace{0.5cm} \bigcup_{i=0}^{n}M_i=\Omega \]
 dove $\Omega$ è lo spazio campione; allora:
 \[
@@ -376,7 +376,7 @@ Ci chiediamo quale sia la probabilità che $M_j$ sia la causa di un certo evento
 \ripasso{ Teorema di Bayes }
 Dato un certo set di ipotesi ($M_i$) e un certo evento $A$ il teorema mi dice come la probabilità a "posteriori" $P(M_i|A)$ cambia dopo che l'evento $A$ si è verificato.
 
-Consideriamo un eveneto $A$ e una classe completa di ipotesi ($M_j$):
+Consideriamo un evento $A$ e una classe completa di ipotesi ($M_j$):
 \[
 \begin{cases}
     M_i\bigcap M_j=0 \\
@@ -386,11 +386,11 @@ Consideriamo un eveneto $A$ e una classe completa di ipotesi ($M_j$):
  
 Utilizzando il teorema della probabilità condizionata e il fatto che $P(A \bigcap M_i)=P(M_i \bigcap A)$ posso ricavare la probabilità che una causa sia dovuta a un determinato evento
 \[
-P(M_i|A)=\frac{P(A|M_I)P(M_i)}{P(A)}=\frac{P(A|M_i)P(M_i)}{\sum_{j=1}^{n}P(A|M_j)P(M_j)}
+P(M_i|A)=\frac{P(A|M_i)P(M_i)}{P(A)}=\frac{P(A|M_i)P(M_i)}{\sum_{j=1}^{n}P(A|M_j)P(M_j)}
 \]
 Dove:
 \begin{description}
-    \item[P(M)]: probabilità a priori/margianale (non tiene conto di A)
+    \item[P(M)]: probabilità a priori/marginale (non tiene conto di A)
     \item [P(M \textbar \space A)]: probabilità condizionata/a posteriori, nota A
     \item [P(A \textbar \space M)]: probabità condizionata di A, nota M
     \item [P(A)]: è la probabilità di A a priori, serve da costante di normalizzazione
@@ -437,13 +437,13 @@ Che presenta la proprietà:
 \Pi(x+1)=(x+1)\Pi(x)
 \]
 
-Sempre Eulero introdusse la funzione Gamma $\Gamma$, con uno spostamneto di unità nelle variabili rispetto a $\Pi$:
+Sempre Eulero introdusse la funzione Gamma $\Gamma$, con uno spostamento di unità nelle variabili rispetto a $\Pi$:
 \[
 \Gamma(z)=\int_{0}^{\infty}t^{z-1}e^{-t}dt
 \]
 Difatti questa funzione è legata a $\Pi$ da $\Pi(x)=\Gamma(x+1)=x\!$ e vale che $z\Gamma(z)=\Gamma(z+1)$
 
-Da questa funzione sono definte le combinazioni semplici del tipo:
+Da questa funzione sono definite le combinazioni semplici del tipo:
 \[
 \binom{z}{k}=\frac{\Gamma(z+1)}{k\! \Gamma(z-k+1)}
 \]
@@ -457,6 +457,100 @@ Da queste ricavo che $\Gamma(\frac{1}{2})=\sqrt{\pi}$ e $\Gamma(-\frac{1}{2})=-\
 \Gamma(n+\frac{1}{2})=\frac{(2n-1)!!}{2^n}\sqrt{\pi}
 \]
 
+\begin{bressan}{Variabili casuali e funzione di ripartizione}
+Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
+dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
+
+Essa può essere discreta (numerabile) oppure continua, se almeno idealmente posso considerare $\Omega$ continuo.
+\end{bressan}
+\begin{bressan}{Funzione di ripartizione}
+Data una variabile casuale $X$, la funzione $F$ che fa corrispondere a un valore x la probabilità cumulativa $P(X \leq x)$ viene detta funzione di ripartizione
+
+\[
+F_X:\mathbf{R} \rightarrow [0,1] \; F_X(x)=P(X \leq x)
+\]
+
+La funzione di ripartizione è definita sia per le variabili casuali discrete che per le variabili casuali
+continue.
+
+Proprietà delle funzioni di ripartizioni:
+\begin{enumerate}
+    \item $0 \geq F_X(x) \geq 1$
+    \item nel caso che il dominio sia \textbf{R}, allora $\displaystyle \lim_{x \rightarrow -\infty} F_X(x)=0 \; e \; \lim_{x \rightarrow \infty}F_X(x)=1$
+    \item È una funzione monotona crescente;
+    \item \( P(x_1 < X \leq x_2) = F_X(x_2) - F_X(x_1) \) dunque la funzione di ripartizione consente di stabilire la probabilità che la variabile casuale semplice \( X \) 
+    assuma valori compresi in intervalli di tipo \((x_1, x_2]\) dove \( x_1, x_2 \in \mathbf{R} \), con \( x_1 < x_2 \). A partire da questo posso calcolare anche le altre probabilità, ad esempio:  
+    \[ P(x_1 \leq X < x_2) = F_X(x_2) - F_X(x_1) + P(X = x_1) - P(X = x_2)\]
+ 
+    \item Nel caso di una variabile casuale discreta, la funzione di ripartizione è continua a destra:  
+    \[ \lim_{x \to x_0^+} F_X(x) = F_X(x_0).\]  
+    mentre a sinistra abbiamo una discontinuità di 1° specie (o salto):  
+    \[ \lim_{x \to x_0^-} F_X(x) \neq F_X(x_0)\]  
+    Questo è dovuto al fatto che la probabilità di un evento elementare è diversa da zero, quindi la funzione di ripartizione ha un salto in corrispondenza di ogni valore che può assumere la variabile casuale discreta (pensa lancio dei dati dove cambia la probabilità)
+\end{enumerate}
+
+In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in cui la funzione di probabilità è costante (ex nel caso dei dadi la funz. di ripartizione è a gradini)
+\end{bressan}
+\begin{bressan}{Densità di probabilità}
+
+ Data la variabile casuale continua \( X: \Omega \to \mathbf{R} \) che associa valori dallo spazio campionario all'intervallo 
+ \((a, b)\), con \( -\infty \leq a < b \leq +\infty \), la funzione di densità di probabilità (PDF) o funzione di distribuzione di probabilità è 
+ la funzione \( f_X: \mathbf{R} \to \mathbf{R}^+ \) che ad ogni \( x \) associa il limite per \( dx \rightarrow 0\), del rapporto tra la probabilità 
+ che la variabile casuale assuma valori nell'intervallo \((x, x + dx]\) e l'ampiezza \( dx \), ovverosia possiamo supporre la probabiità che un certo 
+ evento cada in un intervallo.
+
+ In simboli:
+ 
+ \[ f_X: \mathbf{R} \to \mathbf{R}^+ : x \mapsto \lim_{dx \to 0} \left[ \frac{P(x < X \leq x + dx)}{dx} \right] = \lim_{dx \to 0} \frac{F_X(x+dx)- F_X(x)}{dx}\]
+
+ Ogni evento deve essere ricondotto all'unione, negazione o intersezione di intervalli del tipo $( -\infty, x] $
+
+ \textbf{Attenzione} a non confondere la funzione di densità con una probabilità.
+ Essa mi determina la densità di probabilità che la variabile casuale sia nell'intervallo $dx$.
+
+ Definimamo la \textbf{Funzione di distribuzione cumulativa}:
+ \[
+ F(x)=\int_{x_{min}}^x f_X(t)dt
+ \]
+
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    
+    % Asse x
+    \draw[->] (-0.5,0) -- (4,0) node[right]{$x$};
+    % Asse y
+    \draw[->] (0,-0.5) -- (0,3) node[above]{$y$};
+    
+    % Etichette
+    \node at (1.5,-0.2) {$a$};
+    \node at (3,-0.2) {$b$};
+    \node at (0.7,2.5) {$y = f_X(x)$};
+    
+    % Curva della PDF
+    \draw[domain=0.5:3.5, smooth, variable=\x, blue] plot ({\x}, {2.5*exp(-0.5*(\x-2)^2)});
+    
+    % Area evidenziata
+    \fill[blue!20] (1.5,0) -- plot[domain=1.5:3, smooth, variable=\x] ({\x}, {2.5*exp(-0.5*(\x-2)^2)}) -- (3,0) -- cycle;
+    
+    % Linee verticali
+    \draw[dashed] (1.5,0) -- (1.5,{2.5*exp(-0.5*(1.5-2)^2)});
+    \draw[dashed] (3,0) -- (3,{2.5*exp(-0.5*(3-2)^2)});
+    
+    % Etichetta probabilità
+    \node at (2.25,0.7) {$P(a \leq X \leq b)=\int_{a}^{b}f_X(x)dx$};
+\end{tikzpicture}
+\end{center}
+
+
+\subsubsection*{Proprietà della funzione densità di probabilità}
+\begin{itemize}
+    \item non può essere mai negativa (altrimenti avremmo una probabiità negativa per qualche $X$)
+    \item condizione di normalizzazione: \[ \int_{- \infty}^{\infty} f(x)=1\]
+    dunque si deve avere che: $\lim_{x \rightarrow \pm \infty} f_X(x)=0$
+    \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
+\end{itemize}
+\end{bressan}
 
 
 \begin{bressan}{Distribuzione di Maxwell-Boltzmann}
@@ -619,7 +713,7 @@ Per quanto riguarda la parte grafica, la rappresentazione dipende dai dati a dis
 \end{itemize}
 
 \subsubsection{Scatter Plot ed Errori}
-L'altra rappresentazione classica è lo scatter plot in cui plottiamo una grandezza rispetto all'altra e aggiungiamo per ogni punto gli errori di misura:
+Nello scatter plot, plottiamo una grandezza rispetto all'altra e aggiungiamo per ogni punto gli errori di misura:
 \[ (x_i \pm \sigma_{x_i}, \quad y_i \pm \sigma_{y_i}) \]
 In questa rappresentazione è stato usato un numero per rappresentare una misura di $x$ ed è stato associato ad esso una stima dell'errore fatto nella singola misura.
 
@@ -813,7 +907,7 @@ Imponendo la condizione di normalizzazione ($\int P(x)dx = 1$), si ricavano i pa
 \end{itemize}
 \end{bressan}
 
-\subsection{Errore di sensibilità e Propagazione}
+\subsection*{Errore di sensibilità e Propagazione}
 \subsubsection{Propagazione degli Errori}
 Data una funzione $f(x,y)$ di variabili casuali indipendenti, la varianza si propaga come:
 \begin{equation}
@@ -1062,100 +1156,6 @@ print(f"g misurato: {g:.2f} +/- {sigma_g:.2f} m/s^2")
 
 \lezione{Momenti e Distribuzioni}{23 Febbraio 2026}
 
-\begin{bressan}{Variabili casuali e funzione di ripartizione}
-Dato lo spazio di eventi elementare $\omega$ una \textit{variabile casuale} è una funzione $X$ tale che $X(\omega)=x$ dove $x\in$ R,
-dunque una funzione che mi prende un campione casuale dal mio spazio campionario e gli associa un numero(ex: valore, altezza, \ldots).
-
-Essa può essere discreta (numerabile) oppure continua, se almeno idealmente posso considerare $\Omega$ continuo.
-\end{bressan}
-\begin{bressan}{Funzione di ripartizione}
-Data una variabile casuale $X$, la funzione $F$ che fa corrispondere a un valore x la probabilità cumulativa $P(X \geq x)$ viene detta funzione di ripartizione
-
-\[
-F_X:\mathbf{R} \rightarrow [0,1] \; F_X(x)=P(X \leq x)
-\]
-
-La funzione di ripartizione è definita sia per le variabili casuali discrete che per le variabili casuali
-continue.
-
-Proprietà delle funzioni di ripartizioni:
-\begin{enumerate}
-    \item $0 \geq F_X(x) \geq 1$
-    \item nel caso che il dominio sia \textbf{R}, allora $\displaystyle \lim_{x \rightarrow -\infty} F_X(x)=0 \; e \; \lim_{x \rightarrow \infty}F_X(x)=1$
-    \item È una funzione monotona crescente;
-    \item \( P(x_1 < X \leq x_2) = F_X(x_2) - F_X(x_1) \) dunque la funzione di ripartizione consente di stabilire la probabilità che la variabile casuale semplice \( X \) 
-    assuma valori compresi in intervalli di tipo \((x_1, x_2]\) dove \( x_1, x_2 \in \mathbf{R} \), con \( x_1 < x_2 \). A partire da questo posso calcolare anche le altre probabilità, ad esempio:  
-    \[ P(x_1 \leq X < x_2) = F_X(x_2) - F_X(x_1) + P(X = x_1) - P(X = x_2)\]
- 
-    \item Nel caso di una variabile casuale discreta, la funzione di ripartizione è continua a destra:  
-    \[ \lim_{x \to x_0^+} F_X(x) = F_X(x_0).\]  
-    mentre a sinistra abbiamo una discontinuità di 1° specie (o salto):  
-    \[ \lim_{x \to x_0^-} F_X(x) \neq F_X(x_0)\]  
-    Questo è dovuto al fatto che la probabilità di un evento elementare è diversa da zero, quindi la funzione di ripartizione ha un salto in corrispondenza di ogni valore che può assumere la variabile casuale discreta (pensa lancio dei dati dove cambia la probabilità)
-\end{enumerate}
-
-In un intervallo posso avere una \textbf{Probabilità uniforme}, ossia eventi in cui la funzione di probabilità è costante (ex nel caso dei dadi la funz. di ripartizione è a gradini)
-\end{bressan}
-\begin{bressan}{Densità di probabiità}
-
- Data la variabile casuale continua \( X: \Omega \to \mathbf{R} \) che associa valori dallo spazio campionario all'intervallo 
- \((a, b)\), con \( -\infty \leq a < b \leq +\infty \), la funzione di densità di probabilità (PDF) o funzione di distribuzione di probabilità è 
- la funzione \( f_X: \mathbf{R} \to \mathbf{R}^+ \) che ad ogni \( x \) associa il limite per \( dx \rightarrow 0\), del rapporto tra la probabilità 
- che la variabile casuale assuma valori nell'intervallo \((x, x + dx]\) e l'ampiezza \( dx \), ovverosia possiamo supporre la probabiità che un certo 
- evento cada in un intervallo.
-
- In simboli:
- 
- \[ f_X: \mathbf{R} \to \mathbf{R}^+ : x \mapsto \lim_{dx \to 0} \left[ \frac{P(x < X \leq x + dx)}{dx} \right] = \lim_{dx \to 0} \frac{F_X(x+dx)- F_X(x)}{dx}\]
-
- Ogni evento deve essere ricondotto all'unione, negazione o intersezione di intervalli del tipo $( -\infty, x] $
-
- \textbf{Attenzione} a non confondere la funzione di densità con una probabilità.
- Essa mi determina la densità di probabilità che la variabile casuale sia nell'intervallo $dx$.
-
- Definimamo la \textbf{Funzione di distribuzione cumulativa}:
- \[
- F(x)=\int_{x_{min}}^x f_X(t)dt
- \]
-
-
-\begin{center}
-\begin{tikzpicture}[scale=1.5]
-    
-    % Asse x
-    \draw[->] (-0.5,0) -- (4,0) node[right]{$x$};
-    % Asse y
-    \draw[->] (0,-0.5) -- (0,3) node[above]{$y$};
-    
-    % Etichette
-    \node at (1.5,-0.2) {$a$};
-    \node at (3,-0.2) {$b$};
-    \node at (0.7,2.5) {$y = f_X(x)$};
-    
-    % Curva della PDF
-    \draw[domain=0.5:3.5, smooth, variable=\x, blue] plot ({\x}, {2.5*exp(-0.5*(\x-2)^2)});
-    
-    % Area evidenziata
-    \fill[blue!20] (1.5,0) -- plot[domain=1.5:3, smooth, variable=\x] ({\x}, {2.5*exp(-0.5*(\x-2)^2)}) -- (3,0) -- cycle;
-    
-    % Linee verticali
-    \draw[dashed] (1.5,0) -- (1.5,{2.5*exp(-0.5*(1.5-2)^2)});
-    \draw[dashed] (3,0) -- (3,{2.5*exp(-0.5*(3-2)^2)});
-    
-    % Etichetta probabilità
-    \node at (2.25,0.7) {$P(a \leq X \leq b)=\int_{a}^{b}f_X(x)dx$};
-\end{tikzpicture}
-\end{center}
-
-
-\subsubsection*{Proprietà della funzione densità di probabilità}
-\begin{itemize}
-    \item non può essere mai negativa (altrimenti avremmo una probabiità negativa per qualche $X$)
-    \item condizione di normalizzazione: \[ \int_{- \infty}^{\infty} f(x)=1\]
-    dunque si deve avere che: $\lim_{x \rightarrow \pm \infty} f_X(x)=0$
-    \item la probabilità che una variabile casuale assuma un particolare valore dell'intervallo è $P(X=x)=0$, infatti ad un singolo valore corrisponde un intervallo con ampiezza nulla; questo mi porta a poter escludere gli estremi
-\end{itemize}
-\end{bressan}
 
 \subsection{Momenti della funzione di distribuzione}
 
@@ -1973,16 +1973,12 @@ confronto_binom_poiss(p=0.01, n_list=[100, 1000, 5000, 10000])
 
 
 \subsection*{Rappresentazione grafica dei dati (Istogrammi)}
-
 Consideriamo un esperimento volto a misurare una grandezza fisica continua $X$. Il modello teorico che descrive il fenomeno fornisce una densità di probabilità $P(x)$, tale che:
-
 \begin{equation}
 \int_{-\infty}^{+\infty} P(x) \, dx = 1
 \end{equation}
-
 Si effettuano $N$ misure indipendenti di $X$, ottenendo un campione di dati $\{x_1, x_2, \dots, x_N \}$. Questi dati vengono rappresentati graficamente tramite un istogramma, suddividendo l'asse delle $x$ in intervalli adiacenti chiamati \textit{bin}.
 Considerando un generico bin $i$, definito nell'intervallo $[x_i, x_{i+1}]$, il numero di eventi $M_i$ che cadono in tale intervallo è una variabile aleatoria discreta. La probabilità teorica che una singola misura cada nel bin $i$ è data da:
-
 \begin{equation}
 P_i = \int_{x_i}^{x_{i+1}} P(x) \, dx \approx P\left(x_i + \frac{\Delta x}{2}\right) \Delta x
 \end{equation}
@@ -2157,14 +2153,7 @@ Imponendo la normalizzazione, si ottiene la forma gaussiana:
 y(u)=\frac{1}{\sqrt{2\pi} \sigma}e^{-\frac{u^2}{2 \sigma^2}}
 \]
 
-\textbf{Breve riassunto}
-\begin{itemize}[itemsep=0.3em]
-    \item Definizione di variabile casuale discreta e continua.
-    \item Definizione di funzione di ripartizione $F_x(x)$.
-    \item Definizione di funzione di distribuzione (densità di probabilità).
-    \item Valori di aspettazione come indici di posizione (media) e dispersione (varianza).
-    \item Esempi di funzioni di distribuzione (Binomiale, Poisson, Gaussiana).
-\end{itemize}
+
 \end{bressan}
 \subsection*{Definizione di distribuzione normale}
 
@@ -5376,7 +5365,7 @@ Per un modello lineare: $f=A\theta$, posso utilizzare la definizione di $\chi^2$
 
 Volendo trovare $\hat \theta$ risolvo:
 \[
-\frac{\partial \chi^2}{\partial \theta} = -2 A^T V^{-1} (\mathbf{y} - A\theta) \implies \hat \theta = (A^T V^{-1} A )^ -1 2 A^T V^{-1} \mathbf{y} = B \mathbf{y}
+\frac{\partial \chi^2}{\partial \theta} = -2 A^T V^{-1} (\mathbf{y} - A\theta) \implies \hat \theta = (A^T V^{-1} A )^-1 2 A^T V^{-1} \mathbf{y} = B \mathbf{y}
 \]
 Utilizzando la propagazione degli errori:
 \[
@@ -5487,7 +5476,7 @@ Per $\nu$ piccoli la distribuzione del $\chi^2$ è fortemente asimmetrica con lu
     \caption{Asimmetria della distribuzione per piccoli gradi di libertà.}
 \end{figure}
 
-Per $\nu$ piccoli, si preferisce usare la variabile causale $z = \sqrt{2\chi^2}$. Calcoliamo la sua distribuzione tramite $x = z^2/2 \implies dx/dz = z$:
+Per $\nu$ piccoli, si preferisce usare la variabile casuale $z = \sqrt{2\chi^2}$. Calcoliamo la sua distribuzione tramite $x = z^2/2 \implies dx/dz = z$:
 \begin{equation}
     P_z(z) = P_x\left(\frac{z^2}{2}\right) \cdot z
 \end{equation}
@@ -5926,8 +5915,9 @@ p\text{-value} = \int_{t_m}^{\infty} P_0(t) \, \mathrm{d}t
     \item Se $p\text{-value} \leq \alpha \implies$ \textbf{rigetto} $H_0$ (equivale a $t_m \geq t_s$).
     \item Se $p\text{-value} > \alpha \implies$ \textbf{non rigetto} $H_0$.
 \end{itemize}
+più è piccolo il p-value, meno è probabile che i risultati siano dovuti al caso.
 
-
+\begin{figure}[h]
 \begin{center}
 \begin{tikzpicture}[scale=0.9]
     % Caso con alfa
@@ -5964,7 +5954,9 @@ p\text{-value} = \int_{t_m}^{\infty} P_0(t) \, \mathrm{d}t
         \node at (2, 3) {\textbf{Caso con p-value}};
     \end{scope}
 \end{tikzpicture}
+\caption{L'area tratteggiata è la "zona di rigetto" con la soglia critica $\chi^2_s$, mentre l'area colorata è il p-value con il valore calcolato $\chi^2_m$, in questo caso $p\text{-value} > \alpha$ }
 \end{center}
+\end{figure}
 
 \subsection*{Potenza del test ($1-\beta$)}
 Per valutare l'Errore di Tipo II, assumiamo sia vera l'ipotesi alternativa $H_1$ con distribuzione $P_1(t)$. La probabilità $\beta$ di accettare erroneamente $H_0$ è data integrando $P_1$ nella regione di accettazione di $H_0$:
@@ -5973,6 +5965,7 @@ Per valutare l'Errore di Tipo II, assumiamo sia vera l'ipotesi alternativa $H_1$
 \end{equation}
 La \textbf{Potenza del test} è la quantità $(1 - \beta)$ e rappresenta la capacità del test di rigettare correttamente $H_0$ quando $H_1$ è vera.
 
+\begin{figure}[h]
 \begin{center}
 \begin{tikzpicture}
     % Asse
@@ -5992,8 +5985,9 @@ La \textbf{Potenza del test} è la quantità $(1 - \beta)$ e rappresenta la capa
     \fill[red, opacity=0.3] (-0.5,0) -- plot[domain=-0.5:0.8, samples=50] ({\x}, {1.5*exp(-(\x-2)^2 / 1.5)}) -- (0.8,0) -- cycle;
     \node[red, font=\bfseries] at (0.3, 0.3) {$\beta$};
 \end{tikzpicture}
+\caption{Distribuzione sotto l'ipotesi nulla $P_0$ (blu) e sotto l'ipotesi alternativa $P_1$ (rosso). L'area colorata rappresenta $\beta$, l'errore di Tipo II, nella regione di accettazione di $H_0$.}
 \end{center}
-
+\end{figure}
 
 \begin{example}{Test di Ipotesi (Binomiale) su 15 lanci di una moneta}
 
@@ -6245,7 +6239,7 @@ Facendo il rapporto otteniamo
 \[
 F =\frac{ \left(\chi_1^2/\nu_1\right)}{\left(\chi_2^2/\nu_2\right)}\sim F_{\nu_1,\nu_2}.
 \]
-Quindi la distribuzione di Fisher è, il rapporto tra due variabili \(\chi^2\) normalizzateper i rispettivi gradi di libertà.
+Quindi la distribuzione di Fisher è, il rapporto tra due variabili \(\chi^2\) normalizzate per i rispettivi gradi di libertà.
 
 Nel confronto tra modelli la stessa idea compare in forma leggermente diversa.
 Riconsiderando i due modelli $M_1$ e $M_2$, con $\chi_1^2$ e $\chi_2^2$

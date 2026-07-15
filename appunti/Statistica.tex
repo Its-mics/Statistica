@@ -1405,13 +1405,19 @@ f_X(x) = \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{-itx} \phi(t) dt
 \]
 Dunque due distribuzioni di probabilità che hanno gli stessi momenti (dunque la stessa funzione caratteristica), sono la stessa distribuzione di probabilità. 
 Questo è dovuto al fatto che la $\mathcal{F}$-trasformata in $L^2[\mathbb{R}]$ rappresenta una biezione tra due spazi.
+
 \subsection{Distribuzione Binomiale e Approssimazioni}
 \emph{Questa parte è stata integrata con gli appunti di Bressan}
 \vspace{0.4 cm}
 
 La distribuzione binomiale descrive un fenomeno che può verificarsi solo con due modalità mutualmente esclusive: successo (con probabilità $p$) o insuccesso (con probabilità $q=1-p$).
 
-Se ripetiamo l'esperimento $n$ volte, la probabilità di ottenere esattamente $k$ successi è data dalla funzione:
+\textit{Supponendo che gli eventi di successo e insuccesso siano indipendenti}, la probabilità di ottenere $k$ successi in $n$ prove è, data la probabilità di successo $p$:
+\[
+\underbrace{p\cdot p \cdot p \cdot}_{\text{k volte}} \dots \underbrace{\cdot (1-p) \cdot (1-p) \cdot (1-p)}_{\text{(n-k volte)}} = p^k q^{n-k}
+\]
+essi possono essere ottenuti in combinazioni diverse, il loro numero totale è dato dal coefficente binomiale $\binom{n}{k}$.
+Allora la probabilità totale mi è data sommando tutte le combinazioni possibili, ed essendo le probabilità della singola combinazione tutte uguali, ottengo:
 \[
 P(k;n,p) = \binom{n}{k}p^k q^{n-k} = \frac{n!}{k!(n-k)!}p^k (1-p)^{n-k}
 \]
@@ -1735,6 +1741,8 @@ Possiamo quindi scrivere la forma finale della Funzione Generatrice dei Momenti 
 \boxed{M_k(t) = e^{\lambda(e^t - 1)}}
 \end{equation}
 
+
+
 \subsubsection*{Calcolo di Media e Varianza}
 Dalle proprietà della Funzione Generatrice dei Momenti sappiamo che la derivata prima valutata in $t=0$ fornisce la media, mentre la derivata seconda fornisce il momento secondo.
 
@@ -1775,6 +1783,10 @@ Ora calcoliamo la varianza sottraendo il quadrato della media:
 \begin{equation}
 \boxed{\mu = \lambda, \quad \sigma^2 = \lambda}
 \end{equation}
+
+Questo risultato è dovuto essenzialmente alle ipotesi di indipendenza degli eventi, avendo una media più grande potrò avere ua dispersione più grande (poichè il numero di eventi deve essere per forza positivo).
+
+Più facilmente posso osservare anche che per la binomiale $Var(k) = np(1-p)$, quindi se $p \to 0$ e $n \to \infty$ con $np = \lambda$, ottengo $Var(k) = np(1-p) \approx np = \lambda$.
 
 \subsection*{Relazione con la Binomiale e Somma di Variabili}
 
@@ -2992,7 +3004,7 @@ for sigma, colore in zip([1,2,3], ['green','orange','purple']):
 
 
 
-
+-
 Torniamo ora al caso della media $\bar{x}$ e applicando la disuguaglianza di prima avremo
 \[
 \text{Prob}(|\bar{x} - E[\bar{x}]| \ge \varepsilon) \le \frac{\text{Var}(\bar{x})}{\varepsilon^2}

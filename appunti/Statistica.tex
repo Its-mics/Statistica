@@ -1414,10 +1414,10 @@ La distribuzione binomiale descrive un fenomeno che può verificarsi solo con du
 
 \textit{Supponendo che gli eventi di successo e insuccesso siano indipendenti}, la probabilità di ottenere $k$ successi in $n$ prove è, data la probabilità di successo $p$:
 \[
-\underbrace{p\cdot p \cdot p \cdot}_{\text{k volte}} \dots \underbrace{\cdot (1-p) \cdot (1-p) \cdot (1-p)}_{\text{(n-k volte)}} = p^k q^{n-k}
+\underbrace{p \cdot p \cdots p}_{k \text{ volte}} \cdot \underbrace{(1-p) \cdot (1-p) \cdots (1-p)}_{(n-k) \text{ volte}} = p^k q^{n-k}
 \]
 essi possono essere ottenuti in combinazioni diverse, il loro numero totale è dato dal coefficente binomiale $\binom{n}{k}$.
-Allora la probabilità totale mi è data sommando tutte le combinazioni possibili, ed essendo le probabilità della singola combinazione tutte uguali, ottengo:
+Allora la probabilità totale è data sommando tutte le combinazioni possibili, ed essendo le probabilità per ogni combinazione uguali, si ottiene:
 \[
 P(k;n,p) = \binom{n}{k}p^k q^{n-k} = \frac{n!}{k!(n-k)!}p^k (1-p)^{n-k}
 \]
@@ -6686,7 +6686,9 @@ Spesso si assume $\rho \approx 1$ (massima correlazione), per cui $\text{var}(x-
 Tuttavia, il modo più pulito di procedere in questi casi (Caso 3 con dati appaiati) è, invece di calcolare le medie $\bar{x}$ e $\bar{y}$ separatamente, calcolare \textit{direttamente} la differenza per ogni coppia di misure:
 $$ \delta_i = x_i - y_i $$
 Poi si calcola la media di queste quantità $\bar{\delta}$ e la loro deviazione standard campionaria $\hat{\sigma}_\delta$. A questo punto si lavora direttamente con la variabile $\delta$ applicando un test t-Student a un campione (sulla differenza da 0):
-$$ t = \frac{\bar{\delta}}{\hat{\sigma}_\delta / \sqrt{N}} \sim \text{t-Student}(N-1) $$
+$$ t = \frac{\bar{\delta}}{\hat{\sigma}_\delta / \sqrt{N}} \sim \text{t-Student}(N-1) $$ 
+
+Con $\hat{\sigma}_\bar{\delta} = \sqrt{\frac{1}{N} \sum_{i=1}^N (\delta_i - \bar{\delta})^2}$
 
 \section*{Intervalli di confidenza}
 Nei test di ipotesi abbiamo parlato di significatività riferendoci all'integrale della p.d.f. \textit{al di sopra} (le code) di un certo valore di soglia.

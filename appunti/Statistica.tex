@@ -2805,6 +2805,13 @@ sono individualmente divergenti, il primo fa $-\infty$ e il secondo $+\infty$ e 
 Intuitivamente il problema è che la distribuzione di Cauchy ha code così alte che la media non riesce a stabilizzarsi a un valore preciso. Quando si calcola la media di $n$ eventi, al crescere di $n$, si vede che all'inizio sembra che la media si stabilizzi a zero poi si iniziano a presentare dei salti che spostano la media. Questo perché visto che i valori nelle code della distribuzione non sono tanto rari, ne viene aggiunto uno alla somma con l'effetto di spostare la media. \\
 Analogamente la varianza e tutti i momenti di ordine superiore sono divergenti.
 
+Un modo per visualizzare l'applicazione della distribuzione di Cauchy è quello di pensarla come la distribuzione dell'energia in un sistema risonante, con:
+\begin{itemize}
+    \item $x_0$ che rappresenta la frequenza di risonanza del sistema;
+    \item $x$ che rappresenta la frequenza di eccitazione del sistema;
+\end{itemize}
+allora per $x \approx x_0$ l'energia assorbita dal sistema è massima.
+
 
 \begin{center}
 \begin{tikzpicture}[scale=1.2]
@@ -3217,9 +3224,20 @@ nel caso in cui si ha $\beta=2$ e $\alpha= \frac{\nu}{2}$, con $\nu \in \mathbb{
 
 
 \section{Metodi Monte Carlo}
+Con il termine di "metodo Monte Carlo" oppure "metodo MC", vengono
+in generale denominate tutte quelle tecniche che fanno uso di variabili aleatorie
+artificiali (cioi: generate a1 calcolatore) per la risoluzione di problemi
+matematici.
+
 I metodi Monte Carlo sono algoritmi computazionali che sfruttano la generazione di numeri casuali per risolvere problemi matematici complessi.
 Questo campionamento casuale ha un certo numero di applicazioni, ma una delle più utili è che consente
 di calcolare in modo pratico integrali altrimenti impossibili.  
+
+Da un punto di vista strettamente formale, tutti i calcoli MC che sono
+simulazioni di processi stocastici, in cui si generano casualmente degli eventi
+secondo certe distribuzioni di probabilith, sono equivalenti all'approssimazione
+del valore di un integrale definito o di una somma.
+
 \paragraph{Esempio}
 Per calcolare l'area di una superficie irregolare:\\
 1. Si lancia un numero $N$ di chicchi di riso a caso su un foglio di area nota. \\
@@ -6688,7 +6706,7 @@ $$ \delta_i = x_i - y_i $$
 Poi si calcola la media di queste quantità $\bar{\delta}$ e la loro deviazione standard campionaria $\hat{\sigma}_\delta$. A questo punto si lavora direttamente con la variabile $\delta$ applicando un test t-Student a un campione (sulla differenza da 0):
 $$ t = \frac{\bar{\delta}}{\hat{\sigma}_\delta / \sqrt{N}} \sim \text{t-Student}(N-1) $$ 
 
-Con $\hat{\sigma}_\bar{\delta} = \sqrt{\frac{1}{N} \sum_{i=1}^N (\delta_i - \bar{\delta})^2}$
+Con $\hat{\sigma}_{\delta} = \sqrt{\frac{1}{N-1} \sum_{i=1}^N (\delta_i - \bar{\delta})^2}$
 
 \section*{Intervalli di confidenza}
 Nei test di ipotesi abbiamo parlato di significatività riferendoci all'integrale della p.d.f. \textit{al di sopra} (le code) di un certo valore di soglia.
@@ -6703,6 +6721,10 @@ In certi casi può essere utile condensare l'informazione in termini di livelli 
 
 Per costruirlo si stabilisce il livello di confidenza scelto (per esempio il 90\%) e, \textit{per ogni valore del parametro vero $\mu$}, si possono determinare i bordi misurabili $x_-$ e $x_+$ tali che:
 $$ \int_{x_-}^{x_+} \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} dx = 0.90 $$
+
+Dunque affermo che se misurerò un certo valore $x$, esso sarà compatibile con il parametro scelto $\mu$ con un livello di confidenza del 90\% se cade all'interno dell'intervallo $[x_-, x_+]$.
+
+Ancora, questo è equivalente ad affermare di avere un rischio del 10\% di rigettare l'ipotesi che il parametro vero sia $\mu$, quando tale ipotesi è in realtà vera (errore di tipo I).
 
 Viceversa, una volta fatta l'osservazione e ottenuto un valore sperimentale $x$ (fissato), posso intersecare il diagramma in verticale per trovare i due valori $\mu_-$ e $\mu_+$ che "shiftano" la gaussiana in modo che l'integrale a destra o a sinistra di $x$ contenga rispettivamente una frazione di probabilità corrispondente ai rigetti (es. il 5\% di code per lato nel caso di CL al 90\%):
 $$ \int_x^{\infty} \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x'-\mu_-)^2}{2\sigma^2}} dx' = 0.05 \quad \text{e} \quad \int_{-\infty}^x \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x'-\mu_+)^2}{2\sigma^2}} dx' = 0.05 $$

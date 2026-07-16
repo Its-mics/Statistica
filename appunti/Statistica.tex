@@ -3224,19 +3224,9 @@ nel caso in cui si ha $\beta=2$ e $\alpha= \frac{\nu}{2}$, con $\nu \in \mathbb{
 
 
 \section{Metodi Monte Carlo}
-Con il termine di "metodo Monte Carlo" oppure "metodo MC", vengono
-in generale denominate tutte quelle tecniche che fanno uso di variabili aleatorie
-artificiali (cioi: generate a1 calcolatore) per la risoluzione di problemi
-matematici.
+Con il termine di "metodo Monte Carlo" (metodo MC), vengono in generale denominate tutte quelle tecniche che fanno uso di variabili aleatorie
+artificiali per la risoluzione di problemi matematici.
 
-I metodi Monte Carlo sono algoritmi computazionali che sfruttano la generazione di numeri casuali per risolvere problemi matematici complessi.
-Questo campionamento casuale ha un certo numero di applicazioni, ma una delle più utili è che consente
-di calcolare in modo pratico integrali altrimenti impossibili.  
-
-Da un punto di vista strettamente formale, tutti i calcoli MC che sono
-simulazioni di processi stocastici, in cui si generano casualmente degli eventi
-secondo certe distribuzioni di probabilith, sono equivalenti all'approssimazione
-del valore di un integrale definito o di una somma.
 
 \paragraph{Esempio}
 Per calcolare l'area di una superficie irregolare:\\
@@ -3332,6 +3322,27 @@ Il valore $x$ così ottenuto sarà distribuito secondo la $P(x)$ originale.
     \item Invertendo: $x =   -\tau \ln(1 - u)$
 \end{itemize}
 
+Vediamo come si implementano questi due algoritmi per il calcolo di integrali.
+
+Supponiamo di voler calcolare l'integrale di una funzione $g(x)$ nell’intervallo $[a, b]$
+Introduciamo una funzione $f(x)$ positiva e normalizzata nell'intervallo $[a, b]$, quindi
+interpretabile come funzione di distribuzione della variabile $x$.
+
+Possiamo allora scrivere
+\[
+I = \int_a^b g(x) dx = \int_a^b \frac{g(x)}{f(x)} f(x) dx \equiv E
+\left[
+\frac{g(x)}{f(x)}
+\right]
+\]
+L’integrale $I$ si pu`o quindi interpretare come il valore di aspettazione di $g(x)/f(x)$
+valutato con la funzione di distribuzione $f(x)$.
+Generando $N$ variabili casuali $x_1, \ldots, x_N$ secondo la funzione di distribuzione $f(x)$,
+possiamo stimare l’integrale come
+\[
+\hat{I} = \frac{1}{N} \sum_{i=1}^N \frac{g(x_i)}{f(x_i)}
+\]
+quindi mediante la media aritmentica dei valori di $g(x)/f(x)$.
 
 \paragraph{Esempio: Integrazione Numerica e CDF}
 Questo script mostra come calcolare numericamente la funzione di ripartizione (CDF) partendo dalla densità di probabilità (PDF) e come visualizzare il legame tra le due.

@@ -4283,6 +4283,8 @@ Sostituendo si ha quindi:
 In sostanza $s^2$ è una \textbf{stima distorta} della varianza e tende ad essere più piccola della varianza di un fattore $(N-1)/N$.
 Riflettendoci, si capisce che il risultato deriva dal fatto che nel caso ideale si vorrebbe conoscere $\mu$ e calcolare gli scarti rispetto a $\mu$, invece che rispetto a $\bar{x}$, e da questo segue che $\mathbb{E}[s^2] < \text{Var}(x)$.
 
+Invece, nel caso reale, la stima della varianza porta alla perdità di un grado di libertà, a causa della costrizione: $\sum_i (x_i - \bar{x}) = 0$.
+
 \paragraph{Correzione di Bessel}
 Avendo però quantificato la relazione tra $\mathbb{E}[s^2]$ e la varianza vera, si può correggere il nostro calcolo definendo una nuova stima della varianza:
 
@@ -4502,7 +4504,8 @@ Questo risultato è noto come \textbf{media pesata}: le misure più precise (con
 
 Supponiamo di avere $N$ misure $\{x_1, x_2, \dots, x_N\}$ di una certa grandezza fisica $x$. Queste misure sono delle variabili aleatorie descritte da una certa densità di probabilità $P$ che dipende da un certo parametro $\theta$ il cui \textbf{valore vero $\theta_v$ è incognito}, cioè per ognuna ho $P(x_i ; \theta_v)$.
 
-Se si mette insieme, la densità congiunta è $\prod_i P(x_i ; \theta_v)$ (se le $x_i$ sono indipendenti). 
+Se si mette insieme, la densità congiunta è $\prod_i P(x_i ; \theta_v)$ (se le $x_i$ sono indipendenti) \footnote{se le $x_i$ non sono indipendenti la funzione di Likelihood viene definita utilizzando le probabilità condizionate: 
+\[\mathcal{L} = P(x_1; \theta) \times  P(x_2 | x_1; \theta) \times \cdots \times P(x_N | x_1, \dots, x_{N-1}; \theta)\]}. 
 Se ora si prova a "ribaltare" il problema e assumo che, fissate le $x_i$ (quindi avendo fissato un set di misure), si voglia ricavare $\theta_v$, allora si può  riscrivere la produttoria di prima come una funzione di $\theta$:
 
 \begin{definizione}\textbf{Funzione di Likelihood}
@@ -4947,7 +4950,7 @@ Una cosa che si può notare è che, data la definizione della funzione di Likeli
 \begin{equation}
     \mathscr{L}(x_1, x_2, \dots, x_N; \theta) = \prod_{i=1}^N P(x_i; \theta) \implies \ln \mathscr{L}(x_1, \dots, x_N; \theta) = \sum_{i=1}^N \ln P(x_i; \theta)
 \end{equation}
-Se gli $x_i$ vengono tutti dalla stessa popolazione, allora sono descritti dalla stessa densità di probabilità $P(x; \theta)$, per cui:
+Se gli $x_i$ vengono tutti dalla stessa popolazione, allora sono descritti identicamente distribuiti e le $P(x; \theta)$ sono uguali, per cui:
 \begin{equation*}
     \frac{d^2 \ln \mathscr{L}}{d\theta^2} = \frac{d^2}{d\theta^2} \sum_i \ln P(x_i; \theta) = \sum_i \frac{d^2}{d\theta^2} \ln P(x_i; \theta)
 \end{equation*}
@@ -4960,9 +4963,9 @@ visto che tutte le funzioni $P(x_i; \theta)$ sono uguali. Ne segue quindi che \t
 \subsubsection*{Stima di \texorpdfstring{$\hat{\theta}$}{} e \texorpdfstring{$Var(\hat{\theta})$}{} per \texorpdfstring{$N \to \infty$}{}}
 Al limite per $N \to \infty$ si può vedere che l'uguaglianza regge e si ha:
 \begin{equation*}
-    Var(\hat{\theta}) = \frac{-1}{\left. \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right|_{\theta = \theta_0}} = \frac{-1}{\mathbb{E}\left[ \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right]}
+    Var(\hat{\theta}) = \frac{-1}{\left. \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right|_{\theta = \theta_v}} = \frac{-1}{\mathbb{E}\left[ \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right]}
 \end{equation*}
-Visto che la stima migliore del valore vero $\theta_0$ è data da $\hat{\theta}$, nei casi in cui il valore di aspettazione di $\mathscr{L}$ non è facilmente calcolabile, si approssima e si indica con $\hat{\sigma}_{\hat{\theta}}^2$:
+Visto che la stima migliore del valore vero $\theta_v$ è data da $\hat{\theta}$, nei casi in cui il valore di aspettazione di $\mathscr{L}$ non è facilmente calcolabile, si approssima e si indica con $\hat{\sigma}_{\hat{\theta}}^2$:
 \begin{equation}
     Var(\hat{\theta}) \approx \frac{-1}{\left. \frac{d^2 \ln \mathscr{L}}{d\theta^2} \right|_{\theta = \hat{\theta}}} \implies \widehat{Var}(\hat{\theta}) = \hat{\sigma}_{\hat{\theta}}^2
 \end{equation}
@@ -5096,7 +5099,7 @@ Se l'istogramma ha $m$ bin e indichiamo con $n_1, n_2, \dots, n_m$ i conteggi de
 \end{equation} 
 che stavolta dipende direttamente da $\theta$.
 
-Si può quindi pensare alla misura come a un vettore degli $m$ conteggi $n_i$ (invece che degli $N$ dati puntuali $x_i$). La pdf congiunta di questi conteggi, cioè la $\mathscr{L}$, è data dalla \textbf{distribuzione multinomiale}.
+Si può quindi pensare alla misura come a un vettore degli $m$ conteggi $n_i$ (invece che degli $N$ dati puntuali $x_i$). La pdf congiunta di questi conteggi, cioè la $\mathscr{L}$, è data dalla \textbf{distribuzione multinomiale}. \footnote{in questo caso infatti i conteggi sono dipendenti (essendo legati dal vincolo $\sum_i n_i = N$), dunque NON seguono una statistica poissoniana.}
 
 \noindent\fbox{
     \parbox{0.95\textwidth}{

@@ -1998,7 +1998,16 @@ dove si assume che il bin sia sufficientemente stretto ($\Delta x$) da poter con
 
 La variabile $M_i$ segue una statistica binomiale, poiché per ogni singola misura si verificano due sole possibilità: il conteggio cade nel bin $i$ (successo) oppure no (insuccesso).
 Il valore di aspettazione di $M_i$ è $\langle M_i \rangle = N P_i$, mentre la varianza è $V_i = N P_i (1-P_i)$.
-Al limite, per $P_i$ piccolo e $N$ grande, la distribuzione degli eventi tende a una Poissoniana. In questo caso, il valore di aspettazione è semplicemente $M_i$ e la deviazione standard è stimata come $\sigma = \sqrt{M_i}$.
+Al limite, per $P_i$ piccolo e $N$ grande, la distribuzione degli eventi tende a una Poissoniana. In questo caso, il valore di aspettazione è semplicemente $M_i$ \footnote{infatti dal principio di Maximum Likelihood: \[
+\mathcal{L}=P(M_i|\lambda)=\frac{e^{-\lambda}\lambda^{M_i-}}{M_i!} \implies 
+\begin{aligned}
+\frac{dL}{d\lambda} &= \frac{d}{d\lambda} \left[ \frac{e^{-\lambda} \lambda^{M_i}}{M_i!} \right] \\[10pt]
+&= \frac{-e^{-\lambda} \lambda^{M_i} + M_i e^{-\lambda} \lambda^{M_i-1}}{M_i!} \\[10pt]
+&= \frac{e^{-\lambda} \lambda^{M_i-1} (M_i - \lambda)}{M_i!} = 0 \\[10pt]
+&\implies M_i - \lambda = 0 \implies \hat{\lambda} = M_i
+\end{aligned}
+\]}
+ e la deviazione standard è stimata come $\sigma = \sqrt{M_i}$.
 Per questo motivo, quando si rappresenta un istogramma, si aggiungono spesso delle barre di errore verticali che rappresentano la deviazione standard $\sqrt{M_i}$.
 
 È fondamentale sottolineare che l'istogramma non è una distribuzione di probabilità continua, ma una stima basata su un numero finito di eventi. Il fatto che la fluttuazione dei conteggi nei bin segua una statistica binomiale (o approssimativamente Poissoniana) riguarda il processo di misura e campionamento, ed è concettualmente distinto dalla forma funzionale $P(x)$ del processo fisico sottostante.
@@ -6129,7 +6138,16 @@ dove $n_j$ è il numero di conteggi osservati nel bin $j$-esimo e $\nu_j(\theta)
     \end{scope}
 \end{tikzpicture}
 \end{center}
+Per capire meglio questo test, notiamo che ogni termine della somma (294) è la somma di quadrati delle variabili $\frac{nj - mP(x_j)\Delta x}{\sqrt{mP(x_j)\Delta x}}$.
 
+Formuliamo l'ipotesi H0: i dati sono distribuiti secondo la distribuzione scelta, dunque il valore atteso per ogni bin è $mP(x_j)\Delta x$. 
+Se $H_0$ è vera, allora la quantità $n_j$ è una variabile aleatoria che segue una statistica poissoniana.
+
+Inoltre, quando $m \to \infty$, la variabile $n_j$, essendo sommatoria di variabili casuali indipendenti ($n_j = X_1 + X_2 + \dots + X_n$, dove $X_i = 0/1$ rappresenta il successo o il fallimento dell'evento "il dato cade nel bin $j$"), per
+il Teorema del Limite Centrale la distribuzione di $n_j$ tende a una gaussiana con media $\nu_j(\theta)$ e varianza $\nu_j(\theta)$, 
+dunque la quantità $\frac{n_j - \nu_j(\theta)}{\sqrt{\nu_j(\theta)}}$ tende a una variabile casuale standardizzata $N(0,1)$.
+
+Per concludere, la variabile $\chi^2$ di cui sopra, per definizione di $\chi^2$, dovrebbe essere distribuita secondo una statistica $\chi^2$ con $m-1$ gradi di libertà (vi sono $m-1$ bin "indipendenti").
 
 \subsection*{Implementazione Python del Test $\chi^2$}
 In Python si usa `scipy.stats.chi2`. Le funzioni principali sono:
@@ -6356,7 +6374,9 @@ Invece degli istogrammi, si usano le \textbf{frequenze cumulative}. Si definisce
     Il grafico è una funzione a gradino crescente.
 \end{esempio}
 
-La statistica di test $D$ è definita come la \textbf{massima distanza assoluta} tra la cumulativa empirica $\phi(x)$ e la cumulativa teorica (funzione di ripartizione) $F(x) = \int_{-\infty}^{x} P(z) \mathrm{d}z$:
+Formuliamo l'ipotesi nulla $H_0$: $\phi(x) = F(x)$, dove $F(x) = \int_{-\infty}^{x} P(z) \mathrm{d}z$ è la cumulativa della distribuzione teorica.
+
+La statistica di test $D$ è definita come la \textbf{massima distanza assoluta} tra la cumulativa empirica $\phi(x)$ e la cumulativa teorica $F(x)$:
 \begin{equation}
     D = \max_x |\phi(x) - F(x)|
 \end{equation}
